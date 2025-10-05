@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: docs
+  render: 
+    - index.qmd
+  resources:
+    - rice-stock-data.mcpb
+    - syllabus.pdf
+                  
+website:
+  title: ""
+  search: false  
+  navbar:
+    search: false
+    title: MGMT 638
+    file: index.qmd
+   
+format:
+  html:
+    theme:
+      light: flatly
+      dark: superhero
+    link-external-newwindow: true
+    
+   
+
+
+
+
+
+

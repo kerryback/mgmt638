@@ -1,0 +1,112 @@
+:::: {style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem;"}
+
+## Data-Driven Investments: Equity<br>Fall 2025
+
+![](RiceBusiness-transparent-logo-sm.png){width=40%}
+
+::::
+
+
+
+#### Instructor
+
+[Kerry Back](https://kerryback.com)<br> 
+[kerryback@gmail.com](mailto: kerryback@gmail.com)<br>
+J. Howard Creekmore Professor of Finance and Professor of Economics
+
+
+#### Meeting Schedule
+
+McNair 317<br>
+MW 2:15-3:45<br>
+10/27/2025 -- 12/08/2025
+
+
+#### Overview
+
+The topic of this course is selecting stocks based on quantitative signals.    What we want to do is to predict  which stocks will do better than others.  In quantitative investing, this is often done using machine learning, which means fitting a model to predict returns from signals.  Signals can be technical or fundamental.  Even subjective things like the tone of the CEO in an earnings call are quantifiable today.  Thus, quantitative investing includes a large part of equity investing. 
+
+Many different types of data are used for constructing trading signals.  In this course, we will primarily use past returns and corporate financial statements.  Textual analysis of corporate filings and news reports, social media activity, web traffic, insider trades, short sales, analyst forecasts, satellite imagery, and other types of data are also often used in practice. 
+
+Many studies have been published on the effectiveness of different quantitative signals for predicting stock returns.  We will discuss those studies throughout the course and use them to guide our construction of signals.  
+
+#### Data and Tools
+
+We will use data from the [Rice Business Data Portal](https:/data-portal.rice-business.org), and we will work with it using Anthropic's Claude models (especially Sonnet 4.5).  We will need Claude Desktop, because the web version does not have one of the features that we will need.  [Download Claude Desktop](https://claude.ai/download) and install it.  When it opens, you will be asked to sign in or to sign up for a new account.  We need the Pro account ($20/month).  You will be reimbursed for the expense.  
+
+To connect the data portal to Claude, download this [mcpb file](rice-stock-data.mcpb).  Double-click it.  If necessary, right-click and choose `Open with` and then browse to find `claude.exe` (on Windows, it is probably in C:\users\your-name\AppData\Local\AnthropicClaude).  Follow the installation instructions.  If that does not work, ask Claude to do a web search to find out how to install mcpb files and then follow the instructions.  
+
+
+#### Assignments and Grading
+
+Grades will be based on three group assignments, peer assessments, and class participation.  
+
+**Assignemnt 1:**  Submit a Word doc containing tests of two portfolio strategies.  Both strategies should be long-short strategies based on sorting stocks into portfolios once per month on the basis of some criterion.  One strategy should use a criterion derived from fundamentals and the other should use a criterion derived from past returns.  The tests should include (i) a plot of cumulative returns of the portfolios, (ii) the Sharpe ratio of the portfolio that goes long one extreme and short the other, and (iii) the CAPM alpha of the long-short portfolio.  It is important to describe the strategies sufficiently clearly that your results can be replicated. 
+
+**Assignment 2:**  Submit a Word doc containing the result of a backtest of a machine-learning-based strategy.  The machine learning model should combine signals based on fundamentals and past returns to predict relative stock returns over the following month.  Relative return means return minus the median return.  The portfolio strategy should sort stocks based on predicted relative returns.  The model parameters each month must be fitted and validated using only data from prior months so that the strategy could be implemented in practice.  The test of the strategy should include the three elments in Assignment 1: plot, Sharpe ratio, and CAPM alpha.  It is important to describe the machine learning model and the portfolio strategy  sufficiently clearly that your results can be replicated. 
+
+**Assignment 3:**  Submit a Streamlit app and a Word doc.  The app should have a Run button.  When it is run, the app should download data, construct signals, and apply a pre-trained machine learning model to predict relative returns.  The app should display the top 10 and bottom stocks and it should have a Download button that downloads an Excel workbook containing the following for every stock: ticker, all signals, and predicted relative return.  The data should be sorted from best stock to worst stock.  The Word doc should describe the machine learning model and it should describe a backtest of the model as in Assignment 2.  It is important that the model and the backtest strategy be described sufficiently clearly that your results can be replicated.  
+
+#### Course Schedule
+
+**Week 1:**
+
+- Review of fundamental analysis (Valuing Wal-Mart 2010 case)
+- Case for quantitative investing (Quality Minus Junk)
+- Working with Claude and the Rice Business Data Portal
+- Sorts and portfolio returns 
+- CAPM alphas of long-short portfolio strategies
+
+**Week 2:**
+ 
+- Fama-French-Carhart characteristics (Value and Momentum Everywhere)
+- The many characteristics found to predict returns 
+- Predicting relative returns with random forests
+
+**Week 3:**
+
+- Validating machine learning hyperparameters
+- Backtesting machine learning strategies
+- Interpreting predictions of machine learning models
+
+
+**Week 4:**
+
+- Creating an automated stock recommendation system
+- Creating a trading system
+
+**Week 5:**
+
+- Risk factors
+- Estimating portfolio risk 
+- Drawdowns
+- Risk limits in trading systems 
+
+**Week 6:**
+
+- Trading costs
+- Presentations of Assignment 3
+
+#### CQA Competition
+
+Each year, the Chicago Quantitative Alliance (CQA) hosts a competition for universities on quantitative investing - the [CQA Challenge](https://www.cqa.org/investment_challenge).  Twice recently (2022 and 2023), a team of JGSB MBA students from this course took first place, earning a prize of $3,000.  
+
+The competition is to run a diversified long-short market-neutral portfolio with a quantitative approach.  Paper trading is done using the StockTrak platform.  Teams are judged on compliance, returns, and a video presentation of their strategy in three stages: teams that perform well on compliance proceed to the second stage, the top ten teams on compliance and portfolio returns proceed to the third stage, and teams in the third stage prepare video presentations.  
+
+The app in Assignment 3 could be used to generate recommendations for weekly trades.  Unfortunately, the competition begins very shortly after the class begins, so some stopgap trades will need to be put in place before the pipeline is ready.
+
+#### Honor Code
+
+The Rice University honor code applies to all work in this course.  Use of generative AI is of course permitted.
+
+#### Disability Accommodations
+
+Any student with a documented disability requiring accommodations in this course is encouraged to
+contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations
+regarding assignments or the final exam must be made in advance. Students with disabilities
+should also contact Disability Support Services in the Allen Center.
+
+
+
+
+

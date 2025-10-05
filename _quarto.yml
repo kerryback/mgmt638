@@ -6,6 +6,7 @@ project:
   resources:
     - rice-stock-data.mcpb
     - syllabus.pdf
+    - CNAME
                   
 website:
   title: ""

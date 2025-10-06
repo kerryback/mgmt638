@@ -3,7 +3,9 @@
     "allow": [
       "Bash(pdflatex:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nAdd CNAME file and update syllabus\n\n- Create CNAME file pointing to mgmt638.kerryback.com\n- Add CNAME to resources in _quarto.yml\n- Update syllabus.tex with colored links, Fall 2025, and improved spacing\n- Fix indentation and add spacing between weeks and assignments in syllabus\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd CNAME file and update syllabus\n\n- Create CNAME file pointing to mgmt638.kerryback.com\n- Add CNAME to resources in _quarto.yml\n- Update syllabus.tex with colored links, Fall 2025, and improved spacing\n- Fix indentation and add spacing between weeks and assignments in syllabus\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(quarto render:*)"
     ],
     "deny": [],
     "ask": []

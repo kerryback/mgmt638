@@ -1,6 +1,13 @@
-| Session | Date | Videos | Notebooks | Other |
-|--------|---------|---------|---------|---------|
-| 1 | Oct 27 | [Quality vs Junk video](Quality_Minus_Junk.mp4) <br> [Factor Investing video](Quantitative_Factor_Investing.mp4) | | [Quality vs Junk paper](Asness_Frazzini_Pedersen_RAS_2019.pdf)<br>[Install Claude Code Mac](https://docs.claude.com/en/docs/claude-code/setup)<br>[Install Claude Code Windows](https://www.youtube.com/watch?v=hpMrTabldEY)<br>[Industry Betas and Returns](https://learn-investments.rice-business.org/capm/sml-industries)<br>[Characteristics and Returns](https://learn-investments.rice-business.org/factor-investing/quintiles) |
+| Session | Date | Topics | Links
+|--------|---------|---------|---------|
+| 1 | Oct 27 | Fundamental vs Quantitative Investing<br>Quality stocks<br>Installing and using Claude Code| 
+[Blackrock - What is Factor Investing?](https://www.blackrock.com/us/individual/investment-ideas/what-is-factor-investing)<br>
+[AQR: Systematic Equities](https://www.aqr.com/Learning-Center/Systematic-Equities/Systematic-Equities-A-Closer-Look)<br>
+[Industry Betas and Returns](https://learn-investments.rice-business.org/capm/sml-industries)<br>
+[Characteristics and Returns](https://learn-investments.rice-business.org/factor-investing/quintiles)<br>
+[Install Claude Code Mac]Python(https://docs.claude.com/en/docs/claude-code/setup)<br>
+[Install Claude Code Windows](https://www.youtube.com/watch?v=hpMrTabldEY)<br>
+[Install Git](https://git-scm.com/downloads)|
 | 2 | Oct 29 |  |  |  |
 | 3 | Nov 3 |  |  |  |
 | 4 | Nov 5 |  |  |  |

@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="./schedule.html" target="_blank"> 
-<span class="menu-text">Schedule/Materials</span></a>
+<span class="menu-text">Schedule</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -125,51 +125,27 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Assignment 2:</strong> Submit a Word doc containing the result of a backtest of a machine-learning-based strategy. The machine learning model should combine signals based on fundamentals and past returns to predict relative stock returns over the following month. Relative return means return minus the median return. The portfolio strategy should sort stocks based on predicted relative returns. The model parameters each month must be fitted and validated using only data from prior months so that the strategy could be implemented in practice. The test of the strategy should include the three elments in Assignment 1: plot, Sharpe ratio, and CAPM alpha. It is important to describe the machine learning model and the portfolio strategy sufficiently clearly that your results can be replicated.</p>
 <p><strong>Assignment 3:</strong> Submit a Streamlit app and a Word doc. The app should have a Run button. When it is run, the app should download data, construct signals, and apply a pre-trained machine learning model to predict relative returns. The app should display the top 10 and bottom stocks and it should have a Download button that downloads an Excel workbook containing the following for every stock: ticker, all signals, and predicted relative return. The data should be sorted from best stock to worst stock. The Word doc should describe the machine learning model and it should describe a backtest of the model as in Assignment 2. It is important that the model and the backtest strategy be described sufficiently clearly that your results can be replicated.</p>
 </section>
+<section id="getting-started" class="level4">
+<h4 class="anchored" data-anchor-id="getting-started">Getting Started</h4>
+<ol type="1">
+<li><p>Install Claude Code. Here are <a href="https://docs.claude.com/en/docs/claude-code/setup">Mac instructions</a> and here are <a href="https://www.youtube.com/watch?v=hpMrTabldEY">Windows instructions</a>. Disregard anything you see online about needing WSL (Windows Subsystem for Linux) on Windows. Anthropic recently released a native version of Claude Code for Windows, so WSL is no longer needed.</p></li>
+<li><p>Install Python. In case you are unsure, ask Claude Code to determine if you have Python 3 available on your path. If not, ask Claude Code to install it.</p></li>
+<li><p>Install Git. Here are <a href="https://git-scm.com/downloads">download links</a>.</p></li>
+<li><p>Ask Claude Code to use the Git CLI (command line interface) to clone https://github.com/kerryback/mgmt638.</p></li>
+<li><p>In your terminal, cd (change directory) to the mgmt638 folder.</p></li>
+<li><p>Go to <a href="https://data-portal.rice-business.org">data-portal.rice-business.org</a> and get an access token. Open the .env file (in Notepad for example) and add the access token following the <code>=</code> sign.</p></li>
+</ol>
+<p>Each time you begin work, ask Claude Code to pull https://github.com/kerryback/mgmt638.</p>
+</section>
 <section id="course-schedule" class="level4">
 <h4 class="anchored" data-anchor-id="course-schedule">Course Schedule</h4>
-<p><strong>Week 1:</strong></p>
-<ul>
-<li>Review of fundamental analysis (Valuing Wal-Mart 2010 case)</li>
-<li>Case for quantitative investing (Quality Minus Junk)</li>
-<li>Working with Claude and the Rice Business Data Portal</li>
-<li>Sorts and portfolio returns</li>
-<li>CAPM alphas of long-short portfolio strategies</li>
-</ul>
-<p><strong>Week 2:</strong></p>
-<ul>
-<li>Fama-French-Carhart characteristics (Value and Momentum Everywhere)</li>
-<li>The many characteristics found to predict returns</li>
-<li>Predicting relative returns with random forests</li>
-</ul>
-<p><strong>Week 3:</strong></p>
-<ul>
-<li>Validating machine learning hyperparameters</li>
-<li>Backtesting machine learning strategies</li>
-<li>Interpreting predictions of machine learning models</li>
-</ul>
-<p><strong>Week 4:</strong></p>
-<ul>
-<li>Creating an automated stock recommendation system</li>
-<li>Creating a trading system</li>
-</ul>
-<p><strong>Week 5:</strong></p>
-<ul>
-<li>Risk factors</li>
-<li>Estimating portfolio risk</li>
-<li>Drawdowns</li>
-<li>Risk limits in trading systems</li>
-</ul>
-<p><strong>Week 6:</strong></p>
-<ul>
-<li>Trading costs</li>
-<li>Presentations of Assignment 3</li>
-</ul>
+<p>The schedule is subject to change. The latest version can always be found by clicking clicking the <code>Schedule</code> link in the navbar at the top of the page.</p>
 </section>
 <section id="cqa-competition" class="level4">
 <h4 class="anchored" data-anchor-id="cqa-competition">CQA Competition</h4>
 <p>Each year, the Chicago Quantitative Alliance (CQA) hosts a competition for universities on quantitative investing - the <a href="https://www.cqa.org/investment_challenge">CQA Challenge</a>. Twice recently (2022 and 2023), a team of JGSB MBA students from this course took first place, earning a prize of $3,000.</p>
 <p>The competition is to run a diversified long-short market-neutral portfolio with a quantitative approach. Paper trading is done using the StockTrak platform. Teams are judged on compliance, returns, and a video presentation of their strategy in three stages: teams that perform well on compliance proceed to the second stage, the top ten teams on compliance and portfolio returns proceed to the third stage, and teams in the third stage prepare video presentations.</p>
-<p>The app in Assignment 3 could be used to generate recommendations for weekly trades. Unfortunately, the competition begins very shortly after the class begins, so some stopgap trades will need to be put in place before the pipeline is ready.</p>
+<p>The app in Assignment 3 could be used to generate recommendations for weekly trades. Unfortunately, the competition begins very shortly after the class begins, so some stopgap trades will need to be put in place before your app is ready.</p>
 </section>
 <section id="honor-code" class="level4">
 <h4 class="anchored" data-anchor-id="honor-code">Honor Code</h4>

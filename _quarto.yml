@@ -23,6 +23,10 @@ website:
         - text: Schedule
           file: schedule.qmd
           target: _blank
+        - text: Data Portal Guide
+          file: portal-guide.html
+          target: _blank
+
    
 format:
   html:

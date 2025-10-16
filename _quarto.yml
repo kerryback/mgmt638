@@ -23,7 +23,10 @@ website:
         - text: Schedule
           file: schedule.qmd
           target: _blank
-        - text: Data Portal Guide
+        - text: Course Materials
+          file: https://www.dropbox.com/scl/fo/x0t9up0zgnw7o5zvkrfzw/AGNHvlguW7QSz4Oq_QzhU9Q?rlkey=2hu2t1ucnv5bt4ojbro6snq2t&dl=1
+          target: _blank        
+        - text: Data Guide
           file: portal-guide.html
           target: _blank
 

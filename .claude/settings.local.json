@@ -11,7 +11,8 @@
       "Bash(claude mcp add-json rice-stock-data '{\"\"command\"\":\"\"npx\"\",\"\"args\"\":[\"\"@kerryback/rice-stock-data@1.0.9\"\"],\"\"env\"\":{\"\"USER_ACCESS_TOKEN\"\":\"\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtlcnJ5LmUuYmFja0ByaWNlLmVkdSIsImlhdCI6MTc2MDYyNDMzOSwiZXhwIjoxNzc2MTc2MzM5fQ.T5epx5TzdmE8pwLWW2Sbtgevi_BVCJ5cGLuI2bwE6gA\"\"}}')",
       "Bash(claude mcp:*)",
       "Bash(python:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nAdd Session folders 04-12 and notebooks\n\n- Create Course Materials folders for Sessions 04 through 12\n- Add aapl_month_end_prices.ipynb for fetching monthly AAPL prices\n- Add aapl_quarterly_roe.ipynb for fetching quarterly ROE data\n- Both notebooks use RiceDataClient with Rice Data Portal authentication\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd Session folders 04-12 and notebooks\n\n- Create Course Materials folders for Sessions 04 through 12\n- Add aapl_month_end_prices.ipynb for fetching monthly AAPL prices\n- Add aapl_quarterly_roe.ipynb for fetching quarterly ROE data\n- Both notebooks use RiceDataClient with Rice Data Portal authentication\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit -m \"$(cat <<''EOF''\nUpdate .gitignore and remove course materials\n\n- Update .gitignore to exclude course material files\n- Remove video and PDF files from Course Materials folders\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []

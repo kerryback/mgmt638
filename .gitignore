@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Course materials 
+
+CourseMaterials/
+
 # C extensions
 *.so
 

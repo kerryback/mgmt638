@@ -9,6 +9,8 @@ project:
     - CNAME
     - .nojekyll
     - portal-guide.html
+    - mcnair.jpg
+    - rice-business.jpg
                   
 website:
   title: ""

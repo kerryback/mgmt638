@@ -8,6 +8,7 @@ project:
   resources:
     - CNAME
     - .nojekyll
+    - portal-guide.html
                   
 website:
   title: ""

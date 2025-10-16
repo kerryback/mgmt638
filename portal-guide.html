@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Tables - Rice Business Stock Market Data Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/flatly/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        /* Warm gray palette consistent with Flatly theme */
+        :root {
+            --warm-gray: #6c757d;
+            --warm-gray-light: #8a939b;
+            --warm-gray-dark: #495057;
+            --rice-blue: #003c71;
+            --flatly-gray: #95a5a6;
+        }
+        
+        /* Header with Rice branding */
+        .header-section {
+            background: linear-gradient(135deg, var(--flatly-gray) 0%, var(--flatly-gray) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            position: relative;
+            overflow: visible;
+        }
+        
+        .header-section h1 {
+            color: white !important;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0 2%;
+        }
+        
+        .logo-container img {
+            max-height: 120px;
+            object-fit: contain;
+        }
+        
+        .mcnair-logo {
+            border-radius: 10px;
+            border: 2px solid white;
+            background: white;
+            padding: 2px;
+            width: 20%;
+            height: 80px;
+            object-fit: contain;
+        }
+        
+        .logo-container h1 {
+            width: 45%;
+            text-align: center;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .rice-logo {           
+            border-radius: 10px;
+            border: 2px solid white;
+            background: white;
+            padding: 2px;
+            width: 20%;
+            height: 80px;
+            object-fit: contain;
+        }
+        
+        /* Custom button styling for table names */
+        .table-name-btn {
+            background-color: #18bc9c !important;
+            border-color: #18bc9c !important;
+            color: white !important;
+            width: 100px;
+            font-weight: 500;
+        }
+        
+        .table-name-btn:hover {
+            background-color: #15a085 !important;
+            border-color: #15a085 !important;
+            color: white !important;
+        }
+        
+        /* About button styling */
+        .about-button {
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .about-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        /* About button tooltip styling */
+        .about-tooltip {
+            position: absolute;
+            bottom: 38px;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            line-height: 1.4;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+        }
+        
+        .about-button:hover .about-tooltip,
+        .about-tooltip:hover {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        /* Arrow for about tooltip */
+        .about-tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 12px;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid rgba(0, 0, 0, 0.9);
+        }
+
+        /* Tooltip styling for table descriptions and hover lists */
+        .tooltip-trigger {
+            cursor: help;
+            position: relative;
+        }
+        
+        .custom-tooltip {
+            position: absolute;
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            max-width: 300px;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            word-wrap: break-word;
+        }
+        
+        .custom-tooltip.show {
+            opacity: 1;
+        }
+        
+        /* Enhanced tooltip for Actions and Events */
+        .table-hover-tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 11px;
+            line-height: 1.4;
+            max-width: 400px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            opacity: 0;
+            pointer-events: auto;
+            transition: opacity 0.3s ease;
+            white-space: pre-line;
+        }
+        
+        .table-hover-tooltip.show {
+            opacity: 1;
+        }
+        
+        .table-hover-tooltip h6 {
+            margin: 0 0 8px 0;
+            color: #18bc9c;
+            font-weight: bold;
+            border-bottom: 1px solid #555;
+            padding-bottom: 4px;
+        }
+        
+        .table-hover-tooltip .item {
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+        }
+        
+        .table-hover-tooltip .item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .table-hover-tooltip .code {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        /* Flatly green text styling */
+        .flatly-green-text {
+            color: #18bc9c;
+            font-weight: 500;
+            padding: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                
+                <!-- Rice University Header -->
+                <div class="header-section">
+                    <div class="logo-container">
+                        <img src="mcnair.jpg" alt="McNair Center" class="mcnair-logo">
+                        <h3>Table Descriptions</h3>
+                        <img src="rice-business.jpg" alt="Rice Business" class="rice-logo">
+                    </div>
+                    <div class="about-button">
+                        <i class="bi bi-info-circle"></i>
+                        <div class="about-tooltip">
+                            Developed and maintained by Kerry Back,<br>
+                            J. Howard Creekmore Professor of Finance<br>
+                            and Professor of Economics, Rice University
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        
+                        <!-- Explanatory Text -->
+                        <div class="flatly-green-text mb-4">
+                            This page lists all variables in all tables in the database and their descriptions, with the exception of the Indicators table. The Indicators table is a list of definitions and is the basis for this page.
+                        </div>
+                        
+                        <!-- Table List (Alphabetical Order) -->
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <button class="btn table-name-btn me-2" onclick="showTableDescription('actions')">Actions</button>
+                                <span>Corporate actions including mergers, splits, dividends, and ticker changes</span>
+                            </li>
+                            <li class="mb-3">
+                                <button class="btn table-name-btn me-2" onclick="showTableDescription('daily')">Daily</button>
+                                <span>Daily values of PE ratio, enterprise value to EBITDA, etc. </span>
+                            </li>
+                            <li class="mb-3">
+                                <button class="btn table-name-btn me-2" onclick="showTableDescription('events')">Events</button>
+                                <span>SEC 8-K filings and material corporate events</span>
+                            </li>
+                            <li class="mb-3">
+                                <button class="btn table-name-btn me-2" onclick="showTableDescription('metrics')">Metrics</button>
+                                <span>Daily values of moving averages and other statistics</span>
+                            </li>
+                            <li class="mb-3">
+                                <button class="btn table-name-btn me-2" onclick="showTableDescription('sep')">SEP</button>
+                                <span>Daily open, close, high, low, and volume</span>
+                            </li>
+                            <li class="mb-3">
+                                <button class="btn table-name-btn me-2" onclick="showTableDescription('sf1')">SF1</button>
+                                <span>10K and 10Q data and financial ratios</span>
+                            </li>
+                            <li class="mb-3">
+                                <button class="btn table-name-btn me-2" onclick="showTableDescription('sf2')">SF2</button>
+                                <span>Trades of officers and other corporate insiders from Form 4</span>
+                            </li>
+                            <li class="mb-3">
+                                <button class="btn table-name-btn me-2" onclick="showTableDescription('tickers')">Tickers</button>
+                                <span>Industry, sector, current size category, etc. of each stock</span>
+                            </li>
+                        </ul>
+                        
+                        <!-- Extended Description Display Area -->
+                        <div id="table-description" class="mt-4" style="display: none;">
+                            <div class="card bg-light">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0" id="description-title">Table Description</h5>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="hideTableDescription()">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div id="description-content">
+                                        Extended table description will appear here...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Daily table data from CSV (sorted alphabetically by variable)
+        const dailyData = [
+            { variable: 'date', name: 'Price Date', description: 'The trade date of the price observations used in determining [MarketCap]; [PE]; [PS] etc.' },
+            { variable: 'ev', name: 'Enterprise Value - Daily', description: 'Enterprise value is a measure of the value of a business as a whole; calculated as [MarketCap] plus [DebtUSD] minus [CashnEqUSD]. [MarketCap] is calculated by us; and the remaining figures are sourced from the most recent SEC form 10 filings.' },
+            { variable: 'evebit', name: 'Enterprise Value over EBIT - Daily', description: 'Measures the ratio between [EV] and [EBITUSD]. EBITUSD is derived from the most recent SEC form 10 filings.' },
+            { variable: 'evebitda', name: 'Enterprise Value over EBITDA - Daily', description: 'Measures the ratio between [EV] and [EBITDAUSD]. EBITDAUSD is derived from the most recent SEC form 10 filings.' },
+            { variable: 'lastupdated', name: 'Last Updated Date', description: 'The last date at which this line item was updated; typically used to filter date to be retrieved for syncing to local records.' },
+            { variable: 'marketcap', name: 'Market Capitalization - Daily', description: 'Represents the product of [SharesBas]; [Price] and [ShareFactor]. [SharesBas] is sourced from the most recent SEC form 10 filing.' },
+            { variable: 'pb', name: 'Price to Book Value - Daily', description: 'Measures the ratio between [MarketCap] and [EquityUSD]. [EquityUSD] is sourced from the most recent SEC form 10 filing.' },
+            { variable: 'pe', name: 'Price Earnings (Damodaran Method) - Daily', description: 'Measures the ratio between [MarketCap] and [NetIncCmnUSD]. [NetIncCmnUSD] is sourced from the most recent SEC form 10 filings.' },
+            { variable: 'ps', name: 'Price Sales (Damodaran Method) - Daily', description: 'Measures the ratio between [MarketCap] and [RevenueUSD]. [RevenueUSD] is sourced from the most recent SEC form 10 filings.' },
+            { variable: 'ticker', name: 'Ticker Symbol', description: 'The ticker is a unique identifier for a security in the database. Where a company is delisted and the ticker subsequently recycled for use by a different company; we utilise that ticker for the currently active company and append a number to the ticker of the delisted company. The ACTIONS table provides a record of historical ticker changes.' }
+        ];
+
+        // Metrics table data from CSV (sorted alphabetically by variable)
+        const metricsData = [
+            { variable: 'beta1y', name: 'Beta - 1 Year Daily', description: 'The beta of the stock over 1 year relative to the market calculated using daily adjusted closing price of the stock (as adjusted for stock splits; dividends and spinoffs) relative to total returns of the market as represented by the adjusted closing prices of the SPY S&P500 ETF. Recalculated and updated on a weekly basis.' },
+            { variable: 'beta5y', name: 'Beta - 5 Year Monthly', description: 'The beta of the stock over 5 years relative to the market calculated using monthly adjusted closing price of the stock (as adjusted for stock splits; dividends and spinoffs) relative to total returns of the market as represented by the adjusted closing prices of the SPY S&P500 ETF. Recalculated and updated on a weekly basis.' },
+            { variable: 'date', name: 'Price Date', description: 'The trade date of the most recent price and volume available.' },
+            { variable: 'dividendyieldforward', name: 'Dividend Yield - Forward', description: 'The forward dividend yield; calculated by annualising the last regular cash dividend payment; dividing by the stock price and multiplying by 100.' },
+            { variable: 'dividendyieldtrailing', name: 'Dividend Yield - Trailing', description: 'The trailing dividend yield; calculated by summing regular and special cash dividend payments in the last year; dividing by the stock price and multiplying by 100.' },
+            { variable: 'high52w', name: 'High Price - 52 Week', description: 'The highest price over the last 52 weeks as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs.' },
+            { variable: 'high5y', name: 'High Price - 5 Year', description: 'The highest price over the last 5 years as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs.' },
+            { variable: 'lastupdated', name: 'Last Updated Date', description: 'Last updated date represents the last date that this table entry was updated; which is useful to users when updating their local records.' },
+            { variable: 'low52w', name: 'Low Price - 52 Week', description: 'The lowest price over the last 52 weeks as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs.' },
+            { variable: 'low5y', name: 'Low Price - 5 Year', description: 'The lowest price over the last 5 years weeks as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs.' },
+            { variable: 'ma200d', name: 'Price Moving Average - 200 Day', description: 'The 200 day moving average closing price as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs. Not available if the stock has been trading less than 200 days.' },
+            { variable: 'ma200w', name: 'Price Moving Average - 200 Week', description: 'The 200 week moving average closing price as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs. Not available if the stock has been trading less than 200 weeks.' },
+            { variable: 'ma50d', name: 'Price Moving Average - 50 Day', description: 'The 50 day moving average closing price as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs. Not available if the stock has been trading less than 50 days.' },
+            { variable: 'ma50w', name: 'Price Moving Average - 50 Week', description: 'The 50 week moving average closing price as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs. Not available if the stock has been trading less than 50 weeks.' },
+            { variable: 'price', name: 'Price', description: 'The closing stock price on the date.' },
+            { variable: 'return1y', name: 'Total Return - 1 Year', description: 'The total return over 1 year calculated using the closing price as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs. Not available if the stock has been trading for less than 1 year.' },
+            { variable: 'return5y', name: 'Total Return - 5 Year', description: 'The total return over 5 years calculated using the closing price as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs. Not available if the stock has been trading for less than 5 years.' },
+            { variable: 'returnytd', name: 'Total Return - Year to Date', description: 'The total return for the year to date calculated using the closing price as adjusted for stock splits and stock dividends; but not cash dividends or spinoffs.' },
+            { variable: 'ticker', name: 'Ticker Symbol', description: 'The ticker is a unique identifier for a security in the database. Where a company is delisted and the ticker subsequently recycled for use by a different company; we utilise that ticker for the currently active company and append a number to the ticker of the delisted company. The ACTIONS table provides a record of historical ticker changes.' },
+            { variable: 'volume', name: 'Volume', description: 'The daily traded volume across all exchanges; adjusted for stock splits and stock dividends. Not adjusted for cash dividends or spinoffs. Includes opening and closing cross volumes if applicable.' },
+            { variable: 'volumeavg1m', name: 'Volume Average - 1 Month', description: 'The daily average traded volume over 1 month across all exchanges; adjusted for stock splits and stock dividends. Not adjusted for cash dividends or spinoffs. Includes opening and closing cross volumes if applicable.' },
+            { variable: 'volumeavg3m', name: 'Volume Average - 3 Month', description: 'The daily average traded volume over 3 months across all exchanges; adjusted for stock splits and stock dividends. Not adjusted for cash dividends or spinoffs. Includes opening and closing cross volumes if applicable.' }
+        ];
+
+        // SEP table data from CSV (sorted alphabetically by variable)
+        const sepData = [
+            { variable: 'close', name: 'Close Price - Split Adjusted', description: 'The official exchange close price; adjusted for stock splits and stock dividends. Not adjusted for cash dividends or spinoffs.' },
+            { variable: 'closeadj', name: 'Close Price - Adjusted for Splits Dividends and Spinoffs', description: 'The official exchange close price; adjusted for stock splits; stock dividends; cash dividends and spinoffs.' },
+            { variable: 'closeunadj', name: 'Close Price - Unadjusted', description: 'The official exchange close price; not adjusted for stock splits; stock dividends; cash dividends or spinoffs.' },
+            { variable: 'date', name: 'Price Date', description: 'The trade date of the price observations.' },
+            { variable: 'high', name: 'High Price - Split Adjusted', description: 'The high share price; adjusted for stock splits and stock dividends. Not adjusted for cash dividends or spinoffs.' },
+            { variable: 'lastupdated', name: 'Last Updated Date', description: 'The last date at which this line item was updated; typically used to filter data to be retrieved for syncing to local records.' },
+            { variable: 'low', name: 'Low Price - Split Adjusted', description: 'The low share price; adjusted for stock splits and stock dividends. Not adjusted for cash dividends or spinoffs.' },
+            { variable: 'open', name: 'Open Price - Split Adjusted', description: 'The official exchange opening price; adjusted for stock splits and stock dividends. Not adjusted for cash dividends or spinoffs.' },
+            { variable: 'ticker', name: 'Ticker Symbol', description: 'The ticker is a unique identifier for a security in the database. Where a company is delisted and the ticker subsequently recycled for use by a different company; we utilise that ticker for the currently active company and append a number to the ticker of the delisted company. The ACTIONS table provides a record of historical ticker changes.' },
+            { variable: 'volume', name: 'Volume - Split Adjusted', description: 'The daily traded volume across all exchanges; adjusted for stock splits and stock dividends. Not adjusted for cash dividends or spinoffs. Includes opening and closing cross volumes if applicable.' }
+        ];
+
+        // SF2 table data from CSV (sorted alphabetically by variable)
+        const sf2Data = [
+            { variable: 'dateexercisable', name: 'Date Exercisable', description: 'The date that an option is exercisable; where applicable and available.' },
+            { variable: 'directorindirect', name: 'Direct or Indirect?', description: 'Is the ownership held [D]irectly or [I]ndirectly?' },
+            { variable: 'expirationdate', name: 'Expiration Date', description: 'The data at which an option expires; where applicable and available' },
+            { variable: 'filingdate', name: 'Filing Date', description: 'The date the form was filed with the SEC.' },
+            { variable: 'formtype', name: 'Form Type', description: 'The type of SEC form . Available options are 3; 4 or 5 that the data are sourced from. Preprended by RESTATED in the event that the filing is subsequently restated.' },
+            { variable: 'isdirector', name: 'Is Director?', description: 'Is the owner a Board Director? [Y]es or [N]o.' },
+            { variable: 'isofficer', name: 'Is Officer?', description: 'Is the owner an officer of the company? [Y]es or [N]o.' },
+            { variable: 'issuername', name: 'Issuer Name', description: 'The name of the security issuer.' },
+            { variable: 'istenpercentowner', name: 'Is Ten Percent Owner?', description: 'Does the owner hold ten percent or more of the class of security? [Y]es or [N]o.' },
+            { variable: 'natureofownership', name: 'Nature of Ownership', description: 'Where the ownership is held through an investment vehicle (trust; fund etc) the name of that investment vehicle is provided here.' },
+            { variable: 'officertitle', name: 'Officer Title', description: 'Is the owner is an officer of the company the officer\'s title is provided.' },
+            { variable: 'ownername', name: 'Owner Name (Insider / Investor)', description: 'The name of the owner.' },
+            { variable: 'priceexercisable', name: 'Price Exercisable', description: 'The price at which an option is exercisable; where applicable and available.' },
+            { variable: 'rownum', name: 'Row Number', description: 'The record number for a particular owner and filing date; which forms part of the key for the record.' },
+            { variable: 'securityadcode', name: 'Security Acquired/Disposed Code', description: 'Derivative; No Transaction [DA] Derivative Acquisition [DD] Derivative Disposition [N] Non-Derivative; No Transaction [NA] Non-Derivative Acquisition [ND] Non-Derivative Disposition' },
+            { variable: 'securitytitle', name: 'Security Title', description: 'The title of the class of security.' },
+            { variable: 'sharesownedbeforetransaction', name: 'Shares Owned Before Transaction', description: 'The number of shares owned before the transaction.' },
+            { variable: 'sharesownedfollowingtransaction', name: 'Shares Owned Following Transaction', description: 'The number of shares owned following the transaction.' },
+            { variable: 'ticker', name: 'Ticker Symbol', description: 'The ticker is a unique identifier for a security in the database. Where a company is delisted and the ticker subsequently recycled for use by a different company; we utilise that ticker for the currently active company and append a number to the ticker of the delisted company. The ACTIONS table provides a record of historical ticker changes.' },
+            { variable: 'transactioncode', name: 'Transaction Code', description: 'The available [Transaction Codes] [Transaction Categories] Descriptions are as follows: [P] [General] Open market or private purchase of non-derivative or derivative security [S] [General] Open market or private sale of non-derivative or derivative security [V] [General] Transaction voluntarily reported earlier than required [A] [Rule 16b-3] Grant; award or other acquisition pursuant to Rule 16b-3(d) [D] [Rule 16b-3] Disposition to the issuer of issuer equity securities pursuant to Rule 16b-3(e) [F] [Rule 16b-3] Payment of exercise price or tax liability by delivering or withholding securities [I] [Rule 16b-3] Discretionary transaction in accordance with Rule 16b-3(f) [M] [Rule 16b-3] Exercise or conversion of derivative security exempted pursuant to Rule 16b-3 [C] [Derivative Codes] Conversion of derivative security [E] [Derivative Codes] Expiration of short derivative position [H] [Derivative Codes] Expiration (or cancellation) of long derivative position with value received [O] [Derivative Codes] Exercise of out-of-the-money derivative security [X] [Derivative Codes] Exercise of in-the-money or at-the-money derivative security [G] [Other Section 16(b) Exempt] Bona fide gift [L] [Other Section 16(b) Exempt] Small acquisition under Rule 16a-6 [W] [Other Section 16(b) Exempt] Acquisition or disposition by will or the laws of descent and distribution [Z] [Other Section 16(b) Exempt] Deposit into or withdrawal from voting trust [J] [Other] Other acquisition or disposition [K] [Other] Transaction in equity swap or instrument with similar characteristics [U] [Other] Disposition pursuant to a tender of shares in a change of control transaction' },
+            { variable: 'transactiondate', name: 'Transaction Date', description: 'If there has been a transaction; the date of the transaction is provided here.' },
+            { variable: 'transactionpricepershare', name: 'Transaction Price per Share', description: 'The transaction price per share.' },
+            { variable: 'transactionshares', name: 'Transaction Shares', description: 'The number of shares transacted.' },
+            { variable: 'transactionvalue', name: 'Transaction Value', description: 'The value of the transaction.' }
+        ];
+
+        // Tickers table data from CSV (sorted alphabetically by variable)
+        const tickersData = [
+            { variable: 'companysite', name: 'Company Website URL', description: 'The URL pointing to the company website.' },
+            { variable: 'currency', name: 'Currency', description: 'The company functional reporting currency for the SF1 Fundamentals table or the currency for EOD prices in SEP and SFP.' },
+            { variable: 'cusips', name: 'CUSIPs', description: 'A security identifier. Space delimited in the event of multiple identifiers.' },
+            { variable: 'exchange', name: 'Stock Exchange', description: 'The exchange on which the security\'s primary listing is held. Examples are: ' },
+            { variable: 'famaindustry', name: 'Fama Industry', description: 'Industry classifications based on the SIC code and classifications by Fama and French here: http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_48_ind_port.html' },
+            { variable: 'famasector', name: 'Fama Sector', description: 'This field was originally configured as a placeholder for the sector value in the Fama-French SIC to industry and sector mapping. As it turns out there is no sector in this mapping. As such we are open to suggestions for other values you would rather see here email connect@sharadar.com with suggestions.' },
+            { variable: 'firstadded', name: 'First Added Date', description: 'The date that the ticker was first added to coverage in the dataset.' },
+            { variable: 'firstpricedate', name: 'First Price Date', description: 'The date of the first price observation for a given ticker. Can be used as a proxy for IPO date. Minimum value of 1986-01-01 for IPO\'s that occurred prior to this date. Note: this does not necessarily represent the first price date available in our datasets since our end of day price history currently starts in December 1998.' },
+            { variable: 'firstquarter', name: 'First Quarter', description: 'The first financial quarter available in the dataset.' },
+            { variable: 'industry', name: 'Industry', description: 'An industry classification based on SIC codes in a format which approximates to GICS.' },
+            { variable: 'isdelisted', name: 'Is Delisted?', description: 'Is the security delisted? [Y]es or [N]o.' },
+            { variable: 'lastpricedate', name: 'Last Price Date', description: 'The most recent price observation available.' },
+            { variable: 'lastquarter', name: 'Last Quarter', description: 'The last financial quarter available in the dataset.' },
+            { variable: 'lastupdated', name: 'Last Updated Date', description: 'Last Updated represents the last date that this database entry was updated; which is useful to users when updating their local records.' },
+            { variable: 'location', name: 'Location', description: 'The company location as registered with the Securities and Exchange Commission.' },
+            { variable: 'name', name: 'Issuer Name', description: 'The name of the security issuer.' },
+            { variable: 'permaticker', name: 'Permanent Ticker Symbol', description: 'The permaticker is a unique and unchanging identifier for an issuer in the dataset which we as the data provider issue. This field is not included in other tables in order to maximise data scalability in those tables.' },
+            { variable: 'relatedtickers', name: 'Related Tickers', description: 'Where related tickers have been identified this field is populated. Related tickers can include the prior ticker before a ticker change; and it includes tickers for alternative share classes.' },
+            { variable: 'scalemarketcap', name: 'Company Scale - Market Cap', description: 'This field is experimental and subject to change. It categorises the company according to it\'s maximum observed market cap as follows: 1 - Nano <$50m; 2 - Micro < $300m; 3 - Small < $2bn; 4 - Mid <$10bn; 5 - Large < $200bn; 6 - Mega >= $200bn' },
+            { variable: 'scalerevenue', name: 'Company Scale - Revenue', description: 'This field is experimental and subject to change. It categorises the company according to it\'s maximum observed annual revenue as follows: 1 - Nano <$50m; 2 - Micro < $300m; 3 - Small < $2bn; 4 - Mid <$10bn; 5 - Large < $200bn; 6 - Mega >= $200bn' },
+            { variable: 'secfilings', name: 'SEC Filings URL', description: 'The URL pointing to the SEC filings which also contains the Central Index Key (CIK).' },
+            { variable: 'sector', name: 'Sector', description: 'A sector classification based on SIC codes in a format which approximates to GICS.' },
+            { variable: 'siccode', name: 'Standard Industrial Classification (SIC) Code', description: 'The Standard Industrial Classification (SIC) is a system for classifying industries by a four-digit code; as sourced from SEC filings. More on the SIC system here: https://en.wikipedia.org/wiki/Standard_Industrial_Classification ' },
+            { variable: 'sicindustry', name: 'SIC Industry', description: 'The SIC industry is based on the SIC code and the industry tabled here: https://www.sec.gov/info/edgar/siccodes.htm' },
+            { variable: 'sicsector', name: 'SIC Sector', description: 'The SIC sector is based on the SIC code and the division tabled here: https://en.wikipedia.org/wiki/Standard_Industrial_Classification ' },
+            { variable: 'ticker', name: 'Ticker Symbol', description: 'The ticker is a unique identifier for a security in the database. Where a company is delisted and the ticker subsequently recycled for use by a different company; we utilise that ticker for the currently active company and append a number to the ticker of the delisted company. The ACTIONS table provides a record of historical ticker changes.' }
+        ];
+
+        // Actions table data from CSV (sorted alphabetically by variable)
+        const actionsData = [
+            { variable: 'action', name: 'Action', description: 'The available actions in this field are outlined in the INDICATORS table where the table field equals ACTIONTYPES.', hasTooltip: 'actions' },
+            { variable: 'contraname', name: 'Contra Issuer Name', description: 'The name of the contra issuer associated with the contra ticker.' },
+            { variable: 'contraticker', name: 'Contra Ticker Symbol', description: 'The contra ticker associated with the action; if applicable.' },
+            { variable: 'date', name: 'Date', description: 'The date of the corporate action.' },
+            { variable: 'name', name: 'Issuer Name', description: 'The name of the issuer.' },
+            { variable: 'ticker', name: 'Ticker Symbol', description: 'The ticker is a unique identifier for a security in the database. Where a company is delisted and the ticker subsequently recycled for use by a different company; we utilise that ticker for the currently active company and append a number to the ticker of the delisted company. The ACTIONS table provides a record of historical ticker changes.' },
+            { variable: 'value', name: 'Value', description: 'The available values in this field are outlined in the INDICATORS table where the table field equals ACTIONTYPES.' }
+        ];
+
+        // Events table data from CSV (sorted alphabetically by variable)
+        const eventsData = [
+            { variable: 'date', name: 'Filing Date', description: 'The date of the form 8 SEC filing.' },
+            { variable: 'eventcodes', name: 'Material Corporate Events', description: 'Each type of event is assigned a 2-digit numeric code which are described in this INDICATORS table where the table field equals EVENTCODES.', hasTooltip: 'events' },
+            { variable: 'ticker', name: 'Ticker Symbol', description: 'The ticker is a unique identifier for a security in the database. Where a company is delisted and the ticker subsequently recycled for use by a different company; we utilise that ticker for the currently active company and append a number to the ticker of the delisted company. The ACTIONS table provides a record of historical ticker changes.' }
+        ];
+
+        // SF1 table data from CSV, grouped by source and sorted alphabetically by variable within each group
+        const sf1Data = {
+            "Metrics": [
+                { variable: 'assetsavg', name: 'Average Assets', description: 'Average asset value for the period used in calculation of [ROE] and [ROA]; derived from [Assets].' },
+                { variable: 'assetturnover', name: 'Asset Turnover', description: 'Asset turnover is a measure of a firms operating efficiency; calculated by dividing [Revenue] by [AssetsAVG]. Often a component of DuPont ROE analysis.' },
+                { variable: 'bvps', name: 'Book Value per Share', description: 'Measures the ratio between [Equity] and [SharesWA] as adjusted by [ShareFactor].' },
+                { variable: 'currentratio', name: 'Current Ratio', description: 'The ratio between [AssetsC] and [LiabilitiesC]; for companies that operate a classified balance sheet.' },
+                { variable: 'de', name: 'Debt to Equity Ratio', description: 'Measures the ratio between [Liabilities] and [Equity].' },
+                { variable: 'divyield', name: 'Dividend Yield', description: 'Dividend Yield measures the ratio between a company\'s trailing twelve month [DPS] and its [Price]. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ebitda', name: 'Earnings Before Interest Taxes & Depreciation Amortization (EBITDA)', description: 'EBITDA is a non-GAAP accounting metric that is widely used when assessing the performance of companies; calculated by adding [DepAmor] back to [EBIT].' },
+                { variable: 'ebitdamargin', name: 'EBITDA Margin', description: 'Measures the ratio between a company\'s [EBITDA] and [Revenue].' },
+                { variable: 'ebitdausd', name: 'Earnings Before Interest Taxes & Depreciation Amortization (USD)', description: '[EBITDA] in USD; converted by [FXUSD].' },
+                { variable: 'ebt', name: 'Earnings before Tax', description: 'Earnings Before Tax is calculated by adding [TaxExp] back to [NetInc].' },
+                { variable: 'equityavg', name: 'Average Equity', description: 'Average equity value for the period used in calculation of [ROE]; derived from [Equity].' },
+                { variable: 'ev', name: 'Enterprise Value', description: 'Enterprise value is a measure of the value of a business as a whole; calculated as [MarketCap] plus [DebtUSD] minus [CashnEqUSD].' },
+                { variable: 'evebit', name: 'Enterprise Value over EBIT', description: 'Measures the ratio between [EV] and [EBITUSD].' },
+                { variable: 'evebitda', name: 'Enterprise Value over EBITDA', description: 'Measures the ratio between [EV] and [EBITDAUSD].' },
+                { variable: 'fcf', name: 'Free Cash Flow', description: 'Free Cash Flow is a measure of financial performance calculated as [NCFO] minus [CapEx].' },
+                { variable: 'fcfps', name: 'Free Cash Flow per Share', description: 'Free Cash Flow per Share is a valuation metric calculated by dividing [FCF] by [SharesWA] and [ShareFactor].' },
+                { variable: 'fxusd', name: 'Foreign Currency to USD Exchange Rate', description: 'The exchange rate used for the conversion of foreign currency to USD for non-US companies that do not report in USD.' },
+                { variable: 'grossmargin', name: 'Gross Margin', description: 'Gross Margin measures the ratio between a company\'s [GP] and [Revenue].' },
+                { variable: 'invcap', name: 'Invested Capital', description: 'Invested capital is an input into the calculation of [ROIC]; and is calculated as: [Debt] plus [Assets] minus [Intangibles] minus [CashnEq] minus [LiabilitiesC]. Please note this calculation method is subject to change.' },
+                { variable: 'invcapavg', name: 'Invested Capital Average', description: 'Average invested capital value for the period used in the calculation of [ROIC]; and derived from [InvCap]. Invested capital is an input into the calculation of [ROIC]; and is calculated as: [Debt] plus [Assets] minus [Intangibles] minus [CashnEq] minus [LiabilitiesC]. Please note this calculation method is subject to change.' },
+                { variable: 'marketcap', name: 'Market Capitalization', description: 'Represents the product of [SharesBas]; [Price] and [ShareFactor].' },
+                { variable: 'netmargin', name: 'Profit Margin', description: 'Measures the ratio between a company\'s [NetIncCmn] and [Revenue].' },
+                { variable: 'payoutratio', name: 'Payout Ratio', description: 'The percentage of earnings paid as dividends to common stockholders. Calculated by dividing [DPS] by [EPSUSD].' },
+                { variable: 'pb', name: 'Price to Book Value', description: 'Measures the ratio between [MarketCap] and [EquityUSD].' },
+                { variable: 'pe', name: 'Price Earnings (Damodaran Method)', description: 'Measures the ratio between [MarketCap] and [NetIncCmnUSD]' },
+                { variable: 'pe1', name: 'Price to Earnings Ratio', description: 'An alternative to [PE] representing the ratio between [Price] and [EPSUSD].' },
+                { variable: 'ps', name: 'Price Sales (Damodaran Method)', description: 'Measures the ratio between [MarketCap] and [RevenueUSD].' },
+                { variable: 'ps1', name: 'Price to Sales Ratio', description: 'An alternative calculation method to [PS]; that measures the ratio between a company\'s [Price] and it\'s [SPS].' },
+                { variable: 'roa', name: 'Return on Average Assets', description: 'Return on assets measures how profitable a company is [NetIncCmn] relative to its total assets [AssetsAvg].' },
+                { variable: 'roe', name: 'Return on Average Equity', description: 'Return on equity measures a corporation\'s profitability by calculating the amount of [NetIncCmn] returned as a percentage of [EquityAvg].' },
+                { variable: 'roic', name: 'Return on Invested Capital', description: 'Return on Invested Capital is a ratio estimated by dividing [EBIT] by [InvCapAvg]. [InvCap] is calculated as: [Debt] plus [Assets] minus [Intangibles] minus [CashnEq] minus [LiabilitiesC]. Please note this calculation method is subject to change.' },
+                { variable: 'ros', name: 'Return on Sales', description: 'Return on Sales is a ratio to evaluate a company\'s operational efficiency; calculated by dividing [EBIT] by [Revenue]. ROS is often a component of DuPont ROE analysis.' },
+                { variable: 'sps', name: 'Sales per Share', description: 'Sales per Share measures the ratio between [RevenueUSD] and [SharesWA] as adjusted by [ShareFactor].' },
+                { variable: 'tangibles', name: 'Tangible Asset Value', description: 'The value of tangibles assets calculated as the difference between [Assets] and [Intangibles].' },
+                { variable: 'tbvps', name: 'Tangible Assets Book Value per Share', description: 'Measures the ratio between [Tangibles] and [SharesWA] as adjusted by [ShareFactor].' },
+                { variable: 'workingcapital', name: 'Working Capital', description: 'Working capital measures the difference between [AssetsC] and [LiabilitiesC].' }
+            ],
+            "Income Statement": [
+                { variable: 'consolinc', name: 'Consolidated Income', description: 'The portion of profit or loss for the period; net of income taxes; which is attributable to the consolidated entity; before the deduction of [NetIncNCI].' },
+                { variable: 'cor', name: 'Cost of Revenue', description: 'The aggregate cost of goods produced and sold and services rendered during the reporting period. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'dps', name: 'Dividends per Basic Common Share', description: 'Aggregate dividends declared during the period for each split-adjusted share of common stock outstanding. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ebit', name: 'Earning Before Interest & Taxes (EBIT)', description: 'Earnings Before Interest and Tax is calculated by adding [TaxExp] and [IntExp] back to [NetInc].' },
+                { variable: 'ebitusd', name: 'Earning Before Interest & Taxes (USD)', description: '[EBIT] in USD; converted by [FXUSD].' },
+                { variable: 'eps', name: 'Earnings per Basic Share', description: 'Earnings per share as calculated and reported by the company. Approximates to the amount of [NetIncCmn] for the period per each [SharesWA] after adjusting for [ShareFactor].' },
+                { variable: 'epsdil', name: 'Earnings per Diluted Share', description: 'Earnings per diluted share as calculated and reported by the company. Approximates to the amount of [NetIncCmn] for the period per each [SharesWADil] after adjusting for [ShareFactor]..' },
+                { variable: 'epsusd', name: 'Earnings per Basic Share (USD)', description: '[EPS] in USD; converted by [FXUSD].' },
+                { variable: 'gp', name: 'Gross Profit', description: 'Aggregate revenue [Revenue] less cost of revenue [CoR] directly attributable to the revenue generation activity.' },
+                { variable: 'intexp', name: 'Interest Expense', description: 'Amount of the cost of borrowed funds accounted for as interest expense. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'netinc', name: 'Net Income', description: 'The portion of profit or loss for the period; net of income taxes; which is attributable to the parent after the deduction of [NetIncNCI] from [ConsolInc]; and before the deduction of [PrefDivIS].' },
+                { variable: 'netinccmn', name: 'Net Income Common Stock', description: 'The amount of net income (loss) for the period due to common shareholders. Typically differs from [NetInc] to the parent entity due to the deduction of [PrefDivIS].' },
+                { variable: 'netinccmnusd', name: 'Net Income Common Stock (USD)', description: '[NetIncCmn] in USD; converted by [FXUSD].' },
+                { variable: 'netincdis', name: 'Net Loss Income from Discontinued Operations', description: 'Amount of loss (income) from a disposal group; net of income tax; reported as a separate component of income. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'netincnci', name: 'Net Income to Non-Controlling Interests', description: 'The portion of income which is attributable to non-controlling interest shareholders; subtracted from [ConsolInc] in order to obtain [NetInc]. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'opinc', name: 'Operating Income', description: 'Operating income is a measure of financial performance before the deduction of [IntExp]; [TaxExp] and other Non-Operating items. It is calculated as [GP] minus [OpEx].' },
+                { variable: 'opex', name: 'Operating Expenses', description: 'Operating expenses represent the total expenditure on [SGnA]; [RnD] and other operating expense items; it excludes [CoR].' },
+                { variable: 'prefdivis', name: 'Preferred Dividends Income Statement Impact', description: 'Income statement item reflecting dividend payments to preferred stockholders. Subtracted from Net Income to Parent [NetInc] to obtain Net Income to Common Stockholders [NetIncCmn]. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'revenue', name: 'Revenues', description: 'The amount of Revenue recognised from goods sold; services rendered; insurance premiums; or other activities that constitute an earning process. Interest income for financial institutions is reported net of interest expense and provision for credit losses. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'revenueusd', name: 'Revenues (USD)', description: '[Revenue] in USD; converted by [FXUSD]. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'rnd', name: 'Research and Development Expense', description: 'A component of [OpEx] representing the aggregate costs incurred in a planned search or critical investigation aimed at discovery of new knowledge with the hope that such knowledge will be useful in developing a new product or service. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'sgna', name: 'Selling General and Administrative Expense', description: 'A component of [OpEx] representing the aggregate total costs related to selling a firm\'s product and services; as well as all other general and administrative expenses. Direct selling expenses (for example; credit; warranty; and advertising) are expenses that can be directly linked to the sale of specific products. Indirect selling expenses are expenses that cannot be directly linked to the sale of specific products; for example telephone expenses; Internet; and postal charges. General and administrative expenses include salaries of non-sales personnel; rent; utilities; communication; etc. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'shareswa', name: 'Weighted Average Shares', description: 'The weighted average number of shares or units issued and outstanding that are used by the company to calculate [EPS]; determined based on the timing of issuance of shares or units in the period.' },
+                { variable: 'shareswadil', name: 'Weighted Average Shares Diluted', description: 'The weighted average number of shares or units issued and outstanding that are used by the company to calculate [EPSDil]; determined based on the timing of issuance of shares or units in the period.' },
+                { variable: 'taxexp', name: 'Income Tax Expense', description: 'Amount of current income tax expense (benefit) and deferred income tax expense (benefit) pertaining to continuing operations. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' }
+            ],
+            "Balance Sheet": [
+                { variable: 'accoci', name: 'Accumulated Other Comprehensive Income', description: 'A component of [Equity] representing the accumulated change in equity from transactions and other events and circumstances from non-owner sources; net of tax effect; at period end. Includes foreign currency translation items; certain pension adjustments; unrealized gains and losses on certain investments in debt and equity securities. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'assets', name: 'Total Assets', description: 'Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Major components are [CashnEq]; [Investments];[Intangibles]; [PPNENet];[TaxAssets] and [Receivables].' },
+                { variable: 'assetsc', name: 'Current Assets', description: 'The current portion of [Assets]; reported if a company operates a classified balance sheet that segments current and non-current assets.' },
+                { variable: 'assetsnc', name: 'Assets Non-Current', description: 'Amount of non-current assets; for companies that operate a classified balance sheet. Calculated as the different between Total Assets [Assets] and Current Assets [AssetsC].' },
+                { variable: 'cashneq', name: 'Cash and Equivalents', description: 'A component of [Assets] representing the amount of currency on hand as well as demand deposits with banks or financial institutions. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'cashnequsd', name: 'Cash and Equivalents (USD)', description: '[CashnEq] in USD; converted by [FXUSD]. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'debt', name: 'Total Debt', description: 'A component of [Liabilities] representing the total amount of current and non-current debt owed. Includes secured and unsecured bonds issued; commercial paper; notes payable; credit facilities; lines of credit; capital lease obligations; operating lease obligations; and convertible notes. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'debtc', name: 'Debt Current', description: 'The current portion of [Debt]; reported if the company operates a classified balance sheet that segments current and non-current liabilities. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'debtnc', name: 'Debt Non-Current', description: 'The non-current portion of [Debt] reported if the company operates a classified balance sheet that segments current and non-current liabilities. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'debtusd', name: 'Total Debt (USD)', description: '[Debt] in USD; converted by [FXUSD]. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'deferredrev', name: 'Deferred Revenue', description: 'A component of [Liabilities] representing the carrying amount of consideration received or receivable on potential earnings that were not recognized as revenue; including sales; license fees; and royalties; but excluding interest income. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'deposits', name: 'Deposit Liabilities', description: 'A component of [Liabilities] representing the total of all deposit liabilities held; including foreign and domestic; interest and noninterest bearing. May include demand deposits; saving deposits; Negotiable Order of Withdrawal and time deposits among others. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'equity', name: 'Shareholders Equity Attributable to Parent', description: 'A principal component of the balance sheet; in addition to [Liabilities] and [Assets]; that represents the total of all stockholders\' equity (deficit) items; net of receivables from officers; directors; owners; and affiliates of the entity which are attributable to the parent.' },
+                { variable: 'equityusd', name: 'Shareholders Equity (USD)', description: '[Equity] in USD; converted by [FXUSD].' },
+                { variable: 'intangibles', name: 'Goodwill and Intangible Assets', description: 'A component of [Assets] representing the carrying amounts of all intangible assets and goodwill as of the balance sheet date; net of accumulated amortization and impairment charges. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'inventory', name: 'Inventory', description: 'A component of [Assets] representing the amount after valuation and reserves of inventory expected to be sold; or consumed within one year or operating cycle; if longer. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'investments', name: 'Investments', description: 'A component of [Assets] representing the total amount of marketable and non-marketable securties; loans receivable and other invested assets. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'investmentsc', name: 'Investments Current', description: 'The current portion of [Investments]; reported if the company operates a classified balance sheet that segments current and non-current assets. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'investmentsnc', name: 'Investments Non-Current', description: 'The non-current portion of [Investments]; reported if the company operates a classified balance sheet that segments current and non-current assets. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'liabilities', name: 'Total Liabilities', description: 'Sum of the carrying amounts as of the balance sheet date of all liabilities that are recognized. Principal components are [Debt]; [DeferredRev]; [Payables];[Deposits]; and [TaxLiabilities].' },
+                { variable: 'liabilitiesc', name: 'Current Liabilities', description: 'The current portion of [Liabilities]; reported if the company operates a classified balance sheet that segments current and non-current liabilities.' },
+                { variable: 'liabilitiesnc', name: 'Liabilities Non-Current', description: 'The non-current portion of [Liabilities]; reported if the company operates a classified balance sheet that segments current and non-current liabilities.' },
+                { variable: 'payables', name: 'Trade and Non-Trade Payables', description: 'A component of [Liabilities] representing trade and non-trade payables. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ppnenet', name: 'Property Plant & Equipment Net', description: 'A component of [Assets] representing the amount after accumulated depreciation; depletion and amortization of physical assets used in the normal conduct of business to produce goods and services and not intended for resale. Includes Operating Right of Use Assets. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'receivables', name: 'Trade and Non-Trade Receivables', description: 'A component of [Assets] representing trade and non-trade receivables. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'retearn', name: 'Accumulated Retained Earnings (Deficit)', description: 'A component of [Equity] representing the cumulative amount of the entities undistributed earnings or deficit. May only be reported annually by certain companies; rather than quarterly.' },
+                { variable: 'taxassets', name: 'Tax Assets', description: 'A component of [Assets] representing tax assets and receivables. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'taxliabilities', name: 'Tax Liabilities', description: 'A component of [Liabilities] representing outstanding tax liabilities. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' }
+            ],
+            "Cash Flow Statement": [
+                { variable: 'capex', name: 'Capital Expenditure', description: 'A component of [NCFI] representing the net cash inflow (outflow) associated with the acquisition & disposal of long-lived; physical & intangible assets that are used in the normal conduct of business to produce goods and services and are not intended for resale. Includes cash inflows/outflows to pay for construction of self-constructed assets & software. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'depamor', name: 'Depreciation Amortization & Accretion', description: 'A component of operating cash flow representing the aggregate net amount of depreciation; amortization; and accretion recognized during an accounting period. As a non-cash item; the net amount is added back to net income when calculating cash provided by or used in operations using the indirect method. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ncf', name: 'Net Cash Flow / Change in Cash & Cash Equivalents', description: 'Principal component of the cash flow statement representing the amount of increase (decrease) in cash and cash equivalents. Includes [NCFO]; investing [NCFI] and financing [NCFF] for continuing and discontinued operations; and the effect of exchange rate changes on cash [NCFX].' },
+                { variable: 'ncfbus', name: 'Net Cash Flow - Business Acquisitions and Disposals', description: 'A component of [NCFI] representing the net cash inflow (outflow) associated with the acquisition & disposal of businesses; joint-ventures; affiliates; and other named investments. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ncfcommon', name: 'Issuance (Purchase) of Equity Shares', description: 'A component of [NCFF] representing the net cash inflow (outflow) from common equity changes. Includes additional capital contributions from share issuances and exercise of stock options; and outflow from share repurchases.  Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ncfdebt', name: 'Issuance (Repayment) of Debt Securities ', description: 'A component of [NCFF] representing the net cash inflow (outflow) from issuance (repayment) of debt securities. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ncfdiv', name: 'Payment of Dividends & Other Cash Distributions   ', description: 'A component of [NCFF] representing dividends and dividend equivalents paid on common stock and restricted stock units. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ncff', name: 'Net Cash Flow from Financing', description: 'A component of [NCF] representing the amount of cash inflow (outflow) from financing activities; from continuing and discontinued operations. Principal components of financing cash flow are: issuance (purchase) of equity shares; issuance (repayment) of debt securities; and payment of dividends & other cash distributions. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ncfi', name: 'Net Cash Flow from Investing', description: 'A component of [NCF] representing the amount of cash inflow (outflow) from investing activities; from continuing and discontinued operations. Principal components of investing cash flow are: capital (expenditure) disposal of equipment [CapEx]; business (acquisitions) disposition [NCFBus] and investment (acquisition) disposal [NCFInv]. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ncfinv', name: 'Net Cash Flow - Investment Acquisitions and Disposals', description: 'A component of [NCFI] representing the net cash inflow (outflow) associated with the acquisition & disposal of investments; including marketable securities and loan originations. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'ncfo', name: 'Net Cash Flow from Operations', description: 'A component of [NCF] representing the amount of cash inflow (outflow) from operating activities; from continuing and discontinued operations.' },
+                { variable: 'ncfx', name: 'Effect of Exchange Rate Changes on Cash ', description: 'A component of Net Cash Flow [NCF] representing the amount of increase (decrease) from the effect of exchange rate changes on cash and cash equivalent balances held in foreign currencies. Where this item is not contained on the company consolidated financial statements and cannot otherwise be imputed the value of 0 is used.' },
+                { variable: 'sbcomp', name: 'Share Based Compensation', description: 'A component of [NCFO] representing the total amount of noncash; equity-based employee remuneration. This may include the value of stock or unit options; amortization of restricted stock or units; and adjustment for officers\' compensation. As noncash; this element is an add back when calculating net cash generated by operating activities using the indirect method.' }
+            ],
+            "Entity": [
+                { variable: 'calendardate', name: 'Calendar Date', description: 'The Calendar Date represents the normalized [ReportPeriod]. This provides a common date to query for which is necessary due to irregularity in report periods across companies. For example; if the report period is 2015-09-26; the calendar date will be 2015-09-30 for quarterly and trailing-twelve-month dimensions (ARQ;MRQ;ART;MRT); and 2015-12-31 for annual dimensions (ARY;MRY). We also employ offsets in order to maximise comparability of the period across companies. For example consider two companies: one with a quarter ending on 2018-07-24; and the other with a quarter ending on 2018-06-28. A naive normalization process would assign these to differing calendar quarters of 2018-09-30 and 2018-06-30 respectively. However; we assign these both to the 2018-06-30 calendar quarter because this maximises the overlap in the report periods in question and therefore the comparability of this period.' },
+                { variable: 'datekey', name: 'Date Key', description: 'The Date Key represents the SEC filing date for AR dimensions (ARQ;ART;ARY); and the [REPORTPERIOD] for MR dimensions (MRQ;MRT;MRY). In addition; this is the observation date used for [Price] based data such as [MarketCap]; [Price] and [PE].' },
+                { variable: 'dimension', name: 'Dimension', description: 'The dimension field allows you to take different dimensional views of data over time. ARQ: Quarterly; excluding restatements; MRQ: Quarterly; including restatements; ARY: annual; excluding restatements; MRY: annual; including restatements; ART: trailing-twelve-months; excluding restatements; MRT: trailing-twelve-months; including restatements.' },
+                { variable: 'fiscalperiod', name: 'Fiscal Period', description: 'The fiscal period of the report expressed as follows: 2024-Q2; 2024-Q3; 2024-FY etc. Note that companies can have different fiscal periods for the report period due to different year end dates.' },
+                { variable: 'lastupdated', name: 'Last Updated Date', description: 'Last Updated represents the last date that this database entry was updated; which is useful to users when updating their local records.' },
+                { variable: 'price', name: 'Share Price (Adjusted Close)', description: 'The price per common share adjusted for stock splits but not adjusted for dividends; used in the computation of [PE1]; [PS1]; [DivYield] and [SPS].' },
+                { variable: 'reportperiod', name: 'Report Period', description: 'The Report Period represents the end date of the fiscal period.' },
+                { variable: 'sharefactor', name: 'Share Factor', description: 'Share factor is a multiplicand in the calculation of [MarketCap] and is used to adjust for: American Depository Receipts (ADRs) that represent more or less than 1 underlying share; and; companies which have different earnings share for different share classes (eg Berkshire Hathaway - BRK.B).' },
+                { variable: 'sharesbas', name: 'Shares (Basic)', description: 'The number of shares or other units outstanding of the entity\'s capital or common stock or other ownership interests; as stated on the cover of related periodic report (10-K/10-Q); after adjustment for stock splits.' },
+                { variable: 'ticker', name: 'Ticker Symbol', description: 'The ticker is a unique identifier for a security in the database. Where a company is delisted and the ticker subsequently recycled for use by a different company; we utilise that ticker for the currently active company and append a number to the ticker of the delisted company. The ACTIONS table provides a record of historical ticker changes.' }
+            ]
+        };
+
+        function generateSF1TableContent() {
+            let content = `
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Source</th>
+                                <th>Variable</th>
+                                <th>Label</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            // Process groups in the specified order - Entity variables first
+            const groupOrder = ["Entity", "Metrics", "Income Statement", "Balance Sheet", "Cash Flow Statement"];
+            
+            groupOrder.forEach(source => {
+                if (sf1Data[source]) {
+                    sf1Data[source].forEach(row => {
+                        content += `
+                            <tr>
+                                <td>${source}</td>
+                                <td class="tooltip-trigger" data-description="${escapeHtml(row.description)}">
+                                    <code>${row.variable}</code>
+                                </td>
+                                <td>${row.name}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            });
+            
+            content += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            return content;
+        }
+
+        function generateTableContent(data) {
+            let content = `
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Variable</th>
+                                <th>Label</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            data.forEach(row => {
+                const tooltipAttrs = row.hasTooltip ? 
+                    `onmouseenter="show${row.hasTooltip === 'actions' ? 'Actions' : 'Events'}Tooltip(this)" onmouseleave="handleTooltipMouseLeave(event, this)"` : '';
+                
+                content += `
+                    <tr>
+                        <td class="tooltip-trigger" data-description="${escapeHtml(row.description)}" ${tooltipAttrs}>
+                            <code>${row.variable}</code>
+                        </td>
+                        <td class="tooltip-trigger" data-description="${escapeHtml(row.description)}" ${tooltipAttrs}>
+                            ${row.name}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            content += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            return content;
+        }
+
+        function generateDailyTableContent() {
+            return generateTableContent(dailyData);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Table descriptions object with actual CSV data
+        const tableDescriptions = {
+            daily: {
+                title: "Daily Table",
+                content: generateDailyTableContent()
+            },
+            metrics: {
+                title: "Metrics Table", 
+                content: generateTableContent(metricsData)
+            },
+            sep: {
+                title: "SEP Table",
+                content: generateTableContent(sepData)
+            },
+            sf1: {
+                title: "SF1 Table",
+                content: generateSF1TableContent()
+            },
+            sf2: {
+                title: "SF2 Table", 
+                content: generateTableContent(sf2Data)
+            },
+            tickers: {
+                title: "Tickers Table",
+                content: generateTableContent(tickersData)
+            },
+            actions: {
+                title: "Actions Table",
+                content: generateTableContent(actionsData)
+            },
+            events: {
+                title: "Events Table",
+                content: generateTableContent(eventsData)
+            }
+        };
+
+        function showTableDescription(tableName) {
+            const description = tableDescriptions[tableName];
+            if (description) {
+                document.getElementById('description-title').textContent = description.title;
+                document.getElementById('description-content').innerHTML = description.content;
+                document.getElementById('table-description').style.display = 'block';
+                
+                // Scroll to the description area
+                document.getElementById('table-description').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        function hideTableDescription() {
+            document.getElementById('table-description').style.display = 'none';
+        }
+
+        // Tooltip functionality
+        let currentTooltip = null;
+
+        function showTooltip(element, text) {
+            hideTooltip();
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'custom-tooltip show';
+            tooltip.textContent = text;
+            
+            document.body.appendChild(tooltip);
+            
+            const rect = element.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            // Position tooltip above the element
+            let top = rect.top - tooltipRect.height - 10;
+            let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+            
+            // Adjust if tooltip goes off screen
+            if (top < 10) {
+                top = rect.bottom + 10;
+            }
+            if (left < 10) {
+                left = 10;
+            }
+            if (left + tooltipRect.width > window.innerWidth - 10) {
+                left = window.innerWidth - tooltipRect.width - 10;
+            }
+            
+            tooltip.style.top = top + window.scrollY + 'px';
+            tooltip.style.left = left + 'px';
+            
+            currentTooltip = tooltip;
+        }
+
+        function hideTooltip() {
+            if (currentTooltip) {
+                currentTooltip.remove();
+                currentTooltip = null;
+            }
+        }
+
+        // Event delegation for tooltips
+        document.addEventListener('mouseover', function(e) {
+            if (e.target.classList.contains('tooltip-trigger')) {
+                // Don't show regular tooltip if this element has a special tooltip
+                if (!e.target.hasAttribute('onmouseenter')) {
+                    const description = e.target.getAttribute('data-description');
+                    if (description) {
+                        showTooltip(e.target, description);
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('mouseout', function(e) {
+            if (e.target.classList.contains('tooltip-trigger')) {
+                hideTooltip();
+            }
+        });
+        
+        // Actions and Events hover tooltip data
+        const actionTypes = [
+            { code: 'acquisitionby', name: 'Acquisition By', description: 'Acquisition transaction where ticker is the acquired company.' },
+            { code: 'acquisitionof', name: 'Acquisition Of', description: 'Acquisition transaction where ticker is the acquiring company.' },
+            { code: 'adrratiosplit', name: 'ADR Ratio Split', description: 'Split applied to the ADR ratio as represented by the sharefactor indicator.' },
+            { code: 'bankruptcyliquidation', name: 'Bankruptcy and/or Liquidation', description: 'Bankruptcy/liquidation transaction details.' },
+            { code: 'delisted', name: 'Delisted', description: 'Delisting transaction details.' },
+            { code: 'dividend', name: 'Cash Dividend', description: 'Cash dividend distribution (adjusted for splits).' },
+            { code: 'initiated', name: 'Coverage Initiated', description: 'Initiation of coverage in price datasets.' },
+            { code: 'listed', name: 'Newly Listed', description: 'New listing details.' },
+            { code: 'mergerfrom', name: 'Merger From', description: 'Merger where ticker is the non-surviving company.' },
+            { code: 'mergerto', name: 'Merger To', description: 'Merger where ticker is the surviving company.' },
+            { code: 'regulatorydelisting', name: 'Regulatory Delisting', description: 'Securities delisted for exchange or regulatory reasons.' },
+            { code: 'relation', name: 'Relation', description: 'Linkage between multiple securities from same issuer.' },
+            { code: 'spinoff', name: 'Spinoff Ratio', description: 'Spinoff transaction with share ratio details.' },
+            { code: 'spinoffdividend', name: 'Spinoff Dividend', description: 'Spinoff transaction with dollar value details.' },
+            { code: 'spunofffrom', name: 'Spunoff From', description: 'Company that has been spunoff from parent.' },
+            { code: 'split', name: 'Stock Split or Stock Dividend', description: 'Stock split or stock dividend transaction.' },
+            { code: 'tickerchangefrom', name: 'Ticker Change From', description: 'Ticker change - previous ticker.' },
+            { code: 'tickerchangeto', name: 'Ticker Change To', description: 'Ticker change - new ticker.' },
+            { code: 'voluntarydelisting', name: 'Voluntary Delisting', description: 'Securities that have voluntarily delisted.' }
+        ];
+        
+        const eventCodes = [
+            { code: '11', name: 'Entry into a Material Definitive Agreement' },
+            { code: '12', name: 'Termination of a Material Definitive Agreement' },
+            { code: '13', name: 'Bankruptcy or Receivership' },
+            { code: '14', name: 'Mine Safety - Reporting of Shutdowns and Patterns of Violations' },
+            { code: '15', name: 'Receipt of an Attorney\'s Written Notice Pursuant to 17 CFR 205.3(d)' },
+            { code: '21', name: 'Completion of Acquisition or Disposition of Assets' },
+            { code: '22', name: 'Results of Operations and Financial Condition' },
+            { code: '23', name: 'Creation of a Direct Financial Obligation or Off-Balance Sheet Arrangement' },
+            { code: '24', name: 'Triggering Events That Accelerate or Increase a Direct Financial Obligation' },
+            { code: '25', name: 'Cost Associated with Exit or Disposal Activities' },
+            { code: '26', name: 'Material Impairments' },
+            { code: '31', name: 'Notice of Delisting or Failure to Satisfy Continued Listing Rule' },
+            { code: '32', name: 'Unregistered Sales of Equity Securities' },
+            { code: '33', name: 'Material Modifications to Rights of Security Holders' },
+            { code: '34', name: 'Schedule 13G Filing' },
+            { code: '35', name: 'Schedule 13D Filing' },
+            { code: '36', name: 'Notice under Rule 12b25 of inability to timely file Form 10-K or 10-Q' },
+            { code: '37', name: 'Tender Offer Statement under Section 14(d)(1) or 13(e)(1)' },
+            { code: '40', name: 'Changes in Registrant\'s Certifying Accountant' },
+            { code: '41', name: 'Changes in Registrant\'s Certifying Accountant' },
+            { code: '42', name: 'Non-Reliance on Previously Issued Financial Statements' },
+            { code: '51', name: 'Changes in Control of Registrant' },
+            { code: '52', name: 'Departure/Election of Directors; Appointment of Officers' },
+            { code: '53', name: 'Amendments to Articles of Incorporation or Bylaws' },
+            { code: '54', name: 'Temporary Suspension of Trading Under Employee Benefit Plans' },
+            { code: '55', name: 'Amendments to Code of Ethics or Waiver' },
+            { code: '56', name: 'Change in Shell Company Status' },
+            { code: '57', name: 'Submission of Matters to a Vote of Security Holders' },
+            { code: '58', name: 'Shareholder Nominations Pursuant to Exchange Act Rule 14a-11' },
+            { code: '61', name: 'ABS Informational and Computational Material' },
+            { code: '62', name: 'Change of Servicer or Trustee' },
+            { code: '63', name: 'Change in Credit Enhancement or Other External Support' },
+            { code: '64', name: 'Failure to Make a Required Distribution' },
+            { code: '65', name: 'Securities Act Updating Disclosure' },
+            { code: '71', name: 'Regulation FD Disclosure' },
+            { code: '81', name: 'Other Events' },
+            { code: '91', name: 'Financial Statements and Exhibits' }
+        ];
+        
+        let currentHoverTooltip = null;
+        
+        function showActionsTooltip(element) {
+            hideHoverTooltip();
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'table-hover-tooltip show';
+            
+            let content = '<h6>Action Types</h6>';
+            actionTypes.forEach(action => {
+                content += `<div class="item"><span class="code">${action.code}:</span> ${action.name}<br><small>${action.description}</small></div>`;
+            });
+            
+            tooltip.innerHTML = content;
+            document.body.appendChild(tooltip);
+            
+            const rect = element.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            // Position tooltip to the right of the button
+            let top = rect.top + window.scrollY;
+            let left = rect.right + 10;
+            
+            // Adjust if tooltip goes off screen
+            if (left + tooltipRect.width > window.innerWidth - 10) {
+                left = rect.left - tooltipRect.width - 10;
+            }
+            if (top + tooltipRect.height > window.innerHeight + window.scrollY - 10) {
+                top = window.innerHeight + window.scrollY - tooltipRect.height - 10;
+            }
+            if (top < window.scrollY + 10) {
+                top = window.scrollY + 10;
+            }
+            
+            tooltip.style.top = top + 'px';
+            tooltip.style.left = left + 'px';
+            
+            // Add mouse enter/leave handlers to the tooltip itself
+            tooltip.addEventListener('mouseenter', function() {
+                if (this.hideTimeout) {
+                    clearTimeout(this.hideTimeout);
+                }
+            });
+            
+            tooltip.addEventListener('mouseleave', function() {
+                hideHoverTooltip();
+            });
+            
+            currentHoverTooltip = tooltip;
+        }
+        
+        function showEventsTooltip(element) {
+            hideHoverTooltip();
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'table-hover-tooltip show';
+            
+            let content = '<h6>Event Codes</h6>';
+            eventCodes.forEach(event => {
+                content += `<div class="item"><span class="code">${event.code}:</span> ${event.name}</div>`;
+            });
+            
+            tooltip.innerHTML = content;
+            document.body.appendChild(tooltip);
+            
+            const rect = element.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            // Position tooltip to the right of the button
+            let top = rect.top + window.scrollY;
+            let left = rect.right + 10;
+            
+            // Adjust if tooltip goes off screen
+            if (left + tooltipRect.width > window.innerWidth - 10) {
+                left = rect.left - tooltipRect.width - 10;
+            }
+            if (top + tooltipRect.height > window.innerHeight + window.scrollY - 10) {
+                top = window.innerHeight + window.scrollY - tooltipRect.height - 10;
+            }
+            if (top < window.scrollY + 10) {
+                top = window.scrollY + 10;
+            }
+            
+            tooltip.style.top = top + 'px';
+            tooltip.style.left = left + 'px';
+            
+            // Add mouse enter/leave handlers to the tooltip itself
+            tooltip.addEventListener('mouseenter', function() {
+                if (this.hideTimeout) {
+                    clearTimeout(this.hideTimeout);
+                }
+            });
+            
+            tooltip.addEventListener('mouseleave', function() {
+                hideHoverTooltip();
+            });
+            
+            currentHoverTooltip = tooltip;
+        }
+        
+        function hideHoverTooltip() {
+            if (currentHoverTooltip) {
+                currentHoverTooltip.remove();
+                currentHoverTooltip = null;
+            }
+        }
+        
+        // Handle mouse leave with delay to allow moving to tooltip
+        function handleTooltipMouseLeave(event, element) {
+            // Set a timeout to hide the tooltip
+            const hideTimeout = setTimeout(() => {
+                hideHoverTooltip();
+            }, 100);
+            
+            // Store the timeout ID on the tooltip so we can cancel it
+            if (currentHoverTooltip) {
+                currentHoverTooltip.hideTimeout = hideTimeout;
+            }
+        }
+    </script>
+</body>
+</html>

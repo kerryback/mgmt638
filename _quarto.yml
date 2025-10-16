@@ -3,11 +3,16 @@ project:
   output-dir: docs
   render: 
     - index.qmd
+    - schedule.qmd
+
   resources:
     - rice-stock-data.mcpb
     - syllabus.pdf
     - CNAME
     - .nojekyll
+    - Quality_Minus_Junk.mp4 
+    - Quantitative_Factor_Investing.mp4 
+    - Asness_Frazzini_Pedersen_RAS_2019.pdf
                   
 website:
   title: ""
@@ -16,6 +21,10 @@ website:
     search: false
     title: MGMT 638
     file: index.qmd
+    right:
+        - text: Schedule/Materials
+          file: schedule.qmd
+          target: _blank
    
 format:
   html:

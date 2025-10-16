@@ -2,7 +2,7 @@
 
 ## Data-Driven Investments: Equity<br>Fall 2025
 
-![](RiceBusiness-transparent-logo-sm.png){width=40%}
+![](images/RiceBusiness-transparent-logo-sm.png){width=40%}
 
 ::::
 
@@ -41,7 +41,7 @@ To connect the data portal to Claude, download this [mcpb file](rice-stock-data.
 
 Grades will be based on three group assignments, peer assessments, and class participation.  
 
-**Assignemnt 1:**  Submit a Word doc containing tests of two portfolio strategies.  Both strategies should be long-short strategies based on sorting stocks into portfolios once per month on the basis of some criterion.  One strategy should use a criterion derived from fundamentals and the other should use a criterion derived from past returns.  The tests should include (i) a plot of cumulative returns of the portfolios, (ii) the Sharpe ratio of the portfolio that goes long one extreme and short the other, and (iii) the CAPM alpha of the long-short portfolio.  It is important to describe the strategies sufficiently clearly that your results can be replicated. 
+**Assignment 1:**  Submit a Word doc containing tests of two portfolio strategies.  Both strategies should be long-short strategies based on sorting stocks into portfolios once per month on the basis of some criterion.  One strategy should use a criterion derived from fundamentals and the other should use a criterion derived from past returns.  The tests should include (i) a plot of cumulative returns of the portfolios, (ii) the Sharpe ratio of the portfolio that goes long one extreme and short the other, and (iii) the CAPM alpha of the long-short portfolio.  It is important to describe the strategies sufficiently clearly that your results can be replicated. 
 
 **Assignment 2:**  Submit a Word doc containing the result of a backtest of a machine-learning-based strategy.  The machine learning model should combine signals based on fundamentals and past returns to predict relative stock returns over the following month.  Relative return means return minus the median return.  The portfolio strategy should sort stocks based on predicted relative returns.  The model parameters each month must be fitted and validated using only data from prior months so that the strategy could be implemented in practice.  The test of the strategy should include the three elments in Assignment 1: plot, Sharpe ratio, and CAPM alpha.  It is important to describe the machine learning model and the portfolio strategy  sufficiently clearly that your results can be replicated. 
 

@@ -67,7 +67,18 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">MGMT 638</span>
     </a>
   </div>
-        <div class="quarto-navbar-tools tools-end">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./schedule.html" target="_blank"> 
+<span class="menu-text">Schedule/Materials</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
@@ -86,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="data-driven-investments-equity-fall-2025" class="level2" style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
 <h2 class="anchored" data-anchor-id="data-driven-investments-equity-fall-2025">Data-Driven Investments: Equity<br>Fall 2025</h2>
-<p><img src="RiceBusiness-transparent-logo-sm.png" class="img-fluid" style="width:40.0%"></p>
+<p><img src="images/RiceBusiness-transparent-logo-sm.png" class="img-fluid" style="width:40.0%"></p>
 </section>
 <section id="instructor" class="level4">
 <h4 class="anchored" data-anchor-id="instructor">Instructor</h4>
@@ -110,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="assignments-and-grading" class="level4">
 <h4 class="anchored" data-anchor-id="assignments-and-grading">Assignments and Grading</h4>
 <p>Grades will be based on three group assignments, peer assessments, and class participation.</p>
-<p><strong>Assignemnt 1:</strong> Submit a Word doc containing tests of two portfolio strategies. Both strategies should be long-short strategies based on sorting stocks into portfolios once per month on the basis of some criterion. One strategy should use a criterion derived from fundamentals and the other should use a criterion derived from past returns. The tests should include (i) a plot of cumulative returns of the portfolios, (ii) the Sharpe ratio of the portfolio that goes long one extreme and short the other, and (iii) the CAPM alpha of the long-short portfolio. It is important to describe the strategies sufficiently clearly that your results can be replicated.</p>
+<p><strong>Assignment 1:</strong> Submit a Word doc containing tests of two portfolio strategies. Both strategies should be long-short strategies based on sorting stocks into portfolios once per month on the basis of some criterion. One strategy should use a criterion derived from fundamentals and the other should use a criterion derived from past returns. The tests should include (i) a plot of cumulative returns of the portfolios, (ii) the Sharpe ratio of the portfolio that goes long one extreme and short the other, and (iii) the CAPM alpha of the long-short portfolio. It is important to describe the strategies sufficiently clearly that your results can be replicated.</p>
 <p><strong>Assignment 2:</strong> Submit a Word doc containing the result of a backtest of a machine-learning-based strategy. The machine learning model should combine signals based on fundamentals and past returns to predict relative stock returns over the following month. Relative return means return minus the median return. The portfolio strategy should sort stocks based on predicted relative returns. The model parameters each month must be fitted and validated using only data from prior months so that the strategy could be implemented in practice. The test of the strategy should include the three elments in Assignment 1: plot, Sharpe ratio, and CAPM alpha. It is important to describe the machine learning model and the portfolio strategy sufficiently clearly that your results can be replicated.</p>
 <p><strong>Assignment 3:</strong> Submit a Streamlit app and a Word doc. The app should have a Run button. When it is run, the app should download data, construct signals, and apply a pre-trained machine learning model to predict relative returns. The app should display the top 10 and bottom stocks and it should have a Download button that downloads an Excel workbook containing the following for every stock: ticker, all signals, and predicted relative return. The data should be sorted from best stock to worst stock. The Word doc should describe the machine learning model and it should describe a backtest of the model as in Assignment 2. It is important that the model and the backtest strategy be described sufficiently clearly that your results can be replicated.</p>
 </section>

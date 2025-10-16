@@ -47,45 +47,27 @@ Grades will be based on three group assignments, peer assessments, and class par
 
 **Assignment 3:**  Submit a Streamlit app and a Word doc.  The app should have a Run button.  When it is run, the app should download data, construct signals, and apply a pre-trained machine learning model to predict relative returns.  The app should display the top 10 and bottom stocks and it should have a Download button that downloads an Excel workbook containing the following for every stock: ticker, all signals, and predicted relative return.  The data should be sorted from best stock to worst stock.  The Word doc should describe the machine learning model and it should describe a backtest of the model as in Assignment 2.  It is important that the model and the backtest strategy be described sufficiently clearly that your results can be replicated.  
 
+#### Getting Started
+
+1.  Install Claude Code.  Here are [Mac instructions](https://docs.claude.com/en/docs/claude-code/setup) and here are [Windows instructions](https://www.youtube.com/watch?v=hpMrTabldEY).  Disregard anything you see online about needing WSL (Windows Subsystem for Linux) on Windows.  Anthropic recently released a native version of Claude Code for Windows, so WSL is no longer needed.
+
+2.  Install Python.  In case you are unsure, ask Claude Code to determine if you have Python 3 available on your path.  If not, ask Claude Code to install it. 
+
+3.  Install Git.  Here are [download links](https://git-scm.com/downloads).
+
+4.  Ask Claude Code to use the Git CLI (command line interface) to clone https://github.com/kerryback/mgmt638.
+
+5.  In your terminal, cd (change directory) to the mgmt638 folder.
+
+6.  Go to [data-portal.rice-business.org](https://data-portal.rice-business.org) and get an access token.  Open the .env file (in Notepad for example) and add the access token following the `=` sign.
+
+Each time you begin work, ask Claude Code to pull https://github.com/kerryback/mgmt638.
+
+
 #### Course Schedule
 
-**Week 1:**
+The schedule is subject to change.  The latest version can always be found by clicking clicking the `Schedule` link in the navbar at the top of the page.  
 
-- Review of fundamental analysis (Valuing Wal-Mart 2010 case)
-- Case for quantitative investing (Quality Minus Junk)
-- Working with Claude and the Rice Business Data Portal
-- Sorts and portfolio returns 
-- CAPM alphas of long-short portfolio strategies
-
-**Week 2:**
- 
-- Fama-French-Carhart characteristics (Value and Momentum Everywhere)
-- The many characteristics found to predict returns 
-- Predicting relative returns with random forests
-
-**Week 3:**
-
-- Validating machine learning hyperparameters
-- Backtesting machine learning strategies
-- Interpreting predictions of machine learning models
-
-
-**Week 4:**
-
-- Creating an automated stock recommendation system
-- Creating a trading system
-
-**Week 5:**
-
-- Risk factors
-- Estimating portfolio risk 
-- Drawdowns
-- Risk limits in trading systems 
-
-**Week 6:**
-
-- Trading costs
-- Presentations of Assignment 3
 
 #### CQA Competition
 
@@ -93,7 +75,7 @@ Each year, the Chicago Quantitative Alliance (CQA) hosts a competition for unive
 
 The competition is to run a diversified long-short market-neutral portfolio with a quantitative approach.  Paper trading is done using the StockTrak platform.  Teams are judged on compliance, returns, and a video presentation of their strategy in three stages: teams that perform well on compliance proceed to the second stage, the top ten teams on compliance and portfolio returns proceed to the third stage, and teams in the third stage prepare video presentations.  
 
-The app in Assignment 3 could be used to generate recommendations for weekly trades.  Unfortunately, the competition begins very shortly after the class begins, so some stopgap trades will need to be put in place before the pipeline is ready.
+The app in Assignment 3 could be used to generate recommendations for weekly trades.  Unfortunately, the competition begins very shortly after the class begins, so some stopgap trades will need to be put in place before your app is ready.
 
 #### Honor Code
 

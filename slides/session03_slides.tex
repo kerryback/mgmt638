@@ -73,16 +73,17 @@ Right-click on the links and select "Save link as..." to download to your QuantE
 \textbf{Getting started:}
 \begin{enumerate}
     \item Sign up at \url{https://ngrok.com} (free account)
-    \item Get your authtoken from the ngrok dashboard
-    \item Install: \texttt{pip install pyngrok}
-    \item Add to your Streamlit app: \texttt{from pyngrok import ngrok}
-    \item Create tunnel: \texttt{ngrok.connect(8501)}
+    \item Download and install ngrok from their website
+    \item Get your authtoken from ngrok dashboard and run: \texttt{ngrok config add-authtoken YOUR\_TOKEN}
+    \item Run your Streamlit app: \texttt{streamlit run app.py}
+    \item In a \textbf{separate terminal}: \texttt{ngrok http 8501}
+    \item Share the public URL ngrok provides!
 \end{enumerate}
 
 \vspace{0.5em}
 
 \small
-This allows you to share the Session 2 fireworks app with anyone!
+No code changes needed - ngrok runs separately from your app!
 
 \end{frame}
 

@@ -74,7 +74,8 @@ Right-click on the links and select "Save link as..." to download to your QuantE
 \begin{enumerate}
     \item Sign up at \url{https://ngrok.com} (free account)
     \item Download and install ngrok from their website
-    \item Get your authtoken from ngrok dashboard and run: \texttt{ngrok config add-authtoken YOUR\_TOKEN}
+    \item Get your authtoken from ngrok dashboard and \textbf{save it somewhere safe}
+    \item One-time setup: \texttt{ngrok config add-authtoken YOUR\_TOKEN}
     \item Run your Streamlit app: \texttt{streamlit run app.py}
     \item In a \textbf{separate terminal}: \texttt{ngrok http 8501}
     \item Share the public URL ngrok provides!

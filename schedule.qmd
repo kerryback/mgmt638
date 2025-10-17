@@ -1,14 +1,14 @@
-| Session |  Topics | Links |
+| Session |  Topics | Resources |
 |--------|---------|---------|
-| 1 |  Fundamental vs Quant Investing<br>Quality stocks<br>Factor Investing<br>Claude Code | [Blackrock - What is Factor Investing?](https://www.blackrock.com/us/individual/investment-ideas/what-is-factor-investing)<br>[AQR: Systematic Equities](https://www.aqr.com/Learning-Center/Systematic-Equities/Systematic-Equities-A-Closer-Look)<br>[Industry Betas and Returns](https://learn-investments.rice-business.org/capm/sml-industries)<br>[Characteristics and Returns](https://learn-investments.rice-business.org/factor-investing/quintiles)<br>[Install Claude Code Mac](https://docs.claude.com/en/docs/claude-code/setup)<br>[Install Claude Code Windows](https://www.youtube.com/watch?v=hpMrTabldEY) |
-| 2 | Stock Market Database<br>Claude Code and Python<br>Streamlit| [data-portal.rice-business.org](https://data-portal.rice-business.org)<br>[portal-guide.rice-business.org](https://portal-guide.rice-business.org) | 
-| 3 | Momentum<br>Value<br>Stock Filters<br>Stock Recommender App  |  |  
-| 4 | Fama-French Factors<br>Profitability<br>Merging 10Qs with Daily Stock Prices<br>  |  |  
-| 5 | Safe Minus Risky<br>Sorting on Characteristics  |  |   
-| 6 |  Hedge Funds and EDGAR<br>Machine Learning with Random Forests |  |  
-| 7 |  Train, Validate, and Test |  |  
-| 8 |  Backtesting Loops |  |    
-| 9 |  Stock Recommender based on Machine Learning |  |   
-| 10 | Factor Models and Risk Analysis  |  |   
-| 11 | Trading Costs  |  |    
-| 12 | Presentations  |  |  
+| 1 |  Fundamental vs Quant Investing<br>Quality stocks<br>Factor Investing<br>Claude Code | [Slides](slides/session01_slides.pdf){target="_blank"} |
+| 2 | Stock Market Database<br>Claude Code and Python<br>Streamlit| [Slides](slides/session02_slides.pdf){target="_blank"}<br>[QuantEquity.zip](QuantEquity.zip){target="_blank"} |
+| 3 | Momentum<br>Value<br>Stock Filters  | [Slides](slides/session03_slides.pdf){target="_blank"} |
+| 4 | Fama-French Factors<br>Profitability<br>Stock Recommender App<br>  | [Slides](slides/session04_slides.pdf){target="_blank"} |
+| 5 | Safe Minus Risky<br>Merging 10Ks and 10Qs with Stock Returns<br>Sorting on Characteristics<br>Composite Ranks  | [Slides](slides/session05_slides.pdf){target="_blank"} |
+| 6 |  Hedge Funds and Public Information<br>| [Slides](slides/session06_slides.pdf){target="_blank"} |
+| 7 |  Machine Learning with Random Forests <br>Train, Validate, and Test | [Slides](slides/session07_slides.pdf){target="_blank"} |
+| 8 |  Backtesting Loops | [Slides](slides/session08_slides.pdf){target="_blank"} |
+| 9 |  Factor Exposures | [Slides](slides/session09_slides.pdf){target="_blank"} |
+| 10 | Factor Models and Portfolio Risk  | [Slides](slides/session10_slides.pdf){target="_blank"} |
+| 11 | Trading Costs  | [Slides](slides/session11_slides.pdf){target="_blank"} |
+| 12 | Presentations  | [Slides](slides/session12_slides.pdf){target="_blank"} |  

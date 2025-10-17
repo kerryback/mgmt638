@@ -1,21 +1,14 @@
-| Session | Date | Topics | Links
-|--------|---------|---------|---------|
-| 1 | Oct 27 | Fundamental vs Quantitative Investing<br>Quality stocks<br>Installing and using Claude Code| 
-[Blackrock - What is Factor Investing?](https://www.blackrock.com/us/individual/investment-ideas/what-is-factor-investing)<br>
-[AQR: Systematic Equities](https://www.aqr.com/Learning-Center/Systematic-Equities/Systematic-Equities-A-Closer-Look)<br>
-[Industry Betas and Returns](https://learn-investments.rice-business.org/capm/sml-industries)<br>
-[Characteristics and Returns](https://learn-investments.rice-business.org/factor-investing/quintiles)<br>
-[Install Claude Code Mac]Python(https://docs.claude.com/en/docs/claude-code/setup)<br>
-[Install Claude Code Windows](https://www.youtube.com/watch?v=hpMrTabldEY)<br>
-[Install Git](https://git-scm.com/downloads)|
-| 2 | Oct 29 |  |  |  |
-| 3 | Nov 3 |  |  |  |
-| 4 | Nov 5 |  |  |  |
-| 5 | Nov 10 |  |  |  |  
-| 6 | Nov 12 |  |  |  | 
-| 7 | Nov 17 |  |  |  |
-| 8 | Nov 19 |  |  |  |  
-| 9 | Nov 24 |  |  |  | 
-| 10 | Dec 1 |  |  |  | 
-| 11 | Dec 3 |  |  |  |  
-| 12 | Dec 8 |  |  |  |
+| Session |  Topics | Links |
+|--------|---------|---------|
+| 1 |  Fundamental vs Quant Investing<br>Quality stocks<br>Factor Investing<br>Claude Code | [Blackrock - What is Factor Investing?](https://www.blackrock.com/us/individual/investment-ideas/what-is-factor-investing)<br>[AQR: Systematic Equities](https://www.aqr.com/Learning-Center/Systematic-Equities/Systematic-Equities-A-Closer-Look)<br>[Industry Betas and Returns](https://learn-investments.rice-business.org/capm/sml-industries)<br>[Characteristics and Returns](https://learn-investments.rice-business.org/factor-investing/quintiles)<br>[Install Claude Code Mac](https://docs.claude.com/en/docs/claude-code/setup)<br>[Install Claude Code Windows](https://www.youtube.com/watch?v=hpMrTabldEY) |
+| 2 | Stock Market Database<br>Claude Code and Python<br>Streamlit| [data-portal.rice-business.org](https://data-portal.rice-business.org)<br>[portal-guide.rice-business.org](https://portal-guide.rice-business.org) | 
+| 3 | Momentum<br>Value<br>Stock Filters<br>Stock Recommender App  |  |  
+| 4 | Fama-French Factors<br>Profitability<br>Merging 10Qs with Daily Stock Prices<br>  |  |  
+| 5 | Safe Minus Risky<br>Sorting on Characteristics  |  |   
+| 6 |  Hedge Funds and EDGAR<br>Machine Learning with Random Forests |  |  
+| 7 |  Train, Validate, and Test |  |  
+| 8 |  Backtesting Loops |  |    
+| 9 |  Stock Recommender based on Machine Learning |  |   
+| 10 | Factor Models and Risk Analysis  |  |   
+| 11 | Trading Costs  |  |    
+| 12 | Presentations  |  |  

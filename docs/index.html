@@ -110,36 +110,20 @@ ul.task-list li input[type="checkbox"] {
 <section id="overview" class="level4">
 <h4 class="anchored" data-anchor-id="overview">Overview</h4>
 <p>The topic of this course is selecting stocks based on quantitative signals. What we want to do is to predict which stocks will do better than others. In quantitative investing, this is often done using machine learning, which means fitting a model to predict returns from signals. Signals can be technical or fundamental. Even subjective things like the tone of the CEO in an earnings call are quantifiable today. Thus, quantitative investing includes a large part of equity investing.</p>
-<p>Many different types of data are used for constructing trading signals. In this course, we will primarily use past returns and corporate financial statements. Textual analysis of corporate filings and news reports, social media activity, web traffic, insider trades, short sales, analyst forecasts, satellite imagery, and other types of data are also often used in practice.</p>
+<p>Many different types of data are used for constructing trading signals. In this course, we will use past returns and data from corporate financial statements. Textual analysis of corporate filings and news reports, social media activity, web traffic, insider trades, short sales, analyst forecasts, satellite imagery, and other types of data are also often used in practice.</p>
 <p>Many studies have been published on the effectiveness of different quantitative signals for predicting stock returns. We will discuss those studies throughout the course and use them to guide our construction of signals.</p>
 </section>
 <section id="data-and-tools" class="level4">
 <h4 class="anchored" data-anchor-id="data-and-tools">Data and Tools</h4>
-<p>We will use data from the <a href="https:/data-portal.rice-business.org">Rice Business Data Portal</a>, and we will work with it using Anthropic’s Claude models (especially Sonnet 4.5). We will need Claude Desktop, because the web version does not have one of the features that we will need. <a href="https://claude.ai/download">Download Claude Desktop</a> and install it. When it opens, you will be asked to sign in or to sign up for a new account. We need the Pro account ($20/month). You will be reimbursed for the expense.</p>
-<p>To connect the data portal to Claude, download this <a href="rice-stock-data.mcpb">mcpb file</a>. Double-click it. If necessary, right-click and choose <code>Open with</code> and then browse to find <code>claude.exe</code> (on Windows, it is probably in C:-name). Follow the installation instructions. If that does not work, ask Claude to do a web search to find out how to install mcpb files and then follow the instructions.</p>
+<p>We will use data from the <a href="https:/data-portal.rice-business.org">Rice Business Data Portal</a>, and we will work with it in Python with the help of Anthropic’s Claude Code. We need the Pro account ($20/month). You will be reimbursed for the expense. Instructions on installing and using Claude Code will be provided in the class.</p>
 </section>
 <section id="assignments-and-grading" class="level4">
 <h4 class="anchored" data-anchor-id="assignments-and-grading">Assignments and Grading</h4>
-<p>Grades will be based on three group assignments, peer assessments, and class participation.</p>
-<p><strong>Assignment 1:</strong> Submit a Word doc containing tests of two portfolio strategies. Both strategies should be long-short strategies based on sorting stocks into portfolios once per month on the basis of some criterion. One strategy should use a criterion derived from fundamentals and the other should use a criterion derived from past returns. The tests should include (i) a plot of cumulative returns of the portfolios, (ii) the Sharpe ratio of the portfolio that goes long one extreme and short the other, and (iii) the CAPM alpha of the long-short portfolio. It is important to describe the strategies sufficiently clearly that your results can be replicated.</p>
-<p><strong>Assignment 2:</strong> Submit a Word doc containing the result of a backtest of a machine-learning-based strategy. The machine learning model should combine signals based on fundamentals and past returns to predict relative stock returns over the following month. Relative return means return minus the median return. The portfolio strategy should sort stocks based on predicted relative returns. The model parameters each month must be fitted and validated using only data from prior months so that the strategy could be implemented in practice. The test of the strategy should include the three elments in Assignment 1: plot, Sharpe ratio, and CAPM alpha. It is important to describe the machine learning model and the portfolio strategy sufficiently clearly that your results can be replicated.</p>
-<p><strong>Assignment 3:</strong> Submit a Streamlit app and a Word doc. The app should have a Run button. When it is run, the app should download data, construct signals, and apply a pre-trained machine learning model to predict relative returns. The app should display the top 10 and bottom stocks and it should have a Download button that downloads an Excel workbook containing the following for every stock: ticker, all signals, and predicted relative return. The data should be sorted from best stock to worst stock. The Word doc should describe the machine learning model and it should describe a backtest of the model as in Assignment 2. It is important that the model and the backtest strategy be described sufficiently clearly that your results can be replicated.</p>
+<p>Grades will be based on four group assignments, peer assessments, and class participation. The group assignments are due on Sundays at 11:59 p.m. (Nov.&nbsp;9, 16, and 23, and Dec.&nbsp;7). The assignments are posted on Canvas.</p>
 </section>
-<section id="getting-started" class="level4">
-<h4 class="anchored" data-anchor-id="getting-started">Getting Started</h4>
-<ol type="1">
-<li><p>Install Claude Code. Here are <a href="https://docs.claude.com/en/docs/claude-code/setup">Mac instructions</a> and here are <a href="https://www.youtube.com/watch?v=hpMrTabldEY">Windows instructions</a>. Disregard anything you see online about needing WSL (Windows Subsystem for Linux) on Windows. Anthropic recently released a native version of Claude Code for Windows, so WSL is no longer needed.</p></li>
-<li><p>Install Python. In case you are unsure, ask Claude Code to determine if you have Python 3 available on your path. If not, ask Claude Code to install it.</p></li>
-<li><p>Install Git. Here are <a href="https://git-scm.com/downloads">download links</a>.</p></li>
-<li><p>Ask Claude Code to use the Git CLI (command line interface) to clone https://github.com/kerryback/mgmt638.</p></li>
-<li><p>In your terminal, cd (change directory) to the mgmt638 folder.</p></li>
-<li><p>Go to <a href="https://data-portal.rice-business.org">data-portal.rice-business.org</a> and get an access token. Open the .env file (in Notepad for example) and add the access token following the <code>=</code> sign.</p></li>
-</ol>
-<p>Each time you begin work, ask Claude Code to pull https://github.com/kerryback/mgmt638.</p>
-</section>
-<section id="course-schedule" class="level4">
-<h4 class="anchored" data-anchor-id="course-schedule">Course Schedule</h4>
-<p>The schedule is subject to change. The latest version can always be found by clicking clicking the <code>Schedule</code> link in the navbar at the top of the page.</p>
+<section id="schedule-slides-and-other-materials" class="level4">
+<h4 class="anchored" data-anchor-id="schedule-slides-and-other-materials">Schedule, Slides, and other Materials</h4>
+<p>The schedule can be found at the <code>Schedule/Materials</code> link in the navbar at the top of the page. Links to slide decks and other resources are also there.</p>
 </section>
 <section id="cqa-competition" class="level4">
 <h4 class="anchored" data-anchor-id="cqa-competition">CQA Competition</h4>

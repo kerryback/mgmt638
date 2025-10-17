@@ -11,6 +11,27 @@ project:
     - portal-guide.html
     - mcnair.jpg
     - rice-business.jpg
+    - QuantEquity.zip
+    - momentum.ipynb
+    - momentum_current.ipynb
+    - Kapadia_Ostdiek_Weston_Zekhnini_JFQA_2019.pdf
+    - Fama_French_JFE_2015.pdf
+    - Asness_Moskowitz_Pedersen_2013.pdf
+    - Asness_Frazzini_Pedersen_RAS_2019.pdf
+    - Jegadeesh_Titman_ARFE_2011.pdf
+    - Novy-Marx_Medhat_2025.pdf
+    - slides/session01_slides.pdf
+    - slides/session02_slides.pdf
+    - slides/session03_slides.pdf
+    - slides/session04_slides.pdf
+    - slides/session05_slides.pdf
+    - slides/session06_slides.pdf
+    - slides/session07_slides.pdf
+    - slides/session08_slides.pdf
+    - slides/session09_slides.pdf
+    - slides/session10_slides.pdf
+    - slides/session11_slides.pdf
+    - slides/session12_slides.pdf
                   
 website:
   title: ""

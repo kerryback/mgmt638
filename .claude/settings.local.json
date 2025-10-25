@@ -17,7 +17,19 @@
       "Bash(git stash:*)",
       "Bash(xcopy:*)",
       "Bash(robocopy:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(copy:*)",
+      "Bash(dir \"C:\\Users\\kerry\\Dropbox\\Weston_Kapadia_Ostdiek_Zechnini*.pdf\" /s /b)",
+      "Read(//c/texlive/2024/texmf-dist/tex/latex/beamertheme-metropolis//**)",
+      "Bash(tree:*)",
+      "Bash(for file in slides/session{05,06,07,08,09,10,11,12}_slides.tex)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(done)",
+      "Bash(for:*)",
+      "Read(//c/users/kerry/repos/genai4finance/**)",
+      "Bash(dir:*)",
+      "Bash(del nul)",
+      "Bash(del slidesnul)"
     ],
     "deny": [],
     "ask": []

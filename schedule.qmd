@@ -4,8 +4,8 @@
 | 2 | Stock Market Database<br>Claude Code and Python<br>Streamlit| [Slides](slides/session02_slides.pdf){target="_blank"}<br>[QuantEquity.zip](QuantEquity.zip){target="_blank"} |
 | 3 | Momentum<br>Value<br>Stock Filters  | [Slides](slides/session03_slides.pdf){target="_blank"} |
 | 4 | Fama-French Factors<br>Profitability<br>Stock Recommender App<br>  | [Slides](slides/session04_slides.pdf){target="_blank"} |
-| 5 | Safe Minus Risky<br>Merging 10Ks and 10Qs with Stock Returns<br>Sorting on Characteristics<br>Composite Ranks  | [Slides](slides/session05_slides.pdf){target="_blank"} |
-| 6 |  Hedge Funds and Public Information<br>| [Slides](slides/session06_slides.pdf){target="_blank"} |
+| 5 | Safe Minus Risky<br>Merging 10Ks and 10Qs with Stock Returns<br>Sorting on Characteristics | [Slides](slides/session05_slides.pdf){target="_blank"} |
+| 6 |  Hedge Funds and Public Information<br>Sorting on Composite Ranks | [Slides](slides/session06_slides.pdf){target="_blank"} |
 | 7 |  Machine Learning with Random Forests <br>Train, Validate, and Test | [Slides](slides/session07_slides.pdf){target="_blank"} |
 | 8 |  Backtesting Loops | [Slides](slides/session08_slides.pdf){target="_blank"} |
 | 9 |  Factor Exposures | [Slides](slides/session09_slides.pdf){target="_blank"} |

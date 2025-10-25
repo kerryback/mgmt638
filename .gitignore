@@ -5,7 +5,7 @@ __pycache__/
 
 # Course materials 
 
-CourseMaterials/
+QuantEquity/
 
 # C extensions
 *.so
@@ -198,3 +198,8 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 /.quarto/
+
+# Videos and PDFs in root (Quarto copies to docs/)
+videos/
+pdfs/
+slides/

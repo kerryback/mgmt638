@@ -29,7 +29,10 @@
       "Read(//c/users/kerry/repos/genai4finance/**)",
       "Bash(dir:*)",
       "Bash(del nul)",
-      "Bash(del slidesnul)"
+      "Bash(del slidesnul)",
+      "Bash(git config:*)",
+      "Read(//c/**)",
+      "Read(//d//**)"
     ],
     "deny": [],
     "ask": []

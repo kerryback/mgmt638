@@ -203,3 +203,7 @@ cython_debug/
 videos/
 pdfs/
 slides/
+
+# Data files
+*.parquet
+*.csv

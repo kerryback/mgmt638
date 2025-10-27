@@ -1,0 +1,158 @@
+---
+title: "Rice Data Query Skill - Setup Guide"
+format:
+  pdf:
+    documentclass: article
+    geometry: margin=1in
+    toc: true
+    colorlinks: true
+---
+
+# Rice Data Query Skill
+
+This skill enables Claude Code to query the Rice Business Stock Market Data Portal.
+
+## Setup
+
+### 1. Get Access Token
+
+Visit [https://data-portal.rice-business.org](https://data-portal.rice-business.org) and confirm your Rice email address to receive an access token (JWT).
+
+### 2. Create Skill Directory
+
+In your course project folder, create this directory structure:
+
+```
+your-course-folder/
+└── .claude/
+    └── skills/
+        └── rice-data-query/
+```
+
+On Windows:
+```
+mkdir .claude\skills\rice-data-query
+```
+
+On Mac/Linux:
+```bash
+mkdir -p .claude/skills/rice-data-query
+```
+
+### 3. Download SKILL.md
+
+Download the SKILL.md file from:
+
+[https://mgmt638.kerryback.com/SKILL.md](https://mgmt638.kerryback.com/SKILL.md)
+
+Save it as:
+```
+.claude/skills/rice-data-query/SKILL.md
+```
+
+### 4. Create .env File
+
+In your project directory (not inside `.claude/`), create a file named `.env` with your access token:
+
+```
+RICE_ACCESS_TOKEN=your_token_here
+```
+
+Replace `your_token_here` with the actual token from the Rice Data Portal.
+
+**Important**: The `.env` file should be in your `.gitignore` so it won't be committed to git.
+
+### 5. Install Required Packages
+
+Make sure you have these Python packages installed in your virtual environment:
+
+```bash
+pip install requests pandas python-dotenv
+```
+
+### Final Directory Structure
+
+Your project should look like this:
+
+```
+your-course-folder/
+├── .env                          # Your access token (not committed)
+├── .claude/
+│   └── skills/
+│       └── rice-data-query/
+│           └── SKILL.md          # The skill file
+└── your-notebooks.ipynb          # Your work
+```
+
+## Usage
+
+Once set up, simply ask Claude Code to fetch data from the Rice stock database.
+
+### Example Prompts
+
+- "Get the monthly prices for AAPL from 2020 to 2023"
+- "Show me the 10 largest tech companies by market cap"
+- "Fetch quarterly revenue data for Tesla over the last 5 years"
+- "Get insider trading data for Microsoft in the past year"
+
+### What Claude Does Automatically
+
+Claude will automatically:
+
+1. Use the skill to generate the correct SQL query
+2. Connect to the Rice Data Portal API using your token
+3. Fetch the data and return it as a pandas DataFrame
+4. **Ask you for a filename and save the data** as a .parquet file for future use
+
+## What This Skill Provides
+
+- **Complete database schema** for all tables (TICKERS, SEP, DAILY, SF1, SF2)
+- **SQL query rules** specific to the Rice Data Portal
+- **Direct API connection** code (no separate client library needed)
+- **Best practices** for avoiding timeouts and handling large datasets
+
+## Tables Available
+
+- **TICKERS**: Company information (sector, industry, exchange, etc.)
+- **SEP**: Daily stock prices (open, close, high, low, volume)
+- **DAILY**: Daily metrics (PE ratio, market cap, EV, etc.)
+- **SF1**: Fundamentals from 10-K/10-Q filings (revenue, earnings, ratios, etc.)
+- **SF2**: Insider trading from Form 4 filings
+
+## Important Notes
+
+1. **All date columns are VARCHAR type** - must cast to DATE in queries
+2. **Market cap in DAILY table is in thousands** of dollars
+3. **SF1 table has NO 'date' column** - use `reportperiod`, `datekey`, or `calendardate`
+4. **For large datasets** (like monthly prices), use year-by-year queries to avoid timeouts
+
+## Troubleshooting
+
+### Skill not loading?
+
+Make sure you're running `claude` from your course project folder (the folder that contains `.claude/`).
+
+### "RICE_ACCESS_TOKEN not found" error?
+
+1. Check that `.env` file exists in your project root (not inside `.claude/`)
+2. Check that the file contains: `RICE_ACCESS_TOKEN=your_token`
+3. Make sure there are no quotes around the token
+4. Make sure there are no spaces around the `=` sign
+
+### Connection errors?
+
+1. Verify your access token is still valid at [https://data-portal.rice-business.org](https://data-portal.rice-business.org)
+2. Check your internet connection
+3. Try the query again - sometimes the server is busy
+
+### Data not saving?
+
+The skill will automatically prompt you for a filename after each query. If you don't see the prompt, check that your SKILL.md file is the latest version from the course website.
+
+## More Information
+
+For complete variable descriptions and documentation, visit:
+
+- Database Guide: [https://portal-guide.rice-business.org](https://portal-guide.rice-business.org)
+- Rice Data Portal: [https://data-portal.rice-business.org](https://data-portal.rice-business.org)
+- Course Website: [https://mgmt638.kerryback.com](https://mgmt638.kerryback.com)

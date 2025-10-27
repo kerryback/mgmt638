@@ -1,7 +1,7 @@
 | Session |  Topics | Resources |
 |--------|---------|---------|
 | 1 |  Fundamental vs Quant Investing<br>Quality stocks<br>Factor Investing<br>Claude Code | [Slides](slides/session01_slides.pdf){target="_blank"} |
-| 2 | Stock Market Database<br>Claude Code and Python<br>Streamlit| [Slides](slides/session02_slides.pdf){target="_blank"}<br>[QuantEquity.zip](QuantEquity.zip){target="_blank"} |
+| 2 | Stock Market Database<br>Claude Code and Python<br>Streamlit| [Slides](slides/session02_slides.pdf){target="_blank"}<br>[SKILL.md](SKILL.md){target="_blank"}<br>[README.pdf](README.pdf){target="_blank"} |
 | 3 | Momentum<br>Value<br>Stock Filters  | [Slides](slides/session03_slides.pdf){target="_blank"} |
 | 4 | Fama-French Factors<br>Profitability<br>Stock Recommender App<br>  | [Slides](slides/session04_slides.pdf){target="_blank"} |
 | 5 | Safe Minus Risky<br>Merging 10Ks and 10Qs with Stock Returns<br>Sorting on Characteristics | [Slides](slides/session05_slides.pdf){target="_blank"} |

@@ -1,0 +1,57 @@
+{
+    "latex-workshop.latex.tools": [
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "clean-aux",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "del",
+                "%DOCFILE%.aux",
+                "%DOCFILE%.bbl",
+                "%DOCFILE%.blg",
+                "%DOCFILE%.nav",
+                "%DOCFILE%.out",
+                "%DOCFILE%.snm",
+                "%DOCFILE%.vrb",
+                "%DOCFILE%.synctex.gz",
+                "2>nul"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "pdflatex × 2 + clean",
+            "tools": [
+                "pdflatex",
+                "pdflatex",
+                "clean-aux"
+            ]
+        }
+    ],
+    "latex-workshop.latex.clean.subfolder.enabled": false,
+    "latex-workshop.latex.autoClean.run": "never",
+    "latex-workshop.message.error.show": false,
+    "latex-workshop.message.warning.show": false,
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.outDir": "%DIR%"
+}

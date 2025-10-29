@@ -32,7 +32,8 @@
       "Bash(del slidesnul)",
       "Bash(git config:*)",
       "Read(//c/**)",
-      "Read(//d//**)"
+      "Read(//d//**)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

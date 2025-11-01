@@ -1,0 +1,160 @@
+---
+title: Claude Code Skills
+---
+
+Skills extend Claude Code's capabilities for this course. Install these skills to enable specialized functionality for data analysis and research.
+
+## Quick Installation
+
+The easiest way to install skills is to ask Claude Code to do it for you:
+
+**Tell Claude Code:**
+```
+"Download and install the rice-data-query and momentum-calculator skills
+from mgmt638.kerryback.com/skills/"
+```
+
+Claude Code will download the files and place them in the correct location.
+
+---
+
+## Manual Installation
+
+If you prefer to install manually, follow these steps:
+
+### 1. Directory Structure
+
+Skills must be placed in `.claude/skills/` within your course folder:
+
+```
+your-course-folder/
+├── .claude/
+│   └── skills/
+│       ├── rice-data-query/
+│       │   ├── SKILL.md
+│       │   └── README.md
+│       └── momentum-calculator/
+│           ├── SKILL.md
+│           ├── README.md
+│           └── calculate_momentum.py
+```
+
+### 2. Create the Directory
+
+In your course folder, create the skills directory:
+
+**Mac/Linux:**
+```bash
+mkdir -p .claude/skills
+```
+
+**Windows (PowerShell):**
+```powershell
+New-Item -ItemType Directory -Path .claude\skills -Force
+```
+
+### 3. Download Skills
+
+Click the links below to download each skill file, then place them in the appropriate folder.
+
+---
+
+## Available Skills
+
+### Rice Data Query
+
+Query the Rice Business Stock Market Data Portal using natural language. This skill enables Claude Code to fetch stock prices, fundamentals, insider trades, and other financial data.
+
+**Files to download:**
+
+- [SKILL.md](skills/rice-data-query/SKILL.md) - Skill definition
+- [README.md](skills/rice-data-query/README.md) - Documentation
+
+**Installation location:** `.claude/skills/rice-data-query/`
+
+**What it does:**
+
+- Generates SQL queries for the Rice Data Portal
+- Handles date formatting and window functions
+- Saves data as parquet files
+- Provides detailed database schema information
+
+**Example usage:**
+
+```
+"Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database"
+```
+
+---
+
+### Momentum Calculator
+
+Calculate stock momentum from month-end prices using the Jegadeesh & Titman methodology.
+
+**Files to download:**
+
+- [SKILL.md](skills/momentum-calculator/SKILL.md) - Skill definition
+- [README.md](skills/momentum-calculator/README.md) - Documentation
+- [calculate_momentum.py](skills/momentum-calculator/calculate_momentum.py) - Python script
+
+**Installation location:** `.claude/skills/momentum-calculator/`
+
+**What it does:**
+
+- Calculates momentum as `closeadj(t-2) / closeadj(t-13) - 1`
+- Groups by ticker automatically
+- Converts dates to pandas Period format
+- Saves results as parquet files
+
+**Example usage:**
+
+```
+"Calculate momentum from my month_end_prices.parquet file"
+```
+
+---
+
+## Verification
+
+After installation, verify the skills are installed correctly:
+
+**Tell Claude Code:**
+```
+"List the skills in .claude/skills/"
+```
+
+You should see both `rice-data-query` and `momentum-calculator` folders with their respective files.
+
+---
+
+## Getting Help
+
+Each skill includes a README.md file with detailed documentation. If you encounter issues:
+
+1. Check that files are in the correct directory (`.claude/skills/`)
+2. Ensure all required files are present for each skill
+3. Restart Claude Code if skills don't appear immediately
+4. Ask Claude Code to check the skill installation
+
+---
+
+## Prerequisites
+
+### Rice Data Query
+
+Before using this skill, you need:
+
+1. An access token from the [Rice Data Portal](https://data-portal.rice-business.org)
+2. A `.env` file in your course folder with:
+   ```
+   RICE_ACCESS_TOKEN=your_token_here
+   ```
+
+Claude Code can help you create the `.env` file once you have your token.
+
+### Momentum Calculator
+
+Requires:
+
+- Python 3.x with pandas and pyarrow installed
+- Month-end price data in parquet format with columns: `ticker`, `date`, `closeadj`

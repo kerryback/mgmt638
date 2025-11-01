@@ -11,12 +11,12 @@ from pathlib import Path
 
 # Define source and destination
 CLAUDE_SKILLS = Path('.claude/skills')
+CLAUDE_DIR = Path('.claude')
 DIST_SKILLS = Path('skills')
 
 # Skills to distribute (folders to copy)
 SKILLS_TO_DISTRIBUTE = [
     'rice-data-query',
-    'momentum-calculator'
 ]
 
 def update_skills():
@@ -24,6 +24,19 @@ def update_skills():
 
     print("Updating skills distribution folder...")
 
+    # Copy CLAUDE.md from .claude/ to skills/
+    claude_md_source = CLAUDE_DIR / 'CLAUDE.md'
+    claude_md_dest = DIST_SKILLS / 'CLAUDE.md'
+
+    if claude_md_source.exists():
+        # Create destination directory if it doesn't exist
+        DIST_SKILLS.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(claude_md_source, claude_md_dest)
+        print(f"  Copied: CLAUDE.md")
+    else:
+        print(f"  Warning: {claude_md_source} not found, skipping...")
+
+    # Copy individual skill folders
     for skill_name in SKILLS_TO_DISTRIBUTE:
         source = CLAUDE_SKILLS / skill_name
         dest = DIST_SKILLS / skill_name
@@ -37,10 +50,6 @@ def update_skills():
 
         # Files to copy for each skill
         files_to_copy = ['SKILL.md', 'README.md']
-
-        # Add calculate_momentum.py for momentum-calculator skill
-        if skill_name == 'momentum-calculator':
-            files_to_copy.append('calculate_momentum.py')
 
         # Copy each file
         for filename in files_to_copy:

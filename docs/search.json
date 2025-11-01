@@ -1,9 +1,65 @@
 [
   {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
+    "objectID": "skills.html",
+    "href": "skills.html",
+    "title": "Claude Code Skills",
+    "section": "",
+    "text": "Skills extend Claude Code’s capabilities for this course. Install these skills to enable specialized functionality for data analysis and research."
+  },
+  {
+    "objectID": "skills.html#course-instructions-claude.md",
+    "href": "skills.html#course-instructions-claude.md",
+    "title": "Claude Code Skills",
+    "section": "Course Instructions (CLAUDE.md)",
+    "text": "Course Instructions (CLAUDE.md)\nThe CLAUDE.md file contains important course-specific instructions for Claude Code. This file tells Claude to use the rice-data-query skill for all Rice database queries.\nDownload: CLAUDE.md\nInstallation location: .claude/CLAUDE.md"
+  },
+  {
+    "objectID": "skills.html#quick-installation",
+    "href": "skills.html#quick-installation",
+    "title": "Claude Code Skills",
+    "section": "Quick Installation",
+    "text": "Quick Installation\nThe easiest way to install skills is to ask Claude Code to do it for you:\nTell Claude Code:\n\"Download and install the rice-data-query skill and CLAUDE.md\nfrom mgmt638.kerryback.com/skills/\"\nClaude Code will download the files and place them in the correct location."
+  },
+  {
+    "objectID": "skills.html#manual-installation",
+    "href": "skills.html#manual-installation",
+    "title": "Claude Code Skills",
+    "section": "Manual Installation",
+    "text": "Manual Installation\nIf you prefer to install manually, follow these steps:\n\n1. Directory Structure\nSkills must be placed in .claude/skills/ within your course folder:\nyour-course-folder/\n├── .claude/\n│   └── skills/\n│       ├── rice-data-query/\n│       │   ├── SKILL.md\n│       │   └── README.md\n│       └── momentum-calculator/\n│           ├── SKILL.md\n│           ├── README.md\n│           └── calculate_momentum.py\n\n\n2. Create the Directory\nIn your course folder, create the skills directory:\nMac/Linux:\nmkdir -p .claude/skills\nWindows (PowerShell):\nNew-Item -ItemType Directory -Path .claude\\skills -Force\n\n\n3. Download Skills\nClick the links below to download each skill file, then place them in the appropriate folder."
+  },
+  {
+    "objectID": "skills.html#available-skills",
+    "href": "skills.html#available-skills",
+    "title": "Claude Code Skills",
+    "section": "Available Skills",
+    "text": "Available Skills\n\nRice Data Query\nQuery the Rice Business Stock Market Data Portal using natural language. This skill enables Claude Code to fetch stock prices, fundamentals, insider trades, and other financial data.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\n\nInstallation location: .claude/skills/rice-data-query/\nWhat it does:\n\nGenerates SQL queries for the Rice Data Portal\nHandles date formatting and window functions\nSaves data as parquet files\nProvides detailed database schema information\n\nExample usage:\n\"Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database\"\n\n\n\nMomentum Calculator\nCalculate stock momentum from month-end prices using the Jegadeesh & Titman methodology.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\ncalculate_momentum.py - Python script\n\nInstallation location: .claude/skills/momentum-calculator/\nWhat it does:\n\nCalculates momentum as closeadj(t-2) / closeadj(t-13) - 1\nGroups by ticker automatically\nConverts dates to pandas Period format\nSaves results as parquet files\n\nExample usage:\n\"Calculate momentum from my month_end_prices.parquet file\""
+  },
+  {
+    "objectID": "skills.html#verification",
+    "href": "skills.html#verification",
+    "title": "Claude Code Skills",
+    "section": "Verification",
+    "text": "Verification\nAfter installation, verify the skills are installed correctly:\nTell Claude Code:\n\"List the skills in .claude/skills/\"\nYou should see both rice-data-query and momentum-calculator folders with their respective files."
+  },
+  {
+    "objectID": "skills.html#getting-help",
+    "href": "skills.html#getting-help",
+    "title": "Claude Code Skills",
+    "section": "Getting Help",
+    "text": "Getting Help\nEach skill includes a README.md file with detailed documentation. If you encounter issues:\n\nCheck that files are in the correct directory (.claude/skills/)\nEnsure all required files are present for each skill\nRestart Claude Code if skills don’t appear immediately\nAsk Claude Code to check the skill installation"
+  },
+  {
+    "objectID": "skills.html#prerequisites",
+    "href": "skills.html#prerequisites",
+    "title": "Claude Code Skills",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nRice Data Query\nBefore using this skill, you need:\n\nAn access token from the Rice Data Portal\nA .env file in your course folder with:\nRICE_ACCESS_TOKEN=your_token_here\n\nClaude Code can help you create the .env file once you have your token.\n\n\nMomentum Calculator\nRequires:\n\nPython 3.x with pandas and pyarrow installed\nMonth-end price data in parquet format with columns: ticker, date, closeadj"
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
     "title": "",
     "section": "",
-    "text": "Session\nTopics\nResources\n\n\n\n\n1\nFundamental vs Quant InvestingQuality stocksFactor InvestingClaude Code\nSlides\n\n\n2\nStock Market DatabaseClaude Code and PythonStreamlit\nSlidesSKILL.mdREADME.pdf\n\n\n3\nMomentumValueStock Filters\nSlides\n\n\n4\nFama-French FactorsProfitabilityStock Recommender App\nSlides\n\n\n5\nSafe Minus RiskyMerging 10Ks and 10Qs with Stock ReturnsSorting on Characteristics\nSlides\n\n\n6\nHedge Funds and Public InformationSorting on Composite Ranks\nSlides\n\n\n7\nMachine Learning with Random Forests Train, Validate, and Test\nSlides\n\n\n8\nBacktesting Loops\nSlides\n\n\n9\nFactor Exposures\nSlides\n\n\n10\nFactor Models and Portfolio Risk\nSlides\n\n\n11\nTrading Costs\nSlides\n\n\n12\nPresentations\nSlides"
+    "text": "Session\nTopics\nResources\n\n\n\n\n1\nQuality stocksFactor InvestingInstall Claude Code and Python\nSlides\n\n\n2\nRice Database\nSlidesSKILL.mdREADME.pdf\n\n\n3\nInstall VS CodeMomentum and ValueSorts\nSlides\n\n\n4\nFama-French FactorsProfitabilityStock Recommender App\nSlides\n\n\n5\nSafe Minus RiskyMerging 10Ks and 10Qs with Stock ReturnsSorting on Characteristics\nSlides\n\n\n6\nHedge Funds and Public InformationSorting on Composite Ranks\nSlides\n\n\n7\nMachine Learning with Random Forests Train, Validate, and Test\nSlides\n\n\n8\nBacktesting Loops\nSlides\n\n\n9\nFactor Exposures\nSlides\n\n\n10\nFactor Models and Portfolio Risk\nSlides\n\n\n11\nTrading Costs\nSlides\n\n\n12\nPresentations\nSlides"
   }
 ]

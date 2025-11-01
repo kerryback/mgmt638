@@ -4,13 +4,23 @@ title: Claude Code Skills
 
 Skills extend Claude Code's capabilities for this course. Install these skills to enable specialized functionality for data analysis and research.
 
+## Course Instructions (CLAUDE.md)
+
+The [CLAUDE.md](skills/CLAUDE.md) file contains important course-specific instructions for Claude Code. This file tells Claude to use the rice-data-query skill for all Rice database queries.
+
+**Download:** [CLAUDE.md](skills/CLAUDE.md)
+
+**Installation location:** `.claude/CLAUDE.md`
+
+---
+
 ## Quick Installation
 
 The easiest way to install skills is to ask Claude Code to do it for you:
 
 **Tell Claude Code:**
 ```
-"Download and install the rice-data-query and momentum-calculator skills
+"Download and install the rice-data-query skill and CLAUDE.md
 from mgmt638.kerryback.com/skills/"
 ```
 

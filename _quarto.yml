@@ -16,6 +16,7 @@ project:
     - momentum_current.ipynb
     - README.pdf
     - SKILL.md
+    - skills/
     - pdfs/Asness_Frazzini_Pedersen_RAS_2019.pdf
     - pdfs/Asness_Moskowitz_Pedersen_JF_2013.pdf
     - pdfs/Crane_Crotty_Umar_MS_2023.pdf

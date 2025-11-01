@@ -1,9 +1,10 @@
 project:
   type: website
   output-dir: docs
-  render: 
+  render:
     - index.qmd
     - schedule.qmd
+    - skills.qmd
 
   resources:
     - CNAME
@@ -57,6 +58,9 @@ website:
     right:
         - text: Schedule/Materials
           file: schedule.qmd
+          target: _blank
+        - text: Skills
+          file: skills.qmd
           target: _blank
         
 

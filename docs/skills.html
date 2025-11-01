@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>schedule</title>
+<title>Claude Code Skills</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -73,11 +107,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./schedule.html" target="_blank" aria-current="page"> 
+    <a class="nav-link" href="./schedule.html" target="_blank"> 
 <span class="menu-text">Schedule/Materials</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./skills.html" target="_blank"> 
+    <a class="nav-link active" href="./skills.html" target="_blank" aria-current="page"> 
 <span class="menu-text">Skills</span></a>
   </li>  
 </ul>
@@ -94,84 +128,154 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Claude Code Skills</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Session</th>
-<th>Topics</th>
-<th>Resources</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Fundamental vs Quant Investing<br>Quality stocks<br>Factor Investing<br>Claude Code</td>
-<td><a href="slides/session01_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>Stock Market Database<br>Claude Code and Python<br>Streamlit</td>
-<td><a href="slides/session02_slides.pdf" target="_blank">Slides</a><br><a href="SKILL.md" target="_blank">SKILL.md</a><br><a href="README.pdf" target="_blank">README.pdf</a></td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>Momentum<br>Value<br>Stock Filters</td>
-<td><a href="slides/session03_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>Fama-French Factors<br>Profitability<br>Stock Recommender App<br></td>
-<td><a href="slides/session04_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>Safe Minus Risky<br>Merging 10Ks and 10Qs with Stock Returns<br>Sorting on Characteristics</td>
-<td><a href="slides/session05_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>Hedge Funds and Public Information<br>Sorting on Composite Ranks</td>
-<td><a href="slides/session06_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>Machine Learning with Random Forests <br>Train, Validate, and Test</td>
-<td><a href="slides/session07_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td>Backtesting Loops</td>
-<td><a href="slides/session08_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td>Factor Exposures</td>
-<td><a href="slides/session09_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="even">
-<td>10</td>
-<td>Factor Models and Portfolio Risk</td>
-<td><a href="slides/session10_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="odd">
-<td>11</td>
-<td>Trading Costs</td>
-<td><a href="slides/session11_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-<tr class="even">
-<td>12</td>
-<td>Presentations</td>
-<td><a href="slides/session12_slides.pdf" target="_blank">Slides</a></td>
-</tr>
-</tbody>
-</table>
+    
+  
+    
+  </div>
+  
 
 
+</header>
+
+
+<p>Skills extend Claude Code’s capabilities for this course. Install these skills to enable specialized functionality for data analysis and research.</p>
+<section id="quick-installation" class="level2">
+<h2 class="anchored" data-anchor-id="quick-installation">Quick Installation</h2>
+<p>The easiest way to install skills is to ask Claude Code to do it for you:</p>
+<p><strong>Tell Claude Code:</strong></p>
+<pre><code>"Download and install the rice-data-query and momentum-calculator skills
+from mgmt638.kerryback.com/skills/"</code></pre>
+<p>Claude Code will download the files and place them in the correct location.</p>
+<hr>
+</section>
+<section id="manual-installation" class="level2">
+<h2 class="anchored" data-anchor-id="manual-installation">Manual Installation</h2>
+<p>If you prefer to install manually, follow these steps:</p>
+<section id="directory-structure" class="level3">
+<h3 class="anchored" data-anchor-id="directory-structure">1. Directory Structure</h3>
+<p>Skills must be placed in <code>.claude/skills/</code> within your course folder:</p>
+<pre><code>your-course-folder/
+├── .claude/
+│   └── skills/
+│       ├── rice-data-query/
+│       │   ├── SKILL.md
+│       │   └── README.md
+│       └── momentum-calculator/
+│           ├── SKILL.md
+│           ├── README.md
+│           └── calculate_momentum.py</code></pre>
+</section>
+<section id="create-the-directory" class="level3">
+<h3 class="anchored" data-anchor-id="create-the-directory">2. Create the Directory</h3>
+<p>In your course folder, create the skills directory:</p>
+<p><strong>Mac/Linux:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> .claude/skills</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Windows (PowerShell):</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">New-Item</span> <span class="op">-</span>ItemType Directory <span class="op">-</span>Path <span class="op">.</span><span class="fu">claude</span>\skills <span class="op">-</span>Force</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="download-skills" class="level3">
+<h3 class="anchored" data-anchor-id="download-skills">3. Download Skills</h3>
+<p>Click the links below to download each skill file, then place them in the appropriate folder.</p>
+<hr>
+</section>
+</section>
+<section id="available-skills" class="level2">
+<h2 class="anchored" data-anchor-id="available-skills">Available Skills</h2>
+<section id="rice-data-query" class="level3">
+<h3 class="anchored" data-anchor-id="rice-data-query">Rice Data Query</h3>
+<p>Query the Rice Business Stock Market Data Portal using natural language. This skill enables Claude Code to fetch stock prices, fundamentals, insider trades, and other financial data.</p>
+<p><strong>Files to download:</strong></p>
+<ul>
+<li><a href="skills/rice-data-query/SKILL.md">SKILL.md</a> - Skill definition</li>
+<li><a href="skills/rice-data-query/README.md">README.md</a> - Documentation</li>
+</ul>
+<p><strong>Installation location:</strong> <code>.claude/skills/rice-data-query/</code></p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Generates SQL queries for the Rice Data Portal</li>
+<li>Handles date formatting and window functions</li>
+<li>Saves data as parquet files</li>
+<li>Provides detailed database schema information</li>
+</ul>
+<p><strong>Example usage:</strong></p>
+<pre><code>"Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database"</code></pre>
+<hr>
+</section>
+<section id="momentum-calculator" class="level3">
+<h3 class="anchored" data-anchor-id="momentum-calculator">Momentum Calculator</h3>
+<p>Calculate stock momentum from month-end prices using the Jegadeesh &amp; Titman methodology.</p>
+<p><strong>Files to download:</strong></p>
+<ul>
+<li><a href="skills/momentum-calculator/SKILL.md">SKILL.md</a> - Skill definition</li>
+<li><a href="skills/momentum-calculator/README.md">README.md</a> - Documentation</li>
+<li><a href="skills/momentum-calculator/calculate_momentum.py">calculate_momentum.py</a> - Python script</li>
+</ul>
+<p><strong>Installation location:</strong> <code>.claude/skills/momentum-calculator/</code></p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Calculates momentum as <code>closeadj(t-2) / closeadj(t-13) - 1</code></li>
+<li>Groups by ticker automatically</li>
+<li>Converts dates to pandas Period format</li>
+<li>Saves results as parquet files</li>
+</ul>
+<p><strong>Example usage:</strong></p>
+<pre><code>"Calculate momentum from my month_end_prices.parquet file"</code></pre>
+<hr>
+</section>
+</section>
+<section id="verification" class="level2">
+<h2 class="anchored" data-anchor-id="verification">Verification</h2>
+<p>After installation, verify the skills are installed correctly:</p>
+<p><strong>Tell Claude Code:</strong></p>
+<pre><code>"List the skills in .claude/skills/"</code></pre>
+<p>You should see both <code>rice-data-query</code> and <code>momentum-calculator</code> folders with their respective files.</p>
+<hr>
+</section>
+<section id="getting-help" class="level2">
+<h2 class="anchored" data-anchor-id="getting-help">Getting Help</h2>
+<p>Each skill includes a README.md file with detailed documentation. If you encounter issues:</p>
+<ol type="1">
+<li>Check that files are in the correct directory (<code>.claude/skills/</code>)</li>
+<li>Ensure all required files are present for each skill</li>
+<li>Restart Claude Code if skills don’t appear immediately</li>
+<li>Ask Claude Code to check the skill installation</li>
+</ol>
+<hr>
+</section>
+<section id="prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
+<section id="rice-data-query-1" class="level3">
+<h3 class="anchored" data-anchor-id="rice-data-query-1">Rice Data Query</h3>
+<p>Before using this skill, you need:</p>
+<ol type="1">
+<li><p>An access token from the <a href="https://data-portal.rice-business.org">Rice Data Portal</a></p></li>
+<li><p>A <code>.env</code> file in your course folder with:</p>
+<pre><code>RICE_ACCESS_TOKEN=your_token_here</code></pre></li>
+</ol>
+<p>Claude Code can help you create the <code>.env</code> file once you have your token.</p>
+</section>
+<section id="momentum-calculator-1" class="level3">
+<h3 class="anchored" data-anchor-id="momentum-calculator-1">Momentum Calculator</h3>
+<p>Requires:</p>
+<ul>
+<li>Python 3.x with pandas and pyarrow installed</li>
+<li>Month-end price data in parquet format with columns: <code>ticker</code>, <code>date</code>, <code>closeadj</code></li>
+</ul>
+
+
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

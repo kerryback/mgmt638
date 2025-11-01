@@ -3,7 +3,7 @@ project:
   output-dir: docs
   render:
     - index.qmd
-    - schedule.qmd
+    - slides.qmd
     - skills.qmd
 
   resources:
@@ -17,6 +17,7 @@ project:
     - momentum_current.ipynb
     - README.pdf
     - SKILL.md
+    - skills/CLAUDE.md
     - skills/
     - pdfs/Asness_Frazzini_Pedersen_RAS_2019.pdf
     - pdfs/Asness_Moskowitz_Pedersen_JF_2013.pdf
@@ -56,12 +57,14 @@ website:
     title: MGMT 638
     file: index.qmd
     right:
-        - text: Schedule/Materials
-          file: schedule.qmd
+        - text: Slides
+          file: slides.qmd
           target: _blank
         - text: Skills
           file: skills.qmd
           target: _blank
+        
+        
         
 
    

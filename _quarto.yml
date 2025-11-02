@@ -18,6 +18,7 @@ project:
     - README.pdf
     - SKILL.md
     - skills/CLAUDE.md
+    - skills/rice-data-query/
     - skills/merge/
     - skills/
     - pdfs/Asness_Frazzini_Pedersen_RAS_2019.pdf
@@ -64,9 +65,11 @@ website:
         - text: Skills
           file: skills.qmd
           target: _blank
-        
-        
-        
+        - text: Data Guide
+          href: https://portal-guide.rice-business.org
+          target: _blank
+
+
 
    
 format:

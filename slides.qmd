@@ -1,12 +1,12 @@
-| Session |  Topics | Resources |
+| Session |  Topics | Slides |
 |--------|---------|---------|
 | 1 |  Quality stocks<br>Factor Investing<br>Install Claude Code and Python | [Slides](slides/session01_slides.pdf){target="_blank"} |
 | 2 | Rice Database| [Slides](slides/session02_slides.pdf){target="_blank"}<br>[SKILL.md](SKILL.md){target="_blank"}<br>[README.pdf](README.pdf){target="_blank"} |
-| 3 | Install VS Code<br>Momentum and Value<br>Sorts<br>  | [Slides](slides/session03_slides.pdf){target="_blank"} |
-| 4 | Fama-French Factors<br>Profitability<br>Stock Recommender App<br>  | [Slides](slides/session04_slides.pdf){target="_blank"} |
-| 5 | Safe Minus Risky<br>Merging 10Ks and 10Qs with Stock Returns<br>Sorting on Characteristics | [Slides](slides/session05_slides.pdf){target="_blank"} |
-| 6 |  Hedge Funds and Public Information<br>Sorting on Composite Ranks | [Slides](slides/session06_slides.pdf){target="_blank"} |
-| 7 |  Machine Learning with Random Forests <br>Train, Validate, and Test | [Slides](slides/session07_slides.pdf){target="_blank"} |
+| 3 | Install VS Code<br>Momentum and Value<br>Data Query and Merge Skills <br>  | [Slides](slides/session03_slides.pdf){target="_blank"} |
+| 4 | Fama-French Factors<br>Profitability<br>Forming Portfolios from Sorts<br>  | [Slides](slides/session04_slides.pdf){target="_blank"} |
+| 5 | Safe Minus Risky | [Slides](slides/session05_slides.pdf){target="_blank"} |
+| 6 |  Hedge Funds and Public Informations | [Slides](slides/session06_slides.pdf){target="_blank"} |
+| 7 |  Machine Learning with Random Forests <br>Train, Validate,  Test | [Slides](slides/session07_slides.pdf){target="_blank"} |
 | 8 |  Backtesting Loops | [Slides](slides/session08_slides.pdf){target="_blank"} |
 | 9 |  Factor Exposures | [Slides](slides/session09_slides.pdf){target="_blank"} |
 | 10 | Factor Models and Portfolio Risk  | [Slides](slides/session10_slides.pdf){target="_blank"} |

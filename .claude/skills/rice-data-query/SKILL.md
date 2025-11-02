@@ -7,6 +7,31 @@ description: "SQL expert for Rice Data Portal queries using DuckDB SQL. ALWAYS u
 
 You are a SQL expert who will write DuckDB SQL code and send it to the Rice Data Portal API.
 
+## UTILITY SCRIPTS (USE THESE FIRST!)
+
+**CRITICAL: For common tasks, use the pre-written utility scripts instead of generating new code!**
+
+Located in `.claude/skills/rice-data-query/`:
+
+1. **`rice_monthly_returns.py`** - Fetch monthly returns and momentum
+   ```bash
+   python .claude/skills/rice-data-query/rice_monthly_returns.py TICKER1,TICKER2 START_DATE OUTPUT_FILE
+   # Example: python .claude/skills/rice-data-query/rice_monthly_returns.py AAPL,MSFT 2020-01-01 returns.xlsx
+   ```
+
+2. **`rice_sf1_query.py`** - Fetch SF1 fundamental data
+   ```bash
+   python .claude/skills/rice-data-query/rice_sf1_query.py TICKERS VARIABLES DIMENSION START_DATE OUTPUT_FILE
+   # Example: python .claude/skills/rice-data-query/rice_sf1_query.py AAPL,MSFT equity,revenue,netinc ARY 2020-01-01 fundamentals.xlsx
+   ```
+
+**When to use utility scripts:**
+- Monthly returns/momentum → Use `rice_monthly_returns.py`
+- SF1 fundamental data → Use `rice_sf1_query.py`
+- Custom queries → Generate code as described below
+
+This saves tokens and reduces errors!
+
 ## Rice Data Portal API Connection
 
 **API Endpoint:** `https://data-portal.rice-business.org/api/query`
@@ -55,20 +80,17 @@ API_URL = "https://data-portal.rice-business.org/api/query"
 1. **Understand the request**: Determine what data the user needs and which table(s) to query
 2. **Write the SQL query**: Generate proper DuckDB SQL following all rules below
 3. **Execute the query**: Run the query and retrieve the data
-4. **Prompt for filename**: Ask the user: "What filename would you like to save this data to? (Supported formats: .parquet, .xlsx, .csv)"
-5. **Save based on extension**:
-   - If filename ends with `.parquet` → save as Parquet (most efficient)
-   - If filename ends with `.xlsx` → save as Excel (good for viewing/editing)
-   - If filename ends with `.csv` → save as CSV (universal compatibility)
+4. **Prompt for filename**: Ask the user: "What filename would you like to save this data to?"
+5. **Save as Parquet**: Always save as `.parquet` format (add extension if not provided)
 6. **Confirm**: Let the user know the data has been saved successfully
 
 **Example interaction:**
 ```
 User: "Get me the top 10 tech stocks by market cap"
 Assistant: [Writes SQL query, executes it]
-Assistant: "What filename would you like to save this data to? (Supported formats: .parquet, .xlsx, .csv)"
-User: "tech_stocks.xlsx"
-Assistant: [Saves as Excel] "Data saved to tech_stocks.xlsx (10 rows)"
+Assistant: "What filename would you like to save this data to?"
+User: "tech_stocks"
+Assistant: [Saves as Parquet] "Data saved to tech_stocks.parquet (10 rows)"
 ```
 
 ## How to Execute SQL Queries and Save Data
@@ -104,15 +126,11 @@ if 'data' in data and 'columns' in data:
         df = df[data['columns']]
     print(f"Query returned {len(df)} rows")
 
-    # 3. Save based on file extension
-    if filename.endswith('.parquet'):
-        df.to_parquet(filename, index=False)
-    elif filename.endswith('.xlsx'):
-        df.to_excel(filename, index=False)
-    elif filename.endswith('.csv'):
-        df.to_csv(filename, index=False)
-    else:
-        raise ValueError(f"Unsupported file extension. Use .parquet, .xlsx, or .csv")
+    # 3. Save as Parquet (add extension if not provided)
+    if not filename.endswith('.parquet'):
+        filename = filename + '.parquet'
+
+    df.to_parquet(filename, index=False)
     print(f"Data saved to {filename}")
 else:
     print("No data returned")
@@ -226,9 +244,11 @@ df.to_excel('filename.xlsx', index=False)  # or df.to_csv('filename.csv', index=
     - ARY = As Reported Annual
     - ART = As Reported Trailing 4 quarters
 24. NEVER use MR dimensions (MRQ, MRY, MRT) - these include restatements and should not be used
-25. ALWAYS include reportperiod, datekey, and ticker in the SELECT statement for SF1 queries
+25. SF1 queries should return ONLY ticker, reportperiod, datekey, and the requested variables
+    - **DO NOT include fiscalperiod or dimension in the SELECT statement**
     - **CRITICAL**: SF1 queries MUST include `ORDER BY ticker, datekey` in the final SELECT statement
     - This ensures proper chronological ordering for time series analysis
+    - Example: SELECT ticker, reportperiod, datekey, equity, revenue FROM sf1 WHERE dimension = 'ARY' ORDER BY ticker, datekey
 26. Period selection:
     - Quarterly data: Use dimension = 'ARQ'
     - Annual data: Use dimension = 'ARY'
@@ -239,7 +259,8 @@ df.to_excel('filename.xlsx', index=False)  # or df.to_csv('filename.csv', index=
     - Annual growth (ARY): LAG(metric, 1)
     - Same quarter prior year (ARQ): LAG(metric, 4)
     - Trailing 4 quarters (ART): LAG(metric, 1)
-29. Example SF1 query: SELECT ticker, reportperiod, datekey, revenue, ROUND(((revenue - LAG(revenue, 4) OVER (PARTITION BY ticker ORDER BY datekey)) / LAG(revenue, 4) OVER (PARTITION BY ticker ORDER BY datekey)) * 100, 2) as yoy_growth_pct FROM sf1 WHERE dimension = 'ARQ' ORDER BY ticker, datekey
+29. Example SF1 query with growth calculation: SELECT ticker, reportperiod, datekey, revenue, ROUND(((revenue - LAG(revenue, 4) OVER (PARTITION BY ticker ORDER BY datekey)) / LAG(revenue, 4) OVER (PARTITION BY ticker ORDER BY datekey)) * 100, 2) as yoy_growth_pct FROM sf1 WHERE dimension = 'ARQ' ORDER BY ticker, datekey
+    - Note: This returns only ticker, reportperiod, datekey, revenue, and the calculated growth rate (no fiscalperiod or dimension)
 
 ## FINANCIAL METRICS GUIDANCE (30-35)
 
@@ -379,13 +400,18 @@ df.to_excel('filename.xlsx', index=False)  # or df.to_csv('filename.csv', index=
     # Add month column for easier reading
     df_final['month'] = df_final['date'].dt.to_period('M').astype(str)
 
-    # Final columns: ticker, month, date, close, closeadj, monthly_return, momentum
+    # Rename monthly_return to return for final output
+    df_final['return'] = df_final['monthly_return']
+
+    # Select final columns in proper order - DO NOT include closeadj
+    df_final = df_final[['ticker', 'month', 'date', 'close', 'return', 'momentum']]
     ```
 
     **Important notes:**
     - **CRITICAL**: ALWAYS use `groupby('ticker')` when calculating returns and momentum
     - This ensures each ticker's calculations are independent (no mixing of data across tickers)
-    - **CRITICAL**: Always return ticker, date, close, closeadj, return, and momentum columns
+    - **CRITICAL OUTPUT COLUMNS**: Final file must contain ONLY ticker, month, date, close, return, and momentum
+    - **DO NOT include closeadj in the final output** (it's used for calculations but should be dropped)
     - Monthly returns: First month per ticker has NaN (no prior month to compare)
     - Momentum: First 13 months per ticker have NaN (need 13 months of history)
     - Keep NaN values in output - DO NOT drop them (user may want to see all dates)
@@ -453,13 +479,19 @@ df.to_excel('filename.xlsx', index=False)  # or df.to_csv('filename.csv', index=
     # Add week column for easier reading (ISO week format)
     df_final['week'] = df_final['date'].dt.to_period('W').astype(str)
 
-    # Final columns: ticker, week, date, close, closeadj, weekly_return, weekly_momentum
+    # Rename weekly_return to return and weekly_momentum to momentum for final output
+    df_final['return'] = df_final['weekly_return']
+    df_final['momentum'] = df_final['weekly_momentum']
+
+    # Select final columns in proper order - DO NOT include closeadj
+    df_final = df_final[['ticker', 'week', 'date', 'close', 'return', 'momentum']]
     ```
 
     **Important notes:**
     - **CRITICAL**: ALWAYS use `groupby('ticker')` when calculating returns and momentum
     - This ensures each ticker's calculations are independent (no mixing of data across tickers)
-    - **CRITICAL**: Always return ticker, date, close, closeadj, return, and momentum columns
+    - **CRITICAL OUTPUT COLUMNS**: Final file must contain ONLY ticker, week, date, close, return, and momentum
+    - **DO NOT include closeadj in the final output** (it's used for calculations but should be dropped)
     - DuckDB uses ISO weeks (Monday = start of week)
     - End-of-week = last trading day in that week (usually Friday, but could be earlier if holiday)
     - Weekly returns: First week per ticker has NaN (no prior week to compare)

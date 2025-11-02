@@ -34,7 +34,8 @@
       "Read(//c/**)",
       "Read(//d//**)",
       "Bash(test:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Skill(merge)"
     ],
     "deny": [],
     "ask": []

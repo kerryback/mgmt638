@@ -18,7 +18,6 @@ DIST_SKILLS = Path('skills')
 SKILLS_TO_DISTRIBUTE = [
     'rice-data-query',
     'merge',
-    'financial-ratios',
 ]
 
 def update_skills():
@@ -53,7 +52,10 @@ def update_skills():
         # Files to copy for each skill
         files_to_copy = ['SKILL.md', 'README.md']
 
-        # Copy each file
+        # Also look for Python scripts
+        python_files = list(source.glob('*.py'))
+
+        # Copy markdown files
         for filename in files_to_copy:
             source_file = source / filename
             dest_file = dest / filename
@@ -63,6 +65,12 @@ def update_skills():
                 print(f"  Copied: {skill_name}/{filename}")
             else:
                 print(f"  Warning: {source_file} not found, skipping...")
+
+        # Copy Python files
+        for py_file in python_files:
+            dest_py_file = dest / py_file.name
+            shutil.copy2(py_file, dest_py_file)
+            print(f"  Copied: {skill_name}/{py_file.name}")
 
     print("\nSkills distribution folder updated successfully!")
     print("Files are ready to be published to docs/skills/ when you run 'quarto render'")

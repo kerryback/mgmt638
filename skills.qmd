@@ -20,8 +20,8 @@ The easiest way to install skills is to ask Claude Code to do it for you:
 
 **Tell Claude Code:**
 ```
-"Download and install the rice-data-query and merge skills, plus CLAUDE.md
-from mgmt638.kerryback.com/skills/"
+"Download and install the rice-data-query, merge, and financial-ratios skills,
+plus CLAUDE.md from mgmt638.kerryback.com/skills/"
 ```
 
 Claude Code will download the files and place them in the correct location.
@@ -43,7 +43,10 @@ your-course-folder/
 │       ├── rice-data-query/
 │       │   ├── SKILL.md
 │       │   └── README.md
-│       └── merge/
+│       ├── merge/
+│       │   ├── SKILL.md
+│       │   └── README.md
+│       └── financial-ratios/
 │           ├── SKILL.md
 │           └── README.md
 ```
@@ -70,6 +73,14 @@ Click the links below to download each skill file, then place them in the approp
 
 ## Available Skills
 
+| Skill | Description | Last Updated |
+|-------|-------------|--------------|
+| [Rice Data Query](#rice-data-query) | Query the Rice Business Stock Market Data Portal using SQL | 11-01-2025 |
+| [Merge](#merge) | Merge financial datasets with proper date alignment | 11-01-2025 |
+| [Financial Ratios](#financial-ratios) | Calculate financial ratios with automatic validation | 11-01-2025 |
+
+---
+
 ### Rice Data Query
 
 Query the Rice Business Stock Market Data Portal using natural language. This skill enables Claude Code to fetch stock prices, fundamentals, insider trades, and other financial data.
@@ -93,6 +104,8 @@ Query the Rice Business Stock Market Data Portal using natural language. This sk
 ```
 "Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database"
 ```
+
+**Last updated:** 11-01-2025
 
 ---
 
@@ -120,6 +133,37 @@ Expert guidance for merging financial datasets with different frequencies and pr
 "Merge my weekly returns data with quarterly ROE from SF1"
 ```
 
+**Last updated:** 11-01-2025
+
+---
+
+### Financial Ratios
+
+Calculate financial ratios from merged datasets with automatic validation of required variables.
+
+**Files to download:**
+
+- [SKILL.md](skills/financial-ratios/SKILL.md) - Skill definition
+- [README.md](skills/financial-ratios/README.md) - Documentation
+
+**Installation location:** `.claude/skills/financial-ratios/`
+
+**What it does:**
+
+- Validates that required variables exist before calculating ratios
+- Provides clear formulas and data source guidance
+- Handles edge cases (division by zero, missing values)
+- Currently supports: Book-to-Market ratio
+- Will expand to include P/E, D/E, ROE, ROA, and more
+
+**Example usage:**
+
+```
+"Calculate book-to-market ratio for my merged dataset"
+```
+
+**Last updated:** 11-01-2025
+
 ---
 
 ## Verification
@@ -131,7 +175,7 @@ After installation, verify the skills are installed correctly:
 "List the skills in .claude/skills/"
 ```
 
-You should see `rice-data-query` and `merge` folders with their respective files.
+You should see `rice-data-query`, `merge`, and `financial-ratios` folders with their respective files.
 
 ---
 
@@ -167,3 +211,11 @@ Requires:
 - Python 3.x with pandas installed
 - Weekly returns data (from rice-data-query skill)
 - SF1 fundamental data (from rice-data-query skill)
+
+### Financial Ratios
+
+Requires:
+
+- Python 3.x with pandas installed
+- Merged dataset containing price and fundamental data
+- Specific variables depend on the ratio being calculated

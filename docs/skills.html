@@ -161,8 +161,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="quick-installation">Quick Installation</h2>
 <p>The easiest way to install skills is to ask Claude Code to do it for you:</p>
 <p><strong>Tell Claude Code:</strong></p>
-<pre><code>"Download and install the rice-data-query and merge skills, plus CLAUDE.md
-from mgmt638.kerryback.com/skills/"</code></pre>
+<pre><code>"Download and install the rice-data-query, merge, and financial-ratios skills,
+plus CLAUDE.md from mgmt638.kerryback.com/skills/"</code></pre>
 <p>Claude Code will download the files and place them in the correct location.</p>
 <hr>
 </section>
@@ -178,7 +178,10 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 │       ├── rice-data-query/
 │       │   ├── SKILL.md
 │       │   └── README.md
-│       └── merge/
+│       ├── merge/
+│       │   ├── SKILL.md
+│       │   └── README.md
+│       └── financial-ratios/
 │           ├── SKILL.md
 │           └── README.md</code></pre>
 </section>
@@ -198,6 +201,33 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 </section>
 <section id="available-skills" class="level2">
 <h2 class="anchored" data-anchor-id="available-skills">Available Skills</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Skill</th>
+<th>Description</th>
+<th>Last Updated</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#rice-data-query">Rice Data Query</a></td>
+<td>Query the Rice Business Stock Market Data Portal using SQL</td>
+<td>11-01-2025</td>
+</tr>
+<tr class="even">
+<td><a href="#merge">Merge</a></td>
+<td>Merge financial datasets with proper date alignment</td>
+<td>11-01-2025</td>
+</tr>
+<tr class="odd">
+<td><a href="#financial-ratios">Financial Ratios</a></td>
+<td>Calculate financial ratios with automatic validation</td>
+<td>11-01-2025</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <section id="rice-data-query" class="level3">
 <h3 class="anchored" data-anchor-id="rice-data-query">Rice Data Query</h3>
 <p>Query the Rice Business Stock Market Data Portal using natural language. This skill enables Claude Code to fetch stock prices, fundamentals, insider trades, and other financial data.</p>
@@ -216,6 +246,7 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 </ul>
 <p><strong>Example usage:</strong></p>
 <pre><code>"Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database"</code></pre>
+<p><strong>Last updated:</strong> 11-01-2025</p>
 <hr>
 </section>
 <section id="merge" class="level3">
@@ -236,6 +267,29 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 </ul>
 <p><strong>Example usage:</strong></p>
 <pre><code>"Merge my weekly returns data with quarterly ROE from SF1"</code></pre>
+<p><strong>Last updated:</strong> 11-01-2025</p>
+<hr>
+</section>
+<section id="financial-ratios" class="level3">
+<h3 class="anchored" data-anchor-id="financial-ratios">Financial Ratios</h3>
+<p>Calculate financial ratios from merged datasets with automatic validation of required variables.</p>
+<p><strong>Files to download:</strong></p>
+<ul>
+<li><a href="skills/financial-ratios/SKILL.md">SKILL.md</a> - Skill definition</li>
+<li><a href="skills/financial-ratios/README.md">README.md</a> - Documentation</li>
+</ul>
+<p><strong>Installation location:</strong> <code>.claude/skills/financial-ratios/</code></p>
+<p><strong>What it does:</strong></p>
+<ul>
+<li>Validates that required variables exist before calculating ratios</li>
+<li>Provides clear formulas and data source guidance</li>
+<li>Handles edge cases (division by zero, missing values)</li>
+<li>Currently supports: Book-to-Market ratio</li>
+<li>Will expand to include P/E, D/E, ROE, ROA, and more</li>
+</ul>
+<p><strong>Example usage:</strong></p>
+<pre><code>"Calculate book-to-market ratio for my merged dataset"</code></pre>
+<p><strong>Last updated:</strong> 11-01-2025</p>
 <hr>
 </section>
 </section>
@@ -244,7 +298,7 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 <p>After installation, verify the skills are installed correctly:</p>
 <p><strong>Tell Claude Code:</strong></p>
 <pre><code>"List the skills in .claude/skills/"</code></pre>
-<p>You should see <code>rice-data-query</code> and <code>merge</code> folders with their respective files.</p>
+<p>You should see <code>rice-data-query</code>, <code>merge</code>, and <code>financial-ratios</code> folders with their respective files.</p>
 <hr>
 </section>
 <section id="getting-help" class="level2">
@@ -277,6 +331,15 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 <li>Python 3.x with pandas installed</li>
 <li>Weekly returns data (from rice-data-query skill)</li>
 <li>SF1 fundamental data (from rice-data-query skill)</li>
+</ul>
+</section>
+<section id="financial-ratios-1" class="level3">
+<h3 class="anchored" data-anchor-id="financial-ratios-1">Financial Ratios</h3>
+<p>Requires:</p>
+<ul>
+<li>Python 3.x with pandas installed</li>
+<li>Merged dataset containing price and fundamental data</li>
+<li>Specific variables depend on the ratio being calculated</li>
 </ul>
 
 

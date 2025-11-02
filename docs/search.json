@@ -18,28 +18,28 @@
     "href": "skills.html#quick-installation",
     "title": "Claude Code Skills",
     "section": "Quick Installation",
-    "text": "Quick Installation\nThe easiest way to install skills is to ask Claude Code to do it for you:\nTell Claude Code:\n\"Download and install the rice-data-query and merge skills, plus CLAUDE.md\nfrom mgmt638.kerryback.com/skills/\"\nClaude Code will download the files and place them in the correct location."
+    "text": "Quick Installation\nThe easiest way to install skills is to ask Claude Code to do it for you:\nTell Claude Code:\n\"Download and install the rice-data-query, merge, and financial-ratios skills,\nplus CLAUDE.md from mgmt638.kerryback.com/skills/\"\nClaude Code will download the files and place them in the correct location."
   },
   {
     "objectID": "skills.html#manual-installation",
     "href": "skills.html#manual-installation",
     "title": "Claude Code Skills",
     "section": "Manual Installation",
-    "text": "Manual Installation\nIf you prefer to install manually, follow these steps:\n\n1. Directory Structure\nSkills must be placed in .claude/skills/ within your course folder:\nyour-course-folder/\n├── .claude/\n│   └── skills/\n│       ├── rice-data-query/\n│       │   ├── SKILL.md\n│       │   └── README.md\n│       └── merge/\n│           ├── SKILL.md\n│           └── README.md\n\n\n2. Create the Directory\nIn your course folder, create the skills directory:\nMac/Linux:\nmkdir -p .claude/skills\nWindows (PowerShell):\nNew-Item -ItemType Directory -Path .claude\\skills -Force\n\n\n3. Download Skills\nClick the links below to download each skill file, then place them in the appropriate folder."
+    "text": "Manual Installation\nIf you prefer to install manually, follow these steps:\n\n1. Directory Structure\nSkills must be placed in .claude/skills/ within your course folder:\nyour-course-folder/\n├── .claude/\n│   └── skills/\n│       ├── rice-data-query/\n│       │   ├── SKILL.md\n│       │   └── README.md\n│       ├── merge/\n│       │   ├── SKILL.md\n│       │   └── README.md\n│       └── financial-ratios/\n│           ├── SKILL.md\n│           └── README.md\n\n\n2. Create the Directory\nIn your course folder, create the skills directory:\nMac/Linux:\nmkdir -p .claude/skills\nWindows (PowerShell):\nNew-Item -ItemType Directory -Path .claude\\skills -Force\n\n\n3. Download Skills\nClick the links below to download each skill file, then place them in the appropriate folder."
   },
   {
     "objectID": "skills.html#available-skills",
     "href": "skills.html#available-skills",
     "title": "Claude Code Skills",
     "section": "Available Skills",
-    "text": "Available Skills\n\nRice Data Query\nQuery the Rice Business Stock Market Data Portal using natural language. This skill enables Claude Code to fetch stock prices, fundamentals, insider trades, and other financial data.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\n\nInstallation location: .claude/skills/rice-data-query/\nWhat it does:\n\nGenerates SQL queries for the Rice Data Portal\nHandles date formatting and window functions\nSaves data as parquet files\nProvides detailed database schema information\n\nExample usage:\n\"Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database\"\n\n\n\nMerge\nExpert guidance for merging financial datasets with different frequencies and proper date alignment.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\n\nInstallation location: .claude/skills/merge/\nWhat it does:\n\nMerges weekly returns with SF1 fundamentals\nEnsures proper date alignment to avoid look-ahead bias\nHandles forward filling of fundamental data\nWill expand to cover other merge scenarios\n\nExample usage:\n\"Merge my weekly returns data with quarterly ROE from SF1\""
+    "text": "Available Skills\n\n\n\nSkill\nDescription\nLast Updated\n\n\n\n\nRice Data Query\nQuery the Rice Business Stock Market Data Portal using SQL\n11-01-2025\n\n\nMerge\nMerge financial datasets with proper date alignment\n11-01-2025\n\n\nFinancial Ratios\nCalculate financial ratios with automatic validation\n11-01-2025\n\n\n\n\n\nRice Data Query\nQuery the Rice Business Stock Market Data Portal using natural language. This skill enables Claude Code to fetch stock prices, fundamentals, insider trades, and other financial data.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\n\nInstallation location: .claude/skills/rice-data-query/\nWhat it does:\n\nGenerates SQL queries for the Rice Data Portal\nHandles date formatting and window functions\nSaves data as parquet files\nProvides detailed database schema information\n\nExample usage:\n\"Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database\"\nLast updated: 11-01-2025\n\n\n\nMerge\nExpert guidance for merging financial datasets with different frequencies and proper date alignment.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\n\nInstallation location: .claude/skills/merge/\nWhat it does:\n\nMerges weekly returns with SF1 fundamentals\nEnsures proper date alignment to avoid look-ahead bias\nHandles forward filling of fundamental data\nWill expand to cover other merge scenarios\n\nExample usage:\n\"Merge my weekly returns data with quarterly ROE from SF1\"\nLast updated: 11-01-2025\n\n\n\nFinancial Ratios\nCalculate financial ratios from merged datasets with automatic validation of required variables.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\n\nInstallation location: .claude/skills/financial-ratios/\nWhat it does:\n\nValidates that required variables exist before calculating ratios\nProvides clear formulas and data source guidance\nHandles edge cases (division by zero, missing values)\nCurrently supports: Book-to-Market ratio\nWill expand to include P/E, D/E, ROE, ROA, and more\n\nExample usage:\n\"Calculate book-to-market ratio for my merged dataset\"\nLast updated: 11-01-2025"
   },
   {
     "objectID": "skills.html#verification",
     "href": "skills.html#verification",
     "title": "Claude Code Skills",
     "section": "Verification",
-    "text": "Verification\nAfter installation, verify the skills are installed correctly:\nTell Claude Code:\n\"List the skills in .claude/skills/\"\nYou should see rice-data-query and merge folders with their respective files."
+    "text": "Verification\nAfter installation, verify the skills are installed correctly:\nTell Claude Code:\n\"List the skills in .claude/skills/\"\nYou should see rice-data-query, merge, and financial-ratios folders with their respective files."
   },
   {
     "objectID": "skills.html#getting-help",
@@ -53,7 +53,7 @@
     "href": "skills.html#prerequisites",
     "title": "Claude Code Skills",
     "section": "Prerequisites",
-    "text": "Prerequisites\n\nRice Data Query\nBefore using this skill, you need:\n\nAn access token from the Rice Data Portal\nA .env file in your course folder with:\nRICE_ACCESS_TOKEN=your_token_here\n\nClaude Code can help you create the .env file once you have your token.\n\n\nMerge\nRequires:\n\nPython 3.x with pandas installed\nWeekly returns data (from rice-data-query skill)\nSF1 fundamental data (from rice-data-query skill)"
+    "text": "Prerequisites\n\nRice Data Query\nBefore using this skill, you need:\n\nAn access token from the Rice Data Portal\nA .env file in your course folder with:\nRICE_ACCESS_TOKEN=your_token_here\n\nClaude Code can help you create the .env file once you have your token.\n\n\nMerge\nRequires:\n\nPython 3.x with pandas installed\nWeekly returns data (from rice-data-query skill)\nSF1 fundamental data (from rice-data-query skill)\n\n\n\nFinancial Ratios\nRequires:\n\nPython 3.x with pandas installed\nMerged dataset containing price and fundamental data\nSpecific variables depend on the ratio being calculated"
   },
   {
     "objectID": "slides.html",

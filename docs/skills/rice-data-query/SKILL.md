@@ -122,14 +122,11 @@ else:
 
 After successfully fetching data from the Rice Data Portal:
 
-1. **Ask the user for a filename**: "What filename would you like to save this data to? (Supported formats: .parquet, .xlsx, .csv)"
-2. **Save based on extension**: The file will be saved in the format matching the extension
-   - `.parquet` → Parquet format (most efficient for large datasets)
-   - `.xlsx` → Excel format (good for viewing/editing)
-   - `.csv` → CSV format (universal compatibility)
+1. **Ask the user for a filename**: "What filename would you like to save this data to?"
+2. **Always save as Parquet format**: Add `.parquet` extension if not provided
 3. **Confirm the save**: Let the user know the data has been saved and where
 
-**IMPORTANT: Never use intermediate pickle files or temporary files. Always go directly from query response to final file.**
+**IMPORTANT: Always save as Parquet format. Parquet is the most efficient format for financial data and preserves data types correctly.**
 
 Complete example:
 ```python
@@ -142,20 +139,21 @@ df = pd.DataFrame(data['data'])
 df = df[data['columns']]
 
 # Ask user for filename
-filename = "tech_stocks.xlsx"  # User provides this
+filename = "tech_stocks"  # User provides this
 
-# Save based on extension
-if filename.endswith('.parquet'):
-    df.to_parquet(filename, index=False)
-elif filename.endswith('.xlsx'):
-    df.to_excel(filename, index=False)
-elif filename.endswith('.csv'):
-    df.to_csv(filename, index=False)
+# Always save as parquet
+if not filename.endswith('.parquet'):
+    filename = filename + '.parquet'
 
+df.to_parquet(filename, index=False)
 print(f"Data saved to {filename} ({len(df)} rows)")
 ```
 
-This allows students to work with the data in their preferred format without re-querying the database.
+**Note**: Students can later convert parquet files to Excel or CSV if needed using:
+```python
+df = pd.read_parquet('filename.parquet')
+df.to_excel('filename.xlsx', index=False)  # or df.to_csv('filename.csv', index=False)
+```
 
 ---
 
@@ -326,8 +324,23 @@ This allows students to work with the data in their preferred format without re-
 46. MONTHLY RETURNS AND MOMENTUM CALCULATION: When users request monthly returns OR momentum:
     - **ALWAYS calculate BOTH monthly returns AND momentum** - even if user only asks for one
     - First obtain end-of-month prices using rule 45 (year-by-year with window functions)
+    - **CRITICAL SQL SYNTAX**: Use `a.close` syntax because 'close' is a reserved SQL keyword
+    - **CRITICAL COLUMNS**: ALWAYS retrieve ticker, date, close, and closeadj in the SQL query
     - **CRITICAL**: SQL query MUST include `ORDER BY ticker, date` in the final SELECT statement
     - After fetching data, calculate BOTH metrics in pandas (NOT in SQL):
+
+    **SQL Query Pattern:**
+    ```sql
+    WITH month_ends AS (
+      SELECT a.ticker, a.date::DATE as date, a.close, a.closeadj,
+             ROW_NUMBER() OVER (PARTITION BY a.ticker, DATE_TRUNC('month', a.date::DATE) ORDER BY a.date::DATE DESC) as rn
+      FROM sep a
+      WHERE a.ticker IN ('AAPL', 'MSFT', ...)  -- your ticker list
+        AND a.date::DATE >= '{year}-01-01'
+        AND a.date::DATE < '{year+1}-01-01'
+    )
+    SELECT ticker, date, close, closeadj FROM month_ends WHERE rn = 1 ORDER BY ticker, date
+    ```
 
     **Monthly Returns:**
     - Calculate as percent change in closeadj by ticker
@@ -366,12 +379,13 @@ This allows students to work with the data in their preferred format without re-
     # Add month column for easier reading
     df_final['month'] = df_final['date'].dt.to_period('M').astype(str)
 
-    # Final columns: ticker, month, date, closeadj, monthly_return, momentum
+    # Final columns: ticker, month, date, close, closeadj, monthly_return, momentum
     ```
 
     **Important notes:**
     - **CRITICAL**: ALWAYS use `groupby('ticker')` when calculating returns and momentum
     - This ensures each ticker's calculations are independent (no mixing of data across tickers)
+    - **CRITICAL**: Always return ticker, date, close, closeadj, return, and momentum columns
     - Monthly returns: First month per ticker has NaN (no prior month to compare)
     - Momentum: First 13 months per ticker have NaN (need 13 months of history)
     - Keep NaN values in output - DO NOT drop them (user may want to see all dates)
@@ -379,23 +393,25 @@ This allows students to work with the data in their preferred format without re-
 
 47. WEEKLY RETURNS AND MOMENTUM CALCULATION: When users request weekly returns OR weekly momentum:
     - **ALWAYS calculate BOTH weekly returns AND weekly momentum** - even if user only asks for one
-    - First obtain end-of-week prices using window function approach (year-by-year):
+    - First obtain end-of-week prices using window function approach (year-by-year)
+    - **CRITICAL SQL SYNTAX**: Use `a.close` syntax because 'close' is a reserved SQL keyword
+    - **CRITICAL COLUMNS**: ALWAYS retrieve ticker, date, close, and closeadj in the SQL query
     - **CRITICAL**: SQL query MUST include `ORDER BY ticker, date` in the final SELECT statement
 
     **SQL for end-of-week prices:**
     ```sql
     WITH week_ends AS (
-      SELECT ticker, date::DATE as date, closeadj,
+      SELECT a.ticker, a.date::DATE as date, a.close, a.closeadj,
              ROW_NUMBER() OVER (
-               PARTITION BY ticker, DATE_TRUNC('week', date::DATE)
-               ORDER BY date::DATE DESC
+               PARTITION BY a.ticker, DATE_TRUNC('week', a.date::DATE)
+               ORDER BY a.date::DATE DESC
              ) as rn
-      FROM sep
-      WHERE ticker IN (...)
-        AND date::DATE >= '{year}-01-01'
-        AND date::DATE < '{year+1}-01-01'
+      FROM sep a
+      WHERE a.ticker IN (...)
+        AND a.date::DATE >= '{year}-01-01'
+        AND a.date::DATE < '{year+1}-01-01'
     )
-    SELECT ticker, date, closeadj
+    SELECT ticker, date, close, closeadj
     FROM week_ends
     WHERE rn = 1
     ORDER BY ticker, date
@@ -408,9 +424,9 @@ This allows students to work with the data in their preferred format without re-
     - Round to 4 decimal places
 
     **Weekly Momentum:**
-    - Calculate as: `closeadj.shift(8) / closeadj.shift(56) - 1`
-    - This is the 48-week return from 56 weeks ago to 8 weeks ago (skipping most recent 8 weeks)
-    - First 56 weeks per ticker will have NaN momentum
+    - Calculate as: `closeadj.shift(5) / closeadj.shift(53) - 1`
+    - This is the 48-week return from 53 weeks ago to 5 weeks ago (skipping most recent 5 weeks)
+    - First 53 weeks per ticker will have NaN momentum
     - **Express as DECIMAL** (e.g., 0.30 = 30% return)
     - Round to 4 decimal places
 
@@ -430,23 +446,24 @@ This allows students to work with the data in their preferred format without re-
 
     # Calculate weekly momentum (by ticker) - as decimals
     df_final['weekly_momentum'] = (
-        df_final.groupby('ticker')['closeadj'].shift(8) /
-        df_final.groupby('ticker')['closeadj'].shift(56) - 1
+        df_final.groupby('ticker')['closeadj'].shift(5) /
+        df_final.groupby('ticker')['closeadj'].shift(53) - 1
     ).round(4)
 
     # Add week column for easier reading (ISO week format)
     df_final['week'] = df_final['date'].dt.to_period('W').astype(str)
 
-    # Final columns: ticker, week, date, closeadj, weekly_return, weekly_momentum
+    # Final columns: ticker, week, date, close, closeadj, weekly_return, weekly_momentum
     ```
 
     **Important notes:**
     - **CRITICAL**: ALWAYS use `groupby('ticker')` when calculating returns and momentum
     - This ensures each ticker's calculations are independent (no mixing of data across tickers)
+    - **CRITICAL**: Always return ticker, date, close, closeadj, return, and momentum columns
     - DuckDB uses ISO weeks (Monday = start of week)
     - End-of-week = last trading day in that week (usually Friday, but could be earlier if holiday)
     - Weekly returns: First week per ticker has NaN (no prior week to compare)
-    - Weekly momentum: First 56 weeks per ticker have NaN (need 56 weeks of history)
+    - Weekly momentum: First 53 weeks per ticker have NaN (need 53 weeks of history)
     - Keep NaN values in output - DO NOT drop them (user may want to see all dates)
     - Both metrics expressed as DECIMALS (not percentages) with 4 decimal places
 
@@ -490,7 +507,7 @@ Core columns in SEP table:
 - open: Opening price (split adjusted)
 - high: High price (split adjusted)
 - low: Low price (split adjusted)
-- close: Close price (split adjusted)
+- close: Close price (split adjusted) - **CRITICAL**: 'close' is a SQL reserved keyword, must use table alias: `SELECT a.close FROM sep a`
 - volume: Trading volume (split adjusted)
 - closeadj: Close price adjusted for splits, dividends, and spinoffs
 - closeunadj: Unadjusted close price

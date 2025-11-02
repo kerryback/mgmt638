@@ -18,6 +18,7 @@ DIST_SKILLS = Path('skills')
 SKILLS_TO_DISTRIBUTE = [
     'rice-data-query',
     'merge',
+    'financial-ratios',
 ]
 
 def update_skills():

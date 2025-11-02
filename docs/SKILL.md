@@ -243,24 +243,41 @@ This allows students to work with the data in future sessions without re-queryin
 44. For exchange listings: Use TICKERS table with exact case-sensitive values
 45. END-OF-MONTH PRICE FILTERING: The SEP table contains DAILY prices
     - CRITICAL: When users request "monthly prices", "end-of-month prices", or "month-end prices", you MUST filter the SEP table to get only the last trading day of each month
-    - IMPORTANT: To avoid timeouts, use a loop-over-years approach like in momentum.ipynb
-    - Recommended pattern (follow momentum.ipynb example):
+    - IMPORTANT: To avoid timeouts, use a loop-over-years approach
+    - **RECOMMENDED APPROACH - SQL window function (most efficient):**
       1. Loop through years from start_year to current year
-      2. For each year, download daily data: WHERE date::DATE >= '{year}-01-01' AND date::DATE < '{year+1}-01-01'
-      3. Inside the loop, filter to end-of-month using pandas groupby with year_month
-      4. Append only end-of-month data to a list
-      5. Concatenate all years after the loop
-    - Example end-of-month filtering in pandas (inside loop):
+      2. For each year, use this SQL pattern with window functions:
+         ```sql
+         WITH month_ends AS (
+           SELECT ticker, date::DATE as date, closeadj,
+                  ROW_NUMBER() OVER (PARTITION BY ticker, DATE_TRUNC('month', date::DATE) ORDER BY date::DATE DESC) as rn
+           FROM sep
+           WHERE ticker IN ('AAPL', 'MSFT', ...)  -- your ticker list
+             AND date::DATE >= '{year}-01-01'
+             AND date::DATE < '{year+1}-01-01'
+         )
+         SELECT ticker, date, closeadj FROM month_ends WHERE rn = 1 ORDER BY ticker, date
+         ```
+      3. Append each year's results to a list
+      4. Concatenate all years after the loop
+    - **Why window functions are superior:**
+      - Single scan of data with efficient partitioning in the database
+      - No correlated subqueries (which run once per row)
+      - Only end-of-month rows are transferred from database to client
+      - Minimal memory usage on student laptops
+      - Better use of database resources
+    - **Understanding DATE_TRUNC and window functions:**
+      - DATE_TRUNC('month', date) truncates to first day of month: '2024-01-15' → '2024-01-01'
+      - PARTITION BY creates separate groups for each ticker and month
+      - ORDER BY ... DESC within each partition ranks dates from newest to oldest
+      - ROW_NUMBER() assigns rn=1 to the last trading day in each month
+      - WHERE rn = 1 filters to only the month-end dates
+    - **Alternative (less efficient) - Pandas filtering:**
+      If needed as fallback, download all daily data for the year and filter in pandas:
+      ```python
       df_year['year_month'] = df_year['date'].dt.to_period('M')
       df_month_end = df_year.groupby(['ticker', 'year_month']).apply(lambda x: x.loc[x['date'].idxmax()]).reset_index(drop=True)
-    - This approach avoids server timeouts and reduces memory usage on student laptops
-    - Alternative SQL pattern (only for small queries):
-      WITH month_ends AS (
-        SELECT ticker, date::DATE as date, closeadj,
-               ROW_NUMBER() OVER (PARTITION BY ticker, DATE_TRUNC('month', date::DATE) ORDER BY date::DATE DESC) as rn
-        FROM sep WHERE date::DATE >= '{year}-01-01' AND date::DATE < '{year+1}-01-01'
-      )
-      SELECT ticker, date, closeadj FROM month_ends WHERE rn = 1 ORDER BY date
+      ```
     - NEVER query all historical daily prices in a single query - always use year-by-year approach
 
 ## DATABASE SCHEMA

@@ -18,6 +18,7 @@ project:
     - README.pdf
     - SKILL.md
     - skills/CLAUDE.md
+    - skills/merge/
     - skills/
     - pdfs/Asness_Frazzini_Pedersen_RAS_2019.pdf
     - pdfs/Asness_Moskowitz_Pedersen_JF_2013.pdf

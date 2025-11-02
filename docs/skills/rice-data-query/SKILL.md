@@ -1,6 +1,6 @@
 ---
 name: rice-data-query
-description: "SQL expert for Rice Data Portal queries using DuckDB SQL. ALWAYS use this skill when data is requested from the Rice stock market database (tickers, prices, fundamentals, insider trades, valuation metrics, etc.). This ensures proper SQL generation, filename prompting, and parquet file saving. Do NOT use this skill for analyzing local CSV/Parquet files that are already saved."
+description: "SQL expert for Rice Data Portal queries using DuckDB SQL. ALWAYS use this skill when data is requested from the Rice stock market database (tickers, prices, fundamentals, insider trades, valuation metrics, etc.). When users request monthly/weekly returns OR momentum, this skill automatically calculates BOTH metrics from end-of-month or end-of-week prices. Returns are expressed as decimals (not percentages). This ensures proper SQL generation, filename prompting, and multi-format file saving. Do NOT use this skill for analyzing local CSV/Parquet files that are already saved."
 ---
 
 # Rice Data Portal Query Expert
@@ -48,6 +48,29 @@ API_URL = "https://data-portal.rice-business.org/api/query"
 - Replace `your_access_token_here` with their actual token from https://data-portal.rice-business.org
 - The `.env` file is in `.gitignore` so it won't be committed to git
 
+## USER INTERACTION WORKFLOW
+
+**ALWAYS follow this workflow when users request data from the Rice Data Portal:**
+
+1. **Understand the request**: Determine what data the user needs and which table(s) to query
+2. **Write the SQL query**: Generate proper DuckDB SQL following all rules below
+3. **Execute the query**: Run the query and retrieve the data
+4. **Prompt for filename**: Ask the user: "What filename would you like to save this data to? (Supported formats: .parquet, .xlsx, .csv)"
+5. **Save based on extension**:
+   - If filename ends with `.parquet` → save as Parquet (most efficient)
+   - If filename ends with `.xlsx` → save as Excel (good for viewing/editing)
+   - If filename ends with `.csv` → save as CSV (universal compatibility)
+6. **Confirm**: Let the user know the data has been saved successfully
+
+**Example interaction:**
+```
+User: "Get me the top 10 tech stocks by market cap"
+Assistant: [Writes SQL query, executes it]
+Assistant: "What filename would you like to save this data to? (Supported formats: .parquet, .xlsx, .csv)"
+User: "tech_stocks.xlsx"
+Assistant: [Saves as Excel] "Data saved to tech_stocks.xlsx (10 rows)"
+```
+
 ## How to Execute SQL Queries and Save Data
 
 **CRITICAL: Always query and save in a SINGLE Python script - never use intermediate pickle files.**
@@ -81,8 +104,15 @@ if 'data' in data and 'columns' in data:
         df = df[data['columns']]
     print(f"Query returned {len(df)} rows")
 
-    # 3. Save directly to parquet (NO intermediate files!)
-    df.to_parquet(filename, index=False)
+    # 3. Save based on file extension
+    if filename.endswith('.parquet'):
+        df.to_parquet(filename, index=False)
+    elif filename.endswith('.xlsx'):
+        df.to_excel(filename, index=False)
+    elif filename.endswith('.csv'):
+        df.to_csv(filename, index=False)
+    else:
+        raise ValueError(f"Unsupported file extension. Use .parquet, .xlsx, or .csv")
     print(f"Data saved to {filename}")
 else:
     print("No data returned")
@@ -92,11 +122,14 @@ else:
 
 After successfully fetching data from the Rice Data Portal:
 
-1. **Ask the user for a filename**: "What filename would you like to use to save this data? (e.g., 'tech_stocks.parquet')"
-2. **Save directly to parquet**: Use `df.to_parquet(filename, index=False)` immediately after creating the DataFrame
+1. **Ask the user for a filename**: "What filename would you like to save this data to? (Supported formats: .parquet, .xlsx, .csv)"
+2. **Save based on extension**: The file will be saved in the format matching the extension
+   - `.parquet` → Parquet format (most efficient for large datasets)
+   - `.xlsx` → Excel format (good for viewing/editing)
+   - `.csv` → CSV format (universal compatibility)
 3. **Confirm the save**: Let the user know the data has been saved and where
 
-**IMPORTANT: Never use intermediate pickle files or temporary files. Always go directly from query response to parquet file.**
+**IMPORTANT: Never use intermediate pickle files or temporary files. Always go directly from query response to final file.**
 
 Complete example:
 ```python
@@ -108,12 +141,21 @@ data = response.json()
 df = pd.DataFrame(data['data'])
 df = df[data['columns']]
 
-# Save directly to parquet
-df.to_parquet('tech_stocks.parquet', index=False)
-print(f"Data saved to tech_stocks.parquet ({len(df)} rows)")
+# Ask user for filename
+filename = "tech_stocks.xlsx"  # User provides this
+
+# Save based on extension
+if filename.endswith('.parquet'):
+    df.to_parquet(filename, index=False)
+elif filename.endswith('.xlsx'):
+    df.to_excel(filename, index=False)
+elif filename.endswith('.csv'):
+    df.to_csv(filename, index=False)
+
+print(f"Data saved to {filename} ({len(df)} rows)")
 ```
 
-This allows students to work with the data in future sessions without re-querying the database.
+This allows students to work with the data in their preferred format without re-querying the database.
 
 ---
 
@@ -181,28 +223,25 @@ This allows students to work with the data in future sessions without re-queryin
 
 ## SF1 DIMENSION RULES (23-29)
 
-23. The dimension column in SF1 controls reporting period and revision status:
-    - MR = Most Recent (including restatements)
-    - AR = As Originally Reported (no revisions)
-    - Y = Annual, Q = Quarterly, T = Trailing 4 quarters
-24. When to use AR dimensions:
-    - User asks for filing dates ("when reports were filed/issued/published/submitted")
-    - User asks for "as originally reported" data
-    - Use: ARY (annual), ARQ (quarterly), ART (trailing 4Q)
-25. When to use MR dimensions (DEFAULT):
-    - User does NOT ask for filing dates or as-originally-reported data
-    - Use: MRY (annual), MRQ (quarterly), MRT (trailing 4Q)
+23. CRITICAL: Whenever a user requests variables in the SF1 table, ALWAYS use AR (As Reported) dimensions:
+    - ARQ = As Reported Quarterly
+    - ARY = As Reported Annual
+    - ART = As Reported Trailing 4 quarters
+24. NEVER use MR dimensions (MRQ, MRY, MRT) - these include restatements and should not be used
+25. ALWAYS include reportperiod, datekey, and ticker in the SELECT statement for SF1 queries
+    - **CRITICAL**: SF1 queries MUST include `ORDER BY ticker, datekey` in the final SELECT statement
+    - This ensures proper chronological ordering for time series analysis
 26. Period selection:
-    - Quarterly data: Use ARQ or MRQ
-    - Annual data: Use ARY or MRY
-    - Trailing 4 quarters: Use ART or MRT (pre-calculated, do NOT manually sum quarters)
+    - Quarterly data: Use dimension = 'ARQ'
+    - Annual data: Use dimension = 'ARY'
+    - Trailing 4 quarters: Use dimension = 'ART' (pre-calculated, do NOT manually sum quarters)
 27. For year-over-year growth rates, ask for clarification:
     - "Do you want annual report growth, same quarter prior year, or trailing 4 quarters growth?"
 28. Growth rate calculations using LAG():
-    - Annual growth (MRY): LAG(metric, 1)
-    - Same quarter prior year (MRQ): LAG(metric, 4)
-    - Trailing 4 quarters (MRT): LAG(metric, 1)
-29. Example: ROUND(((revenue - LAG(revenue, 4) OVER (PARTITION BY ticker ORDER BY reportperiod)) / LAG(revenue, 4) OVER (PARTITION BY ticker ORDER BY reportperiod)) * 100, 2) as yoy_growth_pct
+    - Annual growth (ARY): LAG(metric, 1)
+    - Same quarter prior year (ARQ): LAG(metric, 4)
+    - Trailing 4 quarters (ART): LAG(metric, 1)
+29. Example SF1 query: SELECT ticker, reportperiod, datekey, revenue, ROUND(((revenue - LAG(revenue, 4) OVER (PARTITION BY ticker ORDER BY datekey)) / LAG(revenue, 4) OVER (PARTITION BY ticker ORDER BY datekey)) * 100, 2) as yoy_growth_pct FROM sf1 WHERE dimension = 'ARQ' ORDER BY ticker, datekey
 
 ## FINANCIAL METRICS GUIDANCE (30-35)
 
@@ -284,6 +323,132 @@ This allows students to work with the data in future sessions without re-queryin
       df_month_end = df_year.groupby(['ticker', 'year_month']).apply(lambda x: x.loc[x['date'].idxmax()]).reset_index(drop=True)
       ```
     - NEVER query all historical daily prices in a single query - always use year-by-year approach
+46. MONTHLY RETURNS AND MOMENTUM CALCULATION: When users request monthly returns OR momentum:
+    - **ALWAYS calculate BOTH monthly returns AND momentum** - even if user only asks for one
+    - First obtain end-of-month prices using rule 45 (year-by-year with window functions)
+    - **CRITICAL**: SQL query MUST include `ORDER BY ticker, date` in the final SELECT statement
+    - After fetching data, calculate BOTH metrics in pandas (NOT in SQL):
+
+    **Monthly Returns:**
+    - Calculate as percent change in closeadj by ticker
+    - Formula: `(closeadj - closeadj.shift(1)) / closeadj.shift(1)`
+    - First month per ticker will have NaN return (no prior month)
+    - **Express as DECIMAL** (e.g., 0.05 = 5% return)
+    - Round to 4 decimal places
+
+    **Momentum (Jegadeesh & Titman):**
+    - Calculate as: `closeadj.shift(2) / closeadj.shift(13) - 1`
+    - This is the 12-month return from 13 months ago to 2 months ago (skipping most recent month)
+    - First 13 months per ticker will have NaN momentum
+    - **Express as DECIMAL** (e.g., 0.25 = 25% return)
+    - Round to 4 decimal places
+
+    **Implementation in pandas:**
+    ```python
+    # After combining all years and converting dates
+    df_final = df_final.sort_values(['ticker', 'date']).reset_index(drop=True)
+
+    # CRITICAL: ALWAYS use groupby('ticker') for returns and momentum calculations
+    # This ensures calculations are done separately for each ticker
+
+    # Calculate monthly returns (by ticker) - as decimals
+    df_final['monthly_return'] = (
+        df_final.groupby('ticker')['closeadj']
+        .pct_change()
+    ).round(4)
+
+    # Calculate momentum (by ticker) - as decimals
+    df_final['momentum'] = (
+        df_final.groupby('ticker')['closeadj'].shift(2) /
+        df_final.groupby('ticker')['closeadj'].shift(13) - 1
+    ).round(4)
+
+    # Add month column for easier reading
+    df_final['month'] = df_final['date'].dt.to_period('M').astype(str)
+
+    # Final columns: ticker, month, date, closeadj, monthly_return, momentum
+    ```
+
+    **Important notes:**
+    - **CRITICAL**: ALWAYS use `groupby('ticker')` when calculating returns and momentum
+    - This ensures each ticker's calculations are independent (no mixing of data across tickers)
+    - Monthly returns: First month per ticker has NaN (no prior month to compare)
+    - Momentum: First 13 months per ticker have NaN (need 13 months of history)
+    - Keep NaN values in output - DO NOT drop them (user may want to see all dates)
+    - Both metrics expressed as DECIMALS (not percentages) with 4 decimal places
+
+47. WEEKLY RETURNS AND MOMENTUM CALCULATION: When users request weekly returns OR weekly momentum:
+    - **ALWAYS calculate BOTH weekly returns AND weekly momentum** - even if user only asks for one
+    - First obtain end-of-week prices using window function approach (year-by-year):
+    - **CRITICAL**: SQL query MUST include `ORDER BY ticker, date` in the final SELECT statement
+
+    **SQL for end-of-week prices:**
+    ```sql
+    WITH week_ends AS (
+      SELECT ticker, date::DATE as date, closeadj,
+             ROW_NUMBER() OVER (
+               PARTITION BY ticker, DATE_TRUNC('week', date::DATE)
+               ORDER BY date::DATE DESC
+             ) as rn
+      FROM sep
+      WHERE ticker IN (...)
+        AND date::DATE >= '{year}-01-01'
+        AND date::DATE < '{year+1}-01-01'
+    )
+    SELECT ticker, date, closeadj
+    FROM week_ends
+    WHERE rn = 1
+    ORDER BY ticker, date
+    ```
+
+    **Weekly Returns:**
+    - Calculate as: `(closeadj - closeadj.shift(1)) / closeadj.shift(1)`
+    - First week per ticker will have NaN return (no prior week)
+    - **Express as DECIMAL** (e.g., 0.02 = 2% return)
+    - Round to 4 decimal places
+
+    **Weekly Momentum:**
+    - Calculate as: `closeadj.shift(8) / closeadj.shift(56) - 1`
+    - This is the 48-week return from 56 weeks ago to 8 weeks ago (skipping most recent 8 weeks)
+    - First 56 weeks per ticker will have NaN momentum
+    - **Express as DECIMAL** (e.g., 0.30 = 30% return)
+    - Round to 4 decimal places
+
+    **Implementation in pandas:**
+    ```python
+    # After combining all years and converting dates
+    df_final = df_final.sort_values(['ticker', 'date']).reset_index(drop=True)
+
+    # CRITICAL: ALWAYS use groupby('ticker') for returns and momentum calculations
+    # This ensures calculations are done separately for each ticker
+
+    # Calculate weekly returns (by ticker) - as decimals
+    df_final['weekly_return'] = (
+        df_final.groupby('ticker')['closeadj']
+        .pct_change()
+    ).round(4)
+
+    # Calculate weekly momentum (by ticker) - as decimals
+    df_final['weekly_momentum'] = (
+        df_final.groupby('ticker')['closeadj'].shift(8) /
+        df_final.groupby('ticker')['closeadj'].shift(56) - 1
+    ).round(4)
+
+    # Add week column for easier reading (ISO week format)
+    df_final['week'] = df_final['date'].dt.to_period('W').astype(str)
+
+    # Final columns: ticker, week, date, closeadj, weekly_return, weekly_momentum
+    ```
+
+    **Important notes:**
+    - **CRITICAL**: ALWAYS use `groupby('ticker')` when calculating returns and momentum
+    - This ensures each ticker's calculations are independent (no mixing of data across tickers)
+    - DuckDB uses ISO weeks (Monday = start of week)
+    - End-of-week = last trading day in that week (usually Friday, but could be earlier if holiday)
+    - Weekly returns: First week per ticker has NaN (no prior week to compare)
+    - Weekly momentum: First 56 weeks per ticker have NaN (need 56 weeks of history)
+    - Keep NaN values in output - DO NOT drop them (user may want to see all dates)
+    - Both metrics expressed as DECIMALS (not percentages) with 4 decimal places
 
 ## DATABASE SCHEMA
 

@@ -20,7 +20,7 @@ The easiest way to install skills is to ask Claude Code to do it for you:
 
 **Tell Claude Code:**
 ```
-"Download and install the rice-data-query skill and CLAUDE.md
+"Download and install the rice-data-query and merge skills, plus CLAUDE.md
 from mgmt638.kerryback.com/skills/"
 ```
 
@@ -43,10 +43,9 @@ your-course-folder/
 │       ├── rice-data-query/
 │       │   ├── SKILL.md
 │       │   └── README.md
-│       └── momentum-calculator/
+│       └── merge/
 │           ├── SKILL.md
-│           ├── README.md
-│           └── calculate_momentum.py
+│           └── README.md
 ```
 
 ### 2. Create the Directory
@@ -97,29 +96,28 @@ Query the Rice Business Stock Market Data Portal using natural language. This sk
 
 ---
 
-### Momentum Calculator
+### Merge
 
-Calculate stock momentum from month-end prices using the Jegadeesh & Titman methodology.
+Expert guidance for merging financial datasets with different frequencies and proper date alignment.
 
 **Files to download:**
 
-- [SKILL.md](skills/momentum-calculator/SKILL.md) - Skill definition
-- [README.md](skills/momentum-calculator/README.md) - Documentation
-- [calculate_momentum.py](skills/momentum-calculator/calculate_momentum.py) - Python script
+- [SKILL.md](skills/merge/SKILL.md) - Skill definition
+- [README.md](skills/merge/README.md) - Documentation
 
-**Installation location:** `.claude/skills/momentum-calculator/`
+**Installation location:** `.claude/skills/merge/`
 
 **What it does:**
 
-- Calculates momentum as `closeadj(t-2) / closeadj(t-13) - 1`
-- Groups by ticker automatically
-- Converts dates to pandas Period format
-- Saves results as parquet files
+- Merges weekly returns with SF1 fundamentals
+- Ensures proper date alignment to avoid look-ahead bias
+- Handles forward filling of fundamental data
+- Will expand to cover other merge scenarios
 
 **Example usage:**
 
 ```
-"Calculate momentum from my month_end_prices.parquet file"
+"Merge my weekly returns data with quarterly ROE from SF1"
 ```
 
 ---
@@ -133,7 +131,7 @@ After installation, verify the skills are installed correctly:
 "List the skills in .claude/skills/"
 ```
 
-You should see both `rice-data-query` and `momentum-calculator` folders with their respective files.
+You should see `rice-data-query` and `merge` folders with their respective files.
 
 ---
 
@@ -162,9 +160,10 @@ Before using this skill, you need:
 
 Claude Code can help you create the `.env` file once you have your token.
 
-### Momentum Calculator
+### Merge
 
 Requires:
 
-- Python 3.x with pandas and pyarrow installed
-- Month-end price data in parquet format with columns: `ticker`, `date`, `closeadj`
+- Python 3.x with pandas installed
+- Weekly returns data (from rice-data-query skill)
+- SF1 fundamental data (from rice-data-query skill)

@@ -17,6 +17,7 @@ DIST_SKILLS = Path('skills')
 # Skills to distribute (folders to copy)
 SKILLS_TO_DISTRIBUTE = [
     'rice-data-query',
+    'merge',
 ]
 
 def update_skills():

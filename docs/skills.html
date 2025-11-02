@@ -161,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="quick-installation">Quick Installation</h2>
 <p>The easiest way to install skills is to ask Claude Code to do it for you:</p>
 <p><strong>Tell Claude Code:</strong></p>
-<pre><code>"Download and install the rice-data-query skill and CLAUDE.md
+<pre><code>"Download and install the rice-data-query and merge skills, plus CLAUDE.md
 from mgmt638.kerryback.com/skills/"</code></pre>
 <p>Claude Code will download the files and place them in the correct location.</p>
 <hr>
@@ -178,10 +178,9 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 │       ├── rice-data-query/
 │       │   ├── SKILL.md
 │       │   └── README.md
-│       └── momentum-calculator/
+│       └── merge/
 │           ├── SKILL.md
-│           ├── README.md
-│           └── calculate_momentum.py</code></pre>
+│           └── README.md</code></pre>
 </section>
 <section id="create-the-directory" class="level3">
 <h3 class="anchored" data-anchor-id="create-the-directory">2. Create the Directory</h3>
@@ -219,25 +218,24 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 <pre><code>"Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database"</code></pre>
 <hr>
 </section>
-<section id="momentum-calculator" class="level3">
-<h3 class="anchored" data-anchor-id="momentum-calculator">Momentum Calculator</h3>
-<p>Calculate stock momentum from month-end prices using the Jegadeesh &amp; Titman methodology.</p>
+<section id="merge" class="level3">
+<h3 class="anchored" data-anchor-id="merge">Merge</h3>
+<p>Expert guidance for merging financial datasets with different frequencies and proper date alignment.</p>
 <p><strong>Files to download:</strong></p>
 <ul>
-<li><a href="skills/momentum-calculator/SKILL.md">SKILL.md</a> - Skill definition</li>
-<li><a href="skills/momentum-calculator/README.md">README.md</a> - Documentation</li>
-<li><a href="skills/momentum-calculator/calculate_momentum.py">calculate_momentum.py</a> - Python script</li>
+<li><a href="skills/merge/SKILL.md">SKILL.md</a> - Skill definition</li>
+<li><a href="skills/merge/README.md">README.md</a> - Documentation</li>
 </ul>
-<p><strong>Installation location:</strong> <code>.claude/skills/momentum-calculator/</code></p>
+<p><strong>Installation location:</strong> <code>.claude/skills/merge/</code></p>
 <p><strong>What it does:</strong></p>
 <ul>
-<li>Calculates momentum as <code>closeadj(t-2) / closeadj(t-13) - 1</code></li>
-<li>Groups by ticker automatically</li>
-<li>Converts dates to pandas Period format</li>
-<li>Saves results as parquet files</li>
+<li>Merges weekly returns with SF1 fundamentals</li>
+<li>Ensures proper date alignment to avoid look-ahead bias</li>
+<li>Handles forward filling of fundamental data</li>
+<li>Will expand to cover other merge scenarios</li>
 </ul>
 <p><strong>Example usage:</strong></p>
-<pre><code>"Calculate momentum from my month_end_prices.parquet file"</code></pre>
+<pre><code>"Merge my weekly returns data with quarterly ROE from SF1"</code></pre>
 <hr>
 </section>
 </section>
@@ -246,7 +244,7 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 <p>After installation, verify the skills are installed correctly:</p>
 <p><strong>Tell Claude Code:</strong></p>
 <pre><code>"List the skills in .claude/skills/"</code></pre>
-<p>You should see both <code>rice-data-query</code> and <code>momentum-calculator</code> folders with their respective files.</p>
+<p>You should see <code>rice-data-query</code> and <code>merge</code> folders with their respective files.</p>
 <hr>
 </section>
 <section id="getting-help" class="level2">
@@ -272,12 +270,13 @@ from mgmt638.kerryback.com/skills/"</code></pre>
 </ol>
 <p>Claude Code can help you create the <code>.env</code> file once you have your token.</p>
 </section>
-<section id="momentum-calculator-1" class="level3">
-<h3 class="anchored" data-anchor-id="momentum-calculator-1">Momentum Calculator</h3>
+<section id="merge-1" class="level3">
+<h3 class="anchored" data-anchor-id="merge-1">Merge</h3>
 <p>Requires:</p>
 <ul>
-<li>Python 3.x with pandas and pyarrow installed</li>
-<li>Month-end price data in parquet format with columns: <code>ticker</code>, <code>date</code>, <code>closeadj</code></li>
+<li>Python 3.x with pandas installed</li>
+<li>Weekly returns data (from rice-data-query skill)</li>
+<li>SF1 fundamental data (from rice-data-query skill)</li>
 </ul>
 
 

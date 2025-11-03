@@ -1,7 +1,7 @@
 | Session |  Topics | Slides |
 |--------|---------|---------|
 | 1 |  Quality stocks<br>Factor Investing<br>Install Claude Code and Python | [Slides](slides/session01_slides.pdf){target="_blank"} |
-| 2 | Rice Database| [Slides](slides/session02_slides.pdf){target="_blank"}<br>[SKILL.md](SKILL.md){target="_blank"}<br>[README.pdf](README.pdf){target="_blank"} |
+| 2 | Rice Database| [Slides](slides/session02_slides.pdf){target="_blank"} |
 | 3 | Install VS Code<br>Momentum and Value<br>Data Query and Merge Skills <br>  | [Slides](slides/session03_slides.pdf){target="_blank"} |
 | 4 | Fama-French Factors<br>Profitability<br>Forming Portfolios from Sorts<br>  | [Slides](slides/session04_slides.pdf){target="_blank"} |
 | 5 | Safe Minus Risky | [Slides](slides/session05_slides.pdf){target="_blank"} |

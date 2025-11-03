@@ -35,7 +35,9 @@
       "Read(//d//**)",
       "Bash(test:*)",
       "Bash(timeout:*)",
-      "Skill(merge)"
+      "Skill(merge)",
+      "Skill(rice-data-query)",
+      "Bash(nul)"
     ],
     "deny": [],
     "ask": []

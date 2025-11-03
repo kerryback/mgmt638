@@ -202,7 +202,7 @@ cython_debug/
 # Videos and PDFs in root (Quarto copies to docs/)
 videos/
 pdfs/
-slides/
+/slides/
 
 # Data files
 *.parquet

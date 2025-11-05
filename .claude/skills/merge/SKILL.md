@@ -14,8 +14,9 @@ You are an expert in merging financial datasets with different time frequencies 
 Located in `.claude/skills/merge/merge_returns_fundamentals.py`:
 
 ```bash
-python .claude/skills/merge/merge_returns_fundamentals.py RETURNS_FILE FUNDAMENTALS_FILE OUTPUT_FILE --frequency monthly
+python .claude/skills/merge/merge_returns_fundamentals.py RETURNS_FILE FUNDAMENTALS_FILE OUTPUT_FILE --frequency monthly [--marketcap MARKETCAP_FILE]
 # Example: python .claude/skills/merge/merge_returns_fundamentals.py returns.xlsx fundamentals.xlsx merged.xlsx --frequency monthly
+# With market cap: python .claude/skills/merge/merge_returns_fundamentals.py returns.parquet fundamentals.parquet merged.parquet --frequency monthly --marketcap marketcap.parquet
 ```
 
 **Parameters:**
@@ -23,12 +24,14 @@ python .claude/skills/merge/merge_returns_fundamentals.py RETURNS_FILE FUNDAMENT
 - `FUNDAMENTALS_FILE`: File with SF1 fundamental data
 - `OUTPUT_FILE`: Where to save merged data (.xlsx, .parquet, or .csv)
 - `--frequency`: Either `monthly` or `weekly`
+- `--marketcap` (optional): File with market cap data (will be shifted and merged)
 
 **This script automatically handles:**
 - Shifting close prices to represent prior period
 - Calculating first period after filing date
 - Merging on proper keys
 - Forward filling fundamental data
+- **Shifting and merging market cap data (if provided)**
 - Dropping date column
 
 This saves tokens and ensures correct implementation!
@@ -41,23 +44,60 @@ This saves tokens and ensures correct implementation!
 4. **Forward Fill**: After merging, forward fill fundamental data by ticker to propagate values until the next filing
 5. **Clean Output**: Drop the `date` column from final merged data
 
+## INCLUDING MARKET CAP DATA (OPTIONAL)
+
+To include market capitalization data that's properly aligned with returns and fundamentals:
+
+```bash
+python merge_returns_fundamentals.py returns.parquet fundamentals.parquet merged.parquet \
+       --frequency monthly \
+       --marketcap marketcap.parquet
+```
+
+**The script automatically:**
+1. Loads the market cap file (expected columns: ticker, month, date, marketcap)
+2. Shifts marketcap by 1 period (grouped by ticker): `df.groupby('ticker')['marketcap'].shift(1)`
+3. Merges on (ticker, month/week)
+4. Result: marketcap represents PRIOR period value (aligned with close)
+
+**Why shift marketcap?**
+- Market cap file contains END-OF-PERIOD values (market cap as of month-end)
+- After `shift(1)`, marketcap represents the PRIOR month's end-of-period value
+- This aligns perfectly with `close` (also shifted to prior period)
+- Ensures consistent timing for all price-based measures
+- No look-ahead bias for ratios like book-to-market (equity/marketcap)
+
+**Example timing (November 2010):**
+- `close = 10.749` → October 2010 closing price (known at start of Nov)
+- `marketcap = 276,083.8` → October 2010 market cap (known at start of Nov)
+- `return = 0.0339` → November 2010 return
+- `equity = 4.78e10` → From 10-K filed Oct 27, 2010 (available starting Nov)
+
+**Final output columns with --marketcap:**
+`ticker`, `month`, `close`, `return`, `momentum`, `equity`, `assets`, `gp`, `opinc`, `netinccmn`, `marketcap`
+
 ## MERGING MONTHLY RETURNS WITH SF1 FUNDAMENTALS
 
 ### Step 1: Prepare Returns Data
 
 The monthly returns data from rice-data-query has columns: `ticker`, `month`, `date`, `close`, `return`, `momentum`
 
+**CRITICAL: The 'month' column from rice-data-query is a STRING (e.g., '2025-01'), not a pandas Period object.**
+
 **Shift close prices to represent prior period's price:**
 
 ```python
+# Convert date to datetime if needed
+df_returns['date'] = pd.to_datetime(df_returns['date'])
+
 # Sort by ticker and date to ensure proper ordering
 df_returns = df_returns.sort_values(['ticker', 'date']).reset_index(drop=True)
 
 # Shift close by 1 within each ticker - this makes close = prior month's closing price
 df_returns['close'] = df_returns.groupby('ticker')['close'].shift(1)
 
-# The month column is already in pandas Period format (e.g., '2025-01')
-# This will be our merge key
+# The month column is already a STRING in format 'YYYY-MM' (e.g., '2025-01')
+# This will be our merge key - keep it as string for merging
 ```
 
 **Why shift close?**
@@ -69,18 +109,21 @@ df_returns['close'] = df_returns.groupby('ticker')['close'].shift(1)
 
 SF1 data has columns: `ticker`, `reportperiod`, `datekey`, and fundamental variables
 
+**CRITICAL: The 'datekey' column from rice-data-query is a DATETIME object.**
+
 **Calculate the first month AFTER filing date:**
 
 ```python
-# Convert datekey to datetime
+# Convert datekey to datetime if needed (it should already be datetime from parquet)
 df_sf1['datekey'] = pd.to_datetime(df_sf1['datekey'])
 
 # Calculate the first month that STARTS after the filing date
 # MonthBegin(1) moves to the first day of the next month
 df_sf1['available_month_start'] = df_sf1['datekey'] + pd.offsets.MonthBegin(1)
 
-# Convert to period format for merging (matches the 'month' column in returns)
-df_sf1['month'] = df_sf1['available_month_start'].dt.to_period('M').astype(str)
+# Convert to STRING in format 'YYYY-MM' to match the returns data
+# IMPORTANT: Use strftime, NOT .to_period().astype(str) which creates Period objects
+df_sf1['month'] = df_sf1['available_month_start'].dt.strftime('%Y-%m')
 ```
 
 **Examples:**
@@ -133,25 +176,32 @@ df_merged = df_merged.drop(columns=['date'])
 
 The weekly returns data from rice-data-query has columns: `ticker`, `week`, `date`, `close`, `return`, `momentum`
 
+**CRITICAL: The 'week' column from rice-data-query is a STRING in ISO week format.**
+
 **Shift close prices to represent prior period's price:**
 
 ```python
+# Convert date to datetime if needed
+df_returns['date'] = pd.to_datetime(df_returns['date'])
+
 # Sort by ticker and date to ensure proper ordering
 df_returns = df_returns.sort_values(['ticker', 'date']).reset_index(drop=True)
 
 # Shift close by 1 within each ticker - this makes close = prior week's closing price
 df_returns['close'] = df_returns.groupby('ticker')['close'].shift(1)
 
-# The week column is already in ISO calendar format (e.g., '2023-01-02/2023-01-08')
-# This will be our merge key
+# The week column is already a STRING in ISO format (e.g., '2023-01-02/2023-01-08')
+# This will be our merge key - keep it as string for merging
 ```
 
 ### Step 2: Prepare SF1 Fundamental Data
 
+**CRITICAL: The 'datekey' column from rice-data-query is a DATETIME object.**
+
 **Calculate the first week AFTER filing date:**
 
 ```python
-# Convert datekey to datetime
+# Convert datekey to datetime if needed (it should already be datetime from parquet)
 df_sf1['datekey'] = pd.to_datetime(df_sf1['datekey'])
 
 # Calculate the first Monday that STARTS after the filing date
@@ -159,8 +209,12 @@ days_since_monday = df_sf1['datekey'].dt.weekday
 days_until_next_monday = 7 - days_since_monday
 df_sf1['available_week_start'] = df_sf1['datekey'] + pd.to_timedelta(days_until_next_monday, unit='D')
 
-# Convert to ISO week format for merging (matches the 'week' column in returns)
-df_sf1['week'] = df_sf1['available_week_start'].dt.to_period('W').astype(str)
+# Convert to STRING in ISO week format to match the returns data
+# IMPORTANT: Use strftime, NOT .to_period().astype(str) which creates Period objects
+# ISO week format: YYYY-MM-DD/YYYY-MM-DD (start/end of week)
+df_sf1['week_start'] = df_sf1['available_week_start']
+df_sf1['week_end'] = df_sf1['available_week_start'] + pd.Timedelta(days=6)
+df_sf1['week'] = df_sf1['week_start'].dt.strftime('%Y-%m-%d') + '/' + df_sf1['week_end'].dt.strftime('%Y-%m-%d')
 ```
 
 **Examples:**

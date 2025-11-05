@@ -37,7 +37,9 @@
       "Bash(timeout:*)",
       "Skill(merge)",
       "Skill(rice-data-query)",
-      "Bash(nul)"
+      "Bash(nul)",
+      "Bash(del fetch_monthly_marketcap.py save_marketcap.py)",
+      "Bash(del fetch_monthly_marketcap.py save_marketcap.py test_date_conversion.py)"
     ],
     "deny": [],
     "ask": []

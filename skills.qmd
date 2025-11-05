@@ -108,7 +108,7 @@ Query the Rice Business Stock Market Data Portal using natural language. This sk
 "Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database"
 ```
 
-**Last updated:** 11-01-2025
+**Last updated:** 11-04-2025
 
 ---
 

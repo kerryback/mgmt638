@@ -75,8 +75,8 @@ Click the links below to download each skill file, then place them in the approp
 
 | Skill | Description | Last Updated |
 |-------|-------------|--------------|
-| [Rice Data Query](#rice-data-query) | Query the Rice Business Stock Market Data Portal using SQL | 11-01-2025 |
-| [Merge](#merge) | Merge financial datasets with proper date alignment | 11-01-2025 |
+| [Rice Data Query](#rice-data-query) | Query the Rice Business Stock Market Data Portal using SQL | 11-04-2025 |
+| [Merge](#merge) | Merge financial datasets with proper date alignment | 11-04-2025 |
 
 ---
 
@@ -139,7 +139,7 @@ Expert guidance for merging financial datasets with different frequencies and pr
 "Merge my weekly returns data with quarterly ROE from SF1"
 ```
 
-**Last updated:** 11-01-2025
+**Last updated:** 11-04-2025
 
 ---
 

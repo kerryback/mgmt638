@@ -1,0 +1,123 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=cyan, urlcolor=cyan, citecolor=cyan}
+
+\title{MGMT 638}
+\subtitle{Session 2: Stock Market Database \& Claude Code Setup}
+\author{Kerry Back}
+\institute{}
+\date{Fall 2025}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{frame}{Database Guide - Complete Documentation}
+\centering
+\Large
+\url{https://portal-guide.rice-business.org}
+
+\vspace{2em}
+
+\normalsize
+Reference for all tables and variables in the database.
+\end{frame}
+
+
+\begin{frame}{Get an Access Token and view the Data Portal}
+
+\begin{itemize}
+\item Visit \href{https://data-portal.rice-business.org}{data-portal.rice-business.org}
+\item Confirm your Rice email to receive an access token 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{How Does the Data Portal Work?}
+
+\begin{itemize}
+\item The data portal is an AI agent.  It is an app running in the cloud that has an API connection to ChatGPT (using my API key).
+\item The database itself is stored at a different cloud location.
+\item The app sends a system prompt explaining the database structure to ChatGPT along with the user prompt to get SQL code from ChatGPT.
+\item The app then sends the SQL code to the database to get data.
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Claude as a General Agent}
+\begin{itemize}
+\item The recent trend is to configure Claude, ChatGPT, and Gemini as general agents, rather than creating separate apps for different purposes.
+\item Model Context Protocol (MCP) introduced by Anthropic in Nov, 2024 was the first step.
+\item It has been adopted by everyone.
+\item The new method, introduced by Anthropic on Oct 16, 2025, is Claude Skills.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Create .env File}
+
+In VS Code:
+\begin{itemize}
+\item Tell Claude Code to create a \texttt{.env} file
+\item Click the files icon in the left toolbar to open a file explorer tab
+\item Open the \texttt{.env} file, and add this line: \texttt{RICE\_ACCESS\_TOKEN=your\_token\_here}
+\item Replace \texttt{your\_token\_here} with your actual token.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Download and Install Skill File}
+\begin{itemize}
+\item Ask Claude to create a folder: \texttt{.claude/skills/rice-data-query/}
+\item Download \texttt{SKILL.md} from \url{https://mgmt638.kerryback.com/SKILL.md}
+\item Save as \texttt{.claude/skills/rice-data-query/SKILL.md}
+\item If SKILL.md opens in your web browser, right-click it and select 'Save As.'
+\item Select File $\rightarrow$ Close Folder and then File $\rightarrow$ Open Folder and reopen your course folder.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Use Claude Code with Rice Data}
+
+\textbf{Example prompts to try:}
+
+\begin{itemize}
+    \item Create a Jupyter notebook to get daily adjusted closing prices for AAPL since Jan 1, 2024 from the Rice database and plot them.
+\item Create a Jupyter notebook to get ROE for TSLA by quarter on a trailing 4-quarters basis since the start of 2021 from the Rice database and plot it.
+\item Get gross profits, total assets, ticker and date filed from all 10k's filed in 2025 from the Rice database and save the data as 10k\_2025.csv.
+\end{itemize}
+
+\end{frame}
+
+\end{document}
+
+\begin{frame}{What is Streamlit?}
+
+\textbf{Streamlit} is a Python library for creating interactive web applications.
+
+\vspace{1em}
+
+\textbf{Why use Streamlit?}
+\begin{itemize}
+    \item Create data apps with pure Python (no HTML/CSS/JavaScript needed)
+    \item Interactive widgets: sliders, dropdowns, text inputs, file uploads
+    \item Real-time updates as users interact
+    \item Display charts, tables, maps, and more
+    \item Perfect for data exploration and visualization
+\end{itemize}
+
+
+\begin{frame}{Streamlit Example}
+
+\textbf{Step 1: Create a Streamlit app file}
+
+Ask Claude to create a Streamlit app that prompts the user to input their name and then opens up a new window saying Hello (name)! followed by a display of balloons.
+
+
+\vspace{0.5em}
+
+Ask Claude to run the app.
+\end{frame}
+
+\end{document}

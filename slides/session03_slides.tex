@@ -1,0 +1,131 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+\hypersetup{colorlinks=true, linkcolor=cyan, urlcolor=cyan, citecolor=cyan}
+
+\title{MGMT 638}
+\subtitle{Session 3}
+\author{Kerry Back}
+\institute{}
+\date{Fall 2025}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{frame}{Install and Open VS Code}
+\begin{itemize}
+\item Install VS Code: \href{https://code.visualstudio.com}{code.visualstudio.com}
+\item Launch VS Code
+\item In VS Code: File $\rightarrow$ Open Folder
+\item Navigate to your course folder and select it
+\item Click "Select Folder" (or "Open" on Mac)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Explore VS Code}
+\begin{itemize}
+\item Left toolbar: Files icon should open a file explorer view
+\item Left toolbar: Extensions icon should open search box.  Find and install the Python, Jupyter, Claude Code, Data Wrangler, and Rainbow CSV extensions.
+\item Top menus: File $\rightarrow$ New text file.  Open folder, close folder, new window, \ldots
+\item Top menus: View $\rightarrow$ Command Palette. Enter `Python: Select Interpreter' and choose the venv option.
+\item Top menus: Terminal $\rightarrow$ New terminal
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Launch Claude Code}
+\begin{itemize}
+\item If you see the orange Claude icon in the top toolbar, click it.
+\item If not, create a new file (File $\rightarrow$ New Text File) and you should see it.
+\item Or View $\rightarrow$ Command Palette and enter `Claude Code: Open in New Tab.'
+\end{itemize}
+\vspace{0.5cm}
+Test: Ask Claude Code: What is the sum of the first 1,000 integers?
+\end{frame}
+
+\begin{frame}{Momentum}
+\begin{itemize}
+\item \href{https://mgmt638.kerryback.com/pdfs/Jegadeesh_Titman_ARFE_2011.pdf}{PDF: \textit{Stock Market Momentum}, Jegadeesh and Titman, 2011}
+\item \href{https://mgmt638.kerryback.com/videos/Jegadeesh_Titman_ARFE_2011.mp4}{Video: \textit{Stock Market Momentum}, Jegadeesh and Titman, 2011}
+\item \href{https://notebooklm.google.com/notebook/bb68e968-c8cd-4ed1-8e5c-a577d17b8f04}{NotebookLM: Stock Market Momentum}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Value and Momentum}
+\begin{itemize}
+\item \href{https://mgmt638.kerryback.com/pdfs/Asness_Moskowitz_Pedersen_JF_2013.pdf}{PDF: \textit{Value and Momentum Everywhere}, Asness, Moskowitz, and Pedersen, 2013}
+\item \href{https://mgmt638.kerryback.com/videos/Asness_Moskowitz_Pedersen_JF_2013.mp4}{Video: \textit{Value and Momentum Everywhere}, Asness, Moskowitz, and Pedersen, 2013}
+\item \href{https://notebooklm.google.com/notebook/7869da1f-7d2b-4a2e-9d59-83d129a0cc86}{NotebookLM: Value and Momentum}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Data Skills}
+We currently have two data skills available: rice-data-query and merge.  Skills may be updated throughout the course.  Skills are just text files.  They were written by Claude Code at my direction (with many iterations).  There are accompanying Python scripts (also written by Claude Code) that Claude will use in the skills.
+
+\vspace{0.3cm}
+
+Visit the Skills link on the course homepage: \url{https://mgmt638.kerryback.com} for instructions and explanations.
+
+\vspace{0.3cm}
+
+The easiest way to install is to \alert{ask Claude Code to do it for you}: ``Download and install the rice-data-query and merge skills,
+plus CLAUDE.md from mgmt638.kerryback.com/skills/''
+\end{frame}
+
+\begin{frame}{Workflow}
+
+Visit the Data Guide linked at the course website \url{https://mgmt638.kerryback.com} to find the names of variables you want from the SF1 (Sharadar Fundamentals) table. 
+
+\vspace{0.3cm}
+
+Tell Claude Code:
+\begin{itemize}
+\item Get returns (monthly or weekly) from the Rice database.
+\item Get the variables you want from SF1.
+\item Calculate any ratios of SF1 variables that you want.
+\item Calculate any growth rates of SF1 variables or ratios that you want.
+\item Merge the returns with the fundamental data.
+\end{itemize}
+
+\vspace{0.3cm}
+
+Save the merged data.  The next time you need it, you can just ask Claude Code to read the file.  \alert{You do not need to repeat the above process if you already have the data you want.}
+\end{frame}
+
+\begin{frame}{Timing of Data}
+During merging, Claude will align variables so that 
+\begin{itemize}
+\item The fundamental variables are all known at the beginning of the period (month or week)
+\item Momentum is momentum as of the beginning of the  period
+\item Close is the closing price at the end of the previous month or week 
+\item Return is the return over the period (from beginning to end)
+
+\end{itemize}
+
+\vspace{0.5cm}
+So all variables other than return \alert{are known at the beginning of the period} and can be used to pick stocks at the beginning of the period.
+\end{frame}
+
+\begin{frame}[fragile]{Data Formats}
+
+Claude should automatically save data as parquet files.  This is a compact, fast format that saves data types.
+
+\vspace{0.3cm}
+To view the data, there are several options.  You can ask Claude to:
+\begin{itemize}
+\item \alert{``Convert the file to Excel.''}  Then open as usual (not in VS Code).
+\item \alert{``Convert the file to csv.''}  Then double-click the file in the VS Code File Explorer.  It will open for viewing in a tab in VS Code.
+\item \alert{``Read the data in a Jupyter notebook.''}  Then double-click the notebook in VS Code File Explorer and work with the data in Python -- e.g., \texttt{df.head()}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Examples}
+Ask Claude Code to get monthly returns and netinccmn and equity from 10K's \alert{for AAPL} since Jan 1, 2020 from the Rice database and merge the data.  Then view it.
+
+\vspace{0.5cm}
+Ask Claude Code to get monthly returns and netinccmn and equity from 10K's \alert{for all stocks} since Jan 1, 2020 from the Rice database and merge the data.  Then view it.
+
+\vspace{0.5cm}
+For both, ask Claude to read the merged data file and calculate ROE as netinccmn / equity and to calculate book-to-market as equity / close and then resave the data.
+\end{frame}
+\end{document}

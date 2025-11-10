@@ -1,0 +1,90 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+\hypersetup{colorlinks=true, linkcolor=cyan, urlcolor=cyan, citecolor=cyan}
+
+\title{MGMT 638}
+\subtitle{Session 4}
+\author{Kerry Back}
+\institute{}
+\date{Fall 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Agenda}
+    \begin{itemize}
+    \item Data
+    \item Using sorts to evaluate characteristics
+    \item Building a streamlit stock recommender app
+    \item Profitability characteristic 
+    \item Sorting on multiple characteristics
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Data}
+\begin{itemize}
+\item Download \href{https://www.dropbox.com/scl/fi/5l4woqke5cn6tuu8wwdta/data1.parquet?rlkey=j917tet66yfsxniqwi5ld8u7c&dl=1}{data1.parquet}
+\item Monthly data for all stocks in database for Feb, 2011 through Oct, 2025
+\item Return, momentum, market cap, equity, assets, gross profit, operating profit, net income (netinccmn), asset growth rate (agr)
+\item Tell Claude to read the data and add the following variables:
+\begin{itemize}
+\item bm (book-to-market) $=$ equity / marketcap
+\item gpa $=$ gross profits / assets 
+\item roe $=$ netinccmn / equity
+\item opr $=$ operating profit / equity
+\item lagret $=$ return shifted one month forward after grouping by ticker
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sorting}
+
+\begin{itemize}
+\item Pick a characteristic: size (marketcap), value (book-to-market), momentum, lagret, agr, opr, gpa, or roe
+\item Tell Claude;
+\begin{itemize}
+\item Sort by the characteristic each month into deciles.
+\item Then calculate the average return of each decile each month.
+\end{itemize} 
+\item We now have returns of 10 portfolios that could have been constructed in real time.
+\item We're selecting stocks at the beginning of each month, investing the same amount in each stock, and holding for a month.
+\item Which of the 10 portfolios did better?  What criteria will you use to decide?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Streamlit}
+    \begin{itemize}
+    \item Your 1st assignment is due Sunday night.  It is to build a Streamlit stock recommender app.
+    \item Trial run.  Tell Claude:
+    \begin{itemize}
+    \item Sort stocks into quartiles based on some stock characteristic for November, 2025.
+    \item Label the best quartile as `Buy', the worst quartile as `Sell', and the middle half as `Hold.'
+    \item Build a Streamlit app that prompts the user for a ticker and then displays the recommendation or `Not Classified' if the ticker is not in the data set.
+\item Run the streamlit app.
+\end{itemize} 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Profitability}
+\begin{itemize}
+\item \href{https://mgmt638.kerryback.com/pdfs/Novy-Marx_Medhat_2025.pdf}{PDF: Novy-Marx and Medhat, 2025}
+\item \href{https://mgmt638.kerryback.com/videos/Novy-Marx_Medhat_2025.mp4}{Video: Novy-Marx and Medhat, 2025}
+\item \href{https://notebooklm.google.com/notebook/5a303502-e158-49bb-bd81-a20c35a00b8d}{NotebookLM}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sorting on Multiple characteristics}
+    \begin{itemize}
+    \item We can group stocks based on multiple characteristics.
+    \item If we use a lot of characteristics and a lot of groups, some groups may be unpopulated or sparsely populated.
+    \item characteristics usually only work in diversified portfolios, because characteristics are weak predictors.
+    \item Examples that should be OK:
+    \begin{itemize}
+    \item Two characteristics and quintiles $\Rightarrow$ 25 portfolios
+    \item Three characteristics and terciles $\Rightarrow$ 27 portfolios
+    \end{itemize}
+    \item Try momentum and book-to-market.  Tell Claude to sort into quintiles on each characteristic each month and to compute the average return each month in each of the 25 groups.  What is the best group?
+    \end{itemize}
+\end{frame}
+\end{document}

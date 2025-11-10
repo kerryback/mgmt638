@@ -1,0 +1,185 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=cyan, urlcolor=cyan, citecolor=cyan}
+
+\makeatletter
+\newcommand{\fullwidthgraphics}[2][]{%
+  \noindent\hspace*{-\beamer@leftmargin}%
+  \makebox[\paperwidth][c]{%
+    \includegraphics[width=\paperwidth,keepaspectratio,#1]{#2}}%
+  \hspace*{-\beamer@rightmargin}}
+\makeatother
+
+\title{MGMT 638}
+\subtitle{Session 1}
+\author{Kerry Back}
+\institute{}
+\date{Fall 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Quality Minus Junk}
+\begin{itemize}
+\item \href{https://mgmt638.kerryback.com/pdfs/Asness_Frazzini_Pedersen_RAS_2019.pdf}{PDF: \textit{Quality Minus Junk}, Asness, Frazzini, and Pedersen, 2019}
+\item \href{https://mgmt638.kerryback.com/videos/Asness_Frazzini_Pedersen_RAS_2019.mp4}{Video: \textit{Quality Minus Junk}, Asness, Frazzini, and Pedersen, 2019}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Factor Investing}
+\begin{itemize}
+\item \href{https://www.blackrock.com/us/individual/investment-ideas/what-is-factor-investing}{Factor Investing at BlackRock}
+\item \href{https://mgmt638.kerryback.com/videos/Factor_Investing.mp4}{Video: Factor Investing}
+\item \href{https://www.aqr.com/Learning-Center/Systematic-Equities/Systematic-Equities-A-Closer-Look}{Systematic Equities at AQR}
+\item \href{https://learn-investments.rice-business.org/factor-investing/quintiles}{Returns from Sorts on Factors}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[plain]
+\fullwidthgraphics[page=25]{c:/users/kerry/repos/genai4finance/docs/fma2025_16x9.pdf}
+\end{frame}
+
+\begin{frame}[plain]
+\fullwidthgraphics[page=31]{c:/users/kerry/repos/genai4finance/docs/fma2025_16x9.pdf}
+\end{frame}
+
+\begin{frame}[plain]
+\fullwidthgraphics[page=32]{c:/users/kerry/repos/genai4finance/docs/fma2025_16x9.pdf}
+\end{frame}
+
+\begin{frame}[plain]
+\fullwidthgraphics[page=33]{c:/users/kerry/repos/genai4finance/docs/fma2025_16x9.pdf}
+\end{frame}
+
+
+\begin{frame}{Initial Steps}
+
+\textbf{1. Sign up for Claude Pro:}
+
+\begin{enumerate}
+\item Visit \href{https://claude.ai}{claude.ai}
+\item Click ``Sign Up'' or ``Get Started''
+\item Create account using email or Google/Apple sign-in
+\item After signing in, click ``Upgrade to Pro'' in the sidebar
+\item Choose the monthly payment plan
+\item Complete payment information
+\end{enumerate}
+
+2. \href{https://www.youtube.com/watch?v=hpMrTabldEY}{YouTube Video}
+\end{frame}
+
+\begin{frame}{Mac - Install Claude Code}
+
+
+\vspace{0.5cm}
+
+\textbf{Step 1: Install Node.js}
+\begin{itemize}
+\item Using Homebrew: \texttt{brew install node}
+\item Or download installer from \href{https://nodejs.org}{nodejs.org}
+\end{itemize}
+
+
+\vspace{0.5cm}
+
+\textbf{Step 2: Install Claude Code}
+\begin{itemize}
+\item Run: \texttt{npm install -g @anthropic-ai/claude-code}
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Step 4: Verify Installation}
+\begin{itemize}
+\item Run: \texttt{claude doctor}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Windows - Install Claude Code}
+
+\vspace{0.3cm}
+
+\textbf{Step 1: Install Node.js}
+\begin{itemize}
+\item Download and install from \href{https://nodejs.org}{nodejs.org}
+\item Choose the LTS (Long Term Support) version
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Step 2: Install Git for Windows}
+\begin{itemize}
+\item Download from \href{https://git-scm.com/download/win}{git-scm.com/download/win}
+\item During installation, select "Git Bash" (default option)
+\item This provides the bash shell that Claude Code needs
+\end{itemize}
+
+\end{frame}
+\begin{frame}{Windows - Install Claude Code}
+
+\textbf{Step 3: Uninstall Claude Code (if you installed Claude Code before)}
+\begin{itemize}
+\item Open PowerShell
+\item Run: \texttt{npm uninstall -g @anthropic-ai/claude-code}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Step 4: Install Claude Code}
+\begin{itemize}
+\item In PowerShell, run: \texttt{npm install -g @anthropic-ai/claude-code}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Step 5: Verify Installation}
+\begin{itemize}
+\item In PowerShell, run: \texttt{claude doctor}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Mac and Windows - Install Python}
+\begin{itemize}
+\item Tell Claude Code: ``Install Python 3.13 and add it to the path.''
+\item Claude will detect your OS and install Python appropriately
+\item Tell Clause Code: ``Upgrade pip''
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Create Virtual Environment}
+
+\textbf{Tell Claude Code:}
+\begin{itemize}
+\item ``Create a virtual environment using Python 3.13 in my current directory.''
+\item This keeps course packages isolated from other Python projects
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Tell Claude Code to `pip install' the following packages in the virtual environment:}
+
+\begin{itemize}
+\item \texttt{numpy pandas scipy statsmodels scikit-learn}
+\item \texttt{openpyxl matplotlib seaborn ipykernel}
+\item \texttt{pandas-datareader streamlit requests python-dotenv}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Test}
+Tell Claude Code to write and run a python script that sums the first 1,000 integers and prints the total so the user can view the total.
+
+\vspace{0.5cm}
+
+You should see that the total is \texttt{500500}.
+\end{frame}
+
+\end{document}

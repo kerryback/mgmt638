@@ -4,9 +4,9 @@
 | 2 | Rice Database| [Slides](slides/session02_slides.pdf){target="_blank"} |
 | 3 | Install VS Code<br>Momentum and Value<br>Data Query and Merge Skills <br>  | [Slides](slides/session03_slides.pdf){target="_blank"} |
 | 4 | Sorting on Factors<br>Streamlit<br>Profitability  | [Slides](slides/session04_slides.pdf){target="_blank"} |
-| 5 | Safe Minus Risky | [Slides](slides/session05_slides.pdf){target="_blank"} |
-| 6 |  Hedge Funds and Public Informations | [Slides](slides/session06_slides.pdf){target="_blank"} |
-| 7 |  Machine Learning with Random Forests <br>Train, Validate,  Test | [Slides](slides/session07_slides.pdf){target="_blank"} |
+| 5 | Standardizing Variables<br>Random Forests<br>Safe Minus Risky | [Slides](slides/session05_slides.pdf){target="_blank"} |
+| 6 |  Categorical Variables <br>Industries<br>Asset Pricing and Machine Learning | [Slides](slides/session06_slides.pdf){target="_blank"} |
+| 7 |  Train, Validate,  Test | [Slides](slides/session07_slides.pdf){target="_blank"} |
 | 8 |  Backtesting Loops | [Slides](slides/session08_slides.pdf){target="_blank"} |
 | 9 |  Factor Exposures | [Slides](slides/session09_slides.pdf){target="_blank"} |
 | 10 | Factor Models and Portfolio Risk  | [Slides](slides/session10_slides.pdf){target="_blank"} |

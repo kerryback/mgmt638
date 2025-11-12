@@ -12,12 +12,218 @@
 
 \maketitle
 
-\begin{frame}{Hedge Funds and Public Information}
+\begin{frame}{Agenda}
+    \begin{enumerate}
+    \item Machine learning and asset pricing paper 
+    \item More random forests
+    \item Creating Quality Minus Junk characteristics 
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Machine Learning and Asset Pricing}
 \begin{itemize}
-\item \href{https://mgmt638.kerryback.com/pdfs/Crane_Crotty_Umar_MS_2023.pdf}{PDF: \textit{Hedge Funds and Public Information}, Crane, Crotty, and Umar, 2023}
-\item \href{https://mgmt638.kerryback.com/videos/Crane_Crotty_Umar_MS_2023.mp4}{Video: \textit{Hedge Funds and Public Information}, Crane, Crotty, and Umar, 2023}
-\item \href{https://notebooklm.google.com/notebook/93761776-77e8-45ae-a5fa-3010fdf23d65}{NotebookLM: Hedge Funds and Public Information}
+\item \href{https://mgmt638.kerryback.com/pdfs/Gu_Kelly_Xiu_RFS_2020.pdf}{PDF: \textit{Asset Pricing Via Machine Learning}, Gu, Kelly, and Xiu, 2020}
+\item \href{https://mgmt638.kerryback.com/videos/Crane_Crotty_Umar_MS_2023.mp4}{Video: \textit{Asset Pricing Via Machine Learning}, Gu, Kelly, and Xiu, 2020}
+\item \href{https://notebooklm.google.com/notebook/93761776-77e8-45ae-a5fa-3010fdf23d65}{NotebookLM: Asset Pricing Via Machine Learning}
 \end{itemize}
+\end{frame}
+
+\begin{frame}{More Random Forests}
+\begin{itemize}
+\item Ask Claude to get the California housing price dataset and to describe it.
+\item Ask Claude to do a train/test split and fit a random forest on the training data to predict house prices.
+\item Ask Claude to evaluate performance on the test data.
+\item Ask Claude to vary the maximum depth and to display performance on the training and test data.
+\end{itemize}
+\end{frame}
+\begin{frame}{Create Quality Minus Junk Variables}
+
+    \begin{itemize}
+    \item See Session1/Quality Minus Junk for link to paper
+    \item See Session3/Workflow for procedure to follow
+    \item Important: create all growth rates of ratios or other fundamental variables before merging with returns
+    \end{itemize}
+
+\end{frame}
+
+\end{document}
+\section{Claude Agent SDK}
+
+\begin{frame}{Creating an Agentic Application}
+\textbf{Goal:} Build a web app where users request financial data histograms and watch the AI agent iteratively solve problems in real-time.
+
+\vspace{0.3cm}
+\textbf{Key Features:}
+\begin{itemize}
+\item Agent runs in a browser tab
+\item Input box for characteristic
+\item Agent queries Rice Database with SQL and gets most recent values
+\item Generates histogram from characteristic values
+\item Displays the histogram in the app
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Windows Subprocess Challenge}
+\textbf{Problem:} Claude Agent SDK spawns \texttt{claude} CLI as subprocess, but Windows ProactorEventLoop doesn't support subprocess creation.
+
+\vspace{0.3cm}
+\textbf{Error:}
+\begin{itemize}
+\item \texttt{NotImplementedError} in \texttt{asyncio.base\_events.py:535}
+\item Even with \texttt{WindowsSelectorEventLoopPolicy()}
+\item Problem: SDK looks for \texttt{claude} via \texttt{shutil.which()}, but finds Unix shell script instead of \texttt{claude.exe} on Windows.
+
+\vspace{0.3cm}
+\textbf{Solution:} Use Anthropic API directly with agentic tool-calling loop (same functionality, no subprocess issues).
+\end{frame}
+
+\begin{frame}[fragile]{Working Solution: Agentic Tool-Calling Loop}
+\small
+Core pattern using Anthropic API:
+\begin{verbatim}
+client = anthropic.Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+messages = [{"role": "user", "content": prompt}]
+
+for turn in range(max_turns):
+    response = client.messages.create(
+        model="claude-sonnet-4-5-20250929",
+        system=SYSTEM_PROMPT,
+        messages=messages,
+        tools=[{"name": "bash", "description": "...", "input_schema": {...}}]
+    )
+
+    # Stream agent's thinking to browser
+    for block in response.content:
+        if block.type == "text":
+            yield f"💭 {block.text[:300]}"
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Tool Execution and Error Handling}
+\footnotesize
+\begin{verbatim}
+    if response.stop_reason == "tool_use":
+        tool_results = []
+        for block in response.content:
+            if block.type == "tool_use":
+                cmd = block.input["command"]
+                yield f"🔧 Running: {cmd[:200]}"
+
+                result = subprocess.run(cmd, shell=True,
+                                       capture_output=True, timeout=120)
+                output = result.stdout if result.returncode == 0
+                         else f"Error: {result.stderr}"
+
+                yield f"✅ Result: {output[:500]}"
+
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": output
+                })
+
+        messages.append({"role": "user", "content": tool_results})
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Rice Database Knowledge Integration}
+\textbf{System Prompt} includes rice-data-query skill information:
+
+\vspace{0.3cm}
+\begin{itemize}
+\item API endpoint: \texttt{https://data-portal.rice-business.org/api/query}
+\item Authentication using \texttt{RICE\_ACCESS\_TOKEN}
+\item Table schemas: DAILY (pe, pb, marketcap), SEP (prices), SF1 (fundamentals)
+\item Critical rules:
+\begin{itemize}
+    \item All dates are VARCHAR - must cast to DATE
+    \item Market cap values in thousands
+    \item Most recent data: \texttt{WHERE date = (SELECT MAX(date) FROM table)}
+    \item Filter NULL and extreme outliers
+\end{itemize}
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Result:} Agent knows how to query database correctly without trial-and-error.
+\end{frame}
+
+\begin{frame}{Real-Time Streaming with Server-Sent Events}
+\textbf{FastAPI endpoint} streams progress to browser:
+
+\vspace{0.3cm}
+{\small
+\texttt{@app.get("/generate\_stream")}\\
+\texttt{async def generate\_stream(characteristic: str):}\\
+\quad\texttt{return StreamingResponse(}\\
+\quad\quad\texttt{run\_agent\_with\_streaming(characteristic),}\\
+\quad\quad\texttt{media\_type="text/event-stream"}\\
+\quad\texttt{)}
+}
+
+\vspace{0.3cm}
+\textbf{JavaScript} in browser receives updates:
+\begin{itemize}
+\item \texttt{\{"type": "thinking", "content": "I'll query DAILY table..."\}}
+\item \texttt{\{"type": "tool", "content": "python query\_pe.py"\}}
+\item \texttt{\{"type": "tool\_result", "content": "Error: column not found"\}}
+\item \texttt{\{"type": "thinking", "content": "Let me revise the query..."\}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Proof of Concept Demo}
+\textbf{File:} \texttt{rice\_histogram\_final.py}
+
+\vspace{0.3cm}
+\textbf{Run:} \texttt{python rice\_histogram\_final.py}
+
+\vspace{0.3cm}
+\textbf{Open browser:} \texttt{http://localhost:8005}
+
+\vspace{0.3cm}
+\textbf{Try:} "market cap" or "PE ratio"
+
+\vspace{0.5cm}
+\textbf{What you'll see:}
+\begin{enumerate}
+\item Agent writes Python code to query database
+\item Code is sent to Rice Data Portal
+\item Error message returned (e.g., wrong table/column)
+\item Agent debugs and revises code
+\item Histogram created with summary statistics
+\end{enumerate}
+
+\vspace{0.3cm}
+\textbf{Key Achievement:} Real-time visibility into agentic problem-solving process.
+\end{frame}
+
+\begin{frame}{Resources: Claude Agent SDK}
+\textbf{Official Anthropic Documentation:}
+
+\vspace{0.3cm}
+\begin{itemize}
+\item \href{https://docs.claude.com/en/docs/agent-sdk/overview}{Agent SDK Overview}
+    \begin{itemize}
+    \item Complete documentation and getting started guide
+    \item Installation instructions for Python and TypeScript
+    \end{itemize}
+
+\vspace{0.2cm}
+\item \href{https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk}{Building Agents with the Claude Agent SDK}
+    \begin{itemize}
+    \item Engineering blog post with detailed examples
+    \item Best practices for building production agents
+    \end{itemize}
+
+\vspace{0.2cm}
+\item \href{https://github.com/anthropics/claude-agent-sdk-python}{GitHub: claude-agent-sdk-python}
+    \begin{itemize}
+    \item Official Python SDK repository
+    \item Code examples and API reference
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Note:} Our implementation uses the Anthropic API directly with tool calling, which provides the same agentic behavior without Windows subprocess limitations.
 \end{frame}
 
 \end{document}

@@ -1,0 +1,99 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+\hypersetup{colorlinks=true, linkcolor=cyan, urlcolor=cyan, citecolor=cyan}
+
+\title{MGMT 638}
+\subtitle{Session 7}
+\author{Kerry Back}
+\institute{}
+\date{Fall 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Agenda}
+\begin{enumerate}
+\item Algos, HFTs, and quants
+\item Alphas and portfolio improvement 
+\item data2\_nov2025.xlsx
+\item Traditional stock analysis (valuation by multiples)
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Algos, HFTs, and Quants}
+\begin{itemize}
+\item Algorithmic trading: using an algorithm to optimally execute a large order over time 
+\item High frequency trading: submitting and cancelling orders to earn bid-ask spreads or to hit bids and asks that are slightly mispriced
+\item Quantitative investing: longer-horizon investing based on quantitative signals
+\item \href{https://mgmt638.kerryback.com/videos/Algos_HFTs_Quants_Explained.mp4}{Algos, HFTs, and Quants Explained video}
+\item \href{https://mgmt638.kerryback.com/videos/Quant_Investing_Revolution.mp4}{Quant Investing Revolution video}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Alphas and Portfolio Improvement}
+Suppose you're in wealth management.  Should you (and your client) care about alphas?  If so, what alpha?
+
+\vspace{0.5cm}
+
+\href{https://learn-investments.rice-business.org/capm/alphas-mve}{Learn Investments page}
+\end{frame}
+
+\begin{frame}{Ask Claude}
+    \begin{enumerate}
+    \item The risk-free rate is 2\%.  My portfolio has an expected return of 10\% and a standard deviation of 15\%.  I'm considering moving some money to a new asset that has a standard deviation of 30\%, a correlation with my portfolio of 60\%, and an alpha relative to my portfolio of 5\%.  How can I combine the new asset and the risk-free asset with my current portfolio to get an expected return higher than 10\% while maintaining the standard deviation at 15\%?
+    \item Put this analysis in a Jupyter notebook, doing the calculations in Python.
+    \item Build a Streamlit app for this?  You can specify that the user should input the alpha of the new asset or its expected return or its Sharpe ratio.  Any two of these three things can be calculated from the third.
+    \end{enumerate}
+
+\end{frame}
+
+\begin{frame}{When Does a New Asset Have Positive Alpha?}
+A new asset has positive alpha relative to the current portfolio if and only if:
+
+\vspace{0.5cm}
+
+$$\alpha > 0 \quad \Longleftrightarrow \quad \text{Sharpe}_{\text{new}} > \rho \times \text{Sharpe}_{\text{current}}$$
+
+\vspace{0.5cm}
+
+where:
+\begin{itemize}
+\item $\text{Sharpe}_{\text{new}} = \frac{E(R_{\text{new}}) - r_f}{\sigma_{\text{new}}}$ is the Sharpe ratio of the new asset
+\item $\text{Sharpe}_{\text{current}} = \frac{E(R_{\text{current}}) - r_f}{\sigma_{\text{current}}}$ is the Sharpe ratio of the current portfolio
+\item $\rho$ is the correlation between the new asset and current portfolio
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Key insight:} Lower correlation makes it easier for an asset to have positive alpha.
+\end{frame}
+
+\begin{frame}{New Dataset}
+
+\begin{itemize}
+\item Download \href{https://www.dropbox.com/scl/fi/yggnxyx32zjk1oxhzkidc/data2\_nov2025.xlsx?rlkey=sx8nzw91easc7e5fkjn1bpzn3&dl=1}{data2\_nov2025.xlsx}
+\item Ask Claude to describe the data and to list all columns.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Traditional Stock Analysis}
+\begin{itemize}
+\item Let's pick a stock to analyze.
+\item Ask Claude to use the data2\_nov2025.xlsx data to find stocks in the same industry with similar marketcaps and to list their PE and PB ratios, ROE, and 5-year revenue growth.
+\item Does the company we're analyzing look undervalued, overvalued, or correctly valued?
+\item Try to understand the company's valuation using other data from data2\_nov2025.xlsx.  And ask Claude to get other data as needed from the Rice database.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Research Report}
+\begin{itemize}
+\item Ask Claude to do online research to find any information relevant to the company's valuation.
+\item Ask Claude to create a Word doc containing an analysis of the company based on the peer data, any other data gathered, and the online research.
+\item Is there other information we would want to look at?
+\end{itemize}
+\end{frame}
+
+\end{document}

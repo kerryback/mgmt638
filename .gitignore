@@ -199,10 +199,6 @@ cython_debug/
 .cursorindexingignore
 /.quarto/
 
-# Videos and PDFs in root (Quarto copies to docs/)
-videos/
-pdfs/
-
 # Data files
 *.parquet
 *.csv

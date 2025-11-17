@@ -39,7 +39,17 @@
       "Skill(rice-data-query)",
       "Bash(nul)",
       "Bash(del fetch_monthly_marketcap.py save_marketcap.py)",
-      "Bash(del fetch_monthly_marketcap.py save_marketcap.py test_date_conversion.py)"
+      "Bash(del fetch_monthly_marketcap.py save_marketcap.py test_date_conversion.py)",
+      "Bash(claude --version:*)",
+      "Bash(where:*)",
+      "Bash(findstr:*)",
+      "Bash(pip install:*)",
+      "Bash(uvicorn:*)",
+      "Bash(netstat:*)",
+      "Bash(pip uninstall:*)",
+      "Bash(taskkill /F /PID 24384)",
+      "Bash(taskkill:*)",
+      "Bash(move complete_merged_data.parquet data2.parquet)"
     ],
     "deny": [],
     "ask": []

@@ -5,6 +5,7 @@ __pycache__/
 
 # Course materials 
 
+*.zip
 QuantEquity/
 
 # C extensions
@@ -205,3 +206,4 @@ cython_debug/
 
 # Windows reserved device names
 nul
+~.xlsx

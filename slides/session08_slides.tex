@@ -1,6 +1,17 @@
 \documentclass[aspectratio=169]{beamer}
 \usetheme{metropolis}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
 \hypersetup{colorlinks=true, linkcolor=cyan, urlcolor=cyan, citecolor=cyan}
+
+\makeatletter
+\newcommand{\fullwidthgraphics}[2][]{%
+  \noindent\hspace*{-\beamer@leftmargin}%
+  \makebox[\paperwidth][c]{%
+    \includegraphics[width=\paperwidth,keepaspectratio,#1]{#2}}%
+  \hspace*{-\beamer@rightmargin}}
+\makeatother
 
 \title{MGMT 638}
 \subtitle{Session 8}
@@ -11,5 +22,256 @@
 \begin{document}
 
 \maketitle
+
+\begin{frame}{Agenda}
+\begin{itemize}
+\item More discussion of AI
+\item Backtesting a PE prediction trading model
+\begin{itemize}
+\item Variables suggested by Gordon and DuPont models
+\item Size classifications
+\item Backtesting process
+\item LightGBM model
+\item Results
+\item Exploring fitted LightGBM trees 
+\end{itemize}
+\end{itemize}
+\end{frame}
+% Slide 1
+\begin{frame}[plain]
+\fullwidthgraphics[page=2]{c:/users/kerry/repos/genai4finance/docs/fma2025.pdf}
+\end{frame}
+
+% Slide 2
+\begin{frame}[plain]
+\fullwidthgraphics[page=3]{c:/users/kerry/repos/genai4finance/docs/fma2025.pdf}
+\end{frame}
+
+
+\begin{frame}{Mathematical exploration and discovery at scale}
+
+Recent paper by Terence Tao and co-authors (Nov 3, 2025):
+
+\vspace{0.5cm}
+
+\begin{quote}
+Large language models \ldots can discover explicit constructions that either match or improve upon the best-known bounds to long-standing mathematical problems, at large scales \ldots We considered a list of 67 problems spanning mathematical analysis, combinatorics, geometry, and number theory. The system rediscovered the best known solutions in most of the cases and discovered improved solutions in several.
+\end{quote}
+\end{frame}
+
+\begin{frame}{Using Apps or .py Files with AI}
+\begin{itemize}
+\item Where possible, we should permanently fix the code used for tasks rather than asking AI to regenerate it each time.
+\item This ensures consistent behavior and also reduces token usage.
+\item We can create apps or, easier, save as a .py file and use in Claude Code skill.
+\item Examine your .claude$\backslash$skills$\backslash$rice-data-query folder.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Gordon Growth Model Formulas}
+
+\textbf{Gordon Growth Model (Dividend Discount Model):}
+\[
+P_0 = \frac{D_1}{r - g} \quad \Leftrightarrow \text{PE} = \frac{(1+g)\times \text{Payout Ratio}}{r - g}
+\]
+where $P_0$ is the current stock price, $D_1$ is the expected dividend next period, $r$ is the required return, and $g$ is the constant growth rate.
+
+\vspace{0.5cm}
+
+\textbf{Sustainable Growth Rate:}
+\[
+g = \text{ROE} \times \text{Plowback Ratio} = \text{ROE} \times (1 - \text{Payout Ratio})
+\]
+
+\vspace{0.5cm}
+
+\textbf{DuPont Formula for ROE:}
+\[
+\text{ROE} = \frac{\text{Net Income}}{\text{Sales}} \times \frac{\text{Sales}}{\text{Assets}} \times \frac{\text{Assets}}{\text{Equity}}
+\]
+\[
+= \text{Profit Margin} \times \text{Asset Turnover} \times \text{Equity Multiplier}
+\]
+
+\end{frame}
+
+\begin{frame}{Firm Size Classification by Market Capitalization}
+
+\textbf{Industry-Standard Size Categories:}
+
+\begin{itemize}
+\item \textbf{Mega-Cap:} Market cap $\geq$ \$200 billion
+\item \textbf{Large-Cap:} Market cap \$10 billion -- \$200 billion
+\item \textbf{Mid-Cap:} Market cap \$2 billion -- \$10 billion
+\item \textbf{Small-Cap:} Market cap \$300 million -- \$2 billion
+\item \textbf{Micro-Cap:} Market cap \$50 million -- \$300 million
+\item \textbf{Nano-Cap:} Market cap $<$ \$50 million
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Distribution in November 2025 (3,261 firms):}
+\begin{itemize}
+\item Mega-Cap: 1.47\% \quad Large-Cap: 19.93\% \quad Mid-Cap: 27.14\%
+\item Small-Cap: 32.63\% \quad Micro-Cap: 15.49\% \quad Nano-Cap: 3.34\%
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Implementation:} Applied these percentages each month to classify
+
+\end{frame}
+
+\begin{frame}{Data and Scripts}
+\href{https://www.dropbox.com/scl/fi/ysst6fjr08uhr7a8tr5ka/mgmt638_pe_prediction.zip?rlkey=tjp9k7r875ztxjtv9r5vowvns&dl=1}{Download Zip File}
+\vspace{0.5em}
+\begin{itemize}
+\item Data from the Rice database: data3.parquet, data3\_returns.parquet
+\item Output files created by scripts: lightgbm\_pe\_predictions.parquet, data3\_evaluate.parquet, data3\_portfolios.csv
+\item Scripts: fetch\_monthly\_returns\_all.py, train\_lightgbm\_pe.py
+\item Jupyter notebook: pe\_prediction\_analysis.ipynb
+\end{itemize}
+\end{frame}
+
+\begin{frame}{data3.parquet}
+\begin{itemize}
+\item Source: data2.parquet (filtered for positive PE ratios and with some other ratios)
+\item 338,352 rows, 29 columns
+\item Ticker, month, pe
+\item Categorical features: size, sector, industry
+\item Profitability ratios: roe, roa, grossmargin, netmargin, gp\_to\_assets
+\item Other ratios: assetturnover, equity\_multiplier,
+\item Growth rates: many 5-year growth rates
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Backtesting Process: Walk-Forward Validation}
+
+\textbf{The Challenge:} We want to predict PE ratios and trade on prediction errors, but we can only use past information
+
+\vspace{0.3cm}
+
+\textbf{The Solution: Walk-Forward Monthly Backtesting}
+
+\begin{enumerate}
+\item \textbf{Train:} Use data from month $t$ to train model
+\item \textbf{Predict:} Use trained model to predict PE ratios for month $t+1$
+\item \textbf{Form Portfolios:} At end of month $t$, rank stocks by prediction error (predicted PE - actual PE) / actual PE
+\item \textbf{Calculate Returns:} Measure returns during month $t+1$
+\item \textbf{Continue:} Move to next month, retrain model with new data
+\end{enumerate}
+
+\vspace{0.3cm}
+
+\textbf{Key Principle:} Always use current features (known at time $t$) and a model trained on past data to predict future PE ratios and form portfolios
+
+\end{frame}
+
+\begin{frame}{LightGBM: Light Gradient Boosting Machine}
+
+\textbf{What is LightGBM?}
+\begin{itemize}
+\item A gradient boosting framework that uses tree-based learning algorithms
+\item Builds an ensemble of decision trees sequentially, where each tree corrects errors from previous trees
+\item Optimized for speed and efficiency, especially with large datasets
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Key Feature: Native Support for Categorical Variables}
+\begin{itemize}
+\item LightGBM can handle categorical features directly without one-hot encoding (i.e., without dummy variables)
+\item Finds optimal splits by grouping categories intelligently
+\item For example, with a ``sector'' variable, it might group Technology, Healthcare, and Consumer sectors together if they have similar target values
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Why Use LightGBM?}
+\begin{itemize}
+\item Handles mixed data types: numeric ratios (ROE, margins) + categorical (sector, industry, size)
+\item Fast training and prediction, even with hundreds of thousands of observations
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{data3\_returns.parquet}
+\begin{itemize}
+\item Source: Rice Data Portal SEP table (Jan 2010 - present)
+\item 876,377 rows, 9,335 unique tickers
+\item Contains: ticker, month, close (end of prior month), return (current month)
+\item Created by: fetch\_monthly\_returns\_all.py
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{train\_lightgbm\_pe.py}
+
+\begin{itemize}
+\item Monthly walk-forward training and prediction
+\item Uses 500 trees, MAPE objective, learning rate 0.05
+\item Features: 3 categorical (sector, industry, size) + 23 numeric ratios
+\item Output: lightgbm\_pe\_predictions.parquet
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{lightgbm\_pe\_predictions.parquet}
+
+\begin{itemize}
+\item 141,676 rows, 6 columns
+\item Columns: ticker, train\_month, test\_month, actual\_pe, predicted\_pe, percentage\_error
+\item Contains all predictions from walk-forward validation (2015-09 to 2025-11)
+\item Used to create data3\_evaluate.parquet by merging with returns data
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Prediction and Portfolio Files}
+
+\textbf{data3\_evaluate.parquet}
+\begin{itemize}
+\item Merged predictions with returns data
+\item Filtered for close $\geq$ \$5.00
+\item 141,676 rows with predictions
+\item Contains: ticker, month, close, return, pct\_error
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{data3\_portfolios.csv}
+\begin{itemize}
+\item Decile portfolios based on pct\_error
+\item 123 months (rows) $\times$ 10 deciles (columns)
+\item Mean returns: Decile 1: 0.99\%, Decile 10: 1.12\%
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Jupyter Notebook: pe\_prediction\_analysis.ipynb}
+
+\textbf{Interactive Analysis of November 2025 Predictions}
+
+\vspace{0.2cm}
+
+\textbf{What's included:}
+\begin{itemize}
+\item Trains LightGBM on October 2025 data to predict November 2025 PE ratios
+\item Shows distribution of percentage errors with histogram and box plot
+\item Displays feature importance (top 20 features)
+\item Visualizes tree structure for two trees (Tree 0 and Tree 50)
+\item Actual vs Predicted scatter plot with R-squared
+\item Lists best and worst predictions by ticker
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Purpose:} Provides hands-on exploration of how LightGBM makes predictions, which features matter most, and how the ensemble of trees combines to form predictions
+
+\end{frame}
 
 \end{document}

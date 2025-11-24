@@ -1,0 +1,378 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\author{}
+\date{}
+
+\begin{document}
+
+
+\section{Faculty Use of Generative AI --
+Survey}\label{faculty-use-of-generative-ai-survey}
+
+For this survey, ``generative AI'' includes tools such as ChatGPT,
+Claude, Gemini, Copilot, Replit AI, Lovable, GitHub Copilot, etc.
+
+Throughout, check the box if something applies (you ``have used'' it). 
+Leave it blank if you have not used generative AI in that way in the
+past 12 months.
+
+\subsubsection{Name:
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}\label{name-____________________________}
+
+\subsubsection{Q1. Assignments that ask students to use generative AI
+outside of
+class}\label{q1.-assignments-that-ask-students-to-use-generative-ai-outside-of-class}
+
+Instructions:\\
+For this question, we are only interested in situations where you
+explicitly asked or required students to use generative AI outside of
+live class sessions (for homework, projects, preparation, or self-study)
+in the past 12 months.
+
+Check the box for each type of activity that you have asked students to
+do using generative AI outside of class in at least one of your
+courses. If you have never asked students to use generative AI outside of class,
+leave all items in this question blank.
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  Online research or fact-finding (e.g., exploring a topic, gathering or
+  summarizing information, generating examples)\\
+\item[$\square$]
+  Brainstorming ideas (e.g., project topics, business ideas, marketing
+  campaigns, strategies, alternatives)\\
+\item[$\square$]
+  Drafting or revising written work (e.g., reports, memos,
+  presentations)\\
+\item[$\square$]
+  Data analysis or coding (e.g., writing or debugging code, running
+  analyses, creating visualizations -- including use as a coding
+  assistant)\\
+\item[$\square$]
+  Using generative AI as a tutor or study coach (e.g., to explain
+  concepts, walk through solutions, or create practice questions)\\
+\item[$\square$]
+  Preparing for exams (e.g., generating practice questions, study plans,
+  or summaries of course material)\\
+\item[$\square$]
+  Practicing communication outside class (e.g., mock interviews,
+  pitches, or role-play with AI)\\
+\item[$\square$]
+  Asking generative AI to critique or improve their own work (e.g.,
+  suggest improvements, alternatives, or corrections)\\
+\item[$\square$]
+  Other ways I have asked students to use generative AI outside class
+  (briefly specify): 
+\end{itemize}
+
+\subsubsection{Q2. In-class uses (role-playing, data analysis, chatting,
+other)}\label{q2.-in-class-uses-role-playing-data-analysis-chatting-other}
+
+Instructions:\\
+In the past 12 months, in any course you taught, check the box for each
+way you have used generative AI live during class (in-person or
+synchronous online).  If you have not used generative AI in a particular way, leave it blank.
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  Chatting / Q\&A in class: Asking an AI tool questions in front of the
+  class (e.g., explanations, definitions, worked examples)\\
+\item[$\square$]
+  Brainstorming with the class: Using AI in class to generate ideas,
+  examples, or strategies together with students\\
+\item[$\square$]
+  Role-playing / simulations: Having AI act as a stakeholder (e.g.,
+  customer, manager, regulator, negotiation counterpart)\\
+\item[$\square$]
+  Data analysis in class: Using an AI tool to run data analysis or code
+  live in class (e.g., regression, simulation, visualization)\\
+\item[$\square$]
+  Coding demonstrations: Using an AI coding assistant in class to write
+  or debug code in real time\\
+\item[$\square$]
+  Generating or modifying cases / scenarios on the fly in response to
+  class discussion\\
+\item[$\square$]
+  Using AI to check or verify answers during class (e.g., checking
+  numerical answers or alternative solutions)\\
+\item[$\square$]
+  Using AI to give feedback on sample student answers during class\\
+\item[$\square$]
+  Other in-class uses of generative AI (briefly specify):
+  \_\_\_\_\_\_\_\_\_\_\_\_\_\_
+\end{itemize}
+
+\clearpage 
+
+\subsubsection{Q3. AI policies and
+misuse}\label{q3.-ai-policies-and-misuse}
+
+Instructions:\\
+Check each statement that is true for at least one of your courses in
+the most recent twelve months. Leave any statement blank if it is not true for any of your courses.
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  I have an explicit written policy on student use of generative AI in
+  at least one course (e.g., in the syllabus or LMS).\\
+\item[$\square$]
+  I have talked in class about how students may or may not use
+  generative AI in at least one course.\\
+\item[$\square$]
+  I have no explicit policy on student use of generative AI in any of my
+  courses.\\
+\item[$\square$]
+  I have experienced what I believe was student misuse of AI in at least
+  one of my courses. Please describe, even if misuse was not definitely
+  established. \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+\end{itemize}
+
+\subsubsection{Q4. What you allow or require (learning vs
+assignments)}\label{q4.-what-you-allow-or-require-learning-vs-assignments}
+
+Instructions:\\
+For each statement below, check the box if it is true of at least one
+course you taught in the most recent academic year.  If it is not true for any course, leave it blank.
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  I allow students to use generative AI for learning (e.g., summarizing
+  readings, asking questions) in at least one course.\\
+\item[$\square$]
+  I allow students to use generative AI to help with graded written
+  assignments in at least one course.\\
+\item[$\square$]
+  I allow students to use generative AI to help with graded coding or
+  data analysis assignments in at least one course.\\
+\item[$\square$]
+  I explicitly prohibit student use of generative AI for graded
+  assignments in at least one course.\\
+\item[$\square$]
+  I require students to disclose any use of generative AI on graded work
+  in at least one course.\\
+\item[$\square$]
+  I have at least one course where using generative AI is a required or
+  central part of the coursework.
+\end{itemize}
+
+\clearpage 
+
+For the next questions, we distinguish between:
+
+\begin{itemize}
+\tightlist
+\item
+  Chat-based tools (primarily text/chat interfaces)\\
+\item
+  Coding / code-execution tools (primarily used for coding or running
+  code / data analysis)
+\end{itemize}
+
+For each tool, you can mark:
+
+\begin{itemize}
+\tightlist
+\item
+  ``Used myself'' = you have personally used or experimented with this
+  tool for research, teaching, or other professional work.\\
+\item
+  ``Used with students'' = you have used, demonstrated, required, or
+  explicitly recommended this tool for students in at least one course.
+\end{itemize}
+
+If neither applies, leave both blank.
+
+\subsubsection{Q5. Chat-based tools (primarily
+text/chat)}\label{q5.-chat-based-tools-primarily-textchat}
+
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{7.5cm} c c@{}}
+\textbf{Tool} & \shortstack{\textbf{Used}\\\textbf{myself}} & \shortstack{\textbf{Used with}\\\textbf{students}} \\
+\hline
+ChatGPT (standard web or mobile app) & $\square$ & $\square$ \\
+Custom GPTs I created or configured & $\square$ & $\square$ \\
+Microsoft Copilot (e.g., in Edge, Word, PowerPoint) & $\square$ & $\square$ \\
+Google Gemini (chat or in Docs/Sheets/Slides) & $\square$ & $\square$ \\
+Anthropic Claude (chat interface) & $\square$ & $\square$ \\
+Perplexity AI & $\square$ & $\square$ \\
+Other chat-based AI assistant (specify): \_\_\_\_\_\_\_\_\_\_\_ & $\square$ & $\square$ \\
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+
+\subsubsection{Q6. Coding / code-execution tools (IDE /
+agents)}\label{q6.-coding-code-execution-tools-ide-agents}
+
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{7.5cm} c c@{}}
+\textbf{Tool} & \shortstack{\textbf{Used}\\\textbf{myself}} & \shortstack{\textbf{Used with}\\\textbf{students}} \\
+\hline
+Claude Code / OpenAI Codex / Gemini CLI & $\square$ & $\square$ \\
+Replit / Lovable & $\square$ & $\square$ \\
+VS Code, PyCharm, etc. with GitHub Copilot & $\square$ & $\square$ \\
+Cursor / Windsurf / Codeium & $\square$ & $\square$ \\
+Gemini AI Studio & $\square$ & $\square$ \\
+Julius.ai & $\square$ & $\square$ \\
+Other AI coding / code-execution tool (specify): \_\_\_\_\_ & $\square$ & $\square$ \\
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+
+Thank you for completing this survey.
+
+
+
+
+\end{document}

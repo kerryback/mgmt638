@@ -49,7 +49,11 @@
       "Bash(pip uninstall:*)",
       "Bash(taskkill /F /PID 24384)",
       "Bash(taskkill:*)",
-      "Bash(move complete_merged_data.parquet data2.parquet)"
+      "Bash(move complete_merged_data.parquet data2.parquet)",
+      "Bash(pandoc:*)",
+      "Bash(xelatex:*)",
+      "Bash(cd:*)",
+      "Bash(jupyter nbconvert:*)"
     ],
     "deny": [],
     "ask": []

@@ -12,11 +12,314 @@
 
 \maketitle
 
+\begin{frame}{Agenda}
+    \begin{enumerate}
+    \item \href{https://www.dropbox.com/scl/fi/28vgcab7vhw8mq8rbr321/data4_complete_pipeline.zip?rlkey=w8gzrczu1i6b6pkacizn0tz1s&dl=1}{data4 files, scripts, and outputs}
+    \item Gu-Kelly-Xiu, 2020
+    \item Getting data (\texttt{create\_data4.py})
+    \item Training and predicting in rolling windows (\texttt{train\_predict\_data4.py})
+    \item Output current model and predictions (\texttt{data4\_current.xlsx}, \texttt{data4\_model.pkl})
+    \item Analyze historical portfolio returns (\texttt{analyze\_portfolios.ipynb})
+    \item Try to interpret model (\texttt{analyze\_model\_features.ipynb})
+    \end{enumerate}
+
+\end{frame}
 \begin{frame}{Asset Pricing and Machine Learning}
 \begin{itemize}
 \item \href{https://mgmt638.kerryback.com/pdfs/Gu_Kelly_Xiu_RFS_2020.pdf}{PDF: \textit{Asset Pricing and Machine Learning}, Gu, Kelly, and Xiu, 2020}
 \item \href{https://mgmt638.kerryback.com/videos/Gu_Kelly_Xiu_RFS_2020.pdf.mp4}{Video: \textit{Asset Pricing and Machine Learning}, Gu, Kelly, and Xiu, 2020}
 \item \href{https://notebooklm.google.com/notebook/a877f66a-28ad-452d-817e-605c7648675d}{NotebookLM}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{data4.parquet: Overview}
+\begin{itemize}
+\item Monthly panel dataset for predicting stock returns
+\item 591,892 stock-month observations (after dropping missing values)
+\item 4,851 unique tickers (including delisted)
+\item Date range: February 2011 to November 2025
+\item Combines price data, fundamentals, and classifications
+\item Created by \texttt{create\_data4.py} (template for similar datasets)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{data4.parquet: Variables (1/2)}
+\textbf{Identifiers and Returns}
+\begin{itemize}
+\item \texttt{ticker}, \texttt{month} -- stock identifier and time period
+\item \texttt{return} -- monthly return (decimal)
+\item \texttt{momentum} -- 12-month return, skipping most recent month
+\item \texttt{lagged\_return} -- prior month's return
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Price Data (end-of-prior-month)}
+\begin{itemize}
+\item \texttt{close} -- closing price
+\item \texttt{marketcap} -- market capitalization (millions USD)
+\item \texttt{pb} -- price-to-book ratio
+\end{itemize}
+\end{frame}
+
+\begin{frame}{data4.parquet: Variables (2/2)}
+\textbf{Fundamentals (from 10-K filings)}
+\begin{itemize}
+\item \texttt{asset\_growth} -- 1-year percent change in total assets
+\item \texttt{roe} -- return on equity
+\item \texttt{gp\_to\_assets} -- gross profit / total assets
+\item \texttt{grossmargin}, \texttt{assetturnover}, \texttt{leverage}
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Classifications}
+\begin{itemize}
+\item \texttt{sector}, \texttt{industry} -- company classification
+\item \texttt{size} -- Mega/Large/Mid/Small/Micro/Nano-Cap
+\end{itemize}
+\end{frame}
+
+\begin{frame}{data4.parquet: Key Methodology}
+\textbf{Avoiding Look-Ahead Bias}
+\begin{itemize}
+\item Price data (\texttt{close}, \texttt{marketcap}, \texttt{pb}) lagged by 1 month
+\item Fundamentals available in first full month \emph{after} filing date
+\item Forward-filled until next filing
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Filters Applied}
+\begin{itemize}
+\item All tickers (including delisted) to avoid look-ahead bias
+\item Penny stock filter: \texttt{close} $\geq$ \$5.00
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Size Categories}
+\begin{itemize}
+\item Based on percentile cutoffs within each month
+\item Consistent distribution: Mega 1.5\%, Large 20\%, Mid 27\%, Small 33\%, Micro 15\%, Nano 3\%
+\end{itemize}
+\end{frame}
+
+\begin{frame}{create\_data4.py: Overview}
+\begin{itemize}
+\item Python script that creates \texttt{data4.parquet} from Rice Data Portal
+\item Queries SEP, DAILY, SF1, and TICKERS tables via API
+\item Implements proper time-series methodology to avoid look-ahead bias
+\item Designed as a template for creating similar ML-ready datasets
+\item Well-documented with 580 lines including extensive comments
+\item Outputs raw data only (percentile ranking done in training script)
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{create\_data4.py: Configuration}
+Key parameters at top of script:
+\begin{itemize}
+\item \texttt{START\_YEAR = 2010} -- beginning of date range
+\item \texttt{MINIMUM\_PRICE = 5.00} -- penny stock filter
+\item \texttt{BATCH\_SIZE = 500} -- tickers per API query
+\item Size percentile cutoffs (cumulative from bottom):
+\begin{itemize}
+\item \texttt{NANO\_CUTOFF = 3.34}
+\item \texttt{MICRO\_CUTOFF = 18.83}
+\item \texttt{SMALL\_CUTOFF = 51.46}
+\item \texttt{MID\_CUTOFF = 78.60}
+\item \texttt{LARGE\_CUTOFF = 98.53}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{train\_predict\_data4.py: Overview}
+\begin{itemize}
+\item Complete pipeline from raw data to portfolio analysis
+\item Consolidates training, prediction, and portfolio formation
+\item Well-documented with 315 lines including extensive comments
+\item Designed as a template for rolling-window ML predictions
+\item Outputs \texttt{data4\_portfolios.csv} and \texttt{data4\_current.xlsx}
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Four Main Steps:}
+\begin{enumerate}
+\item Create percentile-ranked features 
+\item Train LightGBM with 12-month rolling windows (\texttt{data4\_predict.parquet})
+\item Form decile portfolios and analyze (\texttt{data4\_portfolios.csv})
+\item Predict current month and save model (\texttt{data4\_current.xlsx}, \texttt{data4\_model.pkl})
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{train\_predict\_data4.py: Configuration}
+\begin{itemize}
+\item \texttt{TRAINING\_WINDOW = 12} -- months in rolling window
+\item \texttt{N\_PORTFOLIOS = 10} -- number of decile portfolios
+\item \texttt{PARAMS = \{...\}} -- LightGBM hyperparameters (dict)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{data4\_portfolios.csv: Overview}
+\begin{itemize}
+\item Portfolio returns from sorting on LightGBM predictions
+\item 1,650 rows (165 months $\times$ 10 deciles)
+\item Date range: February 2012 to October 2025
+\item Created by \texttt{train\_predict\_data4.py}
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Columns:}
+\begin{itemize}
+\item \texttt{month} -- prediction month
+\item \texttt{decile} -- portfolio rank (1 = lowest predicted, 10 = highest)
+\item \texttt{return} -- average realized return in decile
+\item \texttt{predict} -- average predicted return rank in decile
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Performance:}
+\begin{itemize}
+\item Average monthly spread (D10 - D1): 2.50\%
+\end{itemize}
+\end{frame}
+
+\begin{frame}{data4\_current.xlsx: Overview}
+\begin{itemize}
+\item Current month predictions for live trading/analysis
+\item Created by Step 4 of \texttt{train\_predict\_data4.py}
+\item Automatically detects current month (e.g., November 2025)
+\item Trains on last 12 complete months (e.g., Nov 2024 - Oct 2025)
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Columns:}
+\begin{itemize}
+\item \texttt{ticker} -- stock ticker symbol
+\item \texttt{predict} -- predicted return rank (sorted highest to lowest)
+\item All features from \texttt{data4.parquet} for current month
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Use Cases:}
+\begin{itemize}
+\item Identify top/bottom predicted stocks for current month
+\item Analyze characteristics of high vs. low predicted stocks
+\item Construct portfolios based on predictions
+\end{itemize}
+\end{frame}
+
+\begin{frame}{analyze\_portfolios.ipynb: Overview}
+\begin{itemize}
+\item Jupyter notebook for analyzing decile portfolio performance
+\item Reads \texttt{data4\_portfolios.csv} (165 months $\times$ 10 deciles)
+\item Creates publication-quality visualizations and statistics
+\item Saves three PNG figures for presentations/papers
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Analysis:}
+\begin{enumerate}
+\item \textbf{Mean returns bar chart} -- average monthly return by decile
+\item \textbf{Sharpe ratios bar chart} -- annualized Sharpe ratio by decile
+\item \textbf{Cumulative returns} -- two subplots (linear and log scale)
+\item \textbf{Summary statistics} -- mean, volatility, Sharpe, min, max
+\item \textbf{Long-short portfolio} -- D10 - D1 spread performance
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{analyze\_model\_features.ipynb: Overview}
+\begin{itemize}
+\item Jupyter notebook for analyzing how the trained model uses features
+\item Reads \texttt{data4\_model.pkl} (trained LightGBM model) and \texttt{data4\_current.xlsx}
+\item Creates visualizations showing feature importance and linear relationships
+\item Saves two PNG figures for presentations/papers
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Analysis:}
+\begin{enumerate}
+\item \textbf{Feature importances pie chart} -- from LightGBM split gain
+\item \textbf{Linear regression} -- predictions on percentile-ranked features
+\item \textbf{Coefficient bar chart} -- showing linear relationships (positive = green, negative = red)
+\item \textbf{Comparison table} -- feature importance ranks vs coefficient ranks
+\end{enumerate}
+\vspace{0.3cm}
+\textbf{Interpretation:}
+\begin{itemize}
+\item Large rank differences reveal non-linear feature effects
+\end{itemize}
+\end{frame}
+
+\begin{frame}{LightGBM Hyperparameters for Return Prediction}
+\textbf{Tree Structure}
+\begin{itemize}
+\item \texttt{num\_leaves = 31} -- max leaves per tree (up to 30 splits/tree)
+\item \texttt{max\_depth = 6} -- shallow trees prevent overfitting to noise
+\end{itemize}
+\vspace{0.2cm}
+\textbf{Learning Parameters}
+\begin{itemize}
+\item \texttt{learning\_rate = 0.05} -- moderate learning rate
+\item \texttt{n\_estimators = 100} -- fixed 100 boosting iterations (trees)
+\end{itemize}
+\vspace{0.2cm}
+\textbf{Regularization}
+\begin{itemize}
+\item \texttt{min\_child\_samples = 50} -- min samples per leaf
+\item \texttt{subsample = 0.8}, \texttt{colsample\_bytree = 0.8} -- sampling
+\item \texttt{reg\_alpha = 0.1} (L1), \texttt{reg\_lambda = 1.0} (L2)
+\end{itemize}
+\vspace{0.2cm}
+\textbf{Training}
+\begin{itemize}
+\item 12-month rolling window, no validation set, no early stopping
+\end{itemize}
+\end{frame}
+
+\begin{frame}{AI Code Editors: VS Code Forks}
+\textbf{Cursor}
+\begin{itemize}
+\item Fork of VS Code by Anysphere Inc. (San Francisco)
+\item Launched: March 2023
+\item First stable release (v1.0): June 2025
+\item \href{https://cursor.com}{cursor.com}
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Windsurf}
+\begin{itemize}
+\item Fork of VS Code by Codeium
+\item Launched: November 13, 2024
+\item Branded as ``agentic IDE'' with AI Flows
+\item \href{https://windsurf.com}{windsurf.com}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Google's Acqui-Hire of Windsurf}
+\textbf{Timeline}
+\begin{itemize}
+\item OpenAI offered \$3 billion to acquire Windsurf
+\item Exclusivity period expired: July 11, 2025
+\item Google executed \$2.4B ``reverse acqui-hire'' + licensing deal
+\item CEO Varun Mohan and co-founder Douglas Chen joined Google DeepMind
+\item Google received non-exclusive license to Windsurf's AI technology
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Why OpenAI's Deal Collapsed}
+\begin{itemize}
+\item Microsoft (OpenAI's largest investor) has rights to OpenAI's acquired IP
+\item OpenAI wanted to keep Windsurf tech private from Microsoft
+\item Microsoft refused; deal collapsed when exclusivity expired
+\item Cognition later acquired remaining Windsurf assets for \$250M
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Google Antigravity}
+\textbf{Release}
+\begin{itemize}
+\item Announced: November 18, 2025 (alongside Gemini 3)
+\item Free public preview available immediately
+\item Available for Windows, macOS, and Linux
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Features}
+\begin{itemize}
+\item Fork of VS Code with agent-first interface
+\item Powered by Gemini 3 (also supports Claude Sonnet 4.5)
+\item Autonomous agents for planning, executing, and verifying tasks
+\item Integrates editor, terminal, and browser
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Download}
+\begin{itemize}
+\item \href{https://antigravity.google/download}{antigravity.google/download}
 \end{itemize}
 \end{frame}
 

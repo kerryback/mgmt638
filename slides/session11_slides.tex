@@ -12,4 +12,41 @@
 
 \maketitle
 
+\begin{frame}{Alphas and Portfolio Improvement}
+Suppose you're in wealth management.  Should you (and your client) care about alphas?  If so, what alpha?
+
+\vspace{0.5cm}
+
+\href{https://learn-investments.rice-business.org/capm/alphas-mve}{Learn Investments page}
+\end{frame}
+
+\begin{frame}{Ask Claude}
+    \begin{enumerate}
+    \item The risk-free rate is 2\%.  My portfolio has an expected return of 10\% and a standard deviation of 15\%.  I'm considering moving some money to a new asset that has a standard deviation of 30\%, a correlation with my portfolio of 60\%, and an alpha relative to my portfolio of 5\%.  How can I combine the new asset and the risk-free asset with my current portfolio to get an expected return higher than 10\% while maintaining the standard deviation at 15\%?
+    \item Put this analysis in a Jupyter notebook, doing the calculations in Python.
+    \item Build a Streamlit app for this?  You can specify that the user should input the alpha of the new asset or its expected return or its Sharpe ratio.  Any two of these three things can be calculated from the third.
+    \end{enumerate}
+
+\end{frame}
+
+\begin{frame}{When Does a New Asset Have Positive Alpha?}
+A new asset has positive alpha relative to the current portfolio if and only if:
+
+\vspace{0.5cm}
+
+$$\alpha > 0 \quad \Longleftrightarrow \quad \text{Sharpe}_{\text{new}} > \rho \times \text{Sharpe}_{\text{current}}$$
+
+\vspace{0.5cm}
+
+where:
+\begin{itemize}
+\item $\text{Sharpe}_{\text{new}} = \frac{E(R_{\text{new}}) - r_f}{\sigma_{\text{new}}}$ is the Sharpe ratio of the new asset
+\item $\text{Sharpe}_{\text{current}} = \frac{E(R_{\text{current}}) - r_f}{\sigma_{\text{current}}}$ is the Sharpe ratio of the current portfolio
+\item $\rho$ is the correlation between the new asset and current portfolio
+\end{itemize}
+
+\vspace{0.3cm}
+
+\textbf{Key insight:} Lower correlation makes it easier for an asset to have positive alpha.
+\end{frame}
 \end{document}

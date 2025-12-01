@@ -13,7 +13,7 @@ project:
     - mcnair.jpg
     - rice-business.jpg
     - QuantEquity.zip
-    - .claude.zip
+    - claude.zip
     - analyze_portfolios.ipynb
     - momentum.ipynb
     - momentum_current.ipynb

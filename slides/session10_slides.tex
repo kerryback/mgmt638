@@ -22,6 +22,7 @@
 \item Drawdowns
 \item Alphas
 \item Attribution analysis
+\item Comprehensive evaluation notebook
 \end{itemize}
 \item Weekly trading
 \begin{itemize}
@@ -57,11 +58,11 @@ Suppose you're in wealth management.  Should you (and your client) care about al
 \begin{frame}{When Does a New Asset Have Positive Alpha?}
 A new asset has positive alpha relative to the current portfolio if and only if:
 
-\vspace{0.2cm}
+%\vspace{0.1cm}
 
 $$\alpha > 0 \quad \Longleftrightarrow \quad \text{Sharpe}_{\text{new}} > \rho \times \text{Sharpe}_{\text{current}}$$
 
-\vspace{0.2cm}
+%\vspace{0.1cm}
 
 where:
 \begin{itemize}
@@ -87,7 +88,7 @@ where:
 
 \begin{frame}{New Evaluation Notebook}
 
-\href{https://mgmt638.kerryback.com/analyze-portfolios.ipynb}{analyze\_portfolios.ipynb}
+\href{https://mgmt638.kerryback.com/analyze_portfolios.ipynb}{analyze\_portfolios.ipynb}
 
 \vspace{.5cm}
 
@@ -103,7 +104,7 @@ Note: You can ask Claude to create a PowerPoint deck from the tables and figures
 
 \begin{frame}{Updated Skills}
 \begin{enumerate}
-\item Replace your .claude folder with the .claude folder in  \texttt{\href{https://mgmt638.kerryback.com/.claude.zip}{this zip file}}
+\item Replace your .claude folder with the .claude folder in  \href{https://mgmt638.kerryback.com/.claude.zip}{this zip file}.
 \item data5.parquet was created with this prompt: 
 \begin{quote}
 Use the Rice database to create a weekly dataset containing the variables in data4.parquet, but compute lag\_week and lag\_month instead of lagged\_return.  I want all stocks and all dates after Jan 1, 2010.  Read the weekly dataset skill in its entirety and follow its instructions exactly.  If anything is unclear, please ask for clarification.
@@ -128,9 +129,9 @@ Download \href{https://mgmt638.kerryback.com/PLACEHOLDER.zip}{\texttt{data5\_pip
 \end{frame}
 
 
-\begin{frame}{Train-Predict Script}
+\begin{frame}{Weekly Train-Predict Script}
 \begin{itemize}
-\item All features and return converted to percentile ranks (0-1)
+\item All features and return converted to percentile ranks (0--1)
 \item Train on most recent 52 weeks
 \item Use each trained model for 8 weeks, then retrain
 \item Out-of-sample predictions only (no look-ahead bias)

@@ -10,5 +10,5 @@
 | 8 |  Trading on Valuation Models | [Slides](slides/session08_slides.pdf){target="_blank"} |
 | 9 |  Trading on Return Prediction Models | [Slides](slides/session09_slides.pdf){target="_blank"}|
 | 10 |  Evaluating Portfolio Performance<br>Trading on Weekly Return Predictions<br>Trading Costs | [Slides](slides/session10_slides.pdf){target="_blank"} |
-| 11 | Interpreting Models<br>Automated Trading<br>Alpaca Brokerage Python API  | [Slides](slides/session11_slides.pdf){target="_blank"} |
-| 12 | Presentations <br>Neural Networks | [Slides](slides/session12_slides.pdf){target="_blank"} |  
+| 11 | Interpreting Models <br>Neural Networks | [Slides](slides/session11_slides.pdf){target="_blank"} |
+| 12 | Presentations <br>Automated Trading<br>Alpaca Brokerage Python API | [Slides](slides/session12_slides.pdf){target="_blank"} |  

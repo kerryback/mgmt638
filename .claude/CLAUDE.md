@@ -2,13 +2,13 @@
 
 ## Data Query
 
-When asked to get data from the Rice database, use the **rice-data-query** skill.
+When asked to get data from the Rice database, use the **monthly-analysis** skill or the **weekly-analysis** skill.
 
-All information about the Rice database schema, SQL syntax, and query patterns is contained in the rice-data-query skill.
+All information about the Rice database schema, SQL syntax, and query patterns is contained in the monthly-analysis skill and also in the weekly-analysis skill.
 
 ## Financial Ratios
 
-When calculating any ratio with equity in the numerator (e.g., book-to-market = equity / close):
+When calculating any ratio with equity in the numerator or denominator:
 - **ALWAYS set the ratio to NaN if equity <= 0**
 - Negative or zero equity indicates financial distress and makes valuation ratios meaningless
 

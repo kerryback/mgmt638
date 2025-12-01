@@ -13,14 +13,10 @@ project:
     - mcnair.jpg
     - rice-business.jpg
     - QuantEquity.zip
+    - .claude.zip
+    - analyze-portfolios.ipynb
     - momentum.ipynb
     - momentum_current.ipynb
-    - README.pdf
-    - SKILL.md
-    - skills/CLAUDE.md
-    - skills/rice-data-query/
-    - skills/merge/
-    - skills/
     - pdfs/Asness_Frazzini_Pedersen_RAS_2019.pdf
     - pdfs/Asness_Moskowitz_Pedersen_JF_2013.pdf
     - pdfs/Crane_Crotty_Umar_MS_2023.pdf
@@ -29,6 +25,7 @@ project:
     - pdfs/Jegadeesh_Titman_ARFE_2011.pdf
     - pdfs/Kapadia_Ostdiek_Weston_Zekhnini_JFQA_2019.pdf
     - pdfs/Novy-Marx_Medhat_2025.pdf
+    - pdfs/Frazzini_Israel_Moskowitz_2012.pdf
     - videos/Asness_Frazzini_Pedersen_RAS_2019.mp4
     - videos/Asness_Moskowitz_Pedersen_JF_2013.mp4
     - videos/Crane_Crotty_Umar_MS_2023.mp4
@@ -38,8 +35,7 @@ project:
     - videos/Jegadeesh_Titman_ARFE_2011.mp4
     - videos/Kapadia_Ostdiek_Weston_Zekhnini_JFQA_2019.mp4
     - videos/Novy-Marx_Medhat_2025.mp4
-    - videos/Algos_HFTs_Quants_Explained.mp4
-    - videos/Quant_Investing_Revolution.mp4
+    - videos/Frazzini_Israel_Moskowitz_2012.mp4
     - slides/session01_slides.pdf
     - slides/session02_slides.pdf
     - slides/session03_slides.pdf
@@ -49,8 +45,7 @@ project:
     - slides/session07_slides.pdf
     - slides/session08_slides.pdf
     - slides/session09_slides.pdf
-    - slides/session09_manus.pptx
-    - slides/session10_slides.pdf
+     - slides/session10_slides.pdf
     - slides/session11_slides.pdf
     - slides/session12_slides.pdf
                   
@@ -64,9 +59,6 @@ website:
     right:
         - text: Slides
           file: slides.qmd
-          target: _blank
-        - text: Skills
-          file: skills.qmd
           target: _blank
         - text: Data Guide
           href: https://portal-guide.rice-business.org

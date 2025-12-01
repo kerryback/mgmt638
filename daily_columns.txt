@@ -1,0 +1,10 @@
+date
+ev
+evebit
+evebitda
+lastupdated
+marketcap
+pb
+pe
+ps
+ticker

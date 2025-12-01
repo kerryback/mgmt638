@@ -8,7 +8,7 @@
 | 6 |  Hedge Funds and Public Information<br>More on Random Forests | [Slides](slides/session06_slides.pdf){target="_blank"} |
 | 7 |  Valuation by Multiples and Stock Reports<br>Machine Learning for Valuation | [Slides](slides/session07_slides.pdf){target="_blank"} |
 | 8 |  Trading on Valuation Models | [Slides](slides/session08_slides.pdf){target="_blank"} |
-| 9 |  Trading on Return Prediction Models | [Slides - Plain](slides/session09_slides.pdf){target="_blank"} <br> [Slides - Manus](slides/session09_slides.pptx)|
+| 9 |  Trading on Return Prediction Models | [Slides](slides/session09_slides.pdf){target="_blank"}|
 | 10 |  Attribution Analysis and Alphas | [Slides](slides/session10_slides.pdf){target="_blank"} |
 | 11 | Trading Bots  | [Slides](slides/session11_slides.pdf){target="_blank"} |
 | 12 | Presentations  | [Slides](slides/session12_slides.pdf){target="_blank"} |  

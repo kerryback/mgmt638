@@ -14,7 +14,7 @@ project:
     - rice-business.jpg
     - QuantEquity.zip
     - .claude.zip
-    - analyze-portfolios.ipynb
+    - analyze_portfolios.ipynb
     - momentum.ipynb
     - momentum_current.ipynb
     - pdfs/Asness_Frazzini_Pedersen_RAS_2019.pdf

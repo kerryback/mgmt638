@@ -1,0 +1,125 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+\hypersetup{colorlinks=true, linkcolor=cyan, urlcolor=cyan, citecolor=cyan}
+
+\title{Claude Code and Claude Skills \\(and some NotebookLM) \\in MGMT 638}
+
+\author{Kerry Back}
+\institute{AI Working Group}
+\date{December 4, 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Claude Code (Introduced for Windows July 2025)}
+\begin{itemize}
+\item Uses Claude Opus or Claude Sonnet as LLM
+\item Works beside you on your computer, providing information and assistance
+\begin{itemize}
+\item Can read, edit, and create files on your computer (no manual uploading and downloading)
+\item Can search the web and download files
+\item Can run terminal commands, including running python scripts and compiling LaTeX docs
+\item Can use Python to create Excel, Word, and PowerPoint docs
+\item Can create and edit Jupyter notebooks with code, markdown, and visualizations
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{MGMT 638 Set-Up}
+Each student installed (during 1st class):
+
+
+\begin{itemize}
+\item Claude Code
+\item Python and select libraries
+\item VS Code and select extensions, including the Claude Code extension
+\item Access token from \href{https://data-portal.rice-business.org}{data-portal.rice-business.org}, saved in .env (text) file
+\end{itemize}
+
+\vspace{0.5cm}
+I pay \$20 per student per month for Claude Pro accounts.
+\end{frame}
+
+\begin{frame}{Claude Code in VS Code}
+\begin{center}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{screenshot1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{MGMT 638 Slide 12/01/2025}
+Ask Claude:
+\vspace{0.5cm}
+
+    \begin{enumerate}
+    \item The risk-free rate is 2\%.  My portfolio has an expected return of 10\% and a standard deviation of 15\%.  I'm considering moving some money to a new asset that has a standard deviation of 30\%, a correlation with my portfolio of 60\%, and an alpha relative to my portfolio of 5\%.  How can I combine the new asset and the risk-free asset with my current portfolio to get an expected return higher than 10\% while maintaining the standard deviation at 15\%?
+    \item Put this analysis in a Jupyter notebook, doing the calculations in Python.
+    \end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Jupyter Notebook in VS Code}
+\begin{center}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{screenshot1b.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Scrolling Down in Notebook}
+\begin{center}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{screenshot2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Scrolling Further Down}
+\begin{center}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{screenshot3.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Claude Skills (Introduced 10/16/2025)}
+\begin{itemize}
+\item Skill = text file (extended prompt) read by Claude when needed
+\item Can instruct to run Python scripts for repeatable performance
+\item Stored in \texttt{.claude/skills/} 
+\item Anthropic provides xlsx, docx, pptx, skill-creator, and others
+\end{itemize}
+\end{frame}
+
+\begin{frame}{.claude Structure for Skills I Created}
+\begin{center}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{claude_skills_structure.png}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{MGMT 638 Slide 12/01/2025}
+ Tell Claude: 
+
+\vspace{0.5cm}
+Use your weekly-analysis skill to create a weekly dataset containing ticker, return, momentum, price-to-book, sector, industry, size, and marketcap and the following variables from 10K's: ROE, 1-year percent growth in assets, gross margin, asset turnover, and leverage.  I want all stocks and all dates after Jan 1, 2010.  
+
+\end{frame}
+
+\begin{frame}{More Claude Prompts}
+After running a machine learning and backtesting script to compute decile returns from sorts on predicted returns, we told Claude:
+\begin{enumerate}
+\item Read portfolio\_returns.csv.  What are the mean returns of the portfolios?
+\item Plot the cumulative returns of the portfolios.
+\item Plot the drawdowns of the portfolios.  What is the maximum drawdown of each?
+\item Get the five Fama-French factors from Ken French's data library using pandas datareader and compute the five-factor alpha of each portfolio.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{MGMT Slide 11/10/2025 (NotebookLM)}
+\begin{itemize}
+\item \href{https://mgmt638.kerryback.com/pdfs/Kapadia_Ostdiek_Weston_Zekhnini_JFQA_2019.pdf}{PDF: \textit{Getting Paid to Hedge}, Kapadia, Ostdiek, Weston, and Zekhnini, 2019}
+\item \href{https://mgmt638.kerryback.com/videos/Kapadia_Ostdiek_Weston_Zekhnini_JFQA_2019.mp4}{Video: \textit{Getting Paid to Hedge}, Kapadia, Ostdiek, Weston, and Zekhnini, 2019}
+\item \href{https://notebooklm.google.com/notebook/58351fb6-7453-4bff-909f-281bb34e4c6a}{NotebookLM}
+\end{itemize}
+
+\vspace{0.3cm}
+We usually have one of these each class session.
+\end{frame}
+
+\end{document}

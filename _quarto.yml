@@ -12,6 +12,8 @@ project:
     - portal-guide.html
     - mcnair.jpg
     - rice-business.jpg
+    - session11A_interpretability.ipynb
+    - session11B_neuralnetworks.ipynb
     - analyze_portfolios.ipynb
     - momentum.ipynb
     - momentum_current.ipynb
@@ -43,9 +45,10 @@ project:
     - slides/session07_slides.pdf
     - slides/session08_slides.pdf
     - slides/session09_slides.pdf
-     - slides/session10_slides.pdf
+    - slides/session10_slides.pdf
     - slides/session11_slides.pdf
     - slides/session12_slides.pdf
+    - slides/aiwg.pdf
                   
 website:
   title: ""

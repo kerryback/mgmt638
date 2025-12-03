@@ -12,4 +12,177 @@
 
 \maketitle
 
+\begin{frame}{Introduction to Alpaca-py}
+\begin{itemize}
+\item Official Python SDK for Alpaca's API ecosystem
+\item Provides programmatic access to trading and market data
+\item Supports Python 3.8+
+\item Object-oriented design with built-in data validation using Pydantic
+\item Successor to \texttt{alpaca-trade-api-python} with improved architecture
+\item Free to use with free account signup at \href{https://alpaca.markets}{alpaca.markets}
+\item Sandbox/paper trading environment available for testing
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Installation and Setup}
+\textbf{Installation:}
+\begin{itemize}
+\item Install via pip: \texttt{pip install alpaca-py}
+\item Or via poetry: \texttt{poetry add alpaca-py}
+\item Current version: 0.43.2 (November 2025)
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Setup:}
+\begin{itemize}
+\item Sign up for free account at \href{https://alpaca.markets}{alpaca.markets}
+\item Retrieve API key and secret key
+\item Crypto market data requires no authentication
+\item Stock market data and trading require API keys
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Core Features and APIs}
+\textbf{Three Main API Products:}
+\begin{enumerate}
+\item \textbf{Market Data API}
+\begin{itemize}
+\item Live and historical data for 5,000+ stocks, 20+ cryptocurrencies, and options
+\item Stock and crypto bar data, quotes, trades, and news
+\end{itemize}
+\item \textbf{Trading API}
+\begin{itemize}
+\item Execute trades in stocks, crypto, and options
+\item Fast execution speeds
+\item Order management and position tracking
+\end{itemize}
+\item \textbf{Broker API}
+\begin{itemize}
+\item Build investment applications
+\item Account creation and KYC verification
+\item Platform for robo-advisors or brokerage services
+\end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Automated Trading Workflow 1: Scheduled Trading}
+\textbf{End-of-Day Trading Strategy:}
+\begin{enumerate}
+\item \textbf{Download Data} (e.g., 30 minutes before market close)
+\begin{itemize}
+\item Use Market Data API to fetch latest prices, quotes, and historical bars
+\item Retrieve current positions and account information
+\end{itemize}
+\item \textbf{Generate Trading Signals}
+\begin{itemize}
+\item Run local program (ML model, factor model, technical indicators)
+\item Generate list of desired trades (buy/sell decisions and quantities)
+\end{itemize}
+\item \textbf{Execute Trades}
+\begin{itemize}
+\item Use Trading API to submit market or limit orders
+\item Batch order submission for multiple securities
+\item Receive execution confirmations
+\end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Automated Trading Workflow 2: Real-Time Monitoring}
+\textbf{Position Risk Management:}
+\begin{itemize}
+\item \textbf{Stream Real-Time Data}
+\begin{itemize}
+\item Use WebSocket streaming clients for live price updates
+\item Monitor positions for extreme price movements
+\item Track market volatility and liquidity conditions
+\end{itemize}
+\item \textbf{Detect Risk Events}
+\begin{itemize}
+\item Identify large losses or gains in positions
+\item Detect unusual volatility or gap moves
+\item Set threshold-based alerts
+\end{itemize}
+\item \textbf{Automated Response}
+\begin{itemize}
+\item Submit stop-loss or take-profit orders automatically
+\item Rebalance positions to maintain target weights
+\item Send notifications for manual review
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Automated Trading Workflow 3: Continuous Trading}
+\textbf{High-Frequency or Algorithmic Strategies:}
+\begin{itemize}
+\item \textbf{Continuous Data Stream}
+\begin{itemize}
+\item Real-time price feeds via WebSocket API
+\item Process tick-by-tick quotes and trades
+\item Minimal latency for execution speed
+\end{itemize}
+\item \textbf{Continuous Signal Generation}
+\begin{itemize}
+\item Program runs perpetually during market hours
+\item Updates trading signals with each new data point
+\item May use mean reversion, momentum, or arbitrage strategies
+\end{itemize}
+\item \textbf{Immediate Order Submission}
+\begin{itemize}
+\item Submit orders automatically when conditions are met
+\item Manage order lifecycle (cancel, replace, modify)
+\item Track fill rates and slippage
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Key API Features for Automated Trading}
+\textbf{Market Data API Features:}
+\begin{itemize}
+\item Historical bars (minute, hour, day) for backtesting and signal generation
+\item Latest quotes and trades for current market conditions
+\item Real-time streaming via WebSocket for continuous monitoring
+\item News API for event-driven strategies
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Trading API Features:}
+\begin{itemize}
+\item Order types: market, limit, stop-loss, bracket orders
+\item Batch order submission for portfolio rebalancing
+\item Position and account queries for portfolio management
+\item Order status tracking and cancellation
+\item Paper trading environment for testing strategies
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Key Modules and Resources}
+\textbf{Main Modules:}
+\begin{itemize}
+\item \texttt{alpaca.trading} -- Order submission, position management
+\item \texttt{alpaca.data.historical} -- Historical bar data, quotes, news
+\item \texttt{alpaca.data.requests} -- Request object definitions
+\item \texttt{alpaca.broker} -- Account creation, KYC verification
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Documentation:}
+\begin{itemize}
+\item \href{https://alpaca.markets/sdks/python/}{Official alpaca-py Documentation}
+\item \href{https://github.com/alpacahq/alpaca-py}{GitHub: alpaca-py Repository}
+\item \href{https://docs.alpaca.markets}{Alpaca API Documentation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example Jupyter Notebooks}
+\textbf{Official alpaca-py Examples:}
+\begin{itemize}
+\item \href{https://github.com/alpacahq/alpaca-py/tree/master/examples}{All Examples Directory} -- Stocks, crypto, options
+\item \href{https://github.com/alpacahq/alpaca-py/blob/master/examples/stocks/stocks-trading-basic.ipynb}{Stock Trading Basics} -- Notebook for stock trading
+\item \href{https://github.com/alpacahq/alpaca-py/blob/master/examples/crypto/crypto-trading-basic.ipynb}{Crypto Trading Basics} -- Notebook for crypto trading
+\item \href{https://github.com/alpacahq/alpaca-py/blob/master/examples/options/options-trading-basic.ipynb}{Options Trading Basics} -- Notebook for options trading
+\end{itemize}
+\vspace{0.3cm}
+\textbf{Additional Strategy Examples:}
+\begin{itemize}
+\item \href{https://github.com/alpacahq/notebooks}{Alpaca Notebooks Repository} -- Crypto arbitrage, pairs trading, momentum strategies, and more
+\end{itemize}
+\end{frame}
 \end{document}
+

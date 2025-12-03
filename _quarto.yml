@@ -12,6 +12,8 @@ project:
     - portal-guide.html
     - mcnair.jpg
     - rice-business.jpg
+    - currentdata.xlsx
+    - lightGBM.pkl
     - session11A_interpretability.ipynb
     - session11B_neuralnetworks.ipynb
     - analyze_portfolios.ipynb

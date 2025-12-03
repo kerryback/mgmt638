@@ -21,10 +21,9 @@
 
 \begin{frame}{Model Intrepretability}
 \begin{itemize}
-\item Use trained model: data5\_model.pkl
-\item Use current features: data5\_current.xlsx
-\item Why is the model making the predictions that it is making today?
-\item Calculate SHAP values to answer the question
+\item Use lightGBM trained on all monthly data 2011-02 through 2025-10: \href{https:mgmt638.kerryback.com/lightGBM.pkl}{lightGBM.pkl}
+\item Use 2025-11 features: \href{https://mgmt638.kerryback.com/currentdata.xlsx}{currentdata.xlsx}
+\item Why is the model making the predictions that it is making in 2025-11?
 \end{itemize}
 
 \vspace{0.5cm}
@@ -44,4 +43,12 @@
 \href{https://mgmt638.kerryback.com/session11B_neuralnetworks.ipynb}{Neural networks notebook}
 \end{frame}
 
+\begin{frame}{Another Example}
+Tell Claude:
+
+\vspace{0.3cm}
+\begin{quote}
+Get the breast cancer dataset.  Explain it, including how the target variable is coded.  Train a neural network and evaluate it on train and test sets.  Display the confusion matrix for the test set.
+\end{quote}
+\end{frame}
 \end{document}  

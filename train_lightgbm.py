@@ -89,8 +89,13 @@ print(f"\nModel saved to: {model_path}")
 
 # Prepare and save current data (Oct 2025) - without return
 current_export = current_data[['ticker', 'month'] + feature_cols].copy()
-current_export.to_csv('current_data.csv', index=False)
-print(f"Current data saved to: current_data.csv")
+
+# Convert categorical columns to strings (not category codes)
+for col in categorical_features:
+    current_export[col] = current_export[col].astype(str)
+
+current_export.to_excel('currentdata.xlsx', index=False)
+print(f"Current data saved to: currentdata.xlsx")
 print(f"  Shape: {current_export.shape}")
 
 # Display summary
@@ -98,7 +103,7 @@ print("\n" + "="*80)
 print("TRAINING COMPLETE")
 print("="*80)
 print(f"Model file: lightGBM.pkl")
-print(f"Current data file: current_data.csv")
+print(f"Current data file: currentdata.xlsx")
 print(f"Total features: {len(feature_cols)}")
 print(f"  - Categorical: {len(categorical_features)} (sector, size, industry)")
 print(f"  - Numeric: {len(numeric_features)}")

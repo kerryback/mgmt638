@@ -39,7 +39,7 @@
       "Bash(netstat:*)",
       "Bash(uvicorn:*)",
       "Bash(for:*)",
-      "Bash(zip:*)",
+      "Bash(zip:*)"
     ]
   }
 }

@@ -207,3 +207,7 @@ cython_debug/
 # Windows reserved device names
 nul
 ~.xlsx
+
+# Student records — protected, never publish. This site is public.
+Course Roster.pdf
+participation.csv

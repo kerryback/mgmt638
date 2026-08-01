@@ -2,13 +2,17 @@ project:
   type: website
   output-dir: docs
   render:
-    - index.qmd
+    - syllabus.qmd
     - slides.qmd
     - skills.qmd
 
   resources:
     - CNAME
     - .nojekyll
+    - index.html
+    - under-construction.html
+    - images/RiceBusiness-transparent-logo-sm.png
+    - images/headshot-keeper-cropped2.png
     - portal-guide.html
     - mcnair.jpg
     - rice-business.jpg
@@ -58,8 +62,10 @@ website:
   navbar:
     search: false
     title: MGMT 638
-    file: index.qmd
+    href: index.html
     right:
+        - text: Syllabus
+          file: syllabus.qmd
         - text: Slides
           file: slides.qmd
           target: _blank

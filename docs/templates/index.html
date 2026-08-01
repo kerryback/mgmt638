@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rice Histogram Generator - SDK</title>
+    <style>
+        body { font-family: Arial; max-width: 1000px; margin: 50px auto; padding: 20px; background: #f5f5f5; }
+        .container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 14px; margin-bottom: 30px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+        button { padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #5568d3; }
+        .error { background: #fee; border-left: 4px solid #f44; padding: 15px; margin: 20px 0; border-radius: 5px; color: #c33; }
+        .info { background: #e3f2fd; border-left: 4px solid #2196F3; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        #progress { display: none; margin: 20px 0; }
+        #progress.active { display: block; }
+        .progress-item { background: #f9f9f9; border-left: 3px solid #667eea; padding: 10px 15px; margin: 10px 0; border-radius: 3px; font-family: monospace; font-size: 13px; white-space: pre-wrap; word-wrap: break-word; }
+        .progress-item.thinking { border-left-color: #667eea; background: #f0f4ff; }
+        .progress-item.tool { border-left-color: #f39c12; background: #fef9e7; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rice Database Histogram Generator</h1>
+        <p class="subtitle">Using Claude Agent SDK</p>
+
+        {% if not api_key_set %}
+        <div class="error">
+            <strong>Configuration Error</strong><br>
+            ANTHROPIC_API_KEY not found in .env file.
+        </div>
+        {% else %}
+
+        <div class="info">
+            <strong>How it works:</strong> Watch the AI agent iteratively solve problems:
+            <ul style="margin: 10px 0 0 20px;">
+                <li>Write SQL query to database</li>
+                <li>Receive error message from API</li>
+                <li>Debug and revise the query</li>
+                <li>Generate histogram with statistics</li>
+            </ul>
+        </div>
+
+        <form id="histogramForm">
+            <label><strong>Financial Characteristic:</strong></label>
+            <input type="text" id="characteristic" placeholder="e.g., PE ratio, market cap, ROE..." required>
+            <button type="submit">Start Agent</button>
+        </form>
+
+        <div id="progress">
+            <h3>Agent Progress</h3>
+            <div class="spinner"></div>
+            <div id="progressLog"></div>
+        </div>
+
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('histogramForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const characteristic = document.getElementById('characteristic').value;
+            const progress = document.getElementById('progress');
+            const progressLog = document.getElementById('progressLog');
+
+            progress.classList.add('active');
+            progressLog.innerHTML = '';
+
+            const eventSource = new EventSource(`/generate_stream?characteristic=${encodeURIComponent(characteristic)}`);
+
+            eventSource.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+
+                if (data.type === 'thinking') {
+                    const item = document.createElement('div');
+                    item.className = 'progress-item thinking';
+                    item.textContent = `Agent: ${data.content}`;
+                    progressLog.appendChild(item);
+                    progressLog.scrollTop = progressLog.scrollHeight;
+                }
+                else if (data.type === 'tool') {
+                    const item = document.createElement('div');
+                    item.className = 'progress-item tool';
+                    item.textContent = `Tool: ${data.tool_name}
+${data.content}`;
+                    progressLog.appendChild(item);
+                    progressLog.scrollTop = progressLog.scrollHeight;
+                }
+                else if (data.type === 'complete') {
+                    eventSource.close();
+                    window.location.href = `/result?characteristic=${encodeURIComponent(characteristic)}&cost=${data.cost}`;
+                }
+                else if (data.type === 'error') {
+                    const item = document.createElement('div');
+                    item.className = 'progress-item error';
+                    item.textContent = `Error: ${data.content}`;
+                    progressLog.appendChild(item);
+                    eventSource.close();
+                }
+            };
+
+            eventSource.onerror = () => {
+                eventSource.close();
+                const item = document.createElement('div');
+                item.className = 'progress-item error';
+                item.textContent = 'Connection lost';
+                progressLog.appendChild(item);
+            };
+        });
+    </script>
+</body>
+</html>

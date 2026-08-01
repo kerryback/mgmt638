@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Course materials 
+# Course materials
 
 *.zip
 QuantEquity/
@@ -211,3 +211,5 @@ nul
 # Student records — protected, never publish. This site is public.
 Course Roster.pdf
 participation.csv
+
+**/*.quarto_ipynb

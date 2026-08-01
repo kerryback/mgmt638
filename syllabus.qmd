@@ -1,6 +1,6 @@
 :::: {style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem;"}
 
-## Data-Driven Investments: Equity<br>Fall 2025
+## Data-Driven Investments: Equity<br>Fall 2026
 
 ![](images/RiceBusiness-transparent-logo-sm.png){width=40%}
 
@@ -18,8 +18,8 @@ J. Howard Creekmore Professor of Finance and Professor of Economics
 #### Meeting Schedule
 
 McNair 317<br>
-MW 2:15-3:45<br>
-10/27/2025 -- 12/08/2025
+TTh<br>
+08/25/2026 -- 10/01/2026
 
 
 #### Overview

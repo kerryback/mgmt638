@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video to PowerPoint Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Video to PowerPoint</h1>
+        <p class="subtitle">Convert presentation videos to PowerPoint slides</p>
+
+        <div class="upload-section">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="file-input-wrapper">
+                    <input type="file" id="videoFile" name="video" accept=".mp4" required>
+                    <label for="videoFile" class="file-label">
+                        <span id="fileName">Choose MP4 file...</span>
+                    </label>
+                </div>
+                <button type="submit" id="convertBtn" class="btn-primary">Convert to PowerPoint</button>
+            </form>
+
+            <div id="progress" class="progress-section" style="display: none;">
+                <div class="spinner"></div>
+                <p id="statusText">Processing video...</p>
+            </div>
+
+            <div id="result" class="result-section" style="display: none;">
+                <div class="success-icon">✓</div>
+                <h2>Conversion Complete!</h2>
+                <p id="slideCount"></p>
+                <a id="downloadLink" class="btn-success" download>Download PowerPoint</a>
+            </div>
+
+            <div id="error" class="error-section" style="display: none;">
+                <div class="error-icon">✗</div>
+                <h2>Error</h2>
+                <p id="errorText"></p>
+                <button onclick="resetForm()" class="btn-secondary">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('videoFile');
+        const fileName = document.getElementById('fileName');
+        const uploadForm = document.getElementById('uploadForm');
+        const progress = document.getElementById('progress');
+        const result = document.getElementById('result');
+        const error = document.getElementById('error');
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                fileName.textContent = e.target.files[0].name;
+            }
+        });
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('video', fileInput.files[0]);
+
+            // Show progress
+            uploadForm.style.display = 'none';
+            progress.style.display = 'block';
+            result.style.display = 'none';
+            error.style.display = 'none';
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Show success
+                    progress.style.display = 'none';
+                    result.style.display = 'block';
+                    document.getElementById('slideCount').textContent =
+                        `${data.slide_count} slides extracted`;
+                    document.getElementById('downloadLink').href =
+                        `/download/${data.filename}`;
+                } else {
+                    throw new Error(data.error || 'Conversion failed');
+                }
+            } catch (err) {
+                // Show error
+                progress.style.display = 'none';
+                error.style.display = 'block';
+                document.getElementById('errorText').textContent = err.message;
+            }
+        });
+
+        function resetForm() {
+            uploadForm.reset();
+            fileName.textContent = 'Choose MP4 file...';
+            uploadForm.style.display = 'block';
+            progress.style.display = 'none';
+            result.style.display = 'none';
+            error.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

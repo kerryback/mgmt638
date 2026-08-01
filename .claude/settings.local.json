@@ -4,7 +4,11 @@
       "Skill(monthly-analysis)",
       "Skill(weekly-analysis)",
       "Skill(xlsx)",
-      "Skill(docx)"
+      "Skill(docx)",
+      "Bash(npx --no-install playwright --version)",
+      "Read(//Users/kerryback/Library/Caches/**)",
+      "Read(//Users/kerryback/.cache/**)",
+      "Bash(claude plugin *)"
     ],
     "deny": [],
     "ask": [

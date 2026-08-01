@@ -9,8 +9,8 @@ project:
   resources:
     - CNAME
     - .nojekyll
-    - index.html
-    - under-construction.html
+    - /index.html
+    - /under-construction.html
     - images/RiceBusiness-transparent-logo-sm.png
     - images/headshot-keeper-cropped2.png
     - portal-guide.html

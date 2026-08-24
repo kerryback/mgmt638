@@ -1,65 +1,828 @@
 [
   {
-    "objectID": "skills.html",
-    "href": "skills.html",
-    "title": "Claude Code Skills",
-    "section": "",
-    "text": "Skills extend Claude Code’s capabilities for this course. Install these skills to enable specialized functionality for data analysis and research."
+    "objectID": "slides/session04.html#three-groups",
+    "href": "slides/session04.html#three-groups",
+    "title": "Linear Regression for Multiples",
+    "section": "Three Groups",
+    "text": "Three Groups\n\n\nWhat your backtest earned, and what you compared it against\nWhat changed when you switched to ARY and datekey\nThe thing that broke\n\n\n\nIf your annual return went down when you fixed the point-in-time problem, that is the most useful slide anyone will show today. Say by how much."
   },
   {
-    "objectID": "skills.html#course-instructions-claude.md",
-    "href": "skills.html#course-instructions-claude.md",
-    "title": "Claude Code Skills",
-    "section": "Course Instructions (CLAUDE.md)",
-    "text": "Course Instructions (CLAUDE.md)\nThe CLAUDE.md file contains important course-specific instructions for Claude Code. This file tells Claude to use the rice-data-query skill for all Rice database queries.\nDownload: CLAUDE.md\nInstallation location: .claude/CLAUDE.md"
+    "objectID": "slides/session04.html#what-the-peer-median-assumes",
+    "href": "slides/session04.html#what-the-peer-median-assumes",
+    "title": "Linear Regression for Multiples",
+    "section": "What the Peer Median Assumes",
+    "text": "What the Peer Median Assumes\n\nThat every company in an industry deserves the same multiple.\n\n\nTwo software companies, same industry. One grows at twenty percent with a forty percent margin; the other grows at three percent and barely breaks even. The peer median says they should trade at the same P/E, and calls the difference mispricing.\n\nIt is not mispricing. It is the model being wrong."
   },
   {
-    "objectID": "skills.html#quick-installation",
-    "href": "skills.html#quick-installation",
-    "title": "Claude Code Skills",
-    "section": "Quick Installation",
-    "text": "Quick Installation\nThe easiest way to install skills is to ask Claude Code to do it for you:\nTell Claude Code:\n\"Download and install the rice-data-query and merge skills, plus CLAUDE.md\nfrom mgmt638.kerryback.com/skills/\"\nClaude Code will download the files and place them in the correct location."
+    "objectID": "slides/session04.html#the-alternative",
+    "href": "slides/session04.html#the-alternative",
+    "title": "Linear Regression for Multiples",
+    "section": "The Alternative",
+    "text": "The Alternative\n\n\nBorrow a multiple\nFind companies that look like this one. Use the middle of what they trade at.\n\n\nPredict a multiple\nEstimate what the market pays for growth, for profitability, for leverage. Apply those prices to this company.\n\n\n\nThe second one is a regression, and the first one is a special case of it — a regression on industry dummies and nothing else."
   },
   {
-    "objectID": "skills.html#manual-installation",
-    "href": "skills.html#manual-installation",
-    "title": "Claude Code Skills",
-    "section": "Manual Installation",
-    "text": "Manual Installation\nIf you prefer to install manually, follow these steps:\n\n1. Directory Structure\nSkills must be placed in .claude/skills/ within your course folder:\nyour-course-folder/\n├── .claude/\n│   └── skills/\n│       ├── rice-data-query/\n│       │   ├── SKILL.md\n│       │   ├── README.md\n│       │   ├── rice_monthly_returns.py\n│       │   └── rice_sf1_query.py\n│       └── merge/\n│           ├── SKILL.md\n│           ├── README.md\n│           └── merge_returns_fundamentals.py\n\n\n2. Create the Directory\nIn your course folder, create the skills directory:\nMac/Linux:\nmkdir -p .claude/skills\nWindows (PowerShell):\nNew-Item -ItemType Directory -Path .claude\\skills -Force\n\n\n3. Download Skills\nClick the links below to download each skill file, then place them in the appropriate folder."
+    "objectID": "slides/session04.html#freeze-a-date",
+    "href": "slides/session04.html#freeze-a-date",
+    "title": "Linear Regression for Multiples",
+    "section": "Freeze a Date",
+    "text": "Freeze a Date\n\nOne row per company, on a single day. Three thousand rows, and no time dimension at all.\n\nTell GLM\n\nBuild a cross-section as of June 30 of last year: one row per stock, with P/E from daily, and from the most recent sf1 annual filing bring in ROE, revenue growth, the operating margin, leverage, and payout. Add sector.\n\n\nEverything today happens inside this one table. The time series comes back at the end."
   },
   {
-    "objectID": "skills.html#available-skills",
-    "href": "skills.html#available-skills",
-    "title": "Claude Code Skills",
-    "section": "Available Skills",
-    "text": "Available Skills\n\n\n\nSkill\nDescription\nLast Updated\n\n\n\n\nRice Data Query\nQuery the Rice Business Stock Market Data Portal using SQL\n11-04-2025\n\n\nMerge\nMerge financial datasets with proper date alignment\n11-04-2025\n\n\n\n\n\nRice Data Query\nQuery the Rice Business Stock Market Data Portal using natural language. This skill enables Claude Code to fetch stock prices, fundamentals, insider trades, and other financial data.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\nrice_monthly_returns.py - Helper module for fetching monthly returns\nrice_sf1_query.py - Helper module for fetching SF1 fundamentals\n\nInstallation location: .claude/skills/rice-data-query/\nNote: The Python scripts are helper modules that Claude Code imports when using this skill. They enable efficient, reusable code execution without rewriting queries.\nWhat it does:\n\nGenerates SQL queries for the Rice Data Portal\nHandles date formatting and window functions\nSaves data as parquet files\nProvides detailed database schema information\n\nExample usage:\n\"Get end-of-month adjusted closing prices for AAPL since 2020 from the Rice database\"\nLast updated: 11-04-2025\n\n\n\nMerge\nExpert guidance for merging financial datasets with different frequencies and proper date alignment.\nFiles to download:\n\nSKILL.md - Skill definition\nREADME.md - Documentation\nmerge_returns_fundamentals.py - Helper module for merging data\n\nInstallation location: .claude/skills/merge/\nNote: The Python script is a helper module that Claude Code imports when using this skill to perform proper date-aligned merges.\nWhat it does:\n\nMerges weekly returns with SF1 fundamentals\nEnsures proper date alignment to avoid look-ahead bias\nHandles forward filling of fundamental data\nWill expand to cover other merge scenarios\n\nExample usage:\n\"Merge my weekly returns data with quarterly ROE from SF1\"\nLast updated: 11-04-2025"
+    "objectID": "slides/session04.html#what-goes-on-the-left",
+    "href": "slides/session04.html#what-goes-on-the-left",
+    "title": "Linear Regression for Multiples",
+    "section": "What Goes on the Left",
+    "text": "What Goes on the Left\n\n\nP/E\nBounded below at zero, unbounded above, and violently skewed. OLS on this is mostly fitting the tail.\n\n\nlog P/E\nRoughly symmetric. Coefficients read as percentage effects on the multiple, which is how you want to think about them anyway.\n\n\n\nAnd the negative-earnings problem does not go away — you cannot take the log of a negative P/E, so those companies leave the sample. Note how many, and which kind."
   },
   {
-    "objectID": "skills.html#verification",
-    "href": "skills.html#verification",
-    "title": "Claude Code Skills",
-    "section": "Verification",
-    "text": "Verification\nAfter installation, verify the skills are installed correctly:\nTell Claude Code:\n\"List the skills in .claude/skills/\"\nYou should see rice-data-query and merge folders with their respective files."
+    "objectID": "slides/session04.html#what-goes-on-the-right",
+    "href": "slides/session04.html#what-goes-on-the-right",
+    "title": "Linear Regression for Multiples",
+    "section": "What Goes on the Right",
+    "text": "What Goes on the Right\n\n\n\n\n\n\n\nGrowth\nRevenue growth, earnings growth — what the multiple is supposed to be paying for\n\n\nProfitability\nROE, ROA, margins\n\n\nRisk\nLeverage, and how variable the earnings have been\n\n\nSize\nLog market cap\n\n\nSector\nDummies — which is where the peer median hides\n\n\n\n\nStart with a handful you can defend. A regression with forty right-hand variables is a machine learning problem, and that is Tuesday."
   },
   {
-    "objectID": "skills.html#getting-help",
-    "href": "skills.html#getting-help",
-    "title": "Claude Code Skills",
-    "section": "Getting Help",
-    "text": "Getting Help\nEach skill includes a README.md file with detailed documentation. If you encounter issues:\n\nCheck that files are in the correct directory (.claude/skills/)\nEnsure all required files are present for each skill\nRestart Claude Code if skills don’t appear immediately\nAsk Claude Code to check the skill installation"
+    "objectID": "slides/session04.html#run-it",
+    "href": "slides/session04.html#run-it",
+    "title": "Linear Regression for Multiples",
+    "section": "Run It",
+    "text": "Run It\nTell GLM\n\nRegress log P/E on those characteristics with sector fixed effects. Winsorize the right-hand variables at 1 and 99 percent. Show me the coefficients, the standard errors, and the R-squared.\n\n\nThen read the coefficients before you look at anything else. Does the market pay more for growth? For profitability? If a sign is backwards, that is the finding, and it usually means a variable is built wrong."
   },
   {
-    "objectID": "skills.html#prerequisites",
-    "href": "skills.html#prerequisites",
-    "title": "Claude Code Skills",
-    "section": "Prerequisites",
-    "text": "Prerequisites\n\nRice Data Query\nBefore using this skill, you need:\n\nAn access token from the Rice Data Portal\nA .env file in your course folder with:\nRICE_ACCESS_TOKEN=your_token_here\n\nClaude Code can help you create the .env file once you have your token.\n\n\nMerge\nRequires:\n\nPython 3.x with pandas installed\nWeekly returns data (from rice-data-query skill)\nSF1 fundamental data (from rice-data-query skill)"
+    "objectID": "slides/session04.html#what-r-squared-to-expect",
+    "href": "slides/session04.html#what-r-squared-to-expect",
+    "title": "Linear Regression for Multiples",
+    "section": "What R-Squared to Expect",
+    "text": "What R-Squared to Expect\n\nSomewhere between a third and a half. Which is enormous, and does not mean what you want it to mean.\n\n\nCross-sectional valuation regressions fit well because companies genuinely do trade on their fundamentals. The question is not whether the fit is good. It is whether what is left over is worth trading."
   },
   {
-    "objectID": "slides.html",
-    "href": "slides.html",
+    "objectID": "slides/session04.html#fitted-and-residual",
+    "href": "slides/session04.html#fitted-and-residual",
+    "title": "Linear Regression for Multiples",
+    "section": "Fitted and Residual",
+    "text": "Fitted and Residual\n\n\nFitted\nWhat the market, on average, pays for a company with these characteristics.\n\n\nActual\nWhat this company actually trades at.\n\n\nResidual\nThe gap. Negative means it trades below what its own characteristics justify.\n\n\n\nThe residual is the signal, and it is exactly the same shape as last session’s signal — own multiple against a predicted one. All that changed is how the prediction is made."
+  },
+  {
+    "objectID": "slides/session04.html#two-readings-of-a-negative-residual",
+    "href": "slides/session04.html#two-readings-of-a-negative-residual",
+    "title": "Linear Regression for Multiples",
+    "section": "Two Readings of a Negative Residual",
+    "text": "Two Readings of a Negative Residual\n\n\nIt is cheap\nThe market has not noticed. Buy it, wait for the gap to close.\nThis is the assumption the whole strategy rests on.\n\nYour model is missing something\nThe company is in litigation, or its growth is about to stop, and the market knows. The gap is information you failed to include.\n\n\nYou cannot tell these apart for any single company. You can only find out in aggregate, over many companies and many years, which is what the backtest is for."
+  },
+  {
+    "objectID": "slides/session04.html#look-at-the-extremes",
+    "href": "slides/session04.html#look-at-the-extremes",
+    "title": "Linear Regression for Multiples",
+    "section": "Look at the Extremes",
+    "text": "Look at the Extremes\nTell GLM\n\nShow me the twenty largest positive and twenty largest negative residuals, with their characteristics and their sector.\n\n\nIf the cheap list is all one sector, your sector dummies are not doing their job. If it is all microcaps, size is entering the pricing in a way your model has not captured. Either way you learn it in thirty seconds by looking."
+  },
+  {
+    "objectID": "slides/session04.html#against-last-session",
+    "href": "slides/session04.html#against-last-session",
+    "title": "Linear Regression for Multiples",
+    "section": "Against Last Session",
+    "text": "Against Last Session\n\nThe peer median is the same regression with only sector dummies on the right.\n\nTell GLM\n\nFit it three ways on this cross-section: sector dummies only, characteristics only, and both. Compare the R-squared and the correlation between the three sets of residuals.\n\n\nIf the residuals correlate at 0.9, the extra machinery is not buying you a new signal. It is buying you the same signal with more steps."
+  },
+  {
+    "objectID": "slides/session04.html#refit-every-year",
+    "href": "slides/session04.html#refit-every-year",
+    "title": "Linear Regression for Multiples",
+    "section": "Refit Every Year",
+    "text": "Refit Every Year\n\nOne regression per year, using only that year’s data.\n\n\nThe temptation is to fit once on everything and apply the coefficients throughout. That uses 2024 data to price a 2004 company. It is the same look-ahead as MRY, wearing a different hat, and it is harder to spot because nothing about the code looks wrong."
+  },
+  {
+    "objectID": "slides/session04.html#the-loop",
+    "href": "slides/session04.html#the-loop",
+    "title": "Linear Regression for Multiples",
+    "section": "The Loop",
+    "text": "The Loop\n\n\nFor each June 30 from 2001 to 2025, build the cross-section\nFit the regression on that year alone\nTake the residuals\nSort into deciles, long the cheapest, short the most expensive\nHold twelve months, record the return\n\n\n\nStep 2 is the only thing that changed from Tuesday. Everything else is the backtest you already have — which is the point of having written it as code you can read."
+  },
+  {
+    "objectID": "slides/session04.html#watch-the-coefficients-move",
+    "href": "slides/session04.html#watch-the-coefficients-move",
+    "title": "Linear Regression for Multiples",
+    "section": "Watch the Coefficients Move",
+    "text": "Watch the Coefficients Move\nTell GLM\n\nPlot each coefficient by year, with its confidence band.\n\n\nThe price of growth is not a constant. If a coefficient flips sign in 2009 and again in 2021, that is worth a slide in your presentation — and it is a reason to be suspicious of any model that assumes the relationship is fixed."
+  },
+  {
+    "objectID": "slides/session04.html#how-many-companies-survive-each-year",
+    "href": "slides/session04.html#how-many-companies-survive-each-year",
+    "title": "Linear Regression for Multiples",
+    "section": "How Many Companies Survive Each Year",
+    "text": "How Many Companies Survive Each Year\nTell GLM\n\nFor each year, report how many stocks had all the variables and how many were dropped, broken out by which variable was missing.\n\n\nEvery characteristic you add shrinks the sample, and it does not shrink it randomly. A model that requires five years of earnings history is a model estimated on established companies only."
+  },
+  {
+    "objectID": "slides/session04.html#three-backtests-one-table",
+    "href": "slides/session04.html#three-backtests-one-table",
+    "title": "Linear Regression for Multiples",
+    "section": "Three Backtests, One Table",
+    "text": "Three Backtests, One Table\n\n\n\nPeer median\nTuesday’s result\n\n\nRegression residual\nToday’s\n\n\nPlain P/E\nNo prediction at all — just buy the low multiples\n\n\n\n\nReport the average annual return, the volatility, the t-stat, and the worst year for all three. Same dates, same universe, same weighting, or the comparison means nothing."
+  },
+  {
+    "objectID": "slides/session04.html#the-honest-outcome",
+    "href": "slides/session04.html#the-honest-outcome",
+    "title": "Linear Regression for Multiples",
+    "section": "The Honest Outcome",
+    "text": "The Honest Outcome\n\nIt is entirely possible that plain P/E wins.\n\n\nThat would be a real result, and a well-known one. The elaborate model has more ways to be wrong, more parameters to fit to noise, and a smaller sample to fit them on. Report it if you find it.\n\nWhat you must not do is keep trying specifications until one of them beats the others, and then present that one."
+  },
+  {
+    "objectID": "slides/session04.html#three-things",
+    "href": "slides/session04.html#three-things",
+    "title": "Linear Regression for Multiples",
+    "section": "Three Things",
+    "text": "Three Things\n\n\nGet the annual refit loop running, and produce the three-way comparison table\nSave the cross-section builder as a skill — you will use it every week from here\nWrite the memory file, including which specifications you tried and rejected\n\n\n\nTuesday we replace the regression with something that can find relationships you did not specify. Come with the linear result written down, because it is the benchmark that machine learning has to beat."
+  },
+  {
+    "objectID": "slides/session02.html#three-things",
+    "href": "slides/session02.html#three-things",
+    "title": "Median of Peer Multiples",
+    "section": "Three Things",
+    "text": "Three Things\n\n\nThe data — twenty-five years of fundamentals and prices, and how to reach it\nSkills — how you stop re-explaining yourself to the machine\nBuild one — a valuation skill that prices a company off its peers\n\n\n\nBy the end you will have something in your group’s repository that any of you can point at a ticker."
+  },
+  {
+    "objectID": "slides/session02.html#the-oldest-valuation-method-there-is",
+    "href": "slides/session02.html#the-oldest-valuation-method-there-is",
+    "title": "Median of Peer Multiples",
+    "section": "The Oldest Valuation Method There Is",
+    "text": "The Oldest Valuation Method There Is\n\nA company is worth roughly what companies like it are worth.\n\n\nNo forecast, no discount rate, no terminal value. Find the peers, take the middle of their multiples, apply it. It is what a banker does on the back of an envelope, and it is a real benchmark — hard to beat and easy to check.\n\nThe whole method is three decisions: which multiple, which peers, and what to do with the ones that do not make sense."
+  },
+  {
+    "objectID": "slides/session02.html#the-rice-business-data-portal",
+    "href": "slides/session02.html#the-rice-business-data-portal",
+    "title": "Median of Peer Multiples",
+    "section": "The Rice Business Data Portal",
+    "text": "The Rice Business Data Portal\n\n\nWhat is in it\nEvery NYSE and Nasdaq listed common stock, beginning in 2000.\n\n\nWhere it comes from\nLicensed by Rice Business from Nasdaq Data Link.\n\n\nWhat it is\nA DuckDB database. Queries are read-only — SELECT and nothing else.\n\n\ndata-portal.rice-business.org"
+  },
+  {
+    "objectID": "slides/session02.html#get-your-token",
+    "href": "slides/session02.html#get-your-token",
+    "title": "Median of Peer Multiples",
+    "section": "Get Your Token",
+    "text": "Get Your Token\n\n\nRegister at the portal with your rice.edu address\nYou are issued an access token, good for six months\nPut it where the lab can find it — not in a file you commit\n\n\n\nThe token is yours. A token in a public repository is a token somebody else is using by Thursday."
+  },
+  {
+    "objectID": "slides/session02.html#three-doors-into-it",
+    "href": "slides/session02.html#three-doors-into-it",
+    "title": "Median of Peer Multiples",
+    "section": "Three Doors Into It",
+    "text": "Three Doors Into It\n\n\nThe web interface\nA query window with an AI assistant that writes the SQL for you. Good for looking around.\n\n\nThe Python client\nA library for notebooks and scripts. This is what your analysis will use.\n\n\nThe MCP server\nGLM queries the database directly, without you writing anything.\n\n\n\nThe third one is how we will work today. It is also the one that makes it easy to stop paying attention — so we will keep looking at the SQL."
+  },
+  {
+    "objectID": "slides/session02.html#what-is-in-there",
+    "href": "slides/session02.html#what-is-in-there",
+    "title": "Median of Peer Multiples",
+    "section": "What Is in There",
+    "text": "What Is in There\n\n\n\nTable\nContents\n\n\n\n\nsep\nDaily open, high, low, close, adjusted close, volume\n\n\ndaily\nDaily valuation ratios and market cap\n\n\nmetrics\nDaily moving averages and other statistics\n\n\nsf1\n10-K and 10-Q data, and pre-computed financial ratios\n\n\nsf2\nInsider trades, from Form 4\n\n\ntickers\nIndustry, sector, exchange, size category\n\n\nactions\nMergers, splits, dividends, ticker changes\n\n\nevents\nSEC 8-K filings and material corporate events\n\n\n\n\nA Table Descriptions page on the portal lists every variable in every table."
+  },
+  {
+    "objectID": "slides/session02.html#today-we-need-three-of-them",
+    "href": "slides/session02.html#today-we-need-three-of-them",
+    "title": "Median of Peer Multiples",
+    "section": "Today We Need Three of Them",
+    "text": "Today We Need Three of Them\n\n\ndaily\npe, pb, ps, ev, evebit, evebitda, marketcap — one row per stock per day.\n\n\ntickers\nsector, industry, exchange, scalemarketcap. This is what makes a peer group a peer group.\n\n\nsf1\nThe filings. Revenue, earnings, book value, and the ratios computed from them."
+  },
+  {
+    "objectID": "slides/session02.html#sf1-has-dimensions",
+    "href": "slides/session02.html#sf1-has-dimensions",
+    "title": "Median of Peer Multiples",
+    "section": "sf1 Has Dimensions",
+    "text": "sf1 Has Dimensions\n\n\n\n\nAnnual\nQuarterly\nTrailing four quarters\n\n\n\n\nAs most recently restated\nMRY\nMRQ\nMRT\n\n\nAs originally reported\nARY\nARQ\nART\n\n\n\n\nToday we use MRY — annual, most recent restatement. It is the cleanest view of what a company earned. When we start backtesting, we will have to switch, because MRY tells you today what nobody knew at the time."
+  },
+  {
+    "objectID": "slides/session02.html#three-things-that-trip-everyone",
+    "href": "slides/session02.html#three-things-that-trip-everyone",
+    "title": "Median of Peer Multiples",
+    "section": "Three Things That Trip Everyone",
+    "text": "Three Things That Trip Everyone\n\n\n\n\n\n\n\nDates are text\nCast before you compare or sort: date::DATE, reportperiod::DATE\n\n\nsf1 has no date\nUse reportperiod for the fiscal period end, datekey for the filing date\n\n\nMarket cap is in thousands\nIn daily. A $2T company shows up as 2,000,000,000\n\n\n\n\nEach of these produces an answer, not an error. That is what makes them expensive."
+  },
+  {
+    "objectID": "slides/session02.html#start-by-looking-around",
+    "href": "slides/session02.html#start-by-looking-around",
+    "title": "Median of Peer Multiples",
+    "section": "Start by Looking Around",
+    "text": "Start by Looking Around\nTell GLM\n\nUsing the data portal, show me the columns in daily and tickers, and give me five rows of each.\n\n\nBefore any analysis, look at the actual rows. Half of the mistakes in this course get caught here, in thirty seconds, by someone who looked."
+  },
+  {
+    "objectID": "slides/session02.html#the-pull",
+    "href": "slides/session02.html#the-pull",
+    "title": "Median of Peer Multiples",
+    "section": "The Pull",
+    "text": "The Pull\nTell GLM\n\nFor the most recent date in daily, get ticker, pe, and marketcap for every stock. Join sector and industry from tickers. Then pull the MRY rows from sf1 for the most recent fiscal year and bring in revenue, net income, and shares outstanding. Show me the SQL before you run it.\n\n\nThat last sentence is the entire lesson from Tuesday, in six words."
+  },
+  {
+    "objectID": "slides/session02.html#read-the-sql",
+    "href": "slides/session02.html#read-the-sql",
+    "title": "Median of Peer Multiples",
+    "section": "Read the SQL",
+    "text": "Read the SQL\n\nYou are not checking whether it is elegant. You are checking four things.\n\n\n\n\n\n\n\n\nDid it filter the dimension?\nWithout dimension = 'MRY' you get six rows per company-year\n\n\nDid it cast the dates?\nText comparison on dates goes wrong quietly\n\n\nIs the join key right?\nticker is not unique across time — see actions\n\n\nHow many rows came back?\nYou know roughly how many listed stocks there are"
+  },
+  {
+    "objectID": "slides/session02.html#what-a-pe-of-12-means",
+    "href": "slides/session02.html#what-a-pe-of-12-means",
+    "title": "Median of Peer Multiples",
+    "section": "What a P/E of –12 Means",
+    "text": "What a P/E of –12 Means\n\nNothing. It means the company lost money.\n\n\nA negative P/E is not a cheap stock. It is a stock with no E. Left in the sample it drags the median in the wrong direction and makes the cheapest-looking companies the ones that are losing the most.\n\nTell GLM\n\nDrop the negative P/E rows, and show me how many you dropped by sector."
+  },
+  {
+    "objectID": "slides/session02.html#look-before-you-compute",
+    "href": "slides/session02.html#look-before-you-compute",
+    "title": "Median of Peer Multiples",
+    "section": "Look Before You Compute",
+    "text": "Look Before You Compute\nTell GLM\n\nHistogram of P/E across all stocks. Then the same by sector, and a table of the count, median, and the 10th and 90th percentiles in each.\n\n\nYou are looking for two things: how fat the right tail is, and whether the sectors actually differ. If they do not, the peer group is doing no work and the method has nothing to offer."
+  },
+  {
+    "objectID": "slides/session02.html#why-the-median",
+    "href": "slides/session02.html#why-the-median",
+    "title": "Median of Peer Multiples",
+    "section": "Why the Median",
+    "text": "Why the Median\n\n\nThe mean\nOne company with a P/E of 900 — a real company that barely broke even — and the average for the industry is meaningless.\n\nThe median\nUnmoved by the tail. With ratios, where the numerator is bounded below and the denominator can approach zero, this is not a refinement. It is the difference between a number and noise."
+  },
+  {
+    "objectID": "slides/session02.html#which-peers",
+    "href": "slides/session02.html#which-peers",
+    "title": "Median of Peer Multiples",
+    "section": "Which Peers?",
+    "text": "Which Peers?\n\n\nSector\nEleven of them. Always enough companies, often not comparable ones.\n\n\nIndustry\nMuch finer. Sometimes four companies, and then the median is one company’s P/E.\n\n\nIndustry and size\nBetter in principle. Cuts the group again, so you need to watch the count.\n\n\n\nThere is no correct answer. There is a choice you make, write down, and defend when you present."
+  },
+  {
+    "objectID": "slides/session02.html#the-calculation",
+    "href": "slides/session02.html#the-calculation",
+    "title": "Median of Peer Multiples",
+    "section": "The Calculation",
+    "text": "The Calculation\n\n\nGroup the stocks by peer set, and drop the ones with no meaningful P/E\nTake the median P/E in each group\nMultiply it by the company’s own earnings per share\nCompare with the price it actually trades at\n\n\n\nThe gap is the whole output. A company trading well below its peer median is either cheap or different, and the method cannot tell you which."
+  },
+  {
+    "objectID": "slides/session02.html#now-do-it",
+    "href": "slides/session02.html#now-do-it",
+    "title": "Median of Peer Multiples",
+    "section": "Now Do It",
+    "text": "Now Do It\nTell GLM\n\nCompute the median P/E within each industry. For every stock, report its own P/E, its industry median, and the ratio of the two. Show me the twenty most expensive and the twenty cheapest by that ratio.\n\n\nRead the two lists. If the cheap list is all one industry, or all tiny companies, something in the peer definition is doing work you did not intend."
+  },
+  {
+    "objectID": "slides/session02.html#stop-re-explaining-yourself",
+    "href": "slides/session02.html#stop-re-explaining-yourself",
+    "title": "Median of Peer Multiples",
+    "section": "Stop Re-Explaining Yourself",
+    "text": "Stop Re-Explaining Yourself\n\n\nAlways on\nApplies to every conversation you have.\nWho you are, how you want to be written to, what never to do.\n\n\nPer project\nApplies inside one folder.\nThis course, this dataset, its quirks.\n\n\nWhen relevant\nA skill: read only when what you asked matches what it is for.\n\n\n\nThree scopes, and the third is the interesting one — because it costs nothing until it applies."
+  },
+  {
+    "objectID": "slides/session02.html#a-skill-is-written-instructions-filed-where-they-can-be-found",
+    "href": "slides/session02.html#a-skill-is-written-instructions-filed-where-they-can-be-found",
+    "title": "Median of Peer Multiples",
+    "section": "A Skill Is Written Instructions, Filed Where They Can Be Found",
+    "text": "A Skill Is Written Instructions, Filed Where They Can Be Found\nA folder with a SKILL.md in it. Two parts: a line saying when to use it, and the instructions for how.\n\n\nAt startup\nIt reads only the name and the one-line description — a few dozen words per skill.\n\n\nWhen it matches\nOnly then does it open the file and read the rest.\n\n\nWhich is why you can have many\nA hundred installed skills cost nothing until one of them is relevant.\n\n\n\nNot a plugin, and not code. A written procedure."
+  },
+  {
+    "objectID": "slides/session02.html#claude.md-versus-a-skill",
+    "href": "slides/session02.html#claude.md-versus-a-skill",
+    "title": "Median of Peer Multiples",
+    "section": "CLAUDE.md Versus a Skill",
+    "text": "CLAUDE.md Versus a Skill\n\n\nCLAUDE.md — always read\nWhat is always true here: what the project is, where things live, the conventions, what never to do.\nRead at the start of every session in that folder.\n\nA skill — read when relevant\nA procedure for a particular kind of job.\nStanding facts go in CLAUDE.md. Procedures go in skills.\n\n\nAsk GLM to write the first CLAUDE.md for you — it will read the folder and draft it."
+  },
+  {
+    "objectID": "slides/session02.html#why-this-matters-to-a-group",
+    "href": "slides/session02.html#why-this-matters-to-a-group",
+    "title": "Median of Peer Multiples",
+    "section": "Why This Matters to a Group",
+    "text": "Why This Matters to a Group\n\nThe skill is a file. The file is in the repository.\n\n\nWhich means the decision is made once, by one of you, and the other two get it by pulling. It also means the decision is visible: when you present, the skill is the record of what you chose and why.\n\nEvery ad-hoc instruction typed into a prompt window dies with that conversation."
+  },
+  {
+    "objectID": "slides/session02.html#get-it-right-once-then-save-it",
+    "href": "slides/session02.html#get-it-right-once-then-save-it",
+    "title": "Median of Peer Multiples",
+    "section": "Get It Right Once, Then Save It",
+    "text": "Get It Right Once, Then Save It\n\n\nGet the peer-median valuation working the way you want it, in a conversation\nSay: save that as a skill\nStart a fresh session and ask it to value a different company\n\n\n\nStep 3 is the test. If it needs to be told anything you already decided, the skill is not finished."
+  },
+  {
+    "objectID": "slides/session02.html#what-has-to-be-written-down",
+    "href": "slides/session02.html#what-has-to-be-written-down",
+    "title": "Median of Peer Multiples",
+    "section": "What Has to Be Written Down",
+    "text": "What Has to Be Written Down\n\n\nThe decisions\nWhich multiple. Which peer definition. Median, not mean. What the minimum group size is.\n\n\nThe traps\ndimension = 'MRY'. Cast the dates. Market cap is in thousands. Drop negative earnings.\n\n\nThe output\nWhat it should hand back every time: the peer set and its size, the median, the implied value, the gap.\n\n\n\nThe middle card is the one that pays for itself. Those four traps will otherwise bite each of you, separately, for six weeks."
+  },
+  {
+    "objectID": "slides/session02.html#exercise",
+    "href": "slides/session02.html#exercise",
+    "title": "Median of Peer Multiples",
+    "section": "Exercise",
+    "text": "Exercise\n\n\nBuild the skill in your group’s repository\nTest it on a company none of you used while building it\nThen test it on a bank, and on a company that lost money last year\nCommit and push it\n\n\n\nSteps 2 and 3 are where you find out what you left implicit. Write down what broke — it is what you will present on Tuesday."
+  },
+  {
+    "objectID": "slides/session02.html#where-it-will-fail",
+    "href": "slides/session02.html#where-it-will-fail",
+    "title": "Median of Peer Multiples",
+    "section": "Where It Will Fail",
+    "text": "Where It Will Fail\n\n\nThe industry of one\nA peer group with three companies in it has a median that is one company’s opinion.\n\n\nFinancials\nP/E means something different for a bank. So does book value.\n\n\nGrowth\nTwo companies in the same industry with different growth rates should not trade at the same multiple. The method assumes they do.\n\n\n\nThe third one is what Thursday of next week is about: predicting the multiple instead of borrowing it."
+  },
+  {
+    "objectID": "slides/session02.html#three-things-1",
+    "href": "slides/session02.html#three-things-1",
+    "title": "Median of Peer Multiples",
+    "section": "Three Things",
+    "text": "Three Things\n\n\nFinish the skill, and push it\nRun it on five companies you know something about, and see whether the answers are sane\nBring the one case where it was most obviously wrong\n\n\n\nTuesday we turn this into a trade: rank every stock by the gap, buy the cheap ones, sell the expensive ones, and find out what that would have earned."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
     "title": "",
     "section": "",
-    "text": "Session\nTopics\nSlides\n\n\n\n\n1\nQuality stocksFactor InvestingInstall Claude Code and Python\nSlides\n\n\n2\nRice Database\nSlides\n\n\n3\nInstall VS CodeMomentum and ValueData Query and Merge Skills \nSlides\n\n\n4\nSorting on FactorsStreamlitProfitability\nSlides\n\n\n5\nStandardizing VariablesRandom ForestsSafe Minus Risky\nSlides\n\n\n6\nHedge Funds and Public InformationMore on Random Forests\nSlides\n\n\n7\nValuation by Multiples and Stock ReportsMachine Learning for Valuation\nSlides\n\n\n8\nTrading on Valuation Models\nSlides\n\n\n9\nTrading on Return Prediction Models\nSlides\n\n\n10\nEvaluating Portfolio PerformanceTrading on Weekly Return PredictionsTrading Costs\nSlides\n\n\n11\nInterpreting Models Neural Networks\nSlides\n\n\n12\nPresentations Automated TradingAlpaca Brokerage Python API\nSlides"
+    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course overview, four years of AI in one table, and the lab. Market data pulled, charted and checked by code you can read.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Valuing a company against companies like it. Pulling multiples from the Nasdaq data and comparing each stock to the median of its peers.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's own fundamentals instead of borrowing its peers'. Regression, fitted values, and a backtest of the signal.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Introduction to Machine Learning\n        Where machine learning picks up where regression leaves off. Training and test samples, overfitting, cross-validation, and the models we will use.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n        Predicting Multiples with Machine Learning\n        Swapping the regression for a machine learning model, and backtesting whether the better fit is actually a better strategy.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Predicting Returns with Machine Learning\n        Predicting returns directly rather than by way of valuation. Building features, fitting the model, and backtesting the result.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Short Sales and Insider Trading\n        What short interest and the Form 4 filings of officers and directors say about future returns, and how to trade on them.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Text Analysis and Sentiment\n        Working with news articles and social media posts. Measuring sentiment in financial text, at the scale of millions of documents.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        Trading on Sentiment\n        Building a signal out of the news and StockTwits corpora, and backtesting whether the crowd's mood is worth trading on.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Risk Models\n        Factor models of how stocks move together. Market, industry and style factors, and a covariance matrix you can actually use on hundreds of names.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        Portfolio Risk\n        Putting the risk model to work: measuring a portfolio's factor exposures and tracking error, and building one that takes only the bets you meant to take.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
+  },
+  {
+    "objectID": "slides/session01.html#two-halves",
+    "href": "slides/session01.html#two-halves",
+    "title": "Getting Started",
+    "section": "Two Halves",
+    "text": "Two Halves\n\n\nThe tool\nGenerative AI as it is actually used at work: to write and run code.\nYou will not write Python. You will direct it, and check it.\n\nThe subject\nQuantitative investing. Predicting stock returns, and finding out how little is predictable.\nThe data is real, and so are the models."
+  },
+  {
+    "objectID": "slides/session01.html#what-the-model-is-actually-good-for",
+    "href": "slides/session01.html#what-the-model-is-actually-good-for",
+    "title": "Getting Started",
+    "section": "What the Model Is Actually Good For",
+    "text": "What the Model Is Actually Good For\n\nOne claim, and we spend six weeks testing it.\n\n\nA language model’s comparative advantage is turning text into a number. Everything downstream — sizing, portfolio construction, execution — is an optimization problem the model does not help with.\n\nThe corollary is the useful part: it is not going to trade for you, but it will write every line of the machinery that does."
+  },
+  {
+    "objectID": "slides/session01.html#six-weeks",
+    "href": "slides/session01.html#six-weeks",
+    "title": "Getting Started",
+    "section": "Six Weeks",
+    "text": "Six Weeks\n\n\n\nWeeks\nWhat we do\n\n\n\n\n1\nMake the machine write code; value a company against its peers\n\n\n2\nTrade on the prediction; regression for multiples\n\n\n3\nMachine learning, and what it does to a valuation model\n\n\n4\nPredicting returns; insider trading and short sales\n\n\n5\nText as a signal, and trading on sentiment\n\n\n6\nRisk models, and managing portfolio risk"
+  },
+  {
+    "objectID": "slides/session01.html#how-it-runs",
+    "href": "slides/session01.html#how-it-runs",
+    "title": "Getting Started",
+    "section": "How It Runs",
+    "text": "How It Runs\n\n\nGroups of two or three\nFixed for the term. You work with your group in class, and you present with them.\n\n\nEverything in the lab\nNo software on your laptop. A browser and your Rice credentials.\n\n\nEverything on GitHub\nYour group’s repository is what survives the term. The lab does not."
+  },
+  {
+    "objectID": "slides/session01.html#every-class-three-things",
+    "href": "slides/session01.html#every-class-three-things",
+    "title": "Getting Started",
+    "section": "Every Class, Three Things",
+    "text": "Every Class, Three Things\nFrom September 1 on\n\n\nThree groups, drawn at random, present on what they got done last session\nLecture — the new material for the day\nHands-on work — you and your group build it\n\n\n\nThe hands-on portion is the point of the course. The presentations are about it, and the lecture exists to make it possible."
+  },
+  {
+    "objectID": "slides/session01.html#what-you-are-graded-on",
+    "href": "slides/session01.html#what-you-are-graded-on",
+    "title": "Getting Started",
+    "section": "What You Are Graded On",
+    "text": "What You Are Graded On\n\n\n\nComponent\nWeight\n\n\n\n\nGroup presentations\n60%\n\n\nClass participation\n40%\n\n\n\n\nGroups are drawn at random, so every group should be ready every class. Each group will present twice over the term. Show your repository; there is no need for slides."
+  },
+  {
+    "objectID": "slides/session01.html#by-october-1",
+    "href": "slides/session01.html#by-october-1",
+    "title": "Getting Started",
+    "section": "By October 1",
+    "text": "By October 1\nYour group will have a repository that pulls twenty years of market data, builds a panel of firm characteristics, trains a model on it, and reports honestly whether it works.\n\nExpect the model to explain about one percent of the variance. That is not a bug, and we will spend a full session on why it is a good outcome."
+  },
+  {
+    "objectID": "slides/session01.html#four-years-chatbot-to-agent",
+    "href": "slides/session01.html#four-years-chatbot-to-agent",
+    "title": "Getting Started",
+    "section": "Four Years, Chatbot to Agent",
+    "text": "Four Years, Chatbot to Agent\n\n\n\nNov 2022\nChatGPT opens to the public\n\n\nMar 2023\nGPT-4 and Claude — the chatbot year\n\n\nNov 2024\nModel Context Protocol — agents get tools\n\n\nFeb 2025\nClaude Code — the agent reaches your files\n\n\nOct 2025\nAgent Skills — expertise you can package\n\n\n2026\nCowork and desktop agents\n\n\n\n\nNote where the tools arrive. For the first two years these systems could only talk."
+  },
+  {
+    "objectID": "slides/session01.html#andrej-karpathy",
+    "href": "slides/session01.html#andrej-karpathy",
+    "title": "Getting Started",
+    "section": "Andrej Karpathy",
+    "text": "Andrej Karpathy\nOpenAI co-founder, former Tesla AI chief, now at Anthropic\n\n\nOctober 2025\n“They just don’t work. They don’t have enough intelligence … You can’t just tell them something and they’ll remember it.”\n“The industry is trying to pretend like this is amazing, and it’s not. It’s slop.”\n\n\nDecember 2025\n“I really am mostly programming in English now, a bit sheepishly telling the LLM what code to write … in words.”\n“Biggest change to my basic coding workflow in ~2 decades.”\n\n\nFebruary 2026\n“Coding agents basically didn’t work before December.”\n“I don’t think I’ve typed like a line of code probably since December.”"
+  },
+  {
+    "objectID": "slides/session01.html#which-means",
+    "href": "slides/session01.html#which-means",
+    "title": "Getting Started",
+    "section": "Which Means",
+    "text": "Which Means\n\nThe same person, three times in four months.\n\n\nThe version of this you formed an opinion about is probably not the version that exists. Almost everything useful arrived in the last eighteen months, and a good deal of it since last December."
+  },
+  {
+    "objectID": "slides/session01.html#that-is-the-whole-trick",
+    "href": "slides/session01.html#that-is-the-whole-trick",
+    "title": "Getting Started",
+    "section": "That Is the Whole Trick",
+    "text": "That Is the Whole Trick\n\nAlmost everything useful the model does, it does by writing code and running it.\n\n\nUsually Python or JavaScript. The code runs on a server — here, on the lab machine — not inside the model.\n\nYou are not asking it for an answer. You are asking it for a program that produces an answer, and the program is something you can read."
+  },
+  {
+    "objectID": "slides/session01.html#one-capability-six-directions",
+    "href": "slides/session01.html#one-capability-six-directions",
+    "title": "Getting Started",
+    "section": "One Capability, Six Directions",
+    "text": "One Capability, Six Directions\n\n\n\nExcel workbooks with live formulas\nCharts and figures\n\n\nPowerPoint decks\nData analysis and statistics\n\n\nWord documents\nWeb apps and dashboards\n\n\n\n\nThese are not six features somebody built. They are one capability — write code, run it — pointed in six directions."
+  },
+  {
+    "objectID": "slides/session01.html#what-that-looks-like-underneath",
+    "href": "slides/session01.html#what-that-looks-like-underneath",
+    "title": "Getting Started",
+    "section": "What That Looks Like Underneath",
+    "text": "What That Looks Like Underneath\nYou ask\n\nRead these four PDFs. Pull out every number either side cites about market share, note which ones disagree, and put it in a table.\n\nWhat actually happens\nEach PDF is converted to text. The text is read. A Python script builds the table. The table is written to a file.\n\nNothing there is a document feature. It is code execution, pointed at file formats."
+  },
+  {
+    "objectID": "slides/session01.html#numbers-need-code",
+    "href": "slides/session01.html#numbers-need-code",
+    "title": "Getting Started",
+    "section": "Numbers Need Code",
+    "text": "Numbers Need Code\n\n\nThe problem\nTo a next-token predictor, “47.3%” is exactly as plausible as “52.1%”.\nMental math, rankings, comparisons, aggregations — all unreliable, and the wrong number arrives with complete confidence.\n\nThe fix\nInsist on code, and insist that it run.\nArithmetic stops being prediction and becomes computation — and you can read afterward what it actually did."
+  },
+  {
+    "objectID": "slides/session01.html#first-a-chatbot",
+    "href": "slides/session01.html#first-a-chatbot",
+    "title": "Getting Started",
+    "section": "First, a Chatbot",
+    "text": "First, a Chatbot\n\nYou, a program, and a model. The model reads text and writes text. That is the entire capability.\n\n\nIt cannot open a file, run a calculation, look up today’s date, or check whether what it just told you is true.\n\nThe chatbot passes along your prompt — plus the system prompt and everything said so far in the conversation — and hands back the reply."
+  },
+  {
+    "objectID": "slides/session01.html#an-agent-is-a-chatbot-with-tools",
+    "href": "slides/session01.html#an-agent-is-a-chatbot-with-tools",
+    "title": "Getting Started",
+    "section": "An Agent Is a Chatbot with Tools",
+    "text": "An Agent Is a Chatbot with Tools\n\n\nThe agent sends the prompt, the history, and a list of tools it has\nThe model answers: use tool X, with these arguments\nThe agent runs tool X and reports the result back, with instructions for reading it\nThe model decides what to do next — another tool, or an answer for you\n\n\n\nThe model never runs anything. It emits requests; the agent executes them. Those step-3 instructions are the tool harness, and some are far better than others."
+  },
+  {
+    "objectID": "slides/session01.html#what-you-get",
+    "href": "slides/session01.html#what-you-get",
+    "title": "Getting Started",
+    "section": "What You Get",
+    "text": "What You Get\n\n\nWhat runs\nClaude Code, running GLM-4.7.\n\n\nWhat is installed\nPython, JavaScript, the analysis libraries, and a set of Claude Code plugins.\n\n\nWhat you see\nA file browser, a terminal, and a browser view for anything you build.\n\n\n\nAll of it runs in the cloud and is billed to the school."
+  },
+  {
+    "objectID": "slides/session01.html#sign-in",
+    "href": "slides/session01.html#sign-in",
+    "title": "Getting Started",
+    "section": "Sign In",
+    "text": "Sign In\n\n\nGo to lab638.kerryback.com — any browser, nothing to install\nUsername is your netid, the part before @rice.edu\nPassword is your student number, including the S0\n\n\n\nFirst load takes a moment while your machine starts. If you are asked to sign in again later in the term, nothing is wrong — sessions do not survive a restart of the server."
+  },
+  {
+    "objectID": "slides/session01.html#the-workspace",
+    "href": "slides/session01.html#the-workspace",
+    "title": "Getting Started",
+    "section": "The Workspace",
+    "text": "The Workspace\n\n\nRight panel\nClaude Code. The prompt window is at the bottom.\n\n\nLeft panel\nFile browser by default. Terminal and View are there too — ignore them today.\n\n\nThree dots, upper left\nUpload from your laptop, download to it."
+  },
+  {
+    "objectID": "slides/session01.html#three-things-that-trip-everyone",
+    "href": "slides/session01.html#three-things-that-trip-everyone",
+    "title": "Getting Started",
+    "section": "Three Things That Trip Everyone",
+    "text": "Three Things That Trip Everyone\n\n\n\n\n\n\n\nRefresh\nThe file browser does not update itself. When GLM makes a file and you cannot see it, hit Refresh.\n\n\nNo Office\nDouble-clicking a .xlsx or .pptx does nothing. Office is not installed.\n\n\nDownload to view\nBring Office documents to your laptop and open them there."
+  },
+  {
+    "objectID": "slides/session01.html#two-places-your-group-lives",
+    "href": "slides/session01.html#two-places-your-group-lives",
+    "title": "Getting Started",
+    "section": "Two Places Your Group Lives",
+    "text": "Two Places Your Group Lives\n\n\nA GitHub repository\nOne shared copy of the code, the notebooks, and the results. It is what you show when you present.\n\n\nA Slack channel\nFor coordinating between classes. Add me to it.\n\n\n\nSet both up this week, and send me the repository URL."
+  },
+  {
+    "objectID": "slides/session01.html#why-github",
+    "href": "slides/session01.html#why-github",
+    "title": "Getting Started",
+    "section": "Why GitHub",
+    "text": "Why GitHub\n\nYour group shares one repository, not a folder of attachments.\n\n\nMailing notebooks around breaks down by the second week. GitHub keeps one copy that everyone edits, records who changed what and when, and lets two of you work the same afternoon without overwriting each other."
+  },
+  {
+    "objectID": "slides/session01.html#you-do-not-type-git-commands",
+    "href": "slides/session01.html#you-do-not-type-git-commands",
+    "title": "Getting Started",
+    "section": "You Do Not Type Git Commands",
+    "text": "You Do Not Type Git Commands\n\nSame bargain as the code. You say what you want; GLM runs it.\n\n\nGit has a deserved reputation for cryptic errors. You do not need to learn it — you need to know what you are asking for, and to check that it happened.\n\nThere is exactly one step you do yourself, and it is on the next slide."
+  },
+  {
+    "objectID": "slides/session01.html#once-per-person",
+    "href": "slides/session01.html#once-per-person",
+    "title": "Getting Started",
+    "section": "Once, Per Person",
+    "text": "Once, Per Person\nThe one thing GLM cannot do for you\n\n\nCreate a free account at github.com, and note your username\nOpen the Terminal tab — not the GLM pane\nRun gh auth login, and answer: GitHub.com, HTTPS, log in with a browser\nIt prints a code — open the link on your laptop and paste it there\n\n\n\nThis one waits for you to type, so it has to be the Terminal tab. Asked in the GLM pane, it would sit there until it gave up."
+  },
+  {
+    "objectID": "slides/session01.html#one-person-creates-the-repo",
+    "href": "slides/session01.html#one-person-creates-the-repo",
+    "title": "Getting Started",
+    "section": "One Person Creates the Repo",
+    "text": "One Person Creates the Repo\nTell GLM\n\nMake my workspace a git repository, commit everything in it, and create a private GitHub repo called mgmt638-team1 from it. Then push.\n\n\nOne person in the group does this, once. Everyone else skips to the slide after next."
+  },
+  {
+    "objectID": "slides/session01.html#then-add-your-groupmates",
+    "href": "slides/session01.html#then-add-your-groupmates",
+    "title": "Getting Started",
+    "section": "Then Add Your Groupmates",
+    "text": "Then Add Your Groupmates\nOn github.com, in the new repository\n\n\nSettings, then Collaborators, then Add people\nSearch each groupmate by their GitHub username\nThey get an email invitation, and have to accept it\n\n\n\nUntil someone accepts, their clone fails with “not found” rather than “no permission” — the repository is private, so to them it does not exist yet."
+  },
+  {
+    "objectID": "slides/session01.html#everyone-else-joins",
+    "href": "slides/session01.html#everyone-else-joins",
+    "title": "Getting Started",
+    "section": "Everyone Else Joins",
+    "text": "Everyone Else Joins\nTell GLM\n\nClone the GitHub repo alice/mgmt638-team1 into my workspace and cd into it.\n\n\nalice is the GitHub username of whoever created the repo, not yours."
+  },
+  {
+    "objectID": "slides/session01.html#push-and-pull",
+    "href": "slides/session01.html#push-and-pull",
+    "title": "Getting Started",
+    "section": "Push and Pull",
+    "text": "Push and Pull\nTell GLM, at the start and end of every session\n\nPull the latest from GitHub before we start.\n\n\nCommit what we did with a sensible message and push it.\n\n\nPull first, push last. Nearly every tangle you will hit this term comes from skipping one of the two."
+  },
+  {
+    "objectID": "slides/session01.html#good-enough-prompting",
+    "href": "slides/session01.html#good-enough-prompting",
+    "title": "Getting Started",
+    "section": "Good Enough Prompting",
+    "text": "Good Enough Prompting\n\nMost of the prompt engineering advice from a few years ago is now either useless or actively harmful.\n\n\n\nSay what you want, not how to do it\n“I want to compare revenue across countries — how should we show it?”\nbeats\n“Make a bar chart, sorted descending, gridlines off, 12pt labels.”\n\n\nIf it does not work, try again\nRephrasing is cheap. Treat it as an infinitely patient colleague with a poor memory."
+  },
+  {
+    "objectID": "slides/session01.html#plan-before-you-act",
+    "href": "slides/session01.html#plan-before-you-act",
+    "title": "Getting Started",
+    "section": "Plan Before You Act",
+    "text": "Plan Before You Act\nUse plan mode, or just add: plan how you will do this before you start.\n\n\nWhy it works — knowledge\nPlanning pulls the relevant considerations into the conversation. It then answers in light of what it just retrieved, rather than from base rates.\n\nWhy it works — scale\nIt breaks the work into steps you can check one at a time. Failures stay small and local instead of surfacing at the very end."
+  },
+  {
+    "objectID": "slides/session01.html#confirm-it-understood",
+    "href": "slides/session01.html#confirm-it-understood",
+    "title": "Getting Started",
+    "section": "Confirm It Understood",
+    "text": "Confirm It Understood\n\nAmbiguity does not produce a question. It produces a confident answer to a question you did not ask.\n\nTell GLM, before it starts\n\nTell me what you are about to do and what you are assuming.\n\n\nCorrect it in one sentence, then say go ahead. This is the cheapest habit in the course and it will save you the most time."
+  },
+  {
+    "objectID": "slides/session01.html#it-is-a-prediction-machine-not-a-colleague",
+    "href": "slides/session01.html#it-is-a-prediction-machine-not-a-colleague",
+    "title": "Getting Started",
+    "section": "It Is a Prediction Machine, Not a Colleague",
+    "text": "It Is a Prediction Machine, Not a Colleague\nSuppose it told you last week that method A beats method B. Today you ask it to do the task.\n\n\nWhat it will do\nIf “A beats B” is not in this conversation, and B appeared more often in its training data, it will probably use B.\n\nWhy\nKnowledge in the weights is not knowledge in use. Something has to pull it into the conversation before it can act on it."
+  },
+  {
+    "objectID": "slides/session01.html#tunnel-vision",
+    "href": "slides/session01.html#tunnel-vision",
+    "title": "Getting Started",
+    "section": "Tunnel Vision",
+    "text": "Tunnel Vision\n\nPrediction also means momentum. Once it has started down a path, continuing that path is the likeliest next step.\n\nYou will watch it hit a roadblock, find a way around, hit another, find another way around — tenaciously, exhaustively. What it rarely does is go back and ask whether a different path was better all along.\n\nRestate the goal, not the obstacle. That gives it permission to abandon the path instead of defending it."
+  },
+  {
+    "objectID": "slides/session01.html#what-not-to-do",
+    "href": "slides/session01.html#what-not-to-do",
+    "title": "Getting Started",
+    "section": "What Not to Do",
+    "text": "What Not to Do\n\n\n\n\n\n\n\nSkip\nWhy\n\n\n\n\n“Think step by step”\nReasoning models already do, in hidden tokens\n\n\n“Take a deep breath”\nMeasurably useless now\n\n\n“CRITICAL! NEVER EVER …”\nOvertriggers, and gets worse results\n\n\nStacked personas\n“You are an expert X” can help tone; three of them does not\n\n\n\n\nDirect task framing wins. Say what you want, say what done looks like, say what to avoid."
+  },
+  {
+    "objectID": "slides/session01.html#go-and-get-the-data",
+    "href": "slides/session01.html#go-and-get-the-data",
+    "title": "Getting Started",
+    "section": "Go and Get the Data",
+    "text": "Go and Get the Data\n\nNo file to upload, no API key to paste. Ask.\n\nTell GLM\n\nGet monthly returns for WMT and SPY since 2020 from Yahoo Finance. Scatter plot, SPY on the horizontal axis, with a regression line."
+  },
+  {
+    "objectID": "slides/session01.html#what-you-just-did",
+    "href": "slides/session01.html#what-you-just-did",
+    "title": "Getting Started",
+    "section": "What You Just Did",
+    "text": "What You Just Did\nThe slope of that line is Walmart’s market beta. You estimated a CAPM regression by asking for a scatter plot.\n\nThe code ran on a machine in the cloud. Nobody at Yahoo, and nobody at Anthropic, built a beta calculator."
+  },
+  {
+    "objectID": "slides/session01.html#look-at-the-code",
+    "href": "slides/session01.html#look-at-the-code",
+    "title": "Getting Started",
+    "section": "Look at the Code",
+    "text": "Look at the Code\nTell GLM\n\nShow me the code you ran.\n\nYou do not need to write Python to read it. Find the line that computes the returns.\n\nAny number that matters comes out of code you can open. That rule applies to every session in this course."
+  },
+  {
+    "objectID": "slides/session01.html#push-it-further",
+    "href": "slides/session01.html#push-it-further",
+    "title": "Getting Started",
+    "section": "Push It Further",
+    "text": "Push It Further\nTell GLM\n\nAdd the other Dow components and rank them by beta.\n\n\nAnnotate the three months with the largest residuals and tell me what happened in each.\n\n\nWatch whether those explanations are sourced or invented."
+  },
+  {
+    "objectID": "slides/session01.html#put-it-somewhere",
+    "href": "slides/session01.html#put-it-somewhere",
+    "title": "Getting Started",
+    "section": "Put It Somewhere",
+    "text": "Put It Somewhere\nTell GLM\n\nPut the chart and a short written summary in a PowerPoint deck.\n\nThen download it and open it on your laptop.\n\nThe chart, the layout, the text — all produced by code GLM wrote and ran."
+  },
+  {
+    "objectID": "slides/session01.html#what-could-go-wrong",
+    "href": "slides/session01.html#what-could-go-wrong",
+    "title": "Getting Started",
+    "section": "What Could Go Wrong",
+    "text": "What Could Go Wrong\n\nYou asked for a chart of betas and you got one. Now what?\n\n\n\nNo answer\nEasy. You notice immediately.\n\n\nWrong kind of answer\nAlso easy. A pie chart when you wanted a scatter.\n\n\nRight kind, wrong numbers\nThis is the one. It looks exactly like the answer you wanted."
+  },
+  {
+    "objectID": "slides/session01.html#the-trap",
+    "href": "slides/session01.html#the-trap",
+    "title": "Getting Started",
+    "section": "The Trap",
+    "text": "The Trap\nYahoo gives you two closing prices for every day: Close, and Adj Close, which is adjusted for dividends and splits.\nReturns from the wrong one are wrong — and Walmart both pays a dividend and split three-for-one in 2024.\nTell GLM\n\nRecompute the betas both ways and show me the difference."
+  },
+  {
+    "objectID": "slides/session01.html#where-the-errors-come-from",
+    "href": "slides/session01.html#where-the-errors-come-from",
+    "title": "Getting Started",
+    "section": "Where the Errors Come From",
+    "text": "Where the Errors Come From\n\n\nMisunderstanding\nYour instruction was ambiguous.\nAsk it to state its plan before it starts.\n\n\nSilent assumptions\nIt chose something you never authorized — which price column, which date range.\nAsk it to walk through what it did.\n\n\nCoding errors\nRare. The code either runs or it does not."
+  },
+  {
+    "objectID": "slides/session01.html#hallucinations",
+    "href": "slides/session01.html#hallucinations",
+    "title": "Getting Started",
+    "section": "Hallucinations",
+    "text": "Hallucinations\n\nIt is not lying. It is predicting the next token, and a plausible citation is exactly as predictable as a real one.\n\n\nThe risk is highest when the answer is unknown or unfindable — an obscure statistic, a citation that may not exist, a number that was never public. Asked a question with no available answer, it will still produce one.\n\n\n\nMake it search\nAnd give you the sources.\n\n\nCheck the sources\nClick them. A real-looking citation to a paper that does not exist is the classic failure.\n\n\nMake it compute\nAny number that matters comes out of code."
+  },
+  {
+    "objectID": "slides/session01.html#never-ask-is-this-good",
+    "href": "slides/session01.html#never-ask-is-this-good",
+    "title": "Getting Started",
+    "section": "Never Ask “Is This Good?”",
+    "text": "Never Ask “Is This Good?”\n\nTraining on human feedback teaches that agreement earns high ratings. Ask “is my plan sound?” and it will find reasons that it is.\n\nInvert the question\n\nWhat is the strongest argument that this recommendation is wrong?\n\n\nOne step further: have it play a specific skeptic — a referee, a regulator, the desk that has to trade this."
+  },
+  {
+    "objectID": "slides/session01.html#set-a-critic-on-it",
+    "href": "slides/session01.html#set-a-critic-on-it",
+    "title": "Getting Started",
+    "section": "Set a Critic on It",
+    "text": "Set a Critic on It\n\nGLM can dispatch a subagent: a fresh instance, no memory of this conversation.\n\n\n\nWhy it is worth something\nIt sees the instructions, not the reasoning behind the first answer. It has nothing to defend.\nGive it a mandate: find every factual error, logical gap, and unsupported assumption. Do not summarize — find flaws.\n\nThe catch\nTwo agreeing runs are evidence, not proof. They share a model and they share your ambiguous question.\n\n\nAnything that both produces work and checks its own work is grading its own homework."
+  },
+  {
+    "objectID": "slides/session01.html#three-checks-before-you-trust-it",
+    "href": "slides/session01.html#three-checks-before-you-trust-it",
+    "title": "Getting Started",
+    "section": "Three Checks Before You Trust It",
+    "text": "Three Checks Before You Trust It\n\n\nWhere did this come from?\nA citation you can click, a file you can open, or code you can read. If none of the three, treat it as a guess.\n\n\nWhat did it assume?\nEvery unstated choice was made for you. Ask what it decided that you did not specify.\n\n\nWould I catch it if it were wrong?\nIf not, that is the part to check by hand — not the part you already understand."
+  },
+  {
+    "objectID": "slides/session01.html#aqr-capital-management",
+    "href": "slides/session01.html#aqr-capital-management",
+    "title": "Getting Started",
+    "section": "AQR Capital Management",
+    "text": "AQR Capital Management\n\n\n1998 founded, out of Chicago and Goldman\n\n\n$189B under management\n\n\nNo. 1 largest hedge fund manager, 2025\n\n\nA firm whose entire investment process is an argument published in journals.\nBackground: AQR Capital Management"
+  },
+  {
+    "objectID": "slides/session01.html#quality-minus-junk",
+    "href": "slides/session01.html#quality-minus-junk",
+    "title": "Getting Started",
+    "section": "Quality Minus Junk",
+    "text": "Quality Minus Junk\n\nAsness, Frazzini and Pedersen, “Quality minus junk”, Review of Accounting Studies, 2019.\n\nWatch the video\n\nQuality is one of the characteristics you will put in your own model in week three. This is where it comes from."
+  },
+  {
+    "objectID": "slides/session01.html#four-things",
+    "href": "slides/session01.html#four-things",
+    "title": "Getting Started",
+    "section": "Four Things",
+    "text": "Four Things\n\n\nSettle your group — two or three people\nSet up the group’s GitHub repository and Slack channel, and send me both\nRead the AQR background note\nBring a question about something GLM got wrong today\n\n\n\nThursday we start on valuation: what a company is worth compared with the companies it looks like."
+  },
+  {
+    "objectID": "slides/session03.html#starting-today",
+    "href": "slides/session03.html#starting-today",
+    "title": "Trading on Predictions",
+    "section": "Starting Today",
+    "text": "Starting Today\n\n\nThree groups, drawn at random, at the start of every class\nFive minutes each, on what you got done last session\nShow the repository — the skill, the code, the numbers\n\n\n\nWhat broke is more interesting than what worked, and it is what the rest of the room needs to hear. A presentation that reports only success is a presentation nobody learns from."
+  },
+  {
+    "objectID": "slides/session03.html#what-to-cover",
+    "href": "slides/session03.html#what-to-cover",
+    "title": "Trading on Predictions",
+    "section": "What to Cover",
+    "text": "What to Cover\n\n\nWhat you decided\nWhich multiple, which peer group, what minimum size. And why.\n\n\nWhat surprised you\nThe company where the answer was obviously wrong, and what it turned out to be.\n\n\nWhat you would change\nYou have run it now. What is the first thing you would do differently?"
+  },
+  {
+    "objectID": "slides/session03.html#you-have-a-number-for-every-stock",
+    "href": "slides/session03.html#you-have-a-number-for-every-stock",
+    "title": "Trading on Predictions",
+    "section": "You Have a Number for Every Stock",
+    "text": "You Have a Number for Every Stock\n\nOwn P/E divided by peer median P/E. Below one is cheap relative to its peers; above one is expensive.\n\n\nThat is a prediction, whether or not you meant it as one. It says: this company should trade closer to its peers than it does.\n\nThe question today is whether that prediction is worth anything."
+  },
+  {
+    "objectID": "slides/session03.html#sort-do-not-threshold",
+    "href": "slides/session03.html#sort-do-not-threshold",
+    "title": "Trading on Predictions",
+    "section": "Sort, Do Not Threshold",
+    "text": "Sort, Do Not Threshold\n\n\nA threshold\n“Buy anything below 0.7.” How many stocks is that? Some years, none. Some years, four hundred.\n\n\nA sort\n“Buy the cheapest tenth.” Always the same number of positions, whatever the market is doing.\n\n\n\nRanking also throws away the scale of the signal, which is the part you trust least. You are betting on the order, not the magnitude."
+  },
+  {
+    "objectID": "slides/session03.html#long-short-or-both",
+    "href": "slides/session03.html#long-short-or-both",
+    "title": "Trading on Predictions",
+    "section": "Long, Short, or Both",
+    "text": "Long, Short, or Both\n\n\nLong only\nBuy the cheapest decile. Most of what you earn is just the market.\n\n\nLong-short\nCheapest decile long, most expensive short. What is left is the signal.\n\n\nLong-short, dollar neutral\nEqual dollars each side. The version we will build.\n\n\n\nThe long-short version is a much harder test, and it is the one that tells you whether you found anything."
+  },
+  {
+    "objectID": "slides/session03.html#the-loop",
+    "href": "slides/session03.html#the-loop",
+    "title": "Trading on Predictions",
+    "section": "The Loop",
+    "text": "The Loop\n\n\nPick a date — the last trading day of June, say\nCompute the signal for every stock, using only what was known that day\nSort, and form the portfolio\nHold it for one year. No trading, no rebalancing\nRecord the return\nMove forward a year and do it again\n\n\n\nTwenty-odd repetitions. That is your entire sample, and it is worth remembering how small a number that is."
+  },
+  {
+    "objectID": "slides/session03.html#why-once-a-year",
+    "href": "slides/session03.html#why-once-a-year",
+    "title": "Trading on Predictions",
+    "section": "Why Once a Year",
+    "text": "Why Once a Year\n\n\nThe signal moves slowly\nIt is built from annual filings. Recomputing it monthly gives you eleven months of the same answer and eleven months of trading costs.\n\nAnd it keeps the test honest\nAnnual holding periods make the overlapping-returns problem go away. Monthly rebalancing with annual data does not give you twelve times the evidence."
+  },
+  {
+    "objectID": "slides/session03.html#equal-or-value-weighted",
+    "href": "slides/session03.html#equal-or-value-weighted",
+    "title": "Trading on Predictions",
+    "section": "Equal or Value Weighted",
+    "text": "Equal or Value Weighted\n\n\nEqual weighted\nSame dollars in each name. Simple, and dominated by small companies — which is where most anomalies live, and where they are hardest to trade.\n\n\nValue weighted\nWeights by market cap. A much more honest test, and usually a much weaker result.\n\n\n\nReport both. A strategy that works equal-weighted and dies value-weighted has told you exactly what it is."
+  },
+  {
+    "objectID": "slides/session03.html#build-it",
+    "href": "slides/session03.html#build-it",
+    "title": "Trading on Predictions",
+    "section": "Build It",
+    "text": "Build It\nTell GLM\n\nWrite a backtest. For each year from 2001 to 2025: on June 30, compute the peer-median signal for every stock using the valuation skill, sort into deciles, go long the cheapest decile and short the most expensive, equal weighted, hold twelve months, and record the return. Plan it before you start.\n\n\nThen read the plan before you let it write anything."
+  },
+  {
+    "objectID": "slides/session03.html#the-restatement-problem",
+    "href": "slides/session03.html#the-restatement-problem",
+    "title": "Trading on Predictions",
+    "section": "The Restatement Problem",
+    "text": "The Restatement Problem\n\nMRY is the most recent restatement. It tells you today what nobody knew then.\n\n\nA company that restated its 2008 earnings in 2011 shows up in MRY with the restated number — so a backtest that forms a 2009 portfolio is using information from 2011. The strategy will look better than it was.\n\nUse the as-reported dimensions, ARY and ARQ, for anything historical."
+  },
+  {
+    "objectID": "slides/session03.html#filed-not-ended",
+    "href": "slides/session03.html#filed-not-ended",
+    "title": "Trading on Predictions",
+    "section": "Filed, Not Ended",
+    "text": "Filed, Not Ended\n\n\nreportperiod\nWhen the fiscal year ended. Nobody outside the company knew the numbers yet.\n\n\ndatekey\nWhen it was filed with the SEC. This is the first day you could have acted on it.\n\n\n\nSorting on reportperiod gives you a few weeks to a few months of free information, every year, in every name. It is the single most common way a backtest in this course goes wrong."
+  },
+  {
+    "objectID": "slides/session03.html#who-is-in-the-sample",
+    "href": "slides/session03.html#who-is-in-the-sample",
+    "title": "Trading on Predictions",
+    "section": "Who Is in the Sample",
+    "text": "Who Is in the Sample\n\nAsk a question you cannot answer from the schema: does the data still contain companies that stopped existing?\n\n\nIf it holds only companies listed today, then every 2005 portfolio you form is made of firms you already know survived to 2026. That is not a small bias. It is the difference between a strategy and an illusion.\n\nTell GLM\n\nCount distinct tickers with data in 2005. Then count how many of those still have data in the most recent year, and show me some that do not."
+  },
+  {
+    "objectID": "slides/session03.html#three-more",
+    "href": "slides/session03.html#three-more",
+    "title": "Trading on Predictions",
+    "section": "Three More",
+    "text": "Three More\n\n\n\n\n\n\n\nThe peer median\nComputed from the same date, or from data that arrived later?\n\n\nDelisting returns\nA company that goes to zero has to be recorded as going to zero\n\n\nCosts and borrow\nThe short side is not free, especially in the small names\n\n\n\n\nNone of these will throw an error. Each of them makes the answer better than the truth."
+  },
+  {
+    "objectID": "slides/session03.html#three-numbers",
+    "href": "slides/session03.html#three-numbers",
+    "title": "Trading on Predictions",
+    "section": "Three Numbers",
+    "text": "Three Numbers\n\n\nAverage return\nThe mean of your annual long-short returns.\n\n\nStandard deviation\nHow much those returns bounced around, year to year.\n\n\nThe ratio, and its t-stat\nWith twenty-five observations, the t-stat is doing a lot of work.\n\n\n\nTwenty-five annual returns is a small sample. A strategy earning four percent a year with fifteen percent volatility is not distinguishable from nothing."
+  },
+  {
+    "objectID": "slides/session03.html#compare-it-to-something",
+    "href": "slides/session03.html#compare-it-to-something",
+    "title": "Trading on Predictions",
+    "section": "Compare It to Something",
+    "text": "Compare It to Something\n\nFour percent a year is a fact about your strategy. It is not yet a finding.\n\n\n\nThe market\nDid the long side simply do what stocks did?\n\n\nA random sort\nRun it with the signal shuffled. What does noise earn in your backtest?\n\n\nValue itself\nPlain P/E, no peer group. Did the peer adjustment add anything?\n\n\n\nThe third comparison is the real test of last session’s work."
+  },
+  {
+    "objectID": "slides/session03.html#look-at-the-years",
+    "href": "slides/session03.html#look-at-the-years",
+    "title": "Trading on Predictions",
+    "section": "Look at the Years",
+    "text": "Look at the Years\nTell GLM\n\nPlot the annual return of the long-short portfolio, year by year. Mark the best and worst years and tell me what the portfolio held in each.\n\n\nAn average built out of one enormous year and twenty-four small negative ones is a different animal from a steady four percent, and the summary statistics will not tell you which you have."
+  },
+  {
+    "objectID": "slides/session03.html#three-people-no-shared-memory",
+    "href": "slides/session03.html#three-people-no-shared-memory",
+    "title": "Trading on Predictions",
+    "section": "Three People, No Shared Memory",
+    "text": "Three People, No Shared Memory\n\nThe conversation you had with GLM on Tuesday is invisible to your groupmates, and gone to you.\n\n\nThe code survives. The reasoning does not — why you used ARY, which peer definition you rejected, what you tried on the short side that did not work. That is exactly what the next person needs, and exactly what nobody writes down."
+  },
+  {
+    "objectID": "slides/session03.html#what-a-memory-file-is",
+    "href": "slides/session03.html#what-a-memory-file-is",
+    "title": "Trading on Predictions",
+    "section": "What a Memory File Is",
+    "text": "What a Memory File Is\n\n\nOne file per session\nDated, in the repository, next to the code it describes.\n\n\nWritten by GLM\nAt the end of the session, from the conversation it just had. You correct it.\n\n\nRead by GLM\nAt the start of the next session, before it touches anything.\n\n\n\nIt serves your groupmates and it serves the model. Both start every session knowing nothing."
+  },
+  {
+    "objectID": "slides/session03.html#what-goes-in-it",
+    "href": "slides/session03.html#what-goes-in-it",
+    "title": "Trading on Predictions",
+    "section": "What Goes in It",
+    "text": "What Goes in It\n\n\nDate, and who was working\nWhat we set out to do\nWhat we decided, and what we rejected — with the reason\nWhat broke, and whether it is fixed\nWhat is unfinished, and where to pick it up\n\n\n\nPoint 3 is the one that matters and the one that gets dropped. A decision without its reason gets re-litigated in two weeks."
+  },
+  {
+    "objectID": "slides/session03.html#build-the-skill",
+    "href": "slides/session03.html#build-the-skill",
+    "title": "Trading on Predictions",
+    "section": "Build the Skill",
+    "text": "Build the Skill\nTell GLM\n\nMake a skill that writes a session memory file. It should trigger when I say we are wrapping up. Write to memory/YYYY-MM-DD.md with those five headings, drawn from this conversation. Keep it under a page.\n\nThen a second one, or a line in CLAUDE.md:\n\nAt the start of every session, read the three most recent files in memory/."
+  },
+  {
+    "objectID": "slides/session03.html#try-it-now",
+    "href": "slides/session03.html#try-it-now",
+    "title": "Trading on Predictions",
+    "section": "Try It Now",
+    "text": "Try It Now\n\n\nBuild the skill\nSay: we are wrapping up\nRead what it wrote — and fix what it got wrong about your own afternoon\nCommit and push, so the other two can read it before Thursday\n\n\n\nStep 3 is not optional. A memory file nobody checked is a confident record of a session that did not happen."
+  },
+  {
+    "objectID": "slides/session03.html#three-things",
+    "href": "slides/session03.html#three-things",
+    "title": "Trading on Predictions",
+    "section": "Three Things",
+    "text": "Three Things\n\n\nGet the backtest running end to end, however crude\nRe-run it with ARY and datekey, and record what changed\nWrite the memory file, and push it\n\n\n\nThursday we stop borrowing the peer median and start predicting the multiple — which turns valuation into a regression, and gives you something to compare today’s result against."
   }
 ]

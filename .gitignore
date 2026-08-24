@@ -5,7 +5,10 @@ __pycache__/
 
 # Course materials
 
+# The staging folders files/sessionNN/ and the zip built from them stay local;
+# only the copy Quarto mirrors into docs/ is served, so that one is tracked.
 *.zip
+!docs/files/*.zip
 QuantEquity/
 
 # C extensions
@@ -213,3 +216,14 @@ Course Roster.pdf
 participation.csv
 
 **/*.quarto_ipynb
+
+# Course videos. They live in ~/Dropbox/mgmt638-videos and are linked from the
+# decks, never committed -- a single lecture video is tens of megabytes and
+# would sit in the repo's history permanently.
+files/**/*.mp4
+*.mp4
+
+# Reveal's core CSS and JS render into docs/site_libs/revealjs/dist/, which the
+# Python `dist/` rule above would otherwise swallow. A published deck missing
+# them loads as unstyled, unnavigable HTML.
+!docs/site_libs/revealjs/dist/

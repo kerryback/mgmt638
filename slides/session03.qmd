@@ -1,0 +1,422 @@
+---
+title: "Trading on Predictions"
+subtitle: "One year at a time, and a memory your group can read"
+author: "Kerry Back"
+date: "2026-09-01"
+---
+
+# Presentations
+
+## Starting Today {.plain-title}
+
+::: {.steps}
+1. Three groups, drawn at random, at the start of every class
+2. Five minutes each, on what you got done last session
+3. Show the repository --- the skill, the code, the numbers
+:::
+
+::: {.note .note-plum}
+What broke is more interesting than what worked, and it is what the rest of the
+room needs to hear. A presentation that reports only success is a presentation
+nobody learns from.
+:::
+
+## What to Cover
+
+::: {.cards .cards-3}
+::: {.card}
+[What you decided]{.card-title}
+
+Which multiple, which peer group, what minimum size. And why.
+:::
+
+::: {.card .card-blue}
+[What surprised you]{.card-title}
+
+The company where the answer was obviously wrong, and what it turned out to be.
+:::
+
+::: {.card}
+[What you would change]{.card-title}
+
+You have run it now. What is the first thing you would do differently?
+:::
+:::
+
+# From a Gap to a Trade
+
+## You Have a Number for Every Stock
+
+::: {.lead}
+Own P/E divided by peer median P/E. Below one is cheap relative to its peers;
+above one is expensive.
+:::
+
+::: {.note}
+That is a prediction, whether or not you meant it as one. It says: this company
+should trade closer to its peers than it does.
+:::
+
+The question today is whether that prediction is worth anything.
+
+## Sort, Do Not Threshold {.band-bottom}
+
+::: {.cards .cards-2}
+::: {.card}
+[A threshold]{.card-title}
+
+"Buy anything below 0.7." How many stocks is that? Some years, none. Some years,
+four hundred.
+:::
+
+::: {.card .card-blue}
+[A sort]{.card-title}
+
+"Buy the cheapest tenth." Always the same number of positions, whatever the
+market is doing.
+:::
+:::
+
+::: {.note .note-plum}
+Ranking also throws away the scale of the signal, which is the part you trust
+least. You are betting on the order, not the magnitude.
+:::
+
+## Long, Short, or Both
+
+::: {.cards .cards-3}
+::: {.card}
+[Long only]{.card-title}
+
+Buy the cheapest decile. Most of what you earn is just the market.
+:::
+
+::: {.card .card-blue}
+[Long-short]{.card-title}
+
+Cheapest decile long, most expensive short. What is left is the signal.
+:::
+
+::: {.card}
+[Long-short, dollar neutral]{.card-title}
+
+Equal dollars each side. The version we will build.
+:::
+:::
+
+::: {.note}
+The long-short version is a much harder test, and it is the one that tells you
+whether you found anything.
+:::
+
+# One Year at a Time
+
+## The Loop {.plain-title}
+
+::: {.steps}
+1. Pick a date --- the last trading day of June, say
+2. Compute the signal for every stock, using only what was known that day
+3. Sort, and form the portfolio
+4. Hold it for one year. No trading, no rebalancing
+5. Record the return
+6. Move forward a year and do it again
+:::
+
+::: {.note}
+Twenty-odd repetitions. That is your entire sample, and it is worth remembering
+how small a number that is.
+:::
+
+## Why Once a Year {.compare}
+
+:::: {.columns}
+::: {.column width="50%"}
+[The signal moves slowly]{.eyebrow}
+
+It is built from annual filings. Recomputing it monthly gives you eleven months
+of the same answer and eleven months of trading costs.
+:::
+
+::: {.column width="50%"}
+[And it keeps the test honest]{.eyebrow}
+
+Annual holding periods make the overlapping-returns problem go away. Monthly
+rebalancing with annual data does not give you twelve times the evidence.
+:::
+::::
+
+## Equal or Value Weighted {.band-bottom}
+
+::: {.cards .cards-2}
+::: {.card}
+[Equal weighted]{.card-title}
+
+Same dollars in each name. Simple, and dominated by small companies --- which is
+where most anomalies live, and where they are hardest to trade.
+:::
+
+::: {.card .card-blue}
+[Value weighted]{.card-title}
+
+Weights by market cap. A much more honest test, and usually a much weaker
+result.
+:::
+:::
+
+::: {.note .note-plum}
+Report both. A strategy that works equal-weighted and dies value-weighted has
+told you exactly what it is.
+:::
+
+## Build It
+
+[Tell GLM]{.eyebrow}
+
+> Write a backtest. For each year from 2001 to 2025: on June 30, compute the
+> peer-median signal for every stock using the valuation skill, sort into
+> deciles, go long the cheapest decile and short the most expensive, equal
+> weighted, hold twelve months, and record the return. Plan it before you start.
+
+::: {.note}
+Then read the plan before you let it write anything.
+:::
+
+# What Would Have Ruined It
+
+## The Restatement Problem
+
+::: {.lead}
+`MRY` is the most recent restatement. It tells you today what nobody knew then.
+:::
+
+::: {.note .note-plum}
+A company that restated its 2008 earnings in 2011 shows up in `MRY` with the
+restated number --- so a backtest that forms a 2009 portfolio is using
+information from 2011. The strategy will look better than it was.
+:::
+
+Use the as-reported dimensions, `ARY` and `ARQ`, for anything historical.
+
+## Filed, Not Ended {.band-bottom}
+
+::: {.cards .cards-2}
+::: {.card}
+[`reportperiod`]{.card-title}
+
+When the fiscal year ended. Nobody outside the company knew the numbers yet.
+:::
+
+::: {.card .card-blue}
+[`datekey`]{.card-title}
+
+When it was filed with the SEC. This is the first day you could have acted on it.
+:::
+:::
+
+::: {.note}
+Sorting on `reportperiod` gives you a few weeks to a few months of free
+information, every year, in every name. It is the single most common way a
+backtest in this course goes wrong.
+:::
+
+## Who Is in the Sample
+
+::: {.lead}
+Ask a question you cannot answer from the schema: does the data still contain
+companies that stopped existing?
+:::
+
+::: {.note .note-plum}
+If it holds only companies listed today, then every 2005 portfolio you form is
+made of firms you already know survived to 2026. That is not a small bias. It is
+the difference between a strategy and an illusion.
+:::
+
+[Tell GLM]{.eyebrow}
+
+> Count distinct tickers with data in 2005. Then count how many of those still
+> have data in the most recent year, and show me some that do not.
+
+## Three More {.plain-title}
+
+| | |
+|---|---|
+| The peer median | Computed from the same date, or from data that arrived later? |
+| Delisting returns | A company that goes to zero has to be recorded as going to zero |
+| Costs and borrow | The short side is not free, especially in the small names |
+
+::: {.note}
+None of these will throw an error. Each of them makes the answer better than the
+truth.
+:::
+
+# Reading the Result
+
+## Three Numbers {.band-bottom}
+
+::: {.cards .cards-3}
+::: {.card}
+[Average return]{.card-title}
+
+The mean of your annual long-short returns.
+:::
+
+::: {.card .card-blue}
+[Standard deviation]{.card-title}
+
+How much those returns bounced around, year to year.
+:::
+
+::: {.card}
+[The ratio, and its t-stat]{.card-title}
+
+With twenty-five observations, the t-stat is doing a lot of work.
+:::
+:::
+
+::: {.note .note-plum}
+Twenty-five annual returns is a small sample. A strategy earning four percent a
+year with fifteen percent volatility is not distinguishable from nothing.
+:::
+
+## Compare It to Something
+
+::: {.lead}
+Four percent a year is a fact about your strategy. It is not yet a finding.
+:::
+
+::: {.cards .cards-3}
+::: {.card}
+[The market]{.card-title}
+
+Did the long side simply do what stocks did?
+:::
+
+::: {.card .card-blue}
+[A random sort]{.card-title}
+
+Run it with the signal shuffled. What does noise earn in your backtest?
+:::
+
+::: {.card}
+[Value itself]{.card-title}
+
+Plain P/E, no peer group. Did the peer adjustment add anything?
+:::
+:::
+
+::: {.note}
+The third comparison is the real test of last session's work.
+:::
+
+## Look at the Years {.plain-title}
+
+[Tell GLM]{.eyebrow}
+
+> Plot the annual return of the long-short portfolio, year by year. Mark the
+> best and worst years and tell me what the portfolio held in each.
+
+::: {.note}
+An average built out of one enormous year and twenty-four small negative ones is
+a different animal from a steady four percent, and the summary statistics will
+not tell you which you have.
+:::
+
+# A Memory Your Group Can Read
+
+## Three People, No Shared Memory
+
+::: {.lead}
+The conversation you had with GLM on Tuesday is invisible to your groupmates,
+and gone to you.
+:::
+
+::: {.note .note-plum}
+The code survives. The reasoning does not --- why you used `ARY`, which peer
+definition you rejected, what you tried on the short side that did not work.
+That is exactly what the next person needs, and exactly what nobody writes down.
+:::
+
+## What a Memory File Is
+
+::: {.cards .cards-3}
+::: {.card}
+[One file per session]{.card-title}
+
+Dated, in the repository, next to the code it describes.
+:::
+
+::: {.card .card-blue}
+[Written by GLM]{.card-title}
+
+At the end of the session, from the conversation it just had. You correct it.
+:::
+
+::: {.card}
+[Read by GLM]{.card-title}
+
+At the start of the next session, before it touches anything.
+:::
+:::
+
+::: {.note}
+It serves your groupmates and it serves the model. Both start every session
+knowing nothing.
+:::
+
+## What Goes in It {.band-bottom}
+
+::: {.steps}
+1. Date, and who was working
+2. What we set out to do
+3. What we decided, and what we rejected --- with the reason
+4. What broke, and whether it is fixed
+5. What is unfinished, and where to pick it up
+:::
+
+::: {.note .note-plum}
+Point 3 is the one that matters and the one that gets dropped. A decision
+without its reason gets re-litigated in two weeks.
+:::
+
+## Build the Skill
+
+[Tell GLM]{.eyebrow}
+
+> Make a skill that writes a session memory file. It should trigger when I say
+> we are wrapping up. Write to `memory/YYYY-MM-DD.md` with those five headings,
+> drawn from this conversation. Keep it under a page.
+
+Then a second one, or a line in `CLAUDE.md`:
+
+> At the start of every session, read the three most recent files in `memory/`.
+
+## Try It Now
+
+::: {.steps}
+1. Build the skill
+2. Say: we are wrapping up
+3. Read what it wrote --- and fix what it got wrong about your own afternoon
+4. Commit and push, so the other two can read it before Thursday
+:::
+
+::: {.note}
+Step 3 is not optional. A memory file nobody checked is a confident record of a
+session that did not happen.
+:::
+
+# Before Thursday
+
+## Three Things {.plain-title}
+
+::: {.steps}
+1. Get the backtest running end to end, however crude
+2. Re-run it with `ARY` and `datekey`, and record what changed
+3. Write the memory file, and push it
+:::
+
+::: {.note .note-plum}
+Thursday we stop borrowing the peer median and start predicting the multiple ---
+which turns valuation into a regression, and gives you something to compare
+today's result against.
+:::

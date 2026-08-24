@@ -23,18 +23,18 @@ svg.scene { width: 100%; max-width: 320px; height: auto; margin-bottom: 30px; }
   font-size: 14px; letter-spacing: 3.5px; text-transform: uppercase;
   color: var(--gold); font-weight: 700; margin-bottom: 12px;
 }
-h1 {
-  font-family: Georgia, "Times New Roman", serif; font-size: 42px; line-height: 1.15;
-  color: var(--navy); font-weight: 700; margin-bottom: 18px;
-}
 p { font-size: 17px; color: var(--gray); line-height: 1.5; margin-bottom: 10px; }
+p.message {
+  font-family: Georgia, "Times New Roman", serif; font-size: 26px; line-height: 1.35;
+  color: var(--navy); margin-top: 4px;
+}
 .rule {
   height: 3px; border-radius: 2px; margin: 28px auto 24px; max-width: 320px;
   background: linear-gradient(90deg, var(--navy) 0 62%, var(--gold) 62% 100%);
 }
 a.back { font-size: 17px; font-weight: 700; color: var(--navy); text-decoration: none; }
 a.back:hover { text-decoration: underline; }
-@media (max-width: 520px) { h1 { font-size: 32px; } p { font-size: 16px; } }
+@media (max-width: 520px) { p { font-size: 16px; } p.message { font-size: 21px; } }
 </style>
 </head>
 <body>
@@ -86,9 +86,8 @@ a.back:hover { text-decoration: underline; }
     </svg>
 
     <div class="eyebrow">Under Construction</div>
-    <h1>These slides aren&rsquo;t posted yet</h1>
-    <p>The deck for this session is still being written. It will appear here
-       before the session runs.</p>
+    <p class="message">The materials for this session are still being created.
+       They will be posted prior to class.</p>
     <div class="rule"></div>
     <a class="back" href="index.html">&larr; Back to the schedule</a>
   </div>

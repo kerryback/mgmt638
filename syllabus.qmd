@@ -1,6 +1,6 @@
 :::: {style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem;"}
 
-## Data-Driven Investments: Equity<br>Fall 2026
+## Gen AI and Quantitative Investments<br>Fall 2026, Term 1
 
 ![](images/RiceBusiness-transparent-logo-sm.png){width=40%}
 
@@ -10,8 +10,8 @@
 
 #### Instructor
 
-[Kerry Back](https://kerryback.com)<br> 
-[kerryback@gmail.com](mailto: kerryback@gmail.com)<br>
+[Kerry Back](https://kerryback.com)<br>
+[kerry.e.back@rice.edu](mailto: kerry.e.back@rice.edu)<br>
 J. Howard Creekmore Professor of Finance and Professor of Economics
 
 
@@ -24,37 +24,61 @@ TTh<br>
 
 #### Overview
 
-The topic of this course is selecting stocks based on quantitative signals.    What we want to do is to predict  which stocks will do better than others.  In quantitative investing, this is often done using machine learning, which means fitting a model to predict returns from signals.  Signals can be technical or fundamental.  Even subjective things like the tone of the CEO in an earnings call are quantifiable today.  Thus, quantitative investing includes a large part of equity investing. 
+The course is about building quantitative investment strategies with generative AI as the working tool.  We start from valuation multiples and peer comparisons, move through linear regression and then machine learning as ways of predicting multiples and returns, take up corporate insider trades and short interest as signals, then turn to news headlines and finish with risk models and the management of portfolio risk.  Every idea is backtested.
 
-Many different types of data are used for constructing trading signals.  In this course, we will  use past returns and data from corporate financial statements.  Textual analysis of corporate filings and news reports, social media activity, web traffic, insider trades, short sales, analyst forecasts, satellite imagery, and other types of data are also often used in practice. 
-
-Many studies have been published on the effectiveness of different quantitative signals for predicting stock returns.  We will discuss those studies throughout the course and use them to guide our construction of signals.  
-
-#### Data and Tools
-
-We will use data from the [Rice Business Data Portal](https:/data-portal.rice-business.org), and we will work with it in Python with the help of Anthropic's Claude Code.  We need the Pro account ($20/month).  You will be reimbursed for the expense.  Instructions on installing and using Claude Code will be provided in the class.
+The course is hands-on.  Most of what you learn, you will learn by building with your group.
 
 
-#### Assignments and Grading
+#### Groups
 
-Grades will be based on four group assignments, peer assessments, class participation, and a final group presentation.  The group assignments are due on Sundays at 11:59 p.m. (Nov. 9, 16, and 23, and Dec. 7).  The assignments are posted on Canvas.
+Form groups of two or three students.  You will work with your group for the entire term, in class and on presentations.
+
+In the first week, each group should set up a shared GitHub repository, which all members of the group can push to.  All of the group's code, notebooks, and results live there.  It is what makes it possible for three people to work on the same project and for you to show what you did.
+
+I also recommend a Slack channel for communication within your group, but it is your choice how you wish to communicate.  
+
+
+#### Class Structure
+
+The first two classes (August 25 and 27) are an introduction to the tools and some of the data.
+
+Beginning September 1, every class consists of three activities:
+
+1. Group presentations.  Three groups, chosen at random, present at the start of class.
+2. Lecture.  New material for the day.
+3. Hands-on work.  You and your group build something with what was just covered.
+
+The hands-on portion is the heart of the course, and it is what the presentations are about.
+
+
+#### Presentations
+
+Beginning September 1, three groups are chosen at random at the start of each class to present on what they accomplished in the previous class session and the time between classes --- what they built, what they found, what did not work, and what they would do differently.  Each group will present twice during the term.
+
+Because the groups are chosen at random, every group should be ready to present at every class.  Presentations are short and informal.  Show your work from the repository; there is no need for slides.
+
+
+#### Grading
+
+Grades are based on:
+
+| Component | Weight |
+|---|---|
+| Group presentations | 60% |
+| Class participation | 40% |
+
+Class participation means being present, prepared, and engaged --- with the lecture, with the hands-on work, and with the other groups' presentations.
+
 
 #### Schedule, Slides, and other Materials
 
-The schedule can be found at the `Schedule/Materials` link in the navbar at the top of the page.  Links to slide decks and other resources are also there.
+The schedule is on the [course home page](index.html).  Links to slide decks and other resources are posted there beside each class date.
 
-
-#### CQA Competition
-
-Each year, the Chicago Quantitative Alliance (CQA) hosts a competition for universities on quantitative investing - the [CQA Challenge](https://www.cqa.org/investment_challenge).  Twice recently (2022 and 2023), a team of JGSB MBA students from this course took first place, earning a prize of $3,000.  
-
-The competition is to run a diversified long-short market-neutral portfolio with a quantitative approach.  Paper trading is done using the StockTrak platform.  Teams are judged on compliance, returns, and a video presentation of their strategy in three stages: teams that perform well on compliance proceed to the second stage, the top ten teams on compliance and portfolio returns proceed to the third stage, and teams in the third stage prepare video presentations.  
-
-The app in Assignment 4 could be used to generate recommendations for weekly trades.  Unfortunately, the competition begins very shortly after the class begins, so some stopgap trades will need to be put in place before your app is ready.
 
 #### Honor Code
 
 The Rice University honor code applies to all work in this course.  Use of generative AI is of course permitted.
+
 
 #### Disability Accommodations
 
@@ -62,8 +86,3 @@ Any student with a documented disability requiring accommodations in this course
 contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations
 regarding assignments or the final exam must be made in advance. Students with disabilities
 should also contact Disability Support Services in the Allen Center.
-
-
-
-
-

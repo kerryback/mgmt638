@@ -2,91 +2,75 @@ project:
   type: website
   output-dir: docs
   render:
+    - index.qmd
     - syllabus.qmd
-    - slides.qmd
-    - skills.qmd
+    # Decks are added here one at a time, as each is ready -- deliberately not
+    # globbed as slides/*.qmd, which would publish every unwritten starter deck
+    # in the folder. Uncomment a line when that session's deck is finished; it
+    # renders into docs/slides/ as reveal.js (see slides/_metadata.yml).
+    - slides/session01.qmd
+    - slides/session02.qmd
+    - slides/session03.qmd
+    - slides/session04.qmd
+    # - slides/session05.qmd
+    # - slides/session06.qmd
+    # - slides/session07.qmd
+    # - slides/session08.qmd
+    # - slides/session09.qmd
+    # - slides/session10.qmd
+    # - slides/session11.qmd
+    # - slides/session12.qmd
 
   resources:
     - CNAME
     - .nojekyll
-    - /index.html
-    - /under-construction.html
+    - under-construction.html
+    # Standalone reading, linked from the decks. Not rendered -- it is
+    # hand-written HTML, so it is copied through verbatim to docs/.
+    - aqr-report.html
     - images/RiceBusiness-transparent-logo-sm.png
     - images/headshot-keeper-cropped2.png
-    - portal-guide.html
-    - mcnair.jpg
-    - rice-business.jpg
-    - currentdata.xlsx
-    - lightGBM.pkl
-    - session11A_interpretability.ipynb
-    - session11B_neuralnetworks.ipynb
-    - analyze_portfolios.ipynb
-    - momentum.ipynb
-    - momentum_current.ipynb
-    - pdfs/Asness_Frazzini_Pedersen_RAS_2019.pdf
-    - pdfs/Asness_Moskowitz_Pedersen_JF_2013.pdf
-    - pdfs/Crane_Crotty_Umar_MS_2023.pdf
-    - pdfs/Fama_French_JFE_2015.pdf
-    - pdfs/Gu_Kelly_Xiu_RFS_2020.pdf
-    - pdfs/Jegadeesh_Titman_ARFE_2011.pdf
-    - pdfs/Kapadia_Ostdiek_Weston_Zekhnini_JFQA_2019.pdf
-    - pdfs/Novy-Marx_Medhat_2025.pdf
-    - pdfs/Frazzini_Israel_Moskowitz_2012.pdf
-    - videos/Asness_Frazzini_Pedersen_RAS_2019.mp4
-    - videos/Asness_Moskowitz_Pedersen_JF_2013.mp4
-    - videos/Crane_Crotty_Umar_MS_2023.mp4
-    - videos/Factor_Investing.mp4
-    - videos/Fama_French_JFE_2015.mp4
-    - videos/Gu_Kelly_Xiu_RFS_2020.mp4
-    - videos/Jegadeesh_Titman_ARFE_2011.mp4
-    - videos/Kapadia_Ostdiek_Weston_Zekhnini_JFQA_2019.mp4
-    - videos/Novy-Marx_Medhat_2025.mp4
-    - videos/Frazzini_Israel_Moskowitz_2012.mp4
-    - slides/session01_slides.pdf
-    - slides/session02_slides.pdf
-    - slides/session03_slides.pdf
-    - slides/session04_slides.pdf
-    - slides/session05_slides.pdf
-    - slides/session06_slides.pdf
-    - slides/session07_slides.pdf
-    - slides/session08_slides.pdf
-    - slides/session09_slides.pdf
-    - slides/session10_slides.pdf
-    - slides/session11_slides.pdf
-    - slides/session12_slides.pdf
-    - slides/aiwg.pdf
-                  
+    # Session material, linked from the schedule rows in index.qmd.
+    #
+    # The decks themselves are rendered, not copied, so they are not listed
+    # here -- slides/*.qmd is in the render list above.
+    #
+    # These PDFs are produced by decktape (see .claude/commands/deck.md), which
+    # writes pdf/<stem>.pdf and mirrors it into docs/pdf/. Listing them here is
+    # what stops a later full render from dropping that mirrored copy. A file
+    # that does not exist yet is skipped with a warning, so the whole term can
+    # be listed up front.
+    - pdf/session01.pdf
+    - pdf/session02.pdf
+    - pdf/session03.pdf
+    - pdf/session04.pdf
+    - pdf/session05.pdf
+    - pdf/session06.pdf
+    - pdf/session07.pdf
+    - pdf/session08.pdf
+    - pdf/session09.pdf
+    - pdf/session10.pdf
+    - pdf/session11.pdf
+    - pdf/session12.pdf
+    # Staging folders files/session01..12 are deliberately not published; only
+    # the zip handed to the class is.
+    - files/*.zip
+
 website:
   title: ""
-  search: false  
+  search: false
   navbar:
     search: false
     title: MGMT 638
     href: index.html
     right:
-        - text: Syllabus
-          file: syllabus.qmd
-        - text: Slides
-          file: slides.qmd
-          target: _blank
         - text: Data Guide
           href: https://portal-guide.rice-business.org
           target: _blank
 
-
-
-   
 format:
   html:
     theme:
       light: flatly
       dark: superhero
     link-external-newwindow: true
-    
-   
-
-
-
-
-
-

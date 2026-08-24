@@ -1,0 +1,23 @@
+---
+title: "Session 8"
+subtitle: "Topic TBD"
+author: "Kerry Back"
+date: "2026-09-17"
+---
+
+## Agenda
+
+- First thing
+- Second thing
+- Third thing
+
+# Section
+
+## A slide {.plain-title}
+
+::: {.lead}
+One sentence setting up the slide.
+:::
+
+- A short bullet
+- Another one

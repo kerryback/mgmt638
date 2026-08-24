@@ -1,0 +1,522 @@
+---
+title: ""
+page-layout: full
+---
+
+```{=html}
+<style>
+/* This page is a standalone flyer, so it hides the site navbar rather than
+   sitting under it. The other pages in the site keep theirs. Not scoped under
+   .flyer: the navbar is a sibling of the content, outside it. */
+body > header#quarto-header { display: none; }
+#quarto-content { padding-top: 0; }
+/* Empty, but still occupies space above the flyer. */
+#title-block-header { display: none; }
+
+/* Scoped under .flyer so it can't disturb the Quarto theme. */
+.flyer, .flyer * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.flyer {
+  --navy: #00205B;
+  --gold: #b8912f;
+  --ink:  #1a1a1a;
+  --gray: #444;
+  --mut:  #6b6b6b;
+  --line: #e4e4e4;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  margin: 8px 0 24px;
+}
+
+.flyer .sheet {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 8px 8px;
+  background: transparent;
+}
+
+/* ---- Masthead ---------------------------------------------------------- */
+
+.flyer .display {
+  text-align: center;
+  margin-top: 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 44px;
+  line-height: 1.1;
+  color: var(--navy);
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+.flyer .logo { text-align: center; margin-bottom: 18px; }
+.flyer .logo img { width: 260px; max-width: 60%; height: auto; }
+
+.flyer .meta-inline {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+.flyer .meta-inline span { font-size: 18px; color: #333; }
+.flyer .meta-inline .dot { color: var(--gold); font-weight: 700; }
+
+.flyer .subline {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+  margin-top: 6px;
+}
+.flyer .subline b { color: var(--ink); }
+
+/* Syllabus link under the masthead. An outlined pill so it reads as the one
+   call to action up here without competing with the display title. */
+.flyer .cta { text-align: center; margin-top: 18px; }
+.flyer .cta a {
+  display: inline-block;
+  padding: 9px 26px;
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.flyer .cta a:hover,
+.flyer .cta a:focus { background: var(--navy); color: #fff; text-decoration: none; }
+.flyer .cta a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+.flyer .rule {
+  height: 3px;
+  border-radius: 2px;
+  margin: 26px 0 22px;
+  background: linear-gradient(90deg, var(--navy) 0 62%, var(--gold) 62% 100%);
+}
+
+/* ---- Instructor ------------------------------------------- */
+
+.flyer .instructor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.flyer .instructor img { width: 130px; height: auto; border-radius: 8px; }
+.flyer .instructor .who { font-size: 17px; line-height: 1.45; color: var(--gray); }
+.flyer .instructor .who .name {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--navy);
+  display: block;
+}
+.flyer .instructor a { color: var(--navy); text-decoration: none; font-weight: 600; }
+.flyer .instructor a:hover { text-decoration: underline; }
+
+
+/* ---- Week headings ----------------------------------------------------- */
+
+.flyer .section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 20px 0 10px;
+}
+.flyer .section-head .label,
+.flyer .section-head .dates {
+  font-size: 14px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ---- Session rows ------------------------------------------------------ */
+/* Three columns: date chip | title and description | download links.
+   The chip is a plain label. Downloads are named links at the right of the
+   row, so they are visible without hovering and work on touch. */
+
+.flyer .item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 8px 0;
+}
+
+.flyer .chip {
+  flex: 0 0 140px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 7px 0;
+  border-radius: 6px;
+  display: block;
+}
+
+/* flex-basis 0 so the text shrinks to share the row rather than wrapping
+   below the chip once .item is allowed to wrap on narrow screens. */
+.flyer .item-body {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.flyer .item-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy);
+}
+/* A session whose topic is not settled yet. */
+.flyer .item-title.tbd {
+  color: var(--mut);
+  font-weight: 400;
+  font-style: italic;
+}
+.flyer .item-desc {
+  font-size: 15.5px;
+  color: var(--gray);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* padding-top matches the chip's own top padding, so the links sit on the
+   chip's text baseline rather than riding above it. */
+.flyer .item-links {
+  flex: 0 0 auto;
+  margin-left: auto;
+  white-space: nowrap;
+  padding-top: 7px;
+}
+.flyer .item-links a {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  text-decoration: none;
+}
+.flyer .item-links a:hover,
+.flyer .item-links a:focus { text-decoration: underline; }
+.flyer .item-links a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+.flyer .item-links .sep {
+  color: var(--gold);
+  font-weight: 700;
+  margin: 0 7px;
+}
+
+/* The links are right-aligned, so a row with no Files download would pull its
+   Slides link further right than its neighbours'. A phantom copy of the dot and
+   the word reserves that width without showing it, keeping every Slides link on
+   one vertical line. visibility:hidden (not display:none) is what holds the
+   box open, and it also takes the text out of the accessibility tree and out of
+   tab order, so there is nothing to click or hear. Must match the font of the
+   real links or it reserves the wrong width. */
+.flyer .item-links .phantom {
+  visibility: hidden;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* "Slides" links straight to the HTML deck, and hovering it offers the choice
+   of HTML or PDF. Touch devices have no hover, so a tap just follows the link
+   to the HTML deck, which is the sensible default. */
+.flyer .has-menu {
+  position: relative;
+  display: inline-block;
+}
+/* No overflow:hidden here -- it would clip the ::before bridge below, which is
+   what lets the pointer cross the gap. The corners are rounded on the child
+   links instead. Hiding is delayed so a brief slip off the menu does not
+   close it before it can be clicked; showing stays instant. */
+.flyer .has-menu .submenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s 0.4s, visibility 0s 0.52s;
+}
+/* Spans the gap, with slack either side for an imprecise pointer. */
+.flyer .has-menu .submenu::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -12px;
+  width: calc(100% + 24px);
+  height: 10px;
+}
+.flyer .has-menu:hover .submenu,
+.flyer .has-menu:focus-within .submenu {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.12s 0s, visibility 0s 0s;
+}
+.flyer .has-menu .submenu a {
+  display: block;
+  padding: 6px 16px;
+  font-size: 14px;
+  text-align: center;
+}
+.flyer .has-menu .submenu a:first-child { border-radius: 5px 5px 0 0; }
+.flyer .has-menu .submenu a:last-child  { border-radius: 0 0 5px 5px; }
+.flyer .has-menu .submenu a + a { border-top: 1px solid var(--line); }
+.flyer .has-menu .submenu a:hover,
+.flyer .has-menu .submenu a:focus {
+  background: #eef1f6;
+  text-decoration: none;
+}
+
+/* Nothing posted for that session yet: the link still occupies its place in
+   the row and leads to the Under Construction page, so the schedule reads the
+   same all term and only the hrefs change. */
+.flyer .item-links a.pending { color: var(--mut); font-weight: 600; }
+
+/* ---- Footer ------------------------------------------------------------ */
+
+.flyer .sheet-foot {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.flyer .sheet-foot a {
+  text-decoration: none;
+  color: var(--navy);
+  font-weight: 700;
+}
+.flyer .sheet-foot .url  { font-size: 20px; }
+
+/* ---- Narrow screens ---------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .flyer .display { font-size: 30px; }
+  .flyer .chip { flex-basis: 104px; font-size: 12px; letter-spacing: 0; }
+  .flyer .item-title { font-size: 17px; }
+
+  /* Too narrow for a third column, so the links wrap onto their own line,
+     indented to line up with the session title above them. */
+  .flyer .item { flex-wrap: wrap; }
+  .flyer .item-links {
+    flex: 1 0 100%;
+    margin-left: 0;
+    padding-left: 120px;
+    padding-top: 5px;
+  }
+  .flyer .item-links a { font-size: 14px; }
+}
+</style>
+
+<!-- To post a session's material, edit that row's item-links div: drop the
+     class="pending" and swap the three under-construction.html paths for the
+     deck's .html (twice -- the Slides link itself and the HTML submenu entry),
+     its .pdf, and the session zip. Fill in the item-title and item-desc at the
+     same time and drop the tbd class.
+
+     Keep an item-links div's contents on one line: the links are inline, so a
+     line break between them would show up as an extra space around the dot.
+     Paths are relative to docs/, e.g. slides/session01.html. Anything linked
+     must also be listed under resources: in _quarto.yml.
+
+     If a session ends up with no PDF, drop the has-menu and submenu spans and
+     leave a plain <a href="PATH" target="_blank" rel="noopener">Slides</a>.
+
+     If a session ends up with no Files zip, replace the real dot and link with
+     the phantom spans: <span class="sep phantom">&middot;</span><span
+     class="phantom">Files</span>. They are invisible but hold the width open,
+     so that row's Slides link stays in line with the others'.
+
+     Every link here opens in a new tab, so keep the target and rel on any
+     you add.                                                              -->
+
+<div class="flyer">
+  <div class="sheet">
+
+    <div class="display" role="heading" aria-level="1">Gen AI and Quantitative Investments</div>
+    <div class="logo"><img src="images/RiceBusiness-transparent-logo-sm.png" alt="Rice Business"></div>
+    <div class="meta-inline">
+      <span>MGMT 638</span><span class="dot">&bull;</span>
+      <span>Fall 2026, Term 1</span>
+    </div>
+    <div class="subline">led by <b>Kerry Back</b></div>
+
+    <div class="cta"><a href="syllabus.html">Syllabus &rarr;</a></div>
+
+    <div class="rule"></div>
+
+    <div class="instructor">
+      <img src="images/headshot-keeper-cropped2.png" alt="Kerry Back">
+      <div class="who">
+        <span class="name"><a href="https://kerryback.com">Kerry Back</a></span>
+        J. Howard Creekmore Professor of Finance<br>and Professor of Economics<br>
+        <a href="mailto:kerry.e.back@rice.edu">kerry.e.back@rice.edu</a>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="section-head">
+      <span class="label">Week 1</span>
+      <span class="dates">August 25&ndash;27</span>
+    </div>
+
+    <div class="item">
+      <div class="chip">TUE AUG 25</div>
+      <div class="item-body">
+        <div class="item-title">Getting Started</div>
+        <div class="item-desc">Course overview, four years of AI in one table, and the lab. Market data pulled, charted and checked by code you can read.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="item">
+      <div class="chip">THU AUG 27</div>
+      <div class="item-body">
+        <div class="item-title">Median of Peer Multiples</div>
+        <div class="item-desc">Valuing a company against companies like it. Pulling multiples from the Nasdaq data and comparing each stock to the median of its peers.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="section-head">
+      <span class="label">Week 2</span>
+      <span class="dates">September 1&ndash;3</span>
+    </div>
+
+    <div class="item">
+      <div class="chip">TUE SEP 1</div>
+      <div class="item-body">
+        <div class="item-title">Trading on Predictions</div>
+        <div class="item-desc">Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="item">
+      <div class="chip">THU SEP 3</div>
+      <div class="item-body">
+        <div class="item-title">Linear Regression for Multiples</div>
+        <div class="item-desc">Predicting a multiple from a company's own fundamentals instead of borrowing its peers'. Regression, fitted values, and a backtest of the signal.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="section-head">
+      <span class="label">Week 3</span>
+      <span class="dates">September 8&ndash;10</span>
+    </div>
+
+    <div class="item">
+      <div class="chip">TUE SEP 8</div>
+      <div class="item-body">
+        <div class="item-title">Introduction to Machine Learning</div>
+        <div class="item-desc">Where machine learning picks up where regression leaves off. Training and test samples, overfitting, cross-validation, and the models we will use.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="item">
+      <div class="chip">THU SEP 10</div>
+      <div class="item-body">
+        <div class="item-title">Predicting Multiples with Machine Learning</div>
+        <div class="item-desc">Swapping the regression for a machine learning model, and backtesting whether the better fit is actually a better strategy.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="section-head">
+      <span class="label">Week 4</span>
+      <span class="dates">September 15&ndash;17</span>
+    </div>
+
+    <div class="item">
+      <div class="chip">TUE SEP 15</div>
+      <div class="item-body">
+        <div class="item-title">Predicting Returns with Machine Learning</div>
+        <div class="item-desc">Predicting returns directly rather than by way of valuation. Building features, fitting the model, and backtesting the result.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="item">
+      <div class="chip">THU SEP 17</div>
+      <div class="item-body">
+        <div class="item-title">Short Sales and Insider Trading</div>
+        <div class="item-desc">What short interest and the Form 4 filings of officers and directors say about future returns, and how to trade on them.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="section-head">
+      <span class="label">Week 5</span>
+      <span class="dates">September 22&ndash;24</span>
+    </div>
+
+    <div class="item">
+      <div class="chip">TUE SEP 22</div>
+      <div class="item-body">
+        <div class="item-title">Text Analysis and Sentiment</div>
+        <div class="item-desc">Working with news articles and social media posts. Measuring sentiment in financial text, at the scale of millions of documents.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="item">
+      <div class="chip">THU SEP 24</div>
+      <div class="item-body">
+        <div class="item-title">Trading on Sentiment</div>
+        <div class="item-desc">Building a signal out of the news and StockTwits corpora, and backtesting whether the crowd's mood is worth trading on.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="section-head">
+      <span class="label">Week 6</span>
+      <span class="dates">September 29 &ndash; October 1</span>
+    </div>
+
+    <div class="item">
+      <div class="chip">TUE SEP 29</div>
+      <div class="item-body">
+        <div class="item-title">Risk Models</div>
+        <div class="item-desc">Factor models of how stocks move together. Market, industry and style factors, and a covariance matrix you can actually use on hundreds of names.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="item">
+      <div class="chip">THU OCT 1</div>
+      <div class="item-body">
+        <div class="item-title">Portfolio Risk</div>
+        <div class="item-desc">Putting the risk model to work: measuring a portfolio's factor exposures and tracking error, and building one that takes only the bets you meant to take.</div>
+      </div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a>
+    </div>
+
+    <div class="sheet-foot">
+      <a class="url" href="https://mgmt638.kerryback.com">mgmt638.kerryback.com</a>
+      <a href="mailto:kerry.e.back@rice.edu">kerry.e.back@rice.edu</a>
+    </div>
+
+  </div>
+</div>
+```

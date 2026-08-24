@@ -1,276 +1,61 @@
 ---
-title: "Getting Started"
-subtitle: "The AI Lab, and analysis you can defend"
+title: "1. Course Introduction"
+subtitle: "MGMT 638, Fall 2026"
+
 author: "Kerry Back"
 date: "2026-08-25"
 ---
 
-# Course Overview
 
-## Two Halves {.compare}
+## Course Overview {.compare}
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="33%"}
 [The tool]{.eyebrow}
 
 Generative AI as it is actually used at work: to write and run code.
 
-You will not write Python. You will direct it, and check it.
 :::
 
-::: {.column width="50%"}
+::: {.column width="33%"}
 [The subject]{.eyebrow}
 
-Quantitative investing. Predicting stock returns, and finding out how little is predictable.
+Quantitative investing. Predicting stock returns, and backtesting strategies.
 
-The data is real, and so are the models.
+:::
+
+::: {.column width="33%"}
+[Gen AI signals]{.eyebrow}
+
+Generative AI + news → trading signals
+
 :::
 ::::
 
-## What the Model Is Actually Good For
+# Course Mechanics
 
-::: {.lead}
-One claim, and we spend six weeks testing it.
-:::
 
-::: {.note .note-plum}
-A language model's comparative advantage is turning text into a number. Everything downstream --- sizing, portfolio construction, execution --- is an optimization problem the model does not help with.
-:::
 
-The corollary is the useful part: it is not going to trade for you, but it will write every line of the machinery that does.
 
-## Six Weeks {.plain-title}
 
-| Weeks | What we do |
-|---|---|
-| 1 | Make the machine write code; value a company against its peers |
-| 2 | Trade on the prediction; regression for multiples |
-| 3 | Machine learning, and what it does to a valuation model |
-| 4 | Predicting returns; insider trading and short sales |
-| 5 | Text as a signal, and trading on sentiment |
-| 6 | Risk models, and managing portfolio risk |
 
-## How It Runs
-
-::: {.cards .cards-3}
-::: {.card}
-[Groups of two or three]{.card-title}
-
-Fixed for the term. You work with your group in class, and you present with them.
-:::
-
-::: {.card .card-blue}
-[Everything in the lab]{.card-title}
-
-No software on your laptop. A browser and your Rice credentials.
-:::
-
-::: {.card}
-[Everything on GitHub]{.card-title}
-
-Your group's repository is what survives the term. The lab does not.
-:::
-:::
-
-## Every Class, Three Things {.plain-title}
-
-[From September 1 on]{.eyebrow}
-
-::: {.steps}
-1. Three groups, drawn at random, present on what they got done last session
-2. Lecture --- the new material for the day
-3. Hands-on work --- you and your group build it
-:::
-
-::: {.note}
-The hands-on portion is the point of the course. The presentations are about it,
-and the lecture exists to make it possible.
-:::
-
-## What You Are Graded On {.band-bottom}
+## Course Grades {.band-bottom}
 
 | Component | Weight |
 |---|---|
 | Group presentations | 60% |
 | Class participation | 40% |
 
-::: {.note .note-plum}
-Groups are drawn at random, so every group should be ready every class. Each
-group will present twice over the term. Show your repository; there is no need
-for slides.
-:::
 
-## By October 1
+> Group size = 2 or 3.  Each group presents twice.  Three presentations each class session beginning next week
 
-Your group will have a repository that pulls twenty years of market data, builds
-a panel of firm characteristics, trains a model on it, and reports honestly
-whether it works.
+> Class participation includes cold calls and share screen.
 
-::: {.note}
-Expect the model to explain about one percent of the variance. That is not a
-bug, and we will spend a full session on why it is a good outcome.
-:::
 
-# How We Got Here
 
-## Four Years, Chatbot to Agent {.plain-title}
+## An AI Environment for the Course
 
-| | |
-|---|---|
-| Nov 2022 | ChatGPT opens to the public |
-| Mar 2023 | GPT-4 and Claude --- the chatbot year |
-| Nov 2024 | Model Context Protocol --- agents get tools |
-| Feb 2025 | Claude Code --- the agent reaches your files |
-| Oct 2025 | Agent Skills --- expertise you can package |
-| 2026 | Cowork and desktop agents |
 
-::: {.note}
-Note where the tools arrive. For the first two years these systems could only talk.
-:::
-
-## Andrej Karpathy {.band-bottom}
-
-[OpenAI co-founder, former Tesla AI chief, now at Anthropic]{.eyebrow}
-
-::: {.cards .cards-3}
-::: {.card .card-sand}
-[October 2025]{.card-title}
-
-"They just don't work. They don't have enough intelligence ... You can't just tell them something and they'll remember it."
-
-"The industry is trying to pretend like this is amazing, and it's not. It's slop."
-:::
-
-::: {.card .card-blue}
-[December 2025]{.card-title}
-
-"I really am mostly programming in English now, a bit sheepishly telling the LLM what code to write ... in words."
-
-"Biggest change to my basic coding workflow in ~2 decades."
-:::
-
-::: {.card .card-sage}
-[February 2026]{.card-title}
-
-"Coding agents basically didn't work before December."
-
-"I don't think I've typed like a line of code probably since December."
-:::
-:::
-
-## Which Means
-
-::: {.lead}
-The same person, three times in four months.
-:::
-
-::: {.note .note-plum}
-The version of this you formed an opinion about is probably not the version that
-exists. Almost everything useful arrived in the last eighteen months, and a good
-deal of it since last December.
-:::
-
-# It Writes Code
-
-## That Is the Whole Trick {.plain-title}
-
-::: {.lead}
-Almost everything useful the model does, it does by writing code and running it.
-:::
-
-::: {.note}
-Usually Python or JavaScript. The code runs on a server --- here, on the lab
-machine --- not inside the model.
-:::
-
-You are not asking it for an answer. You are asking it for a program that
-produces an answer, and the program is something you can read.
-
-## One Capability, Six Directions {.band-bottom}
-
-| | |
-|---|---|
-| Excel workbooks with live formulas | Charts and figures |
-| PowerPoint decks | Data analysis and statistics |
-| Word documents | Web apps and dashboards |
-
-::: {.note .note-plum}
-These are not six features somebody built. They are one capability --- write
-code, run it --- pointed in six directions.
-:::
-
-## What That Looks Like Underneath
-
-[You ask]{.eyebrow}
-
-> Read these four PDFs. Pull out every number either side cites about market
-> share, note which ones disagree, and put it in a table.
-
-[What actually happens]{.eyebrow}
-
-Each PDF is converted to text. The text is read. A Python script builds the
-table. The table is written to a file.
-
-::: {.note}
-Nothing there is a document feature. It is code execution, pointed at file formats.
-:::
-
-## Numbers Need Code {.compare}
-
-:::: {.columns}
-::: {.column width="50%"}
-[The problem]{.eyebrow}
-
-To a next-token predictor, "47.3%" is exactly as plausible as "52.1%".
-
-Mental math, rankings, comparisons, aggregations --- all unreliable, and the
-wrong number arrives with complete confidence.
-:::
-
-::: {.column width="50%"}
-[The fix]{.eyebrow}
-
-Insist on code, and insist that it run.
-
-Arithmetic stops being prediction and becomes computation --- and you can read
-afterward what it actually did.
-:::
-::::
-
-# Chatbots and Agents
-
-## First, a Chatbot
-
-::: {.lead}
-You, a program, and a model. The model reads text and writes text. That is the
-entire capability.
-:::
-
-::: {.note}
-It cannot open a file, run a calculation, look up today's date, or check whether
-what it just told you is true.
-:::
-
-The chatbot passes along your prompt --- plus the system prompt and everything
-said so far in the conversation --- and hands back the reply.
-
-## An Agent Is a Chatbot with Tools {.band-bottom}
-
-::: {.steps}
-1. The agent sends the prompt, the history, and a list of tools it has
-2. The model answers: use tool X, with these arguments
-3. The agent runs tool X and reports the result back, with instructions for reading it
-4. The model decides what to do next --- another tool, or an answer for you
-:::
-
-::: {.note .note-plum}
-The model never runs anything. It emits requests; the agent executes them. Those
-step-3 instructions are the tool harness, and some are far better than others.
-:::
-
-# The AI Lab
-
-## What You Get
 
 ::: {.cards .cards-3}
 ::: {.card}
@@ -330,7 +115,7 @@ Upload from your laptop, download to it.
 :::
 :::
 
-## Three Things That Trip Everyone
+## Things to Remember
 
 | | |
 |---|---|
@@ -338,114 +123,8 @@ Upload from your laptop, download to it.
 | No Office | Double-clicking a `.xlsx` or `.pptx` does nothing. Office is not installed. |
 | Download to view | Bring Office documents to your laptop and open them there. |
 
-# Working in Groups
 
-## Two Places Your Group Lives {.plain-title}
-
-::: {.cards .cards-2}
-::: {.card}
-[A GitHub repository]{.card-title}
-
-One shared copy of the code, the notebooks, and the results. It is what you show
-when you present.
-:::
-
-::: {.card .card-blue}
-[A Slack channel]{.card-title}
-
-For coordinating between classes. Add me to it.
-:::
-:::
-
-::: {.note}
-Set both up this week, and send me the repository URL.
-:::
-
-## Why GitHub
-
-::: {.lead}
-Your group shares one repository, not a folder of attachments.
-:::
-
-::: {.note .note-plum}
-Mailing notebooks around breaks down by the second week. GitHub keeps one copy that everyone edits, records who changed what and when, and lets two of you work the same afternoon without overwriting each other.
-:::
-
-## You Do Not Type Git Commands
-
-::: {.lead}
-Same bargain as the code. You say what you want; GLM runs it.
-:::
-
-::: {.note}
-Git has a deserved reputation for cryptic errors. You do not need to learn it --- you need to know what you are asking for, and to check that it happened.
-:::
-
-There is exactly one step you do yourself, and it is on the next slide.
-
-## Once, Per Person {.plain-title}
-
-[The one thing GLM cannot do for you]{.eyebrow}
-
-::: {.steps}
-1. Create a free account at `github.com`, and note your username
-2. Open the Terminal tab --- not the GLM pane
-3. Run `gh auth login`, and answer: GitHub.com, HTTPS, log in with a browser
-4. It prints a code --- open the link on your laptop and paste it there
-:::
-
-::: {.note .note-plum}
-This one waits for you to type, so it has to be the Terminal tab. Asked in the GLM pane, it would sit there until it gave up.
-:::
-
-## One Person Creates the Repo
-
-[Tell GLM]{.eyebrow}
-
-> Make my workspace a git repository, commit everything in it, and create a
-> private GitHub repo called mgmt638-team1 from it. Then push.
-
-::: {.note}
-One person in the group does this, once. Everyone else skips to the slide after next.
-:::
-
-## Then Add Your Groupmates
-
-[On github.com, in the new repository]{.eyebrow}
-
-::: {.steps}
-1. Settings, then Collaborators, then Add people
-2. Search each groupmate by their GitHub username
-3. They get an email invitation, and have to accept it
-:::
-
-::: {.note .note-plum}
-Until someone accepts, their clone fails with "not found" rather than "no permission" --- the repository is private, so to them it does not exist yet.
-:::
-
-## Everyone Else Joins
-
-[Tell GLM]{.eyebrow}
-
-> Clone the GitHub repo alice/mgmt638-team1 into my workspace and cd into it.
-
-::: {.note}
-`alice` is the GitHub username of whoever created the repo, not yours.
-:::
-
-## Push and Pull {.band-bottom}
-
-[Tell GLM, at the start and end of every session]{.eyebrow}
-
-> Pull the latest from GitHub before we start.
-
-> Commit what we did with a sensible message and push it.
-
-::: {.note}
-Pull first, push last. Nearly every tangle you will hit this term comes from skipping one of the two.
-:::
-
-# Prompting
+# Effective Prompting
 
 ## Good Enough Prompting {.band-bottom}
 
@@ -474,18 +153,18 @@ Rephrasing is cheap. Treat it as an infinitely patient colleague with a poor mem
 
 ## Plan Before You Act {.compare}
 
-Use plan mode, or just add: plan how you will do this before you start.
+Say: plan how to do this before you start.
 
 :::: {.columns}
 ::: {.column width="50%"}
 [Why it works --- knowledge]{.eyebrow}
 
 Planning pulls the relevant considerations into the conversation. It then
-answers in light of what it just retrieved, rather than from base rates.
+answers in light of what it just retrieved.
 :::
 
 ::: {.column width="50%"}
-[Why it works --- scale]{.eyebrow}
+[Why it works --- subtasks]{.eyebrow}
 
 It breaks the work into steps you can check one at a time. Failures stay small
 and local instead of surfacing at the very end.
@@ -558,289 +237,305 @@ instead of defending it.
 Direct task framing wins. Say what you want, say what done looks like, say what to avoid.
 :::
 
-# Analysis, Without a Spreadsheet
+# AI and Coding
 
-## Go and Get the Data
+## Anatomy of a Chatbot {.band-bottom}
 
-::: {.lead}
-No file to upload, no API key to paste. Ask.
+::: {.chatbot-architecture}
+::: {.arch-box .arch-plum .arch-left}
+You
 :::
-
-[Tell GLM]{.eyebrow}
-
-> Get monthly returns for WMT and SPY since 2020 from Yahoo Finance. Scatter
-> plot, SPY on the horizontal axis, with a regression line.
-
-## What You Just Did {.band-bottom}
-
-The slope of that line is Walmart's market beta. You estimated a CAPM
-regression by asking for a scatter plot.
-
-::: {.note}
-The code ran on a machine in the cloud. Nobody at Yahoo, and nobody at
-Anthropic, built a beta calculator.
+::: {.arch-arrow .arch-a}
+&#8596;
 :::
-
-## Look at the Code
-
-[Tell GLM]{.eyebrow}
-
-> Show me the code you ran.
-
-You do not need to write Python to read it. Find the line that computes the
-returns.
-
-::: {.note}
-Any number that matters comes out of code you can open. That rule applies to
-every session in this course.
+::: {.arch-box .arch-blue .arch-mid}
+Chatbot
 :::
-
-## Push It Further
-
-[Tell GLM]{.eyebrow}
-
-> Add the other Dow components and rank them by beta.
-
-> Annotate the three months with the largest residuals and tell me what
-> happened in each.
-
-::: {.note}
-Watch whether those explanations are sourced or invented.
+::: {.arch-arrow .arch-b}
+&#8596;
 :::
-
-## Put It Somewhere
-
-[Tell GLM]{.eyebrow}
-
-> Put the chart and a short written summary in a PowerPoint deck.
-
-Then download it and open it on your laptop.
-
-::: {.note}
-The chart, the layout, the text --- all produced by code GLM wrote and ran.
-:::
-
-# Validation
-
-## What Could Go Wrong
-
-::: {.lead}
-You asked for a chart of betas and you got one. Now what?
-:::
-
-::: {.cards .cards-3}
-::: {.card .fragment}
-[No answer]{.card-title}
-
-Easy. You notice immediately.
-:::
-
-::: {.card .card-blue .fragment}
-[Wrong kind of answer]{.card-title}
-
-Also easy. A pie chart when you wanted a scatter.
-:::
-
-::: {.card .fragment}
-[Right kind, wrong numbers]{.card-title}
-
-This is the one. It looks exactly like the answer you wanted.
+::: {.arch-box .arch-plum .arch-right}
+The model
 :::
 :::
 
-## The Trap {.plain-title}
+The model reads text and writes text. That is the entire capability.
 
-Yahoo gives you two closing prices for every day: `Close`, and `Adj Close`,
-which is adjusted for dividends and splits.
-
-Returns from the wrong one are wrong --- and Walmart both pays a dividend and
-split three-for-one in 2024.
-
-[Tell GLM]{.eyebrow}
-
-> Recompute the betas both ways and show me the difference.
-
-## Where the Errors Come From {.band-bottom}
-
-::: {.cards .cards-3}
-::: {.card}
-[Misunderstanding]{.card-title}
-
-Your instruction was ambiguous.
-
-Ask it to state its plan before it starts.
+::: {.note .note-plum}
+It cannot open a file, run a calculation, look up today's price, or check
+whether what it just told you is true.
 :::
 
-::: {.card .card-blue}
-[Silent assumptions]{.card-title}
+## An Agent Is a Chatbot with Tools {.plain-title}
 
-It chose something you never authorized --- which price column, which date range.
-
-Ask it to walk through what it did.
+::: {.agent-architecture}
+::: {.arch-box .arch-tool .arch-up-box}
+Code execution
 :::
-
-::: {.card}
-[Coding errors]{.card-title}
-
-Rare. The code either runs or it does not.
+::: {.arch-arrow .arch-arrow-v .arch-up-arrow}
+&#8597;
 :::
+::: {.arch-box .arch-plum .arch-left}
+You
 :::
-
-## Hallucinations
-
-::: {.lead}
-It is not lying. It is predicting the next token, and a plausible citation is
-exactly as predictable as a real one.
+::: {.arch-arrow .arch-a}
+&#8596;
+:::
+::: {.arch-box .arch-blue .arch-mid}
+Agent
+:::
+::: {.arch-arrow .arch-b}
+&#8596;
+:::
+::: {.arch-box .arch-plum .arch-right}
+The model
+:::
+::: {.arch-arrow .arch-arrow-v .arch-dn-arrow}
+&#8597;
+:::
+::: {.arch-box .arch-tool .arch-dn-box}
+Other tools
+:::
 :::
 
 ::: {.note .note-plum}
-The risk is highest when the answer is unknown or unfindable --- an obscure
-statistic, a citation that may not exist, a number that was never public. Asked
-a question with no available answer, it will still produce one.
+[The model never runs any of it]{.accent} --- it only emits requests.
 :::
+
+## The Loop, Step by Step {.band-bottom}
+
+::: {.steps}
+1. The agent sends the prompt, the history, and a list of tools it has
+2. The model answers: use tool X, with these arguments
+3. The agent runs tool X and reports the result back, with instructions for reading it
+4. The model decides what to do next --- another tool, or an answer for you
+:::
+
+::: {.note}
+The model emits requests; the agent executes them. Those step-3 instructions
+are the tool harness, and some are far better than others.
+:::
+
+
+
+
+## Writing and Running Code {.plain-title}
+
+::: {.lead}
+Almost everything useful the model does, it does by writing code and running it, including terminal commands.
+:::
+
+> On our AI lab, GLM will write code, save it to a file (a tool use), then run it with a terminal command (another tool use), read the output (another tool use), and revise and repeat as necessary.
+
+All of this is orchestrated by the Claude Code "harness."
+
+
+
+## What Code Produces
 
 ::: {.cards .cards-3}
 ::: {.card}
-[Make it search]{.card-title}
-
-And give you the sources.
+Excel workbooks with live formulas
 :::
 
 ::: {.card .card-blue}
-[Check the sources]{.card-title}
-
-Click them. A real-looking citation to a paper that does not exist is the classic failure.
+Charts and figures
 :::
 
-::: {.card}
-[Make it compute]{.card-title}
+::: {.card .card-sage}
+Word and PowerPoint files
+:::
 
-Any number that matters comes out of code.
+::: {.card .card-sand}
+Data analysis and statistics
+:::
+
+
+::: {.card .card-blue}
+Web apps and dashboards
 :::
 :::
 
-## Never Ask "Is This Good?" {.band-bottom}
+
+
+## A Brief Timeline {.plain-title}
+
+::: {.step-flow-6}
+::: {.step-card}
+::: {.step-title}
+Nov 2022
+:::
+::: {.step-desc}
+ChatGPT opens to the public
+:::
+:::
+::: {.step-card}
+::: {.step-title}
+Mar 2023
+:::
+::: {.step-desc}
+GPT-4 and Claude --- the chatbot year
+:::
+:::
+::: {.step-card}
+::: {.step-title}
+Nov 2024
+:::
+::: {.step-desc}
+Model Context Protocol --- agents get tools
+:::
+:::
+::: {.step-card}
+::: {.step-title}
+Feb 2025
+:::
+::: {.step-desc}
+Claude Code --- the agent reaches your files
+:::
+:::
+::: {.step-card}
+::: {.step-title}
+Oct 2025
+:::
+::: {.step-desc}
+Agent Skills --- expertise you can package
+:::
+:::
+::: {.step-card}
+::: {.step-title}
+2026
+:::
+::: {.step-desc}
+Cowork and desktop agents
+:::
+:::
+:::
+
+
+
+
+
+## Andrej Karpathy {.band-bottom}
+
+[OpenAI co-founder, former Tesla AI chief, now at Anthropic]{.eyebrow}
+
+::: {.cards .cards-3}
+::: {.card .card-sand}
+[October 2025]{.card-title}
+
+"They just don't work.  The industry is trying to pretend like this is amazing, and it's not. It's slop."
+:::
+
+::: {.card .card-blue}
+[December 2025]{.card-title}
+
+"I really am mostly programming in English now, a bit sheepishly telling the LLM what code to write ... in words."
+
+:::
+
+::: {.card .card-sage}
+[February 2026]{.card-title}
+
+"Coding agents basically didn't work before December.  I don't think I've typed like a line of code probably since December."
+:::
+:::
+
+# Git and GitHub 
+
+
+## Git Is a Version Control System {.plain-title}
 
 ::: {.lead}
-Training on human feedback teaches that agreement earns high ratings. Ask "is my
-plan sound?" and it will find reasons that it is.
+A commit is a snapshot of the whole folder, dated and labelled. Nothing is ever
+overwritten --- it is added to.
 :::
-
-[Invert the question]{.eyebrow}
-
-> What is the strongest argument that this recommendation is wrong?
 
 ::: {.note}
-One step further: have it play a specific skeptic --- a referee, a regulator,
-the desk that has to trade this.
+Every commit is a point you can go back to, and Git can tell you what changed
+between any two of them, in which file, and on which line.
 :::
 
-## Set a Critic on It {.compare}
+Git is not an AI tool. It is twenty years older than any of this. GLM simply
+knows how to drive it.
 
-::: {.lead}
-GLM can dispatch a subagent: a fresh instance, no memory of this conversation.
-:::
+
+## Git vs GitHub {.compare}
 
 :::: {.columns}
 ::: {.column width="50%"}
-[Why it is worth something]{.eyebrow}
+[Git]{.eyebrow}
 
-It sees the instructions, not the reasoning behind the first answer. It has
-nothing to defend.
-
-Give it a mandate: find every factual error, logical gap, and unsupported
-assumption. Do not summarize --- find flaws.
+On your machine. The history lives in the folder itself --- no network, no
+account, yours alone.
 :::
 
 ::: {.column width="50%"}
-[The catch]{.eyebrow}
+[GitHub]{.eyebrow}
 
-Two agreeing runs are evidence, not proof. They share a model and they share
-your ambiguous question.
+A hosted copy of that same history for backup and sharing.
 :::
 ::::
 
-::: {.note .note-plum}
-Anything that both produces work and checks its own work is grading its own homework.
-:::
+## Create an Account and Log In from the Lab {.plain-title}
 
-## Three Checks Before You Trust It {.plain-title}
-
-::: {.cards .cards-3}
-::: {.card}
-[Where did this come from?]{.card-title}
-
-A citation you can click, a file you can open, or code you can read. If none of
-the three, treat it as a guess.
-:::
-
-::: {.card .card-blue}
-[What did it assume?]{.card-title}
-
-Every unstated choice was made for you. Ask what it decided that you did not
-specify.
-:::
-
-::: {.card}
-[Would I catch it if it were wrong?]{.card-title}
-
-If not, that is the part to check by hand --- not the part you already understand.
-:::
-:::
-
-# Who Does This
-
-## AQR Capital Management
-
-::: {.stats}
-::: {.stat}
-[1998]{.stat-value}
-[founded, out of Chicago and Goldman]{.stat-label}
-:::
-::: {.stat}
-[$189B]{.stat-value}
-[under management]{.stat-label}
-:::
-::: {.stat}
-[No. 1]{.stat-value}
-[largest hedge fund manager, 2025]{.stat-label}
-:::
-:::
-
-A firm whose entire investment process is an argument published in journals.
-
-[Background: AQR Capital Management](../aqr-report.html){target="_blank"}
-
-## Quality Minus Junk {.plain-title}
-
-::: {.lead}
-Asness, Frazzini and Pedersen, "Quality minus junk", *Review of Accounting
-Studies*, 2019.
-:::
-
-[Watch the video](https://www.dropbox.com/scl/fi/qck7n2pxxa52vjp84edbh/Asness_Frazzini_Pedersen_RAS_2019.mp4?rlkey=zzg4h0tt6720hfz4uvydihbv9&dl=1)
-
-::: {.note}
-Quality is one of the characteristics you will put in your own model in week
-three. This is where it comes from.
-:::
-
-<!-- The video is not in the repo: it lives in ~/Dropbox/mgmt638-videos and is
-     reached by the share link above, which is set to "anyone with the link can
-     view". *.mp4 is gitignored, so re-adding the file here would not commit it. -->
-
-# Before Thursday
-
-## Four Things {.plain-title}
 
 ::: {.steps}
-1. Settle your group --- two or three people
-2. Set up the group's GitHub repository and Slack channel, and send me both
-3. Read the AQR background note
-4. Bring a question about something GLM got wrong today
+1. Create a free account at `github.com`, and note your username
+2. Open the Terminal tab, not the GLM pane --- this step waits for you to type
+3. Run `gh auth login` and answer: GitHub.com, HTTPS, yes to authenticating Git, browser
+4. It prints a code --- open the link on your laptop and paste it there
 :::
 
+
+
+## One Person in Each Group Does This
+
+[Tell GLM --- one person in the group, once]{.eyebrow}
+
+- Make a folder in my workspace called [whatever you want to call it] and make it a git repository. 
+
+- Add a .gitignore for csv, parquet, and .env files. 
+
+- Commit, then create a private GitHub repo of the same name and push to it.
+
+## Then Add Your Groupmates
+
+[On github.com, in the new repository]{.eyebrow}
+
+::: {.steps}
+1. Settings, then Collaborators, then Add people
+2. Search each groupmate by their GitHub username
+3. They get an email invitation, and have to accept it
+:::
+
+
+## Everyone Else Joins {.band-bottom}
+
+[Tell GLM]{.eyebrow}
+
+> Clone the GitHub repo [username]/[repo name] into my workspace.  
+
+> username should be the username of the group member who created it. repo name is the name they used for the folder
+
+
+## Later: Push and Pull
+
+[Tell GLM, at the start of every session]{.eyebrow}
+
+> Pull the latest from GitHub before we start.
+
+[Then, at the end of the session]{.eyebrow}
+
+> Commit what we did and push it.
+
+
+## When Git Pushes Back {.plain-title}
+
+| What you see | What to say |
+|---|---|
+| `rejected --- non-fast-forward` | Someone pushed while you were working. "Pull their work, merge it, then push." |
+| `CONFLICT: automatic merge failed` | You both edited the same lines. "Show me both versions and wait for me to choose." |
+
 ::: {.note .note-plum}
-Thursday we start on valuation: what a company is worth compared with the
-companies it looks like.
+Refuse these if asked: `git push --force` and `git reset --hard`
 :::

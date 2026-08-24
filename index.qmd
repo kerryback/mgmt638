@@ -385,7 +385,7 @@ body > header#quarto-header { display: none; }
         <div class="item-title">Getting Started</div>
         <div class="item-desc">Course overview, four years of AI in one table, and the lab. Market data pulled, charted and checked by code you can read.</div>
       </div>
-      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
+      <div class="item-links"><span class="has-menu"><a href="slides/session01.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/session01.html" target="_blank" rel="noopener">HTML</a><a href="pdf/session01.pdf" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a href="https://www.dropbox.com/scl/fi/fes68ooeyg84n4c9n44x1/session01.zip?rlkey=n1mwruimbg52jz0c9ypnayfp7&amp;dl=1" target="_blank" rel="noopener">Files</a></div>
     </div>
 
     <div class="item">

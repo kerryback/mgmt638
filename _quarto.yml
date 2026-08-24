@@ -27,7 +27,10 @@ project:
     - under-construction.html
     # Standalone reading, linked from the decks. Not rendered -- it is
     # hand-written HTML, so it is copied through verbatim to docs/.
-    - aqr-report.html
+    # Anchored with a leading slash: a bare "aqr-report.html" is a glob that
+    # matches the name anywhere in the tree, so it also picked up the staging
+    # copy in files/session01/ and published it loose beside the zip.
+    - /aqr-report.html
     - images/RiceBusiness-transparent-logo-sm.png
     - images/headshot-keeper-cropped2.png
     # Session material, linked from the schedule rows in index.qmd.
@@ -52,9 +55,10 @@ project:
     - pdf/session10.pdf
     - pdf/session11.pdf
     - pdf/session12.pdf
-    # Staging folders files/session01..12 are deliberately not published; only
-    # the zip handed to the class is.
-    - files/*.zip
+    # Nothing under files/ is published. The staging folders files/session01..12
+    # are local, and the zip built from each one is distributed from
+    # ~/Dropbox/mgmt638-files/ -- the schedule rows link the Dropbox share URL,
+    # so a 40MB+ download never enters the repo or its history.
 
 website:
   title: ""

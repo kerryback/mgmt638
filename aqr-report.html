@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AQR Capital Management — Brief Report</title>
+<style>
+  :root {
+    --ink: #1b1f24;
+    --muted: #5b6672;
+    --rule: #dfe3e8;
+    --accent: #00205b;
+    --accent-soft: #eef2f9;
+    --bg: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e7ebf0;
+      --muted: #a3adb9;
+      --rule: #2c333c;
+      --accent: #8fb0ee;
+      --accent-soft: #1b2230;
+      --bg: #14181d;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+  header { border-bottom: 3px solid var(--accent); padding-bottom: 1rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 .5rem;
+  }
+  h1 { font-size: 2.1rem; line-height: 1.15; margin: 0 0 .4rem; }
+  .dek { color: var(--muted); font-size: 1.05rem; margin: 0; }
+  h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 1.05rem; letter-spacing: .02em; margin: 2.4rem 0 .7rem;
+    padding-bottom: .3rem; border-bottom: 1px solid var(--rule);
+  }
+  p { margin: 0 0 1rem; }
+  ul { margin: 0 0 1rem; padding-left: 1.2rem; }
+  li { margin-bottom: .4rem; }
+  .facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: .75rem; margin: 1.5rem 0 0;
+  }
+  .fact {
+    background: var(--accent-soft); border-radius: 6px; padding: .8rem .9rem;
+  }
+  .fact .k {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    display: block; margin-bottom: .25rem;
+  }
+  .fact .v { font-size: 1.25rem; }
+  table { width: 100%; border-collapse: collapse; margin: 0 0 1rem; font-size: .95rem; }
+  th, td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--rule); }
+  th {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tablewrap { overflow-x: auto; }
+  .note {
+    font-size: .88rem; color: var(--muted); border-left: 3px solid var(--rule);
+    padding-left: .9rem; margin: 1.4rem 0;
+  }
+  footer {
+    margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule);
+    font-size: .85rem; color: var(--muted);
+  }
+  footer ol { padding-left: 1.2rem; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="eyebrow">Firm Profile</p>
+  <h1>AQR Capital Management</h1>
+  <p class="dek">The academic factor-investing shop that spent a decade in the wilderness, came back as the largest hedge fund manager in the world, and changed its mind about machine learning.</p>
+</header>
+
+<div class="facts">
+  <div class="fact"><span class="k">Founded</span><span class="v">1998</span></div>
+  <div class="fact"><span class="k">Headquarters</span><span class="v">Greenwich, CT</span></div>
+  <div class="fact"><span class="k">Firm AUM</span><span class="v">~$189B</span></div>
+  <div class="fact"><span class="k">Hedge fund AUM</span><span class="v">~$109B</span></div>
+</div>
+<p class="note">AUM figures are as of year-end 2025. Hedge fund assets nearly doubled during 2025, up roughly 89% from $57.7B.</p>
+
+<h2>What the firm is</h2>
+<p>AQR — Applied Quantitative Research — was founded in 1998 by Cliff Asness, David Kabiller, Robert Krail, and John Liew, most of whom came out of the University of Chicago PhD program and then Goldman Sachs Asset Management. The firm is unusual among hedge funds in that its investment process is essentially a public argument: AQR publishes its research, its principals write journal articles, and the strategies it runs are recognizable implementations of the academic asset-pricing literature rather than proprietary secrets.</p>
+<p>The core claim is that a small number of persistent, economically motivated return premia — value, momentum, carry, defensive/quality, and trend-following — can be harvested systematically, across asset classes, with leverage and shorting used to isolate them from market beta. Asness's dissertation on momentum, and the later "Value and Momentum Everywhere" and "Betting Against Beta" papers, are the intellectual foundation.</p>
+
+<h2>What it runs</h2>
+<ul>
+  <li>Multi-strategy hedge funds, most prominently Apex, which blends stock selection, macro, and alternative premia.</li>
+  <li>Long-short equity, including the Delphi strategy and market-neutral vehicles such as Adaptive Equities.</li>
+  <li>Managed futures and trend-following, historically one of AQR's signature retail-accessible products.</li>
+  <li>Alternative risk premia and style-premia funds sold to institutions.</li>
+  <li>Tax-aware separately managed accounts — long-short vehicles engineered to generate realized losses for high-net-worth clients. This distribution channel, marketed through US wealth advisers, has been a major driver of recent asset growth.</li>
+  <li>A mutual fund complex that packages the same factor exposures in a 1940-Act wrapper.</li>
+</ul>
+
+<h2>The drawdown and the recovery</h2>
+<p>From roughly 2018 through 2020, AQR had a genuinely bad run. Value was in its worst relative drawdown on record, the firm's diversifying strategies did not diversify when they were needed, and assets fell from a peak above $220 billion to under $100 billion. Asness's public commentary during that period — arguing that the value spread had become irrationally wide rather than that the factor was dead — became one of the more closely watched bets in the industry.</p>
+<p>It paid off. Value snapped back beginning in late 2020, and performance since has been strong enough to reverse the outflows. 2025 was the firm's headline year:</p>
+
+<div class="tablewrap">
+<table>
+  <caption class="note" style="caption-side: bottom; text-align: left; border: 0; padding-left: 0;">Selected AQR strategy returns, full-year 2025.</caption>
+  <thead>
+    <tr><th>Strategy</th><th>Approach</th><th class="num">2025 return</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Adaptive Equities</td><td>Equity market neutral</td><td class="num">24.4%</td></tr>
+    <tr><td>Apex</td><td>Multi-strategy</td><td class="num">19.6%</td></tr>
+    <tr><td>Managed Futures (full vol.)</td><td>Trend following</td><td class="num">19.2%</td></tr>
+    <tr><td>Delphi</td><td>Long-short equity</td><td class="num">16.8%</td></tr>
+    <tr><td>Helix</td><td>Multi-strategy</td><td class="num">13.7%</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Stock selection, not macro, was the largest contributor to Apex's year. Those results came in a year when many other systematic managers were flat to modestly positive, which is what pushed AQR to the top of the industry AUM rankings.</p>
+
+<h2>The machine learning turn</h2>
+<p>The most interesting recent development for a quant-investments audience is a reversal. In 2018 Asness was publicly dismissive of machine learning in investing, characterizing it as data mining dressed up in new clothes. He has since changed position, and AQR has changed with him: machine-learning signals now drive on the order of a fifth of the trading signals in the flagship multi-strategy fund, and the firm is raising outside capital for two dedicated ML strategies. Asness has described the shift, with characteristic bluntness, as surrendering more to the machines.</p>
+<p>The substantive point underneath the quotes is worth flagging for students: AQR's original objection was not that flexible models cannot fit financial data, but that economic priors were the only defense against overfitting in a low signal-to-noise environment. The firm's current position is closer to the view that with enough data, disciplined validation, and cross-sectional breadth, a model can be allowed to find structure that a human-specified factor definition would miss. Whether that is a genuine methodological advance or a lowering of the guardrails is an open question — and a good one to argue about in class.</p>
+
+<h2>What to watch</h2>
+<ul>
+  <li>2026 has been more mixed than 2025. Retail vehicles have given back ground — the Long-Short Equity mutual fund is negative year to date — which is a useful reminder that the mutual fund share classes and the flagship hedge funds are not the same product.</li>
+  <li>Capacity. Factor strategies decay as assets crowd in, and AQR is now the largest player in the space it defined. Rapid AUM growth is a risk indicator, not just a success metric.</li>
+  <li>Concentration in tax-loss-harvesting mandates. That business grows with a particular tax regime and a particular client type; both can change.</li>
+  <li>How much of the ML signal set is genuinely orthogonal to the classic factors, versus a more efficient way of estimating the same exposures.</li>
+</ul>
+
+<h2>Why it matters for this course</h2>
+<p>AQR is the closest thing the industry has to a live, publicly documented implementation of the academic asset-pricing literature. Its research library is free, its factor return series are downloadable, and its principals write candidly about what has and has not worked. For a data-driven investments course, it is simultaneously a case study in signal construction, a cautionary tale about drawdowns and career risk in systematic strategies, and — now — a case study in how a research-first firm absorbs machine learning without abandoning economic structure.</p>
+
+<footer>
+  <p>Sources</p>
+  <ol>
+    <li><a href="https://www.morningstar.com/asset-management-companies/aqr-BN00000BVN">Morningstar — AQR asset management company profile</a></li>
+    <li><a href="https://alternativefundinsight.com/aqr-tops-hedge-fund-power-list-after-89-aum-growth/">Alternative Fund Insight — AQR tops hedge fund power list after 89% AUM growth</a></li>
+    <li><a href="https://www.bloomberg.com/news/articles/2026-01-02/aqr-s-multistrategy-apex-gains-19-6-in-turbulent-quant-year">Bloomberg — AQR's multistrategy Apex gains 19.6% in turbulent quant year</a></li>
+    <li><a href="https://www.institutionalinvestor.com/article/aqrs-big-year-funds-climb-stock-picks-and-macro-moves">Institutional Investor — AQR's big year: funds climb on stock picks and macro moves</a></li>
+    <li><a href="https://news.bloombergtax.com/private-equity/aqr-bets-on-machine-learning-as-cliff-asness-becomes-ai-believer">Bloomberg — AQR bets on machine learning as Asness becomes AI believer</a></li>
+    <li><a href="https://www.bloomberg.com/features/2026-aqr-tax-loss-harvesting-billionaires/">Bloomberg — AQR and tax-loss harvesting for the wealthy</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/AQR_Capital_Management">Wikipedia — AQR Capital Management</a></li>
+    <li><a href="https://funds.aqr.com/">AQR Funds — mutual fund performance</a></li>
+  </ol>
+  <p>Compiled 22 August 2026. Performance figures are as reported in the press and are not audited AQR disclosures.</p>
+</footer>
+
+</main>
+</body>
+</html>

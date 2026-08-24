@@ -329,347 +329,193 @@
     "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course overview, four years of AI in one table, and the lab. Market data pulled, charted and checked by code you can read.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Valuing a company against companies like it. Pulling multiples from the Nasdaq data and comparing each stock to the median of its peers.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's own fundamentals instead of borrowing its peers'. Regression, fitted values, and a backtest of the signal.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Introduction to Machine Learning\n        Where machine learning picks up where regression leaves off. Training and test samples, overfitting, cross-validation, and the models we will use.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n        Predicting Multiples with Machine Learning\n        Swapping the regression for a machine learning model, and backtesting whether the better fit is actually a better strategy.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Predicting Returns with Machine Learning\n        Predicting returns directly rather than by way of valuation. Building features, fitting the model, and backtesting the result.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Short Sales and Insider Trading\n        What short interest and the Form 4 filings of officers and directors say about future returns, and how to trade on them.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Text Analysis and Sentiment\n        Working with a corpus of financial news. Measuring sentiment in text, and turning a headline into a number.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        Trading on Sentiment\n        Building a signal out of the news corpus, and backtesting whether the mood of the coverage is worth trading on.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Risk Models\n        Factor models of how stocks move together. Market, industry and style factors, and a covariance matrix you can actually use on hundreds of names.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        Portfolio Risk\n        Putting the risk model to work: measuring a portfolio's factor exposures and tracking error, and building one that takes only the bets you meant to take.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
   },
   {
-    "objectID": "slides/session01.html#two-halves",
-    "href": "slides/session01.html#two-halves",
-    "title": "Getting Started",
-    "section": "Two Halves",
-    "text": "Two Halves\n\n\nThe tool\nGenerative AI as it is actually used at work: to write and run code.\nYou will not write Python. You will direct it, and check it.\n\nThe subject\nQuantitative investing. Predicting stock returns, and finding out how little is predictable.\nThe data is real, and so are the models."
+    "objectID": "slides/session01.html#course-overview",
+    "href": "slides/session01.html#course-overview",
+    "title": "1. Course Introduction",
+    "section": "Course Overview",
+    "text": "Course Overview\n\n\nThe tool\nGenerative AI as it is actually used at work: to write and run code.\n\nThe subject\nQuantitative investing. Predicting stock returns, and backtesting strategies.\n\nGen AI signals\nGenerative AI + news → trading signals"
   },
   {
-    "objectID": "slides/session01.html#what-the-model-is-actually-good-for",
-    "href": "slides/session01.html#what-the-model-is-actually-good-for",
-    "title": "Getting Started",
-    "section": "What the Model Is Actually Good For",
-    "text": "What the Model Is Actually Good For\n\nOne claim, and we spend six weeks testing it.\n\n\nA language model’s comparative advantage is turning text into a number. Everything downstream — sizing, portfolio construction, execution — is an optimization problem the model does not help with.\n\nThe corollary is the useful part: it is not going to trade for you, but it will write every line of the machinery that does."
+    "objectID": "slides/session01.html#course-grades",
+    "href": "slides/session01.html#course-grades",
+    "title": "1. Course Introduction",
+    "section": "Course Grades",
+    "text": "Course Grades\n\n\n\nComponent\nWeight\n\n\n\n\nGroup presentations\n60%\n\n\nClass participation\n40%\n\n\n\n\nGroup size = 2 or 3. Each group presents twice. Three presentations each class session beginning next week\n\n\nClass participation includes cold calls and share screen."
   },
   {
-    "objectID": "slides/session01.html#six-weeks",
-    "href": "slides/session01.html#six-weeks",
-    "title": "Getting Started",
-    "section": "Six Weeks",
-    "text": "Six Weeks\n\n\n\nWeeks\nWhat we do\n\n\n\n\n1\nMake the machine write code; value a company against its peers\n\n\n2\nTrade on the prediction; regression for multiples\n\n\n3\nMachine learning, and what it does to a valuation model\n\n\n4\nPredicting returns; insider trading and short sales\n\n\n5\nText as a signal, and trading on sentiment\n\n\n6\nRisk models, and managing portfolio risk"
-  },
-  {
-    "objectID": "slides/session01.html#how-it-runs",
-    "href": "slides/session01.html#how-it-runs",
-    "title": "Getting Started",
-    "section": "How It Runs",
-    "text": "How It Runs\n\n\nGroups of two or three\nFixed for the term. You work with your group in class, and you present with them.\n\n\nEverything in the lab\nNo software on your laptop. A browser and your Rice credentials.\n\n\nEverything on GitHub\nYour group’s repository is what survives the term. The lab does not."
-  },
-  {
-    "objectID": "slides/session01.html#every-class-three-things",
-    "href": "slides/session01.html#every-class-three-things",
-    "title": "Getting Started",
-    "section": "Every Class, Three Things",
-    "text": "Every Class, Three Things\nFrom September 1 on\n\n\nThree groups, drawn at random, present on what they got done last session\nLecture — the new material for the day\nHands-on work — you and your group build it\n\n\n\nThe hands-on portion is the point of the course. The presentations are about it, and the lecture exists to make it possible."
-  },
-  {
-    "objectID": "slides/session01.html#what-you-are-graded-on",
-    "href": "slides/session01.html#what-you-are-graded-on",
-    "title": "Getting Started",
-    "section": "What You Are Graded On",
-    "text": "What You Are Graded On\n\n\n\nComponent\nWeight\n\n\n\n\nGroup presentations\n60%\n\n\nClass participation\n40%\n\n\n\n\nGroups are drawn at random, so every group should be ready every class. Each group will present twice over the term. Show your repository; there is no need for slides."
-  },
-  {
-    "objectID": "slides/session01.html#by-october-1",
-    "href": "slides/session01.html#by-october-1",
-    "title": "Getting Started",
-    "section": "By October 1",
-    "text": "By October 1\nYour group will have a repository that pulls twenty years of market data, builds a panel of firm characteristics, trains a model on it, and reports honestly whether it works.\n\nExpect the model to explain about one percent of the variance. That is not a bug, and we will spend a full session on why it is a good outcome."
-  },
-  {
-    "objectID": "slides/session01.html#four-years-chatbot-to-agent",
-    "href": "slides/session01.html#four-years-chatbot-to-agent",
-    "title": "Getting Started",
-    "section": "Four Years, Chatbot to Agent",
-    "text": "Four Years, Chatbot to Agent\n\n\n\nNov 2022\nChatGPT opens to the public\n\n\nMar 2023\nGPT-4 and Claude — the chatbot year\n\n\nNov 2024\nModel Context Protocol — agents get tools\n\n\nFeb 2025\nClaude Code — the agent reaches your files\n\n\nOct 2025\nAgent Skills — expertise you can package\n\n\n2026\nCowork and desktop agents\n\n\n\n\nNote where the tools arrive. For the first two years these systems could only talk."
-  },
-  {
-    "objectID": "slides/session01.html#andrej-karpathy",
-    "href": "slides/session01.html#andrej-karpathy",
-    "title": "Getting Started",
-    "section": "Andrej Karpathy",
-    "text": "Andrej Karpathy\nOpenAI co-founder, former Tesla AI chief, now at Anthropic\n\n\nOctober 2025\n“They just don’t work. They don’t have enough intelligence … You can’t just tell them something and they’ll remember it.”\n“The industry is trying to pretend like this is amazing, and it’s not. It’s slop.”\n\n\nDecember 2025\n“I really am mostly programming in English now, a bit sheepishly telling the LLM what code to write … in words.”\n“Biggest change to my basic coding workflow in ~2 decades.”\n\n\nFebruary 2026\n“Coding agents basically didn’t work before December.”\n“I don’t think I’ve typed like a line of code probably since December.”"
-  },
-  {
-    "objectID": "slides/session01.html#which-means",
-    "href": "slides/session01.html#which-means",
-    "title": "Getting Started",
-    "section": "Which Means",
-    "text": "Which Means\n\nThe same person, three times in four months.\n\n\nThe version of this you formed an opinion about is probably not the version that exists. Almost everything useful arrived in the last eighteen months, and a good deal of it since last December."
-  },
-  {
-    "objectID": "slides/session01.html#that-is-the-whole-trick",
-    "href": "slides/session01.html#that-is-the-whole-trick",
-    "title": "Getting Started",
-    "section": "That Is the Whole Trick",
-    "text": "That Is the Whole Trick\n\nAlmost everything useful the model does, it does by writing code and running it.\n\n\nUsually Python or JavaScript. The code runs on a server — here, on the lab machine — not inside the model.\n\nYou are not asking it for an answer. You are asking it for a program that produces an answer, and the program is something you can read."
-  },
-  {
-    "objectID": "slides/session01.html#one-capability-six-directions",
-    "href": "slides/session01.html#one-capability-six-directions",
-    "title": "Getting Started",
-    "section": "One Capability, Six Directions",
-    "text": "One Capability, Six Directions\n\n\n\nExcel workbooks with live formulas\nCharts and figures\n\n\nPowerPoint decks\nData analysis and statistics\n\n\nWord documents\nWeb apps and dashboards\n\n\n\n\nThese are not six features somebody built. They are one capability — write code, run it — pointed in six directions."
-  },
-  {
-    "objectID": "slides/session01.html#what-that-looks-like-underneath",
-    "href": "slides/session01.html#what-that-looks-like-underneath",
-    "title": "Getting Started",
-    "section": "What That Looks Like Underneath",
-    "text": "What That Looks Like Underneath\nYou ask\n\nRead these four PDFs. Pull out every number either side cites about market share, note which ones disagree, and put it in a table.\n\nWhat actually happens\nEach PDF is converted to text. The text is read. A Python script builds the table. The table is written to a file.\n\nNothing there is a document feature. It is code execution, pointed at file formats."
-  },
-  {
-    "objectID": "slides/session01.html#numbers-need-code",
-    "href": "slides/session01.html#numbers-need-code",
-    "title": "Getting Started",
-    "section": "Numbers Need Code",
-    "text": "Numbers Need Code\n\n\nThe problem\nTo a next-token predictor, “47.3%” is exactly as plausible as “52.1%”.\nMental math, rankings, comparisons, aggregations — all unreliable, and the wrong number arrives with complete confidence.\n\nThe fix\nInsist on code, and insist that it run.\nArithmetic stops being prediction and becomes computation — and you can read afterward what it actually did."
-  },
-  {
-    "objectID": "slides/session01.html#first-a-chatbot",
-    "href": "slides/session01.html#first-a-chatbot",
-    "title": "Getting Started",
-    "section": "First, a Chatbot",
-    "text": "First, a Chatbot\n\nYou, a program, and a model. The model reads text and writes text. That is the entire capability.\n\n\nIt cannot open a file, run a calculation, look up today’s date, or check whether what it just told you is true.\n\nThe chatbot passes along your prompt — plus the system prompt and everything said so far in the conversation — and hands back the reply."
-  },
-  {
-    "objectID": "slides/session01.html#an-agent-is-a-chatbot-with-tools",
-    "href": "slides/session01.html#an-agent-is-a-chatbot-with-tools",
-    "title": "Getting Started",
-    "section": "An Agent Is a Chatbot with Tools",
-    "text": "An Agent Is a Chatbot with Tools\n\n\nThe agent sends the prompt, the history, and a list of tools it has\nThe model answers: use tool X, with these arguments\nThe agent runs tool X and reports the result back, with instructions for reading it\nThe model decides what to do next — another tool, or an answer for you\n\n\n\nThe model never runs anything. It emits requests; the agent executes them. Those step-3 instructions are the tool harness, and some are far better than others."
-  },
-  {
-    "objectID": "slides/session01.html#what-you-get",
-    "href": "slides/session01.html#what-you-get",
-    "title": "Getting Started",
-    "section": "What You Get",
-    "text": "What You Get\n\n\nWhat runs\nClaude Code, running GLM-4.7.\n\n\nWhat is installed\nPython, JavaScript, the analysis libraries, and a set of Claude Code plugins.\n\n\nWhat you see\nA file browser, a terminal, and a browser view for anything you build.\n\n\n\nAll of it runs in the cloud and is billed to the school."
+    "objectID": "slides/session01.html#an-ai-environment-for-the-course",
+    "href": "slides/session01.html#an-ai-environment-for-the-course",
+    "title": "1. Course Introduction",
+    "section": "An AI Environment for the Course",
+    "text": "An AI Environment for the Course\n\n\nWhat runs\nClaude Code, running GLM-4.7.\n\n\nWhat is installed\nPython, JavaScript, the analysis libraries, and a set of Claude Code plugins.\n\n\nWhat you see\nA file browser, a terminal, and a browser view for anything you build.\n\n\n\nAll of it runs in the cloud and is billed to the school."
   },
   {
     "objectID": "slides/session01.html#sign-in",
     "href": "slides/session01.html#sign-in",
-    "title": "Getting Started",
+    "title": "1. Course Introduction",
     "section": "Sign In",
     "text": "Sign In\n\n\nGo to lab638.kerryback.com — any browser, nothing to install\nUsername is your netid, the part before @rice.edu\nPassword is your student number, including the S0\n\n\n\nFirst load takes a moment while your machine starts. If you are asked to sign in again later in the term, nothing is wrong — sessions do not survive a restart of the server."
   },
   {
     "objectID": "slides/session01.html#the-workspace",
     "href": "slides/session01.html#the-workspace",
-    "title": "Getting Started",
+    "title": "1. Course Introduction",
     "section": "The Workspace",
     "text": "The Workspace\n\n\nRight panel\nClaude Code. The prompt window is at the bottom.\n\n\nLeft panel\nFile browser by default. Terminal and View are there too — ignore them today.\n\n\nThree dots, upper left\nUpload from your laptop, download to it."
   },
   {
-    "objectID": "slides/session01.html#three-things-that-trip-everyone",
-    "href": "slides/session01.html#three-things-that-trip-everyone",
-    "title": "Getting Started",
-    "section": "Three Things That Trip Everyone",
-    "text": "Three Things That Trip Everyone\n\n\n\n\n\n\n\nRefresh\nThe file browser does not update itself. When GLM makes a file and you cannot see it, hit Refresh.\n\n\nNo Office\nDouble-clicking a .xlsx or .pptx does nothing. Office is not installed.\n\n\nDownload to view\nBring Office documents to your laptop and open them there."
-  },
-  {
-    "objectID": "slides/session01.html#two-places-your-group-lives",
-    "href": "slides/session01.html#two-places-your-group-lives",
-    "title": "Getting Started",
-    "section": "Two Places Your Group Lives",
-    "text": "Two Places Your Group Lives\n\n\nA GitHub repository\nOne shared copy of the code, the notebooks, and the results. It is what you show when you present.\n\n\nA Slack channel\nFor coordinating between classes. Add me to it.\n\n\n\nSet both up this week, and send me the repository URL."
-  },
-  {
-    "objectID": "slides/session01.html#why-github",
-    "href": "slides/session01.html#why-github",
-    "title": "Getting Started",
-    "section": "Why GitHub",
-    "text": "Why GitHub\n\nYour group shares one repository, not a folder of attachments.\n\n\nMailing notebooks around breaks down by the second week. GitHub keeps one copy that everyone edits, records who changed what and when, and lets two of you work the same afternoon without overwriting each other."
-  },
-  {
-    "objectID": "slides/session01.html#you-do-not-type-git-commands",
-    "href": "slides/session01.html#you-do-not-type-git-commands",
-    "title": "Getting Started",
-    "section": "You Do Not Type Git Commands",
-    "text": "You Do Not Type Git Commands\n\nSame bargain as the code. You say what you want; GLM runs it.\n\n\nGit has a deserved reputation for cryptic errors. You do not need to learn it — you need to know what you are asking for, and to check that it happened.\n\nThere is exactly one step you do yourself, and it is on the next slide."
-  },
-  {
-    "objectID": "slides/session01.html#once-per-person",
-    "href": "slides/session01.html#once-per-person",
-    "title": "Getting Started",
-    "section": "Once, Per Person",
-    "text": "Once, Per Person\nThe one thing GLM cannot do for you\n\n\nCreate a free account at github.com, and note your username\nOpen the Terminal tab — not the GLM pane\nRun gh auth login, and answer: GitHub.com, then HTTPS, then yes to authenticating Git, then log in with a browser\nIt prints a code — open the link on your laptop and paste it there\n\n\n\nThe yes in step 3 is the one people miss. Say no and everything looks fine until your first push, which fails asking for a password that no longer exists."
-  },
-  {
-    "objectID": "slides/session01.html#one-person-creates-the-repo",
-    "href": "slides/session01.html#one-person-creates-the-repo",
-    "title": "Getting Started",
-    "section": "One Person Creates the Repo",
-    "text": "One Person Creates the Repo\nTell GLM\n\nMake my workspace a git repository, commit everything in it, and create a private GitHub repo called mgmt638-team1 from it. Then push.\n\n\nOne person in the group does this, once. Everyone else skips to the slide after next."
-  },
-  {
-    "objectID": "slides/session01.html#then-add-your-groupmates",
-    "href": "slides/session01.html#then-add-your-groupmates",
-    "title": "Getting Started",
-    "section": "Then Add Your Groupmates",
-    "text": "Then Add Your Groupmates\nOn github.com, in the new repository\n\n\nSettings, then Collaborators, then Add people\nSearch each groupmate by their GitHub username\nThey get an email invitation, and have to accept it\n\n\n\nUntil someone accepts, their clone fails with “not found” rather than “no permission” — the repository is private, so to them it does not exist yet."
-  },
-  {
-    "objectID": "slides/session01.html#everyone-else-joins",
-    "href": "slides/session01.html#everyone-else-joins",
-    "title": "Getting Started",
-    "section": "Everyone Else Joins",
-    "text": "Everyone Else Joins\nTell GLM\n\nClone the GitHub repo alice/mgmt638-team1 into my workspace.\n\n\nalice is the GitHub username of whoever created the repo, not yours. You should end up with a mgmt638-team1 folder in your workspace — ask GLM to work inside it from now on."
-  },
-  {
-    "objectID": "slides/session01.html#push-and-pull",
-    "href": "slides/session01.html#push-and-pull",
-    "title": "Getting Started",
-    "section": "Push and Pull",
-    "text": "Push and Pull\nTell GLM, at the start and end of every session\n\nPull the latest from GitHub before we start.\n\n\nCommit what we did with a sensible message and push it.\n\n\nPull first, push last. Nearly every tangle you will hit this term comes from skipping one of the two."
+    "objectID": "slides/session01.html#things-to-remember",
+    "href": "slides/session01.html#things-to-remember",
+    "title": "1. Course Introduction",
+    "section": "Things to Remember",
+    "text": "Things to Remember\n\n\n\n\n\n\n\nRefresh\nThe file browser does not update itself. When GLM makes a file and you cannot see it, hit Refresh.\n\n\nNo Office\nDouble-clicking a .xlsx or .pptx does nothing. Office is not installed.\n\n\nDownload to view\nBring Office documents to your laptop and open them there."
   },
   {
     "objectID": "slides/session01.html#good-enough-prompting",
     "href": "slides/session01.html#good-enough-prompting",
-    "title": "Getting Started",
+    "title": "1. Course Introduction",
     "section": "Good Enough Prompting",
     "text": "Good Enough Prompting\n\nMost of the prompt engineering advice from a few years ago is now either useless or actively harmful.\n\n\n\nSay what you want, not how to do it\n“I want to compare revenue across countries — how should we show it?”\nbeats\n“Make a bar chart, sorted descending, gridlines off, 12pt labels.”\n\n\nIf it does not work, try again\nRephrasing is cheap. Treat it as an infinitely patient colleague with a poor memory."
   },
   {
     "objectID": "slides/session01.html#plan-before-you-act",
     "href": "slides/session01.html#plan-before-you-act",
-    "title": "Getting Started",
+    "title": "1. Course Introduction",
     "section": "Plan Before You Act",
-    "text": "Plan Before You Act\nUse plan mode, or just add: plan how you will do this before you start.\n\n\nWhy it works — knowledge\nPlanning pulls the relevant considerations into the conversation. It then answers in light of what it just retrieved, rather than from base rates.\n\nWhy it works — scale\nIt breaks the work into steps you can check one at a time. Failures stay small and local instead of surfacing at the very end."
+    "text": "Plan Before You Act\nSay: plan how to do this before you start.\n\n\nWhy it works — knowledge\nPlanning pulls the relevant considerations into the conversation. It then answers in light of what it just retrieved.\n\nWhy it works — subtasks\nIt breaks the work into steps you can check one at a time. Failures stay small and local instead of surfacing at the very end."
   },
   {
     "objectID": "slides/session01.html#confirm-it-understood",
     "href": "slides/session01.html#confirm-it-understood",
-    "title": "Getting Started",
+    "title": "1. Course Introduction",
     "section": "Confirm It Understood",
     "text": "Confirm It Understood\n\nAmbiguity does not produce a question. It produces a confident answer to a question you did not ask.\n\nTell GLM, before it starts\n\nTell me what you are about to do and what you are assuming.\n\n\nCorrect it in one sentence, then say go ahead. This is the cheapest habit in the course and it will save you the most time."
   },
   {
     "objectID": "slides/session01.html#it-is-a-prediction-machine-not-a-colleague",
     "href": "slides/session01.html#it-is-a-prediction-machine-not-a-colleague",
-    "title": "Getting Started",
+    "title": "1. Course Introduction",
     "section": "It Is a Prediction Machine, Not a Colleague",
     "text": "It Is a Prediction Machine, Not a Colleague\nSuppose it told you last week that method A beats method B. Today you ask it to do the task.\n\n\nWhat it will do\nIf “A beats B” is not in this conversation, and B appeared more often in its training data, it will probably use B.\n\nWhy\nKnowledge in the weights is not knowledge in use. Something has to pull it into the conversation before it can act on it."
   },
   {
     "objectID": "slides/session01.html#tunnel-vision",
     "href": "slides/session01.html#tunnel-vision",
-    "title": "Getting Started",
+    "title": "1. Course Introduction",
     "section": "Tunnel Vision",
     "text": "Tunnel Vision\n\nPrediction also means momentum. Once it has started down a path, continuing that path is the likeliest next step.\n\nYou will watch it hit a roadblock, find a way around, hit another, find another way around — tenaciously, exhaustively. What it rarely does is go back and ask whether a different path was better all along.\n\nRestate the goal, not the obstacle. That gives it permission to abandon the path instead of defending it."
   },
   {
     "objectID": "slides/session01.html#what-not-to-do",
     "href": "slides/session01.html#what-not-to-do",
-    "title": "Getting Started",
+    "title": "1. Course Introduction",
     "section": "What Not to Do",
     "text": "What Not to Do\n\n\n\n\n\n\n\nSkip\nWhy\n\n\n\n\n“Think step by step”\nReasoning models already do, in hidden tokens\n\n\n“Take a deep breath”\nMeasurably useless now\n\n\n“CRITICAL! NEVER EVER …”\nOvertriggers, and gets worse results\n\n\nStacked personas\n“You are an expert X” can help tone; three of them does not\n\n\n\n\nDirect task framing wins. Say what you want, say what done looks like, say what to avoid."
   },
   {
-    "objectID": "slides/session01.html#go-and-get-the-data",
-    "href": "slides/session01.html#go-and-get-the-data",
-    "title": "Getting Started",
-    "section": "Go and Get the Data",
-    "text": "Go and Get the Data\n\nNo file to upload, no API key to paste. Ask.\n\nTell GLM\n\nGet monthly returns for WMT and SPY since 2020 from Yahoo Finance. Scatter plot, SPY on the horizontal axis, with a regression line."
+    "objectID": "slides/session01.html#anatomy-of-a-chatbot",
+    "href": "slides/session01.html#anatomy-of-a-chatbot",
+    "title": "1. Course Introduction",
+    "section": "Anatomy of a Chatbot",
+    "text": "Anatomy of a Chatbot\n\n\nYou\n\n\n↔︎\n\n\nChatbot\n\n\n↔︎\n\n\nThe model\n\n\nThe model reads text and writes text. That is the entire capability.\n\nIt cannot open a file, run a calculation, look up today’s price, or check whether what it just told you is true."
   },
   {
-    "objectID": "slides/session01.html#what-you-just-did",
-    "href": "slides/session01.html#what-you-just-did",
-    "title": "Getting Started",
-    "section": "What You Just Did",
-    "text": "What You Just Did\nThe slope of that line is Walmart’s market beta. You estimated a CAPM regression by asking for a scatter plot.\n\nThe code ran on a machine in the cloud. Nobody at Yahoo, and nobody at Anthropic, built a beta calculator."
+    "objectID": "slides/session01.html#an-agent-is-a-chatbot-with-tools",
+    "href": "slides/session01.html#an-agent-is-a-chatbot-with-tools",
+    "title": "1. Course Introduction",
+    "section": "An Agent Is a Chatbot with Tools",
+    "text": "An Agent Is a Chatbot with Tools\n\n\nCode execution\n\n\n↕\n\n\nYou\n\n\n↔︎\n\n\nAgent\n\n\n↔︎\n\n\nThe model\n\n\n↕\n\n\nOther tools\n\n\n\nThe model never runs any of it — it only emits requests."
   },
   {
-    "objectID": "slides/session01.html#look-at-the-code",
-    "href": "slides/session01.html#look-at-the-code",
-    "title": "Getting Started",
-    "section": "Look at the Code",
-    "text": "Look at the Code\nTell GLM\n\nShow me the code you ran.\n\nYou do not need to write Python to read it. Find the line that computes the returns.\n\nAny number that matters comes out of code you can open. That rule applies to every session in this course."
+    "objectID": "slides/session01.html#the-loop-step-by-step",
+    "href": "slides/session01.html#the-loop-step-by-step",
+    "title": "1. Course Introduction",
+    "section": "The Loop, Step by Step",
+    "text": "The Loop, Step by Step\n\n\nThe agent sends the prompt, the history, and a list of tools it has\nThe model answers: use tool X, with these arguments\nThe agent runs tool X and reports the result back, with instructions for reading it\nThe model decides what to do next — another tool, or an answer for you\n\n\n\nThe model emits requests; the agent executes them. Those step-3 instructions are the tool harness, and some are far better than others."
   },
   {
-    "objectID": "slides/session01.html#push-it-further",
-    "href": "slides/session01.html#push-it-further",
-    "title": "Getting Started",
-    "section": "Push It Further",
-    "text": "Push It Further\nTell GLM\n\nAdd the other Dow components and rank them by beta.\n\n\nAnnotate the three months with the largest residuals and tell me what happened in each.\n\n\nWatch whether those explanations are sourced or invented."
+    "objectID": "slides/session01.html#writing-and-running-code",
+    "href": "slides/session01.html#writing-and-running-code",
+    "title": "1. Course Introduction",
+    "section": "Writing and Running Code",
+    "text": "Writing and Running Code\n\nAlmost everything useful the model does, it does by writing code and running it, including terminal commands.\n\n\nOn our AI lab, GLM will write code, save it to a file (a tool use), then run it with a terminal command (another tool use), read the output (another tool use), and revise and repeat as necessary.\n\nAll of this is orchestrated by the Claude Code “harness.”"
   },
   {
-    "objectID": "slides/session01.html#put-it-somewhere",
-    "href": "slides/session01.html#put-it-somewhere",
-    "title": "Getting Started",
-    "section": "Put It Somewhere",
-    "text": "Put It Somewhere\nTell GLM\n\nPut the chart and a short written summary in a PowerPoint deck.\n\nThen download it and open it on your laptop.\n\nThe chart, the layout, the text — all produced by code GLM wrote and ran."
+    "objectID": "slides/session01.html#what-code-produces",
+    "href": "slides/session01.html#what-code-produces",
+    "title": "1. Course Introduction",
+    "section": "What Code Produces",
+    "text": "What Code Produces\n\n\nExcel workbooks with live formulas\n\n\nCharts and figures\n\n\nWord and PowerPoint files\n\n\nData analysis and statistics\n\n\nWeb apps and dashboards"
   },
   {
-    "objectID": "slides/session01.html#what-could-go-wrong",
-    "href": "slides/session01.html#what-could-go-wrong",
-    "title": "Getting Started",
-    "section": "What Could Go Wrong",
-    "text": "What Could Go Wrong\n\nYou asked for a chart of betas and you got one. Now what?\n\n\n\nNo answer\nEasy. You notice immediately.\n\n\nWrong kind of answer\nAlso easy. A pie chart when you wanted a scatter.\n\n\nRight kind, wrong numbers\nThis is the one. It looks exactly like the answer you wanted."
+    "objectID": "slides/session01.html#a-brief-timeline",
+    "href": "slides/session01.html#a-brief-timeline",
+    "title": "1. Course Introduction",
+    "section": "A Brief Timeline",
+    "text": "A Brief Timeline\n\n\n\nNov 2022\n\n\nChatGPT opens to the public\n\n\n\n\nMar 2023\n\n\nGPT-4 and Claude — the chatbot year\n\n\n\n\nNov 2024\n\n\nModel Context Protocol — agents get tools\n\n\n\n\nFeb 2025\n\n\nClaude Code — the agent reaches your files\n\n\n\n\nOct 2025\n\n\nAgent Skills — expertise you can package\n\n\n\n\n2026\n\n\nCowork and desktop agents"
   },
   {
-    "objectID": "slides/session01.html#the-trap",
-    "href": "slides/session01.html#the-trap",
-    "title": "Getting Started",
-    "section": "The Trap",
-    "text": "The Trap\nYahoo gives you two closing prices for every day: Close, and Adj Close, which is adjusted for dividends and splits.\nReturns from the wrong one are wrong — and Walmart both pays a dividend and split three-for-one in 2024.\nTell GLM\n\nRecompute the betas both ways and show me the difference."
+    "objectID": "slides/session01.html#andrej-karpathy",
+    "href": "slides/session01.html#andrej-karpathy",
+    "title": "1. Course Introduction",
+    "section": "Andrej Karpathy",
+    "text": "Andrej Karpathy\nOpenAI co-founder, former Tesla AI chief, now at Anthropic\n\n\nOctober 2025\n“They just don’t work. The industry is trying to pretend like this is amazing, and it’s not. It’s slop.”\n\n\nDecember 2025\n“I really am mostly programming in English now, a bit sheepishly telling the LLM what code to write … in words.”\n\n\nFebruary 2026\n“Coding agents basically didn’t work before December. I don’t think I’ve typed like a line of code probably since December.”"
   },
   {
-    "objectID": "slides/session01.html#where-the-errors-come-from",
-    "href": "slides/session01.html#where-the-errors-come-from",
-    "title": "Getting Started",
-    "section": "Where the Errors Come From",
-    "text": "Where the Errors Come From\n\n\nMisunderstanding\nYour instruction was ambiguous.\nAsk it to state its plan before it starts.\n\n\nSilent assumptions\nIt chose something you never authorized — which price column, which date range.\nAsk it to walk through what it did.\n\n\nCoding errors\nRare. The code either runs or it does not."
+    "objectID": "slides/session01.html#git-is-a-version-control-system",
+    "href": "slides/session01.html#git-is-a-version-control-system",
+    "title": "1. Course Introduction",
+    "section": "Git Is a Version Control System",
+    "text": "Git Is a Version Control System\n\nA commit is a snapshot of the whole folder, dated and labelled. Nothing is ever overwritten — it is added to.\n\n\nEvery commit is a point you can go back to, and Git can tell you what changed between any two of them, in which file, and on which line.\n\nGit is not an AI tool. It is twenty years older than any of this. GLM simply knows how to drive it."
   },
   {
-    "objectID": "slides/session01.html#hallucinations",
-    "href": "slides/session01.html#hallucinations",
-    "title": "Getting Started",
-    "section": "Hallucinations",
-    "text": "Hallucinations\n\nIt is not lying. It is predicting the next token, and a plausible citation is exactly as predictable as a real one.\n\n\nThe risk is highest when the answer is unknown or unfindable — an obscure statistic, a citation that may not exist, a number that was never public. Asked a question with no available answer, it will still produce one.\n\n\n\nMake it search\nAnd give you the sources.\n\n\nCheck the sources\nClick them. A real-looking citation to a paper that does not exist is the classic failure.\n\n\nMake it compute\nAny number that matters comes out of code."
+    "objectID": "slides/session01.html#git-vs-github",
+    "href": "slides/session01.html#git-vs-github",
+    "title": "1. Course Introduction",
+    "section": "Git vs GitHub",
+    "text": "Git vs GitHub\n\n\nGit\nOn your machine. The history lives in the folder itself — no network, no account, yours alone.\n\nGitHub\nA hosted copy of that same history for backup and sharing."
   },
   {
-    "objectID": "slides/session01.html#never-ask-is-this-good",
-    "href": "slides/session01.html#never-ask-is-this-good",
-    "title": "Getting Started",
-    "section": "Never Ask “Is This Good?”",
-    "text": "Never Ask “Is This Good?”\n\nTraining on human feedback teaches that agreement earns high ratings. Ask “is my plan sound?” and it will find reasons that it is.\n\nInvert the question\n\nWhat is the strongest argument that this recommendation is wrong?\n\n\nOne step further: have it play a specific skeptic — a referee, a regulator, the desk that has to trade this."
+    "objectID": "slides/session01.html#create-an-account-and-log-in-from-the-lab",
+    "href": "slides/session01.html#create-an-account-and-log-in-from-the-lab",
+    "title": "1. Course Introduction",
+    "section": "Create an Account and Log In from the Lab",
+    "text": "Create an Account and Log In from the Lab\n\n\nCreate a free account at github.com, and note your username\nOpen the Terminal tab, not the GLM pane — this step waits for you to type\nRun gh auth login and answer: GitHub.com, HTTPS, yes to authenticating Git, browser\nIt prints a code — open the link on your laptop and paste it there"
   },
   {
-    "objectID": "slides/session01.html#set-a-critic-on-it",
-    "href": "slides/session01.html#set-a-critic-on-it",
-    "title": "Getting Started",
-    "section": "Set a Critic on It",
-    "text": "Set a Critic on It\n\nGLM can dispatch a subagent: a fresh instance, no memory of this conversation.\n\n\n\nWhy it is worth something\nIt sees the instructions, not the reasoning behind the first answer. It has nothing to defend.\nGive it a mandate: find every factual error, logical gap, and unsupported assumption. Do not summarize — find flaws.\n\nThe catch\nTwo agreeing runs are evidence, not proof. They share a model and they share your ambiguous question.\n\n\nAnything that both produces work and checks its own work is grading its own homework."
+    "objectID": "slides/session01.html#one-person-in-each-group-does-this",
+    "href": "slides/session01.html#one-person-in-each-group-does-this",
+    "title": "1. Course Introduction",
+    "section": "One Person in Each Group Does This",
+    "text": "One Person in Each Group Does This\nTell GLM — one person in the group, once\n\nMake a folder in my workspace called [whatever you want to call it] and make it a git repository.\nAdd a .gitignore for csv, parquet, and .env files.\nCommit, then create a private GitHub repo of the same name and push to it."
   },
   {
-    "objectID": "slides/session01.html#three-checks-before-you-trust-it",
-    "href": "slides/session01.html#three-checks-before-you-trust-it",
-    "title": "Getting Started",
-    "section": "Three Checks Before You Trust It",
-    "text": "Three Checks Before You Trust It\n\n\nWhere did this come from?\nA citation you can click, a file you can open, or code you can read. If none of the three, treat it as a guess.\n\n\nWhat did it assume?\nEvery unstated choice was made for you. Ask what it decided that you did not specify.\n\n\nWould I catch it if it were wrong?\nIf not, that is the part to check by hand — not the part you already understand."
+    "objectID": "slides/session01.html#then-add-your-groupmates",
+    "href": "slides/session01.html#then-add-your-groupmates",
+    "title": "1. Course Introduction",
+    "section": "Then Add Your Groupmates",
+    "text": "Then Add Your Groupmates\nOn github.com, in the new repository\n\n\nSettings, then Collaborators, then Add people\nSearch each groupmate by their GitHub username\nThey get an email invitation, and have to accept it"
   },
   {
-    "objectID": "slides/session01.html#aqr-capital-management",
-    "href": "slides/session01.html#aqr-capital-management",
-    "title": "Getting Started",
-    "section": "AQR Capital Management",
-    "text": "AQR Capital Management\n\n\n1998 founded, out of Chicago and Goldman\n\n\n$189B under management\n\n\nNo. 1 largest hedge fund manager, 2025\n\n\nA firm whose entire investment process is an argument published in journals.\nBackground: AQR Capital Management"
+    "objectID": "slides/session01.html#everyone-else-joins",
+    "href": "slides/session01.html#everyone-else-joins",
+    "title": "1. Course Introduction",
+    "section": "Everyone Else Joins",
+    "text": "Everyone Else Joins\nTell GLM\n\nClone the GitHub repo [username]/[repo name] into my workspace.\n\n\nusername should be the username of the group member who created it. repo name is the name they used for the folder"
   },
   {
-    "objectID": "slides/session01.html#quality-minus-junk",
-    "href": "slides/session01.html#quality-minus-junk",
-    "title": "Getting Started",
-    "section": "Quality Minus Junk",
-    "text": "Quality Minus Junk\n\nAsness, Frazzini and Pedersen, “Quality minus junk”, Review of Accounting Studies, 2019.\n\nWatch the video\n\nQuality is one of the characteristics you will put in your own model in week three. This is where it comes from."
+    "objectID": "slides/session01.html#later-push-and-pull",
+    "href": "slides/session01.html#later-push-and-pull",
+    "title": "1. Course Introduction",
+    "section": "Later: Push and Pull",
+    "text": "Later: Push and Pull\nTell GLM, at the start of every session\n\nPull the latest from GitHub before we start.\n\nThen, at the end of the session\n\nCommit what we did and push it."
   },
   {
-    "objectID": "slides/session01.html#four-things",
-    "href": "slides/session01.html#four-things",
-    "title": "Getting Started",
-    "section": "Four Things",
-    "text": "Four Things\n\n\nSettle your group — two or three people\nSet up the group’s GitHub repository and Slack channel, and send me both\nRead the AQR background note\nBring a question about something GLM got wrong today\n\n\n\nThursday we start on valuation: what a company is worth compared with the companies it looks like."
+    "objectID": "slides/session01.html#when-git-pushes-back",
+    "href": "slides/session01.html#when-git-pushes-back",
+    "title": "1. Course Introduction",
+    "section": "When Git Pushes Back",
+    "text": "When Git Pushes Back\n\n\n\n\n\n\n\nWhat you see\nWhat to say\n\n\n\n\nrejected --- non-fast-forward\nSomeone pushed while you were working. “Pull their work, merge it, then push.”\n\n\nCONFLICT: automatic merge failed\nYou both edited the same lines. “Show me both versions and wait for me to choose.”\n\n\n\n\nRefuse these if asked: git push --force and git reset --hard"
   },
   {
     "objectID": "slides/session03.html#starting-today",
@@ -824,33 +670,5 @@
     "title": "Trading on Predictions",
     "section": "Three Things",
     "text": "Three Things\n\n\nGet the backtest running end to end, however crude\nRe-run it with ARY and datekey, and record what changed\nWrite the memory file, and push it\n\n\n\nThursday we stop borrowing the peer median and start predicting the multiple — which turns valuation into a regression, and gives you something to compare today’s result against."
-  },
-  {
-    "objectID": "slides/session01.html#one-folder-not-your-workspace",
-    "href": "slides/session01.html#one-folder-not-your-workspace",
-    "title": "Getting Started",
-    "section": "One Folder, Not Your Workspace",
-    "text": "One Folder, Not Your Workspace\n\n\nThe rule\nThe repository is a folder inside your workspace, named after your group.\nAll three of you end up with mgmt638-team1 sitting in your workspace.\n\nWhy it matters\nYour workspace also holds things that are yours alone — data you pulled, an experiment that went nowhere. Those are not the group’s business.\nAnd when everyone’s copy is at the same path, an instruction that works for one of you works for all of you."
-  },
-  {
-    "objectID": "slides/session01.html#one-person-creates-it",
-    "href": "slides/session01.html#one-person-creates-it",
-    "title": "Getting Started",
-    "section": "One Person Creates It",
-    "text": "One Person Creates It\nTell GLM — one person in the group, once\n\nMake a folder in my workspace called mgmt638-team1 and make it a git repository. Add a .gitignore for data/, *.parquet, *.duckdb, .env and __pycache__. Commit, then create a private GitHub repo of the same name and push to it.\n\n\nPick your own name. Everyone else in the group skips to the slide after next."
-  },
-  {
-    "objectID": "slides/session01.html#keep-the-data-out",
-    "href": "slides/session01.html#keep-the-data-out",
-    "title": "Getting Started",
-    "section": "Keep the Data Out",
-    "text": "Keep the Data Out\n\nThe .gitignore is not housekeeping. It is the difference between a repository that works and one that has to be rebuilt.\n\n\nTwenty years of market data is a few hundred megabytes. GitHub refuses files over a hundred, and it refuses them after the upload — so the push fails, slowly, and now the history has to be surgically repaired.\n\nYour code goes to GitHub. Your data gets pulled down again by running the code."
-  },
-  {
-    "objectID": "slides/session01.html#when-git-pushes-back",
-    "href": "slides/session01.html#when-git-pushes-back",
-    "title": "Getting Started",
-    "section": "When Git Pushes Back",
-    "text": "When Git Pushes Back\n\n\n\n\n\n\n\nWhat you see\nWhat to say\n\n\n\n\nrejected --- non-fast-forward\nSomeone pushed while you were working. “Pull their work, merge it with mine, then push.”\n\n\nCONFLICT: automatic merge failed\nYou both edited the same lines. “Show me both versions, tell me which is which, and wait for me to choose.”\n\n\n\n\nTwo commands to refuse: git push --force and git reset --hard. Both clear the error message by throwing away work — often a groupmate’s. If GLM proposes either, say no and tell it to pull and merge instead."
   }
 ]

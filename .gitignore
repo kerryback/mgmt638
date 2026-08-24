@@ -5,10 +5,18 @@ __pycache__/
 
 # Course materials
 
-# The staging folders files/sessionNN/ and the zip built from them stay local;
-# only the copy Quarto mirrors into docs/ is served, so that one is tracked.
+# Session material never enters the repo. files/sessionNN/ is a local staging
+# folder; the zip built from it is copied to ~/Dropbox/mgmt638-files/ and the
+# schedule links the Dropbox share URL. A session zip is tens of megabytes --
+# committing one puts it in the history permanently, and replacing it later
+# adds the whole size again rather than swapping it.
+#
+# Ignoring the staged contents also keeps them off the site: Quarto treats
+# every non-ignored project file as a resource and mirrors it into docs/.
+# .gitkeep stays tracked so the empty folders survive a clone.
 *.zip
-!docs/files/*.zip
+files/session*/*
+!files/session*/.gitkeep
 QuantEquity/
 
 # C extensions

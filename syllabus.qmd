@@ -17,8 +17,8 @@ J. Howard Creekmore Professor of Finance and Professor of Economics
 
 #### Meeting Schedule
 
-McNair 317<br>
-TTh<br>
+McNair 212<br>
+TTh 12:30--2:00<br>
 08/25/2026 -- 10/01/2026
 
 
@@ -28,6 +28,13 @@ The course is about building quantitative investment strategies with generative 
 
 The course is hands-on.  Most of what you learn, you will learn by building with your group.
 
+#### AI Tools
+
+Each person has an account at [lab638.kerryback.com](https://lab638.kerryback.com).  Sign in with your netid as your username and your student number (including the S0 at the beginning) as your password.  This logs you in to a Linux container on a cloud server.  
+
+The Claude Code harness is installed in each account, along with Python and other useful software and Claude skills.  Claude Code is connected to [GLM 4.7](https://z.ai/blog/glm-4.7), a relatively inexpensive yet capable large language model from Z.ai.  
+
+Security on the server is minimal, so **do not keep personal information on it.**
 
 #### Groups
 
@@ -35,7 +42,10 @@ Form groups of two or three students.  You will work with your group for the ent
 
 In the first week, each group should set up a shared GitHub repository, which all members of the group can push to.  All of the group's code, notebooks, and results live there.  It is what makes it possible for three people to work on the same project and for you to show what you did.
 
+One person in each group should tell 
+
 I also recommend a Slack channel for communication within your group, but it is your choice how you wish to communicate.  
+
 
 
 #### Class Structure

@@ -67,10 +67,6 @@ website:
     search: false
     title: MGMT 638
     href: index.html
-    right:
-        - text: Data Guide
-          href: https://portal-guide.rice-business.org
-          target: _blank
 
 format:
   html:

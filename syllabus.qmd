@@ -40,11 +40,7 @@ Security on the server is minimal, so **do not keep personal information on it.*
 
 Form groups of two or three students.  You will work with your group for the entire term, in class and on presentations.
 
-In the first week, each group should set up a shared GitHub repository, which all members of the group can push to.  All of the group's code, notebooks, and results live there.  It is what makes it possible for three people to work on the same project and for you to show what you did.
-
-One person in each group should tell 
-
-I also recommend a Slack channel for communication within your group, but it is your choice how you wish to communicate.  
+In the first week, each group should set up a shared GitHub repository, which all members of the group can push to. 
 
 
 

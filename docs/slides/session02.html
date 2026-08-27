@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-863a18946457129f4c20b0619df80186.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-ad9d6da6267b2ca2af52a465c31666ff.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -131,7 +131,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Median of Peer Multiples</h1>
-  <p class="subtitle">The Nasdaq data, and your first skill</p>
+  <p class="subtitle">The Nasdaq data, and what the peers say a company is worth</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -143,45 +143,28 @@ Kerry Back
 
   <p class="date">Thu Aug 27, 2026</p>
 </section>
-<section>
-<section id="today" class="title-slide slide level1 center">
-<h1>Today</h1>
-
-</section>
-<section id="three-things" class="slide level2 plain-title">
-<h2>Three Things</h2>
+<section id="today" class="slide level2">
+<h2>Today</h2>
 <div class="steps">
 <ol type="1">
-<li>The data — twenty-five years of fundamentals and prices, and how to reach it</li>
-<li>Skills — how you stop re-explaining yourself to the machine</li>
-<li>Build one — a valuation skill that prices a company off its peers</li>
+<li>The data</li>
+<li>Defining peers</li>
+<li>Multiples</li>
+<li>Exercise</li>
 </ol>
 </div>
-<div class="note">
-<p>By the end you will have something in your group’s repository that any of you can point at a ticker.</p>
-</div>
 </section>
-<section id="the-oldest-valuation-method-there-is" class="slide level2">
-<h2>The Oldest Valuation Method There Is</h2>
-<div class="lead">
-<p>A company is worth roughly what companies like it are worth.</p>
-</div>
-<div class="note note-plum">
-<p>No forecast, no discount rate, no terminal value. Find the peers, take the middle of their multiples, apply it. It is what a banker does on the back of an envelope, and it is a real benchmark — hard to beat and easy to check.</p>
-</div>
-<p>The whole method is three decisions: which multiple, which peers, and what to do with the ones that do not make sense.</p>
-</section></section>
 <section>
 <section id="the-data" class="title-slide slide level1 center">
 <h1>The Data</h1>
 
 </section>
-<section id="the-rice-business-data-portal" class="slide level2">
-<h2>The Rice Business Data Portal</h2>
+<section id="the-sharadar-core-us-equities-bundle" class="slide level2">
+<h2>The Sharadar Core US Equities Bundle</h2>
 <div class="cards cards-3">
 <div class="card">
 <p><span class="card-title">What is in it</span></p>
-<p>Every NYSE and Nasdaq listed common stock, beginning in 2000.</p>
+<p>Every NYSE, NASDAQ and NYSEMKT common stock, 2000 to today.</p>
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Where it comes from</span></p>
@@ -189,42 +172,19 @@ Kerry Back
 </div>
 <div class="card">
 <p><span class="card-title">What it is</span></p>
-<p>A DuckDB database. Queries are read-only — <code>SELECT</code> and nothing else.</p>
+<p>Nine tables online at <a href="https://motherduck.com" target="_blank">motherduck.com</a></p>
 </div>
 </div>
-<p><a href="https://data-portal.rice-business.org" target="_blank">data-portal.rice-business.org</a></p>
+<p><a href="https://data.nasdaq.com/databases/SFA" target="_blank">data.nasdaq.com/databases/SFA</a> — the Sharadar Core U.S. Equity Bundle</p>
 </section>
-<section id="get-your-token" class="slide level2 band-bottom">
-<h2>Get Your Token</h2>
-<div class="steps">
-<ol type="1">
-<li>Register at the portal with your <code>rice.edu</code> address</li>
-<li>You are issued an access token, good for six months</li>
-<li>Put it where the lab can find it — not in a file you commit</li>
-</ol>
+<section id="how-you-reach-it" class="slide level2 band-bottom">
+<h2>How You Reach It</h2>
+<div class="lead">
+<p>Ask AI to do it. It will read ~/workspace/.claude/skills/finance-data/SKILL.md to see how to do it.</p>
 </div>
-<div class="note note-plum">
-<p>The token is yours. A token in a public repository is a token somebody else is using by Thursday.</p>
-</div>
-</section>
-<section id="three-doors-into-it" class="slide level2">
-<h2>Three Doors Into It</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">The web interface</span></p>
-<p>A query window with an AI assistant that writes the SQL for you. Good for looking around.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">The Python client</span></p>
-<p>A library for notebooks and scripts. This is what your analysis will use.</p>
-</div>
-<div class="card">
-<p><span class="card-title">The MCP server</span></p>
-<p>GLM queries the database directly, without you writing anything.</p>
-</div>
-</div>
+<p>The SKILL.md explains where the database lives, which table answers which question, and the traps in each one.</p>
 <div class="note">
-<p>The third one is how we will work today. It is also the one that makes it easy to stop paying attention — so we will keep looking at the SQL.</p>
+<p>Ask for US stocks and it uses the bundle. Ask for something the bundle does not carry — short interest, bond yields, … — and it routes to a free public source instead.</p>
 </div>
 </section>
 <section id="what-is-in-there" class="slide level2 plain-title">
@@ -239,61 +199,46 @@ Kerry Back
 <tbody>
 <tr class="odd">
 <td><code>sep</code></td>
-<td>Daily open, high, low, close, adjusted close, volume</td>
+<td>Daily prices — 33.4M rows, 2000 to today</td>
 </tr>
 <tr class="even">
 <td><code>daily</code></td>
-<td>Daily valuation ratios and market cap</td>
+<td>Daily market cap and valuation ratios</td>
 </tr>
 <tr class="odd">
-<td><code>metrics</code></td>
-<td>Daily moving averages and other statistics</td>
+<td><code>sf1</code></td>
+<td>10-K and 10-Q data, 112 fields, plus precomputed ratios</td>
 </tr>
 <tr class="even">
-<td><code>sf1</code></td>
-<td>10-K and 10-Q data, and pre-computed financial ratios</td>
-</tr>
-<tr class="odd">
 <td><code>sf2</code></td>
 <td>Insider trades, from Form 4</td>
 </tr>
-<tr class="even">
-<td><code>tickers</code></td>
-<td>Industry, sector, exchange, size category</td>
-</tr>
 <tr class="odd">
+<td><code>tickers</code></td>
+<td>Identity, classification, exchange, listing dates</td>
+</tr>
+<tr class="even">
 <td><code>actions</code></td>
 <td>Mergers, splits, dividends, ticker changes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>events</code></td>
-<td>SEC 8-K filings and material corporate events</td>
+<td>8-K event codes</td>
 </tr>
 </tbody>
 </table>
-<div class="note">
-<p>A Table Descriptions page on the portal lists every variable in every table.</p>
-</div>
 </section>
-<section id="today-we-need-three-of-them" class="slide level2">
-<h2>Today We Need Three of Them</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title"><code>daily</code></span></p>
-<p><code>pe</code>, <code>pb</code>, <code>ps</code>, <code>ev</code>, <code>evebit</code>, <code>evebitda</code>, <code>marketcap</code> — one row per stock per day.</p>
+<section id="the-table-that-describes-the-tables" class="slide level2">
+<h2>The Table That Describes the Tables</h2>
+<div class="lead">
+<p><code>indicators</code> is the data dictionary: one row for every column in the bundle, with a definition.</p>
 </div>
-<div class="card card-blue">
-<p><span class="card-title"><code>tickers</code></span></p>
-<p><code>sector</code>, <code>industry</code>, <code>exchange</code>, <code>scalemarketcap</code>. This is what makes a peer group a peer group.</p>
-</div>
-<div class="card">
-<p><span class="card-title"><code>sf1</code></span></p>
-<p>The filings. Revenue, earnings, book value, and the ratios computed from them.</p>
-</div>
+<div class="note note-plum">
+<p>It also documents some Sharadar tables that are not in the MotherDuck database — 13F institutional holdings, ETF prices, S&amp;P 500 index membership.</p>
 </div>
 </section>
 <section id="sf1-has-dimensions" class="slide level2 band-bottom">
-<h2><code>sf1</code> Has Dimensions</h2>
+<h2>sf1 Has Dimensions</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -319,89 +264,208 @@ Kerry Back
 </tbody>
 </table>
 <div class="note note-plum">
-<p>Today we use <code>MRY</code> — annual, most recent restatement. It is the cleanest view of what a company earned. When we start backtesting, we will have to switch, because <code>MRY</code> tells you today what nobody knew at the time.</p>
+<p>Today we use <code>MRY</code> — we are describing companies as they stand. But in every <code>MR</code> row <code>datekey</code> is the period-end date copied over, so <code>MR</code> does not know when the numbers became public. Backtests use <code>ARY</code>, keyed on <code>datekey</code>, which is the real SEC filing date.</p>
 </div>
 </section>
-<section id="three-things-that-trip-everyone" class="slide level2 plain-title">
-<h2>Three Things That Trip Everyone</h2>
+<section id="which-stocks-are-you-even-looking-at" class="slide level2 plain-title">
+<h2>Which Stocks Are You Even Looking At?</h2>
 <table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
+<thead>
+<tr class="header">
+<th>Filter</th>
+<th>Companies left</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
-<td>Dates are text</td>
-<td>Cast before you compare or sort: <code>date::DATE</code>, <code>reportperiod::DATE</code></td>
+<td>Every ticker in <code>tickers</code></td>
+<td>15,607</td>
 </tr>
 <tr class="even">
-<td><code>sf1</code> has no <code>date</code></td>
-<td>Use <code>reportperiod</code> for the fiscal period end, <code>datekey</code> for the filing date</td>
+<td>Still listed — <code>isdelisted = 'N'</code></td>
+<td>4,355</td>
 </tr>
 <tr class="odd">
-<td>Market cap is in thousands</td>
-<td>In <code>daily</code>. A $2T company shows up as 2,000,000,000</td>
+<td>Drop shell companies — 315 SPACs with no operations</td>
+<td>4,039</td>
+</tr>
+</tbody>
+</table>
+<div class="note note-plum">
+<p>Two filters, because the bundle has already done the rest. It holds only NYSE, NASDAQ and NYSEMKT common stock, and share classes are already collapsed — GOOG is not a row, it sits in GOOGL’s <code>relatedtickers</code>. Against raw Sharadar you would have to strip ADRs, Canadian listings, preferred and secondary classes yourself.</p>
+</div>
+</section>
+<section id="closeadj-and-periodic-returns" class="slide level2">
+<h2>closeadj and Periodic Returns</h2>
+<blockquote>
+<p>The skill tells the AI how to compute periodic returns using the <code>closeadj</code> variable, which adjusts for dividends as well as splits (like Yahoo Finance adjusted closing price).</p>
+</blockquote>
+<blockquote>
+<p>So, we can say, for example, “compute monthly returns for all stocks from date1 to date2.”</p>
+</blockquote>
+</section></section>
+<section>
+<section id="peer-groups" class="title-slide slide level1 center">
+<h1>Peer Groups</h1>
+
+</section>
+<section id="six-ways-to-say-industry" class="slide level2">
+<h2>Six Ways to Say “Industry”</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Groups</th>
+<th>Scheme</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sector</code></td>
+<td>11</td>
+<td>Morningstar-style sectors</td>
+</tr>
+<tr class="even">
+<td><code>industry</code></td>
+<td>151</td>
+<td>Morningstar-style industries</td>
+</tr>
+<tr class="odd">
+<td><code>sicsector</code></td>
+<td>10</td>
+<td>The SEC’s SIC divisions</td>
+</tr>
+<tr class="even">
+<td><code>sicindustry</code></td>
+<td>437</td>
+<td>SIC industry titles</td>
+</tr>
+<tr class="odd">
+<td><code>siccode</code></td>
+<td>437</td>
+<td>The four-digit code itself</td>
+</tr>
+<tr class="even">
+<td><code>famaindustry</code></td>
+<td>48</td>
+<td>Fama and French’s 49 industries</td>
 </tr>
 </tbody>
 </table>
 <div class="note">
-<p>Each of these produces an answer, not an error. That is what makes them expensive.</p>
+<p>All six sit in <code>tickers</code>.</p>
+</div>
+</section>
+<section id="how-large-are-peer-groups" class="slide level2 plain-title">
+<h2>How Large are Peer Groups</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Grouping</th>
+<th>Groups</th>
+<th>Median group</th>
+<th>Median cell</th>
+<th>Cells under 10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sector</code></td>
+<td>11</td>
+<td>229</td>
+<td>51</td>
+<td>2%</td>
+</tr>
+<tr class="even">
+<td><code>famaindustry</code></td>
+<td>49</td>
+<td>50</td>
+<td>10</td>
+<td>50%</td>
+</tr>
+<tr class="odd">
+<td><code>industry</code></td>
+<td>143</td>
+<td>16</td>
+<td>4</td>
+<td>84%</td>
+</tr>
+<tr class="even">
+<td><code>sicindustry</code></td>
+<td>379</td>
+<td>4</td>
+<td>2</td>
+<td>93%</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>The 4,039 live, non-shell companies, crossed with market-cap quintiles built from <code>daily.marketcap</code>. Note that nineteen companies have a blank <code>famaindustry</code> and will form a peer group of their own if not dropped.</p>
 </div>
 </section></section>
 <section>
-<section id="pulling-it" class="title-slide slide level1 center">
-<h1>Pulling It</h1>
+<section id="four-multiples" class="title-slide slide level1 center">
+<h1>Four Multiples</h1>
 
 </section>
-<section id="start-by-looking-around" class="slide level2">
-<h2>Start by Looking Around</h2>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>Using the data portal, show me the columns in <code>daily</code> and <code>tickers</code>, and give me five rows of each.</p>
-</blockquote>
-<div class="note">
-<p>Before any analysis, look at the actual rows. Half of the mistakes in this course get caught here, in thirty seconds, by someone who looked.</p>
-</div>
-</section>
-<section id="the-pull" class="slide level2 band-bottom">
-<h2>The Pull</h2>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>For the most recent date in <code>daily</code>, get <code>ticker</code>, <code>pe</code>, and <code>marketcap</code> for every stock. Join <code>sector</code> and <code>industry</code> from <code>tickers</code>. Then pull the <code>MRY</code> rows from <code>sf1</code> for the most recent fiscal year and bring in revenue, net income, and shares outstanding. Show me the SQL before you run it.</p>
-</blockquote>
-<div class="note note-plum">
-<p>That last sentence is the entire lesson from Tuesday, in six words.</p>
-</div>
-</section>
-<section id="read-the-sql" class="slide level2 plain-title">
-<h2>Read the SQL</h2>
-<div class="lead">
-<p>You are not checking whether it is elegant. You are checking four things.</p>
-</div>
+<section id="what-you-multiply-by-what" class="slide level2 plain-title">
+<h2>What You Multiply by What</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
+<thead>
+<tr class="header">
+<th>Multiple</th>
+<th>Column in <code>daily</code></th>
+<th>Company’s own figure in <code>sf1</code></th>
+<th>Gives you</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
-<td>Did it filter the dimension?</td>
-<td>Without <code>dimension = 'MRY'</code> you get six rows per company-year</td>
+<td>Price / earnings</td>
+<td><code>pe</code></td>
+<td><code>netinccmnusd</code></td>
+<td>Equity value</td>
 </tr>
 <tr class="even">
-<td>Did it cast the dates?</td>
-<td>Text comparison on dates goes wrong quietly</td>
+<td>Price / book</td>
+<td><code>pb</code></td>
+<td><code>equityusd</code></td>
+<td>Equity value</td>
 </tr>
 <tr class="odd">
-<td>Is the join key right?</td>
-<td><code>ticker</code> is not unique across time — see <code>actions</code></td>
+<td>Price / sales</td>
+<td><code>ps</code></td>
+<td><code>revenueusd</code></td>
+<td>Equity value</td>
 </tr>
 <tr class="even">
-<td>How many rows came back?</td>
-<td>You know roughly how many listed stocks there are</td>
+<td>EV / EBITDA</td>
+<td><code>evebitda</code></td>
+<td><code>ebitdausd</code></td>
+<td>Enterprise value</td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="value-it-four-ways" class="slide level2">
+<h2>Value It Four Ways</h2>
+<div class="steps">
+<ol type="1">
+<li>Fix the peer set — same industry, same size bucket, same date — and count it</li>
+<li>Take the median of each of the four multiples across those peers</li>
+<li>Multiply each median by the company’s own denominator</li>
+<li>For EV/EBITDA, cross back from enterprise value to equity</li>
+</ol>
+</div>
+<div class="note">
+<p>Four implied equity values for one company. Compare each with the market cap it actually trades at.</p>
+</div>
 </section>
 <section id="what-a-pe-of-12-means" class="slide level2">
 <h2>What a P/E of –12 Means</h2>
@@ -409,29 +473,14 @@ Kerry Back
 <p>Nothing. It means the company lost money.</p>
 </div>
 <div class="note note-plum">
-<p>A negative P/E is not a cheap stock. It is a stock with no E. Left in the sample it drags the median in the wrong direction and makes the cheapest-looking companies the ones that are losing the most.</p>
+<p>A negative P/E is not a cheap stock. It is a stock with no E. Left in the sample it drags the median in the wrong direction and makes the cheapest-looking companies the ones losing the most.</p>
 </div>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>Drop the negative P/E rows, and show me how many you dropped by sector.</p>
-</blockquote>
-</section>
-<section id="look-before-you-compute" class="slide level2 plain-title">
-<h2>Look Before You Compute</h2>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>Histogram of P/E across all stocks. Then the same by sector, and a table of the count, median, and the 10th and 90th percentiles in each.</p>
-</blockquote>
+<p>EV/EBITDA fails the same way on negative EBITDA. P/B is close to meaningless where the assets walk out of the building at six o’clock — and it means something else again for a bank, where the balance sheet <em>is</em> the business. P/S always exists, which is not the same as always meaning something.</p>
 <div class="note">
-<p>You are looking for two things: how fat the right tail is, and whether the sectors actually differ. If they do not, the peer group is doing no work and the method has nothing to offer.</p>
+<p>Filter out the negative values. We won’t try to value them or to use them for valuing others.</p>
 </div>
-</section></section>
-<section>
-<section id="median-of-peers" class="title-slide slide level1 center">
-<h1>Median of Peers</h1>
-
 </section>
-<section id="why-the-median" class="slide level2 compare">
+<section id="why-the-median" class="slide level2 compare plain-title">
 <h2>Why the Median</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -441,213 +490,108 @@ Kerry Back
 <p><span class="eyebrow">The median</span></p>
 <p>Unmoved by the tail. With ratios, where the numerator is bounded below and the denominator can approach zero, this is not a refinement. It is the difference between a number and noise.</p>
 </div></div>
-</section>
-<section id="which-peers" class="slide level2 band-bottom">
-<h2>Which Peers?</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Sector</span></p>
-<p>Eleven of them. Always enough companies, often not comparable ones.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Industry</span></p>
-<p>Much finer. Sometimes four companies, and then the median is one company’s P/E.</p>
-</div>
-<div class="card">
-<p><span class="card-title">Industry and size</span></p>
-<p>Better in principle. Cuts the group again, so you need to watch the count.</p>
-</div>
-</div>
-<div class="note note-plum">
-<p>There is no correct answer. There is a choice you make, write down, and defend when you present.</p>
-</div>
-</section>
-<section id="the-calculation" class="slide level2">
-<h2>The Calculation</h2>
-<div class="steps">
-<ol type="1">
-<li>Group the stocks by peer set, and drop the ones with no meaningful P/E</li>
-<li>Take the median P/E in each group</li>
-<li>Multiply it by the company’s own earnings per share</li>
-<li>Compare with the price it actually trades at</li>
-</ol>
-</div>
 <div class="note">
-<p>The gap is the whole output. A company trading well below its peer median is either cheap or different, and the method cannot tell you which.</p>
+<p>Report the count alongside every median. A median of four is a different object from a median of four hundred, and the table does not tell you which you have.</p>
 </div>
 </section>
-<section id="now-do-it" class="slide level2 plain-title">
-<h2>Now Do It</h2>
-<p><span class="eyebrow">Tell GLM</span></p>
+<section id="deviations" class="slide level2">
+<h2>Deviations</h2>
 <blockquote>
-<p>Compute the median P/E within each industry. For every stock, report its own P/E, its industry median, and the ratio of the two. Show me the twenty most expensive and the twenty cheapest by that ratio.</p>
+<p>Deviation = log( market cap / implied value ).</p>
+</blockquote>
+<p>Positive means the market pays more for this company than its peers say it is worth. Negative means the company is cheap compared to peers.</p>
+</section></section>
+<section>
+<section id="organizing-your-work" class="title-slide slide level1 center">
+<h1>Organizing your Work</h1>
+
+</section>
+<section id="claude.md" class="slide level2">
+<h2>CLAUDE.md</h2>
+<div class="lead">
+<p>What is always true in this folder: what the project is, where things live, the conventions, and what never to do.</p>
+</div>
+<p>It is read at the start of every session in that folder, before you type anything.</p>
+<div class="note note-plum">
+<p>Three people, three containers, one repository. <code>CLAUDE.md</code> is how a decision one of you makes on Thursday is still in force when somebody else opens the folder on Sunday. Everything you type into a prompt window instead dies with that conversation.</p>
+</div>
+</section>
+<section id="tell-claude-to-edit-it" class="slide level2 band-bottom">
+<h2>Tell Claude to Edit It</h2>
+<p><span class="eyebrow">When your group settles something:</span></p>
+<blockquote>
+<p>Add to <code>CLAUDE.md</code>: peers are <code>famaindustry</code> crossed with market cap quintiles; minimum group size is eight.</p>
 </blockquote>
 <div class="note">
-<p>Read the two lists. If the cheap list is all one industry, or all tiny companies, something in the peer definition is doing work you did not intend.</p>
+<p>You never open the file yourself. You say what you decided and the AI writes it down.</p>
 </div>
+</section>
+<section id="keep-a-record-of-scripts-and-outputs" class="slide level2 plain-title">
+<h2>Keep a Record of Scripts and Outputs</h2>
+<p><span class="eyebrow">Put this in <code>CLAUDE.md</code></span></p>
+<blockquote>
+<p>After running any script, append a row to <code>RUNS.md</code>: who ran it, the date and time, the script, and where the output went.</p>
+</blockquote>
+<div class="note note-plum">
+<p>Keep the log in its own file. <code>CLAUDE.md</code> is read at the top of every session, so a hundred rows of history there is a hundred rows you would pay for on every prompt.</p>
+</div>
+</section>
+<section id="use-ai-to-pull-commit-and-push" class="slide level2">
+<h2>Use AI to Pull, Commit, and Push</h2>
+<blockquote>
+<p>Let GLM run Git for you. It will write better commit messages and resolve merge conflicts.</p>
+</blockquote>
+</section>
+<section id="data-files" class="slide level2">
+<h2>Data Files</h2>
+<ul>
+<li>Keep your data files in your workspace so you don’t waste time getting the data each time</li>
+<li>Parquet is the fastest file type for reading and writing and also the smallest</li>
+<li>Tell GLM to gitignore them. This means they won’t be pushed to GitHub.</li>
+<li>Pushing large files to GitHub is slow, and GitHuB rejects files &gt; 100MB.</li>
+</ul>
 </section></section>
 <section>
-<section id="skills" class="title-slide slide level1 center">
-<h1>Skills</h1>
+<section id="exercise" class="title-slide slide level1 center">
+<h1>Exercise</h1>
 
 </section>
-<section id="stop-re-explaining-yourself" class="slide level2">
-<h2>Stop Re-Explaining Yourself</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Always on</span></p>
-<p>Applies to every conversation you have.</p>
-<p>Who you are, how you want to be written to, what never to do.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Per project</span></p>
-<p>Applies inside one folder.</p>
-<p>This course, this dataset, its quirks.</p>
-</div>
-<div class="card">
-<p><span class="card-title">When relevant</span></p>
-<p>A skill: read only when what you asked matches what it is for.</p>
-</div>
-</div>
-<div class="note note-plum">
-<p>Three scopes, and the third is the interesting one — because it costs nothing until it applies.</p>
-</div>
-</section>
-<section id="a-skill-is-written-instructions-filed-where-they-can-be-found" class="slide level2">
-<h2>A Skill Is Written Instructions, Filed Where They Can Be Found</h2>
-<p>A folder with a <code>SKILL.md</code> in it. Two parts: a line saying when to use it, and the instructions for how.</p>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">At startup</span></p>
-<p>It reads only the name and the one-line description — a few dozen words per skill.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">When it matches</span></p>
-<p>Only then does it open the file and read the rest.</p>
-</div>
-<div class="card">
-<p><span class="card-title">Which is why you can have many</span></p>
-<p>A hundred installed skills cost nothing until one of them is relevant.</p>
-</div>
-</div>
-<div class="note">
-<p>Not a plugin, and not code. A written procedure.</p>
-</div>
-</section>
-<section id="claude.md-versus-a-skill" class="slide level2 compare">
-<h2><code>CLAUDE.md</code> Versus a Skill</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow"><code>CLAUDE.md</code> — always read</span></p>
-<p>What is always true here: what the project is, where things live, the conventions, what never to do.</p>
-<p>Read at the start of every session in that folder.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">A skill — read when relevant</span></p>
-<p>A procedure for a particular kind of job.</p>
-<p>Standing facts go in <code>CLAUDE.md</code>. Procedures go in skills.</p>
-</div></div>
-<div class="note">
-<p>Ask GLM to write the first <code>CLAUDE.md</code> for you — it will read the folder and draft it.</p>
-</div>
-</section>
-<section id="why-this-matters-to-a-group" class="slide level2 band-bottom">
-<h2>Why This Matters to a Group</h2>
-<div class="lead">
-<p>The skill is a file. The file is in the repository.</p>
-</div>
-<div class="note note-plum">
-<p>Which means the decision is made once, by one of you, and the other two get it by pulling. It also means the decision is visible: when you present, the skill is the record of what you chose and why.</p>
-</div>
-<p>Every ad-hoc instruction typed into a prompt window dies with that conversation.</p>
-</section></section>
-<section>
-<section id="build-one" class="title-slide slide level1 center">
-<h1>Build One</h1>
-
-</section>
-<section id="get-it-right-once-then-save-it" class="slide level2">
-<h2>Get It Right Once, Then Save It</h2>
+<section id="todays-work" class="slide level2">
+<h2>Today’s Work</h2>
 <div class="steps">
 <ol type="1">
-<li>Get the peer-median valuation working the way you want it, in a conversation</li>
-<li>Say: save that as a skill</li>
-<li>Start a fresh session and ask it to value a different company</li>
+<li>Build the peer table — universe, industry grouping, size buckets, and the count in every cell</li>
+<li>Take the four medians in each cell, and value every company four ways</li>
+<li>Which median multiple matches the market the best?</li>
+<li>Why do medians deviate from the market — is it asset turnover, margins, leverage, investment rate, … — using the most recent 10K (sf1 with dimension = MRY)?</li>
 </ol>
 </div>
 <div class="note">
-<p>Step 3 is the test. If it needs to be told anything you already decided, the skill is not finished.</p>
+<p>Step 1 is the one that takes the longest and the one everything else rests on. Do not let it be the step you rush.</p>
 </div>
 </section>
-<section id="what-has-to-be-written-down" class="slide level2 plain-title">
-<h2>What Has to Be Written Down</h2>
-<div class="cards cards-3">
+<section id="what-to-present-tuesday" class="slide level2 band-bottom">
+<h2>What to Present Tuesday</h2>
+<div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">The decisions</span></p>
-<p>Which multiple. Which peer definition. Median, not mean. What the minimum group size is.</p>
+<p><span class="card-title">The peer definition</span></p>
+<p>Which grouping, which size buckets, what minimum count — and the cell counts that justify it.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">The traps</span></p>
-<p><code>dimension = 'MRY'</code>. Cast the dates. Market cap is in thousands. Drop negative earnings.</p>
+<p><span class="card-title">Coverage</span></p>
+<p>How many of the companies got a value under each of the four multiples, and which multiple lost the most.</p>
 </div>
 <div class="card">
-<p><span class="card-title">The output</span></p>
-<p>What it should hand back every time: the peer set and its size, the median, the implied value, the gap.</p>
+<p><span class="card-title">What the deviations track</span></p>
+<p>Profitability, growth, leverage — or nothing.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">The disagreement case</span></p>
+<p>The company where the four methods were furthest apart, and your diagnosis.</p>
 </div>
 </div>
 <div class="note note-plum">
-<p>The middle card is the one that pays for itself. Those four traps will otherwise bite each of you, separately, for six weeks.</p>
-</div>
-</section>
-<section id="exercise" class="slide level2">
-<h2>Exercise</h2>
-<div class="steps">
-<ol type="1">
-<li>Build the skill in your group’s repository</li>
-<li>Test it on a company none of you used while building it</li>
-<li>Then test it on a bank, and on a company that lost money last year</li>
-<li>Commit and push it</li>
-</ol>
-</div>
-<div class="note">
-<p>Steps 2 and 3 are where you find out what you left implicit. Write down what broke — it is what you will present on Tuesday.</p>
-</div>
-</section>
-<section id="where-it-will-fail" class="slide level2 band-bottom">
-<h2>Where It Will Fail</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">The industry of one</span></p>
-<p>A peer group with three companies in it has a median that is one company’s opinion.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Financials</span></p>
-<p>P/E means something different for a bank. So does book value.</p>
-</div>
-<div class="card">
-<p><span class="card-title">Growth</span></p>
-<p>Two companies in the same industry with different growth rates should not trade at the same multiple. The method assumes they do.</p>
-</div>
-</div>
-<div class="note">
-<p>The third one is what Thursday of next week is about: predicting the multiple instead of borrowing it.</p>
-</div>
-</section></section>
-<section>
-<section id="before-tuesday" class="title-slide slide level1 center">
-<h1>Before Tuesday</h1>
-
-</section>
-<section id="three-things-1" class="slide level2 plain-title">
-<h2>Three Things</h2>
-<div class="steps">
-<ol type="1">
-<li>Finish the skill, and push it</li>
-<li>Run it on five companies you know something about, and see whether the answers are sane</li>
-<li>Bring the one case where it was most obviously wrong</li>
-</ol>
-</div>
-<div class="note note-plum">
-<p>Tuesday we turn this into a trade: rank every stock by the gap, buy the cheap ones, sell the expensive ones, and find out what that would have earned.</p>
+<p>Five minutes, from the repository. Three groups drawn at random — so all of you are ready.</p>
 </div>
 
 
@@ -833,12 +777,14 @@ Kerry Back
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1280,
 
-        height: 700,
+        height: 720,
 
         // Factor of the display size that should remain empty around the content
         margin: 0,
+
+        maxScale: 5,
 
         math: {
           mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',

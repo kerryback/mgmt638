@@ -3,6 +3,11 @@ title: "Linear Regression for Multiples"
 subtitle: "One cross-section, then twenty-five of them"
 author: "Kerry Back"
 date: "2026-09-03"
+format:
+  revealjs:
+    theme: shoji2.scss
+    width: 1050
+    height: 700
 ---
 
 # Presentations

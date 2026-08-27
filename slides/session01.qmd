@@ -4,6 +4,11 @@ subtitle: "MGMT 638, Fall 2026"
 
 author: "Kerry Back"
 date: "2026-08-25"
+format:
+  revealjs:
+    theme: shoji.scss
+    width: 1050
+    height: 700
 ---
 
 

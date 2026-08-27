@@ -3,6 +3,11 @@ title: "Session 7"
 subtitle: "Topic TBD"
 author: "Kerry Back"
 date: "2026-09-15"
+format:
+  revealjs:
+    theme: shoji2.scss
+    width: 1050
+    height: 700
 ---
 
 ## Agenda

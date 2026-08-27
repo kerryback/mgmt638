@@ -1,49 +1,36 @@
 ---
 title: "Median of Peer Multiples"
-subtitle: "The Nasdaq data, and your first skill"
+subtitle: "The Nasdaq data, and what the peers say a company is worth"
 author: "Kerry Back"
 date: "2026-08-27"
+format:
+  revealjs:
+    theme: shoji2.scss
+    width: 1280
+    height: 720
+    max-scale: 5
 ---
 
-# Today
 
-## Three Things {.plain-title}
+## Today
 
 ::: {.steps}
-1. The data --- twenty-five years of fundamentals and prices, and how to reach it
-2. Skills --- how you stop re-explaining yourself to the machine
-3. Build one --- a valuation skill that prices a company off its peers
+1. The data 
+2. Defining peers
+3. Multiples
+4. Exercise
 :::
 
-::: {.note}
-By the end you will have something in your group's repository that any of you can
-point at a ticker.
-:::
-
-## The Oldest Valuation Method There Is
-
-::: {.lead}
-A company is worth roughly what companies like it are worth.
-:::
-
-::: {.note .note-plum}
-No forecast, no discount rate, no terminal value. Find the peers, take the
-middle of their multiples, apply it. It is what a banker does on the back of an
-envelope, and it is a real benchmark --- hard to beat and easy to check.
-:::
-
-The whole method is three decisions: which multiple, which peers, and what to do
-with the ones that do not make sense.
 
 # The Data
 
-## The Rice Business Data Portal
+## The Sharadar Core US Equities Bundle
 
 ::: {.cards .cards-3}
 ::: {.card}
 [What is in it]{.card-title}
 
-Every NYSE and Nasdaq listed common stock, beginning in 2000.
+Every NYSE, NASDAQ and NYSEMKT common stock, 2000 to today.
 :::
 
 ::: {.card .card-blue}
@@ -55,95 +42,54 @@ Licensed by Rice Business from Nasdaq Data Link.
 ::: {.card}
 [What it is]{.card-title}
 
-A DuckDB database. Queries are read-only --- `SELECT` and nothing else.
+Nine tables online at [motherduck.com](https://motherduck.com){target="_blank"}
 :::
 :::
 
-[data-portal.rice-business.org](https://data-portal.rice-business.org){target="_blank"}
+[data.nasdaq.com/databases/SFA](https://data.nasdaq.com/databases/SFA){target="_blank"} --- the Sharadar Core U.S. Equity Bundle
 
-## Get Your Token {.band-bottom}
+## How You Reach It {.band-bottom}
 
-::: {.steps}
-1. Register at the portal with your `rice.edu` address
-2. You are issued an access token, good for six months
-3. Put it where the lab can find it --- not in a file you commit
+::: {.lead}
+Ask AI to do it. It will read ~/workspace/.claude/skills/finance-data/SKILL.md to see how to do it.  
 :::
 
-::: {.note .note-plum}
-The token is yours. A token in a public repository is a token somebody else is
-using by Thursday.
-:::
-
-## Three Doors Into It
-
-::: {.cards .cards-3}
-::: {.card}
-[The web interface]{.card-title}
-
-A query window with an AI assistant that writes the SQL for you. Good for
-looking around.
-:::
-
-::: {.card .card-blue}
-[The Python client]{.card-title}
-
-A library for notebooks and scripts. This is what your analysis will use.
-:::
-
-::: {.card}
-[The MCP server]{.card-title}
-
-GLM queries the database directly, without you writing anything.
-:::
-:::
+The SKILL.md explains where the database lives, which
+table answers which question, and the traps in each one.
 
 ::: {.note}
-The third one is how we will work today. It is also the one that makes it easy
-to stop paying attention --- so we will keep looking at the SQL.
+Ask for US stocks and it uses the bundle. Ask for something the bundle does not
+carry --- short interest, bond yields, ... --- and it routes to
+a free public source instead.
 :::
+
 
 ## What Is in There {.plain-title}
 
 | Table | Contents |
 |---|---|
-| `sep` | Daily open, high, low, close, adjusted close, volume |
-| `daily` | Daily valuation ratios and market cap |
-| `metrics` | Daily moving averages and other statistics |
-| `sf1` | 10-K and 10-Q data, and pre-computed financial ratios |
+| `sep` | Daily prices --- 33.4M rows, 2000 to today |
+| `daily` | Daily market cap and valuation ratios |
+| `sf1` | 10-K and 10-Q data, 112 fields, plus precomputed ratios |
 | `sf2` | Insider trades, from Form 4 |
-| `tickers` | Industry, sector, exchange, size category |
+| `tickers` | Identity, classification, exchange, listing dates |
 | `actions` | Mergers, splits, dividends, ticker changes |
-| `events` | SEC 8-K filings and material corporate events |
+| `events` | 8-K event codes |
 
-::: {.note}
-A Table Descriptions page on the portal lists every variable in every table.
+## The Table That Describes the Tables 
+
+::: {.lead}
+`indicators` is the data dictionary: one row for every column in the bundle,
+with a definition.
 :::
 
-## Today We Need Three of Them
 
-::: {.cards .cards-3}
-::: {.card}
-[`daily`]{.card-title}
-
-`pe`, `pb`, `ps`, `ev`, `evebit`, `evebitda`, `marketcap` --- one row per stock
-per day.
+::: {.note .note-plum}
+It also documents some Sharadar tables that are not in the MotherDuck database --- 13F institutional
+holdings, ETF prices, S&P 500 index membership. 
 :::
 
-::: {.card .card-blue}
-[`tickers`]{.card-title}
-
-`sector`, `industry`, `exchange`, `scalemarketcap`. This is what makes a peer
-group a peer group.
-:::
-
-::: {.card}
-[`sf1`]{.card-title}
-
-The filings. Revenue, earnings, book value, and the ratios computed from them.
-:::
-:::
-
-## `sf1` Has Dimensions {.band-bottom}
+## sf1 Has Dimensions {.band-bottom}
 
 | | Annual | Quarterly | Trailing four quarters |
 |---|---|---|---|
@@ -151,63 +97,97 @@ The filings. Revenue, earnings, book value, and the ratios computed from them.
 | As originally reported | `ARY` | `ARQ` | `ART` |
 
 ::: {.note .note-plum}
-Today we use `MRY` --- annual, most recent restatement. It is the cleanest view
-of what a company earned. When we start backtesting, we will have to switch,
-because `MRY` tells you today what nobody knew at the time.
+Today we use `MRY` --- we are describing companies as they stand. But in every
+`MR` row `datekey` is the period-end date copied over, so `MR` does not know
+when the numbers became public. Backtests use `ARY`, keyed on `datekey`, which
+is the real SEC filing date.
 :::
 
-## Three Things That Trip Everyone {.plain-title}
 
-| | |
+## Which Stocks Are You Even Looking At? {.plain-title}
+
+| Filter | Companies left |
 |---|---|
-| Dates are text | Cast before you compare or sort: `date::DATE`, `reportperiod::DATE` |
-| `sf1` has no `date` | Use `reportperiod` for the fiscal period end, `datekey` for the filing date |
-| Market cap is in thousands | In `daily`. A $2T company shows up as 2,000,000,000 |
-
-::: {.note}
-Each of these produces an answer, not an error. That is what makes them
-expensive.
-:::
-
-# Pulling It
-
-## Start by Looking Around
-
-[Tell GLM]{.eyebrow}
-
-> Using the data portal, show me the columns in `daily` and `tickers`, and give
-> me five rows of each.
-
-::: {.note}
-Before any analysis, look at the actual rows. Half of the mistakes in this
-course get caught here, in thirty seconds, by someone who looked.
-:::
-
-## The Pull {.band-bottom}
-
-[Tell GLM]{.eyebrow}
-
-> For the most recent date in `daily`, get `ticker`, `pe`, and `marketcap` for
-> every stock. Join `sector` and `industry` from `tickers`. Then pull the `MRY`
-> rows from `sf1` for the most recent fiscal year and bring in revenue, net
-> income, and shares outstanding. Show me the SQL before you run it.
+| Every ticker in `tickers` | 15,607 |
+| Still listed --- `isdelisted = 'N'` | 4,355 |
+| Drop shell companies --- 315 SPACs with no operations | 4,039 |
 
 ::: {.note .note-plum}
-That last sentence is the entire lesson from Tuesday, in six words.
+Two filters, because the bundle has already done the rest. It holds only NYSE,
+NASDAQ and NYSEMKT common stock, and share classes are already collapsed --- GOOG
+is not a row, it sits in GOOGL's `relatedtickers`. Against raw Sharadar you would
+have to strip ADRs, Canadian listings, preferred and secondary classes yourself.
 :::
 
-## Read the SQL {.plain-title}
 
-::: {.lead}
-You are not checking whether it is elegant. You are checking four things.
+
+## closeadj and Periodic Returns
+
+
+> The skill tells the AI how to compute periodic returns using the `closeadj` variable, which adjusts for dividends as well as splits (like Yahoo Finance adjusted closing price).  
+
+> So, we can say, for example, "compute monthly returns for all stocks from date1 to date2."
+
+
+# Peer Groups
+
+## Six Ways to Say "Industry"
+
+| Column | Groups | Scheme |
+|---|---|---|
+| `sector` | 11 | Morningstar-style sectors |
+| `industry` | 151 | Morningstar-style industries |
+| `sicsector` | 10 | The SEC's SIC divisions |
+| `sicindustry` | 437 | SIC industry titles |
+| `siccode` | 437 | The four-digit code itself |
+| `famaindustry` | 48 | Fama and French's 49 industries |
+
+::: {.note}
+All six sit in `tickers`.
 :::
 
-| | |
-|---|---|
-| Did it filter the dimension? | Without `dimension = 'MRY'` you get six rows per company-year |
-| Did it cast the dates? | Text comparison on dates goes wrong quietly |
-| Is the join key right? | `ticker` is not unique across time --- see `actions` |
-| How many rows came back? | You know roughly how many listed stocks there are |
+## How Large are Peer Groups {.plain-title}
+
+| Grouping | Groups | Median group | Median cell | Cells under 10 |
+|---|---|---|---|---|
+| `sector` | 11 | 229 | 51 | 2% |
+| `famaindustry` | 49 | 50 | 10 | 50% |
+| `industry` | 143 | 16 | 4 | 84% |
+| `sicindustry` | 379 | 4 | 2 | 93% |
+
+::: {.note}
+The 4,039 live, non-shell companies, crossed with market-cap quintiles built
+from `daily.marketcap`. Note that nineteen
+companies have a blank `famaindustry` and will form a peer group of
+their own if not dropped.
+:::
+
+
+# Four Multiples
+
+## What You Multiply by What {.plain-title}
+
+| Multiple | Column in `daily` | Company's own figure in `sf1` | Gives you |
+|---|---|---|---|
+| Price / earnings | `pe` | `netinccmnusd` | Equity value |
+| Price / book | `pb` | `equityusd` | Equity value |
+| Price / sales | `ps` | `revenueusd` | Equity value |
+| EV / EBITDA | `evebitda` | `ebitdausd` | Enterprise value |
+
+## Value It Four Ways
+
+::: {.steps}
+1. Fix the peer set --- same industry, same size bucket, same date --- and count it
+2. Take the median of each of the four multiples across those peers
+3. Multiply each median by the company's own denominator
+4. For EV/EBITDA, cross back from enterprise value to equity
+:::
+
+::: {.note}
+Four implied equity values for one company. Compare each with the market cap it
+actually trades at.
+:::
+
 
 ## What a P/E of --12 Means
 
@@ -218,29 +198,19 @@ Nothing. It means the company lost money.
 ::: {.note .note-plum}
 A negative P/E is not a cheap stock. It is a stock with no E. Left in the sample
 it drags the median in the wrong direction and makes the cheapest-looking
-companies the ones that are losing the most.
+companies the ones losing the most.
 :::
 
-[Tell GLM]{.eyebrow}
-
-> Drop the negative P/E rows, and show me how many you dropped by sector.
-
-## Look Before You Compute {.plain-title}
-
-[Tell GLM]{.eyebrow}
-
-> Histogram of P/E across all stocks. Then the same by sector, and a table of
-> the count, median, and the 10th and 90th percentiles in each.
+EV/EBITDA fails the same way on negative EBITDA. P/B is close to meaningless
+where the assets walk out of the building at six o'clock --- and it means
+something else again for a bank, where the balance sheet *is* the business.
+P/S always exists, which is not the same as always meaning something.
 
 ::: {.note}
-You are looking for two things: how fat the right tail is, and whether the
-sectors actually differ. If they do not, the peer group is doing no work and the
-method has nothing to offer.
+Filter out the negative values.  We won't try to value them or to use them for valuing others.
 :::
 
-# Median of Peers
-
-## Why the Median {.compare}
+## Why the Median {.compare .plain-title}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -259,259 +229,126 @@ between a number and noise.
 :::
 ::::
 
-## Which Peers? {.band-bottom}
-
-::: {.cards .cards-3}
-::: {.card}
-[Sector]{.card-title}
-
-Eleven of them. Always enough companies, often not comparable ones.
-:::
-
-::: {.card .card-blue}
-[Industry]{.card-title}
-
-Much finer. Sometimes four companies, and then the median is one company's P/E.
-:::
-
-::: {.card}
-[Industry and size]{.card-title}
-
-Better in principle. Cuts the group again, so you need to watch the count.
-:::
-:::
-
-::: {.note .note-plum}
-There is no correct answer. There is a choice you make, write down, and defend
-when you present.
-:::
-
-## The Calculation
-
-::: {.steps}
-1. Group the stocks by peer set, and drop the ones with no meaningful P/E
-2. Take the median P/E in each group
-3. Multiply it by the company's own earnings per share
-4. Compare with the price it actually trades at
-:::
-
 ::: {.note}
-The gap is the whole output. A company trading well below its peer median is
-either cheap or different, and the method cannot tell you which.
+Report the count alongside every median. A median of four is a different object
+from a median of four hundred, and the table does not tell you which you have.
 :::
 
-## Now Do It {.plain-title}
 
-[Tell GLM]{.eyebrow}
+## Deviations
 
-> Compute the median P/E within each industry. For every stock, report its own
-> P/E, its industry median, and the ratio of the two. Show me the twenty most
-> expensive and the twenty cheapest by that ratio.
+> Deviation = log( market cap / implied value ).
 
-::: {.note}
-Read the two lists. If the cheap list is all one industry, or all tiny
-companies, something in the peer definition is doing work you did not intend.
-:::
 
-# Skills
+Positive means the market pays more for this company than its peers say it is
+worth. Negative means the company is cheap compared to peers. 
 
-## Stop Re-Explaining Yourself
 
-::: {.cards .cards-3}
-::: {.card}
-[Always on]{.card-title}
 
-Applies to every conversation you have.
+# Organizing your Work
 
-Who you are, how you want to be written to, what never to do.
-:::
-
-::: {.card .card-blue}
-[Per project]{.card-title}
-
-Applies inside one folder.
-
-This course, this dataset, its quirks.
-:::
-
-::: {.card}
-[When relevant]{.card-title}
-
-A skill: read only when what you asked matches what it is for.
-:::
-:::
-
-::: {.note .note-plum}
-Three scopes, and the third is the interesting one --- because it costs nothing
-until it applies.
-:::
-
-## A Skill Is Written Instructions, Filed Where They Can Be Found
-
-A folder with a `SKILL.md` in it. Two parts: a line saying when to use it, and
-the instructions for how.
-
-::: {.cards .cards-3}
-::: {.card}
-[At startup]{.card-title}
-
-It reads only the name and the one-line description --- a few dozen words per skill.
-:::
-
-::: {.card .card-blue}
-[When it matches]{.card-title}
-
-Only then does it open the file and read the rest.
-:::
-
-::: {.card}
-[Which is why you can have many]{.card-title}
-
-A hundred installed skills cost nothing until one of them is relevant.
-:::
-:::
-
-::: {.note}
-Not a plugin, and not code. A written procedure.
-:::
-
-## `CLAUDE.md` Versus a Skill {.compare}
-
-:::: {.columns}
-::: {.column width="50%"}
-[`CLAUDE.md` --- always read]{.eyebrow}
-
-What is always true here: what the project is, where things live, the
-conventions, what never to do.
-
-Read at the start of every session in that folder.
-:::
-
-::: {.column width="50%"}
-[A skill --- read when relevant]{.eyebrow}
-
-A procedure for a particular kind of job.
-
-Standing facts go in `CLAUDE.md`. Procedures go in skills.
-:::
-::::
-
-::: {.note}
-Ask GLM to write the first `CLAUDE.md` for you --- it will read the folder and draft it.
-:::
-
-## Why This Matters to a Group {.band-bottom}
+## CLAUDE.md
 
 ::: {.lead}
-The skill is a file. The file is in the repository.
+What is always true in this folder: what the project is, where things live, the
+conventions, and what never to do.
 :::
+
+It is read at the start of every session in that folder, before you type
+anything.
 
 ::: {.note .note-plum}
-Which means the decision is made once, by one of you, and the other two get it
-by pulling. It also means the decision is visible: when you present, the skill
-is the record of what you chose and why.
+Three people, three containers, one repository. `CLAUDE.md` is how a decision
+one of you makes on Thursday is still in force when somebody else opens the
+folder on Sunday. Everything you type into a prompt window instead dies with
+that conversation.
 :::
 
-Every ad-hoc instruction typed into a prompt window dies with that conversation.
+## Tell Claude to Edit It {.band-bottom}
 
-# Build One
 
-## Get It Right Once, Then Save It
+[When your group settles something:]{.eyebrow}
+
+> Add to `CLAUDE.md`:  peers are `famaindustry` crossed with market cap quintiles; minimum group size
+> is eight.
+
+::: {.note}
+You never open the file yourself. You say what you decided and the AI writes it
+down. 
+:::
+
+## Keep a Record of Scripts and Outputs {.plain-title}
+
+[Put this in `CLAUDE.md`]{.eyebrow}
+
+> After running any script, append a row to `RUNS.md`: who ran it, the date and
+> time, the script, and where the output went.
+
+::: {.note .note-plum}
+Keep the log in its own file. `CLAUDE.md` is read at the top of every session,
+so a hundred rows of history there is a hundred rows you would pay for on every
+prompt.
+:::
+
+## Use AI to Pull, Commit, and Push
+
+> Let GLM run Git for you.  It will write better commit messages and resolve merge conflicts.
+
+## Data Files
+
+- Keep your data files in your workspace so you don't waste time getting the data each time 
+- Parquet is the fastest file type for reading and writing and also the smallest
+- Tell GLM to gitignore them.  This means they won't be pushed to GitHub. 
+- Pushing large files to GitHub is slow, and GitHuB rejects files > 100MB.
+
+
+# Exercise 
+
+## Today's Work
 
 ::: {.steps}
-1. Get the peer-median valuation working the way you want it, in a conversation
-2. Say: save that as a skill
-3. Start a fresh session and ask it to value a different company
+1. Build the peer table --- universe, industry grouping, size buckets, and the count in every cell
+2. Take the four medians in each cell, and value every company four ways
+3. Which median multiple matches the market the best?
+3. Why do medians deviate from the market --- is it asset turnover, margins, leverage, investment rate, ... --- using the most recent 10K (sf1 with dimension = MRY)?
 :::
 
 ::: {.note}
-Step 3 is the test. If it needs to be told anything you already decided, the
-skill is not finished.
+Step 1 is the one that takes the longest and the one everything else rests on.
+Do not let it be the step you rush.
 :::
 
-## What Has to Be Written Down {.plain-title}
+## What to Present Tuesday {.band-bottom}
 
-::: {.cards .cards-3}
+::: {.cards .cards-2}
 ::: {.card}
-[The decisions]{.card-title}
+[The peer definition]{.card-title}
 
-Which multiple. Which peer definition. Median, not mean. What the minimum group
-size is.
+Which grouping, which size buckets, what minimum count --- and the cell counts
+that justify it.
 :::
 
 ::: {.card .card-blue}
-[The traps]{.card-title}
+[Coverage]{.card-title}
 
-`dimension = 'MRY'`. Cast the dates. Market cap is in thousands. Drop negative
-earnings.
+How many of the companies got a value under each of the four multiples, and
+which multiple lost the most.
 :::
 
 ::: {.card}
-[The output]{.card-title}
+[What the deviations track]{.card-title}
 
-What it should hand back every time: the peer set and its size, the median, the
-implied value, the gap.
-:::
-:::
-
-::: {.note .note-plum}
-The middle card is the one that pays for itself. Those four traps will otherwise
-bite each of you, separately, for six weeks.
-:::
-
-## Exercise
-
-::: {.steps}
-1. Build the skill in your group's repository
-2. Test it on a company none of you used while building it
-3. Then test it on a bank, and on a company that lost money last year
-4. Commit and push it
-:::
-
-::: {.note}
-Steps 2 and 3 are where you find out what you left implicit. Write down what
-broke --- it is what you will present on Tuesday.
-:::
-
-## Where It Will Fail {.band-bottom}
-
-::: {.cards .cards-3}
-::: {.card}
-[The industry of one]{.card-title}
-
-A peer group with three companies in it has a median that is one company's opinion.
+Profitability, growth, leverage --- or nothing.
 :::
 
 ::: {.card .card-blue}
-[Financials]{.card-title}
+[The disagreement case]{.card-title}
 
-P/E means something different for a bank. So does book value.
+The company where the four methods were furthest apart, and your diagnosis.
 :::
-
-::: {.card}
-[Growth]{.card-title}
-
-Two companies in the same industry with different growth rates should not trade
-at the same multiple. The method assumes they do.
-:::
-:::
-
-::: {.note}
-The third one is what Thursday of next week is about: predicting the multiple
-instead of borrowing it.
-:::
-
-# Before Tuesday
-
-## Three Things {.plain-title}
-
-::: {.steps}
-1. Finish the skill, and push it
-2. Run it on five companies you know something about, and see whether the answers are sane
-3. Bring the one case where it was most obviously wrong
 :::
 
 ::: {.note .note-plum}
-Tuesday we turn this into a trade: rank every stock by the gap, buy the cheap
-ones, sell the expensive ones, and find out what that would have earned.
+Five minutes, from the repository. Three groups drawn at random --- so all of
+you are ready.
 :::

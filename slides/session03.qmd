@@ -3,6 +3,11 @@ title: "Trading on Predictions"
 subtitle: "One year at a time, and a memory your group can read"
 author: "Kerry Back"
 date: "2026-09-01"
+format:
+  revealjs:
+    theme: shoji2.scss
+    width: 1050
+    height: 700
 ---
 
 # Presentations

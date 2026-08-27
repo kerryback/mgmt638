@@ -133,193 +133,158 @@
     "text": "Three Things\n\n\nGet the annual refit loop running, and produce the three-way comparison table\nSave the cross-section builder as a skill — you will use it every week from here\nWrite the memory file, including which specifications you tried and rejected\n\n\n\nTuesday we replace the regression with something that can find relationships you did not specify. Come with the linear result written down, because it is the benchmark that machine learning has to beat."
   },
   {
-    "objectID": "slides/session02.html#three-things",
-    "href": "slides/session02.html#three-things",
+    "objectID": "slides/session02.html#today",
+    "href": "slides/session02.html#today",
     "title": "Median of Peer Multiples",
-    "section": "Three Things",
-    "text": "Three Things\n\n\nThe data — twenty-five years of fundamentals and prices, and how to reach it\nSkills — how you stop re-explaining yourself to the machine\nBuild one — a valuation skill that prices a company off its peers\n\n\n\nBy the end you will have something in your group’s repository that any of you can point at a ticker."
+    "section": "Today",
+    "text": "Today\n\n\nThe data\nDefining peers\nMultiples\nExercise"
   },
   {
-    "objectID": "slides/session02.html#the-oldest-valuation-method-there-is",
-    "href": "slides/session02.html#the-oldest-valuation-method-there-is",
+    "objectID": "slides/session02.html#the-sharadar-core-us-equities-bundle",
+    "href": "slides/session02.html#the-sharadar-core-us-equities-bundle",
     "title": "Median of Peer Multiples",
-    "section": "The Oldest Valuation Method There Is",
-    "text": "The Oldest Valuation Method There Is\n\nA company is worth roughly what companies like it are worth.\n\n\nNo forecast, no discount rate, no terminal value. Find the peers, take the middle of their multiples, apply it. It is what a banker does on the back of an envelope, and it is a real benchmark — hard to beat and easy to check.\n\nThe whole method is three decisions: which multiple, which peers, and what to do with the ones that do not make sense."
+    "section": "The Sharadar Core US Equities Bundle",
+    "text": "The Sharadar Core US Equities Bundle\n\n\nWhat is in it\nEvery NYSE, NASDAQ and NYSEMKT common stock, 2000 to today.\n\n\nWhere it comes from\nLicensed by Rice Business from Nasdaq Data Link.\n\n\nWhat it is\nNine tables online at motherduck.com\n\n\ndata.nasdaq.com/databases/SFA — the Sharadar Core U.S. Equity Bundle"
   },
   {
-    "objectID": "slides/session02.html#the-rice-business-data-portal",
-    "href": "slides/session02.html#the-rice-business-data-portal",
+    "objectID": "slides/session02.html#how-you-reach-it",
+    "href": "slides/session02.html#how-you-reach-it",
     "title": "Median of Peer Multiples",
-    "section": "The Rice Business Data Portal",
-    "text": "The Rice Business Data Portal\n\n\nWhat is in it\nEvery NYSE and Nasdaq listed common stock, beginning in 2000.\n\n\nWhere it comes from\nLicensed by Rice Business from Nasdaq Data Link.\n\n\nWhat it is\nA DuckDB database. Queries are read-only — SELECT and nothing else.\n\n\ndata-portal.rice-business.org"
-  },
-  {
-    "objectID": "slides/session02.html#get-your-token",
-    "href": "slides/session02.html#get-your-token",
-    "title": "Median of Peer Multiples",
-    "section": "Get Your Token",
-    "text": "Get Your Token\n\n\nRegister at the portal with your rice.edu address\nYou are issued an access token, good for six months\nPut it where the lab can find it — not in a file you commit\n\n\n\nThe token is yours. A token in a public repository is a token somebody else is using by Thursday."
-  },
-  {
-    "objectID": "slides/session02.html#three-doors-into-it",
-    "href": "slides/session02.html#three-doors-into-it",
-    "title": "Median of Peer Multiples",
-    "section": "Three Doors Into It",
-    "text": "Three Doors Into It\n\n\nThe web interface\nA query window with an AI assistant that writes the SQL for you. Good for looking around.\n\n\nThe Python client\nA library for notebooks and scripts. This is what your analysis will use.\n\n\nThe MCP server\nGLM queries the database directly, without you writing anything.\n\n\n\nThe third one is how we will work today. It is also the one that makes it easy to stop paying attention — so we will keep looking at the SQL."
+    "section": "How You Reach It",
+    "text": "How You Reach It\n\nAsk AI to do it. It will read ~/workspace/.claude/skills/finance-data/SKILL.md to see how to do it.\n\nThe SKILL.md explains where the database lives, which table answers which question, and the traps in each one.\n\nAsk for US stocks and it uses the bundle. Ask for something the bundle does not carry — short interest, bond yields, … — and it routes to a free public source instead."
   },
   {
     "objectID": "slides/session02.html#what-is-in-there",
     "href": "slides/session02.html#what-is-in-there",
     "title": "Median of Peer Multiples",
     "section": "What Is in There",
-    "text": "What Is in There\n\n\n\nTable\nContents\n\n\n\n\nsep\nDaily open, high, low, close, adjusted close, volume\n\n\ndaily\nDaily valuation ratios and market cap\n\n\nmetrics\nDaily moving averages and other statistics\n\n\nsf1\n10-K and 10-Q data, and pre-computed financial ratios\n\n\nsf2\nInsider trades, from Form 4\n\n\ntickers\nIndustry, sector, exchange, size category\n\n\nactions\nMergers, splits, dividends, ticker changes\n\n\nevents\nSEC 8-K filings and material corporate events\n\n\n\n\nA Table Descriptions page on the portal lists every variable in every table."
+    "text": "What Is in There\n\n\n\nTable\nContents\n\n\n\n\nsep\nDaily prices — 33.4M rows, 2000 to today\n\n\ndaily\nDaily market cap and valuation ratios\n\n\nsf1\n10-K and 10-Q data, 112 fields, plus precomputed ratios\n\n\nsf2\nInsider trades, from Form 4\n\n\ntickers\nIdentity, classification, exchange, listing dates\n\n\nactions\nMergers, splits, dividends, ticker changes\n\n\nevents\n8-K event codes"
   },
   {
-    "objectID": "slides/session02.html#today-we-need-three-of-them",
-    "href": "slides/session02.html#today-we-need-three-of-them",
+    "objectID": "slides/session02.html#the-table-that-describes-the-tables",
+    "href": "slides/session02.html#the-table-that-describes-the-tables",
     "title": "Median of Peer Multiples",
-    "section": "Today We Need Three of Them",
-    "text": "Today We Need Three of Them\n\n\ndaily\npe, pb, ps, ev, evebit, evebitda, marketcap — one row per stock per day.\n\n\ntickers\nsector, industry, exchange, scalemarketcap. This is what makes a peer group a peer group.\n\n\nsf1\nThe filings. Revenue, earnings, book value, and the ratios computed from them."
+    "section": "The Table That Describes the Tables",
+    "text": "The Table That Describes the Tables\n\nindicators is the data dictionary: one row for every column in the bundle, with a definition.\n\n\nIt also documents some Sharadar tables that are not in the MotherDuck database — 13F institutional holdings, ETF prices, S&P 500 index membership."
   },
   {
     "objectID": "slides/session02.html#sf1-has-dimensions",
     "href": "slides/session02.html#sf1-has-dimensions",
     "title": "Median of Peer Multiples",
     "section": "sf1 Has Dimensions",
-    "text": "sf1 Has Dimensions\n\n\n\n\nAnnual\nQuarterly\nTrailing four quarters\n\n\n\n\nAs most recently restated\nMRY\nMRQ\nMRT\n\n\nAs originally reported\nARY\nARQ\nART\n\n\n\n\nToday we use MRY — annual, most recent restatement. It is the cleanest view of what a company earned. When we start backtesting, we will have to switch, because MRY tells you today what nobody knew at the time."
+    "text": "sf1 Has Dimensions\n\n\n\n\nAnnual\nQuarterly\nTrailing four quarters\n\n\n\n\nAs most recently restated\nMRY\nMRQ\nMRT\n\n\nAs originally reported\nARY\nARQ\nART\n\n\n\n\nToday we use MRY — we are describing companies as they stand. But in every MR row datekey is the period-end date copied over, so MR does not know when the numbers became public. Backtests use ARY, keyed on datekey, which is the real SEC filing date."
   },
   {
-    "objectID": "slides/session02.html#three-things-that-trip-everyone",
-    "href": "slides/session02.html#three-things-that-trip-everyone",
+    "objectID": "slides/session02.html#which-stocks-are-you-even-looking-at",
+    "href": "slides/session02.html#which-stocks-are-you-even-looking-at",
     "title": "Median of Peer Multiples",
-    "section": "Three Things That Trip Everyone",
-    "text": "Three Things That Trip Everyone\n\n\n\n\n\n\n\nDates are text\nCast before you compare or sort: date::DATE, reportperiod::DATE\n\n\nsf1 has no date\nUse reportperiod for the fiscal period end, datekey for the filing date\n\n\nMarket cap is in thousands\nIn daily. A $2T company shows up as 2,000,000,000\n\n\n\n\nEach of these produces an answer, not an error. That is what makes them expensive."
+    "section": "Which Stocks Are You Even Looking At?",
+    "text": "Which Stocks Are You Even Looking At?\n\n\n\nFilter\nCompanies left\n\n\n\n\nEvery ticker in tickers\n15,607\n\n\nStill listed — isdelisted = 'N'\n4,355\n\n\nDrop shell companies — 315 SPACs with no operations\n4,039\n\n\n\n\nTwo filters, because the bundle has already done the rest. It holds only NYSE, NASDAQ and NYSEMKT common stock, and share classes are already collapsed — GOOG is not a row, it sits in GOOGL’s relatedtickers. Against raw Sharadar you would have to strip ADRs, Canadian listings, preferred and secondary classes yourself."
   },
   {
-    "objectID": "slides/session02.html#start-by-looking-around",
-    "href": "slides/session02.html#start-by-looking-around",
+    "objectID": "slides/session02.html#closeadj-and-periodic-returns",
+    "href": "slides/session02.html#closeadj-and-periodic-returns",
     "title": "Median of Peer Multiples",
-    "section": "Start by Looking Around",
-    "text": "Start by Looking Around\nTell GLM\n\nUsing the data portal, show me the columns in daily and tickers, and give me five rows of each.\n\n\nBefore any analysis, look at the actual rows. Half of the mistakes in this course get caught here, in thirty seconds, by someone who looked."
+    "section": "closeadj and Periodic Returns",
+    "text": "closeadj and Periodic Returns\n\nThe skill tells the AI how to compute periodic returns using the closeadj variable, which adjusts for dividends as well as splits (like Yahoo Finance adjusted closing price).\n\n\nSo, we can say, for example, “compute monthly returns for all stocks from date1 to date2.”"
   },
   {
-    "objectID": "slides/session02.html#the-pull",
-    "href": "slides/session02.html#the-pull",
+    "objectID": "slides/session02.html#six-ways-to-say-industry",
+    "href": "slides/session02.html#six-ways-to-say-industry",
     "title": "Median of Peer Multiples",
-    "section": "The Pull",
-    "text": "The Pull\nTell GLM\n\nFor the most recent date in daily, get ticker, pe, and marketcap for every stock. Join sector and industry from tickers. Then pull the MRY rows from sf1 for the most recent fiscal year and bring in revenue, net income, and shares outstanding. Show me the SQL before you run it.\n\n\nThat last sentence is the entire lesson from Tuesday, in six words."
+    "section": "Six Ways to Say “Industry”",
+    "text": "Six Ways to Say “Industry”\n\n\n\nColumn\nGroups\nScheme\n\n\n\n\nsector\n11\nMorningstar-style sectors\n\n\nindustry\n151\nMorningstar-style industries\n\n\nsicsector\n10\nThe SEC’s SIC divisions\n\n\nsicindustry\n437\nSIC industry titles\n\n\nsiccode\n437\nThe four-digit code itself\n\n\nfamaindustry\n48\nFama and French’s 49 industries\n\n\n\n\nAll six sit in tickers."
   },
   {
-    "objectID": "slides/session02.html#read-the-sql",
-    "href": "slides/session02.html#read-the-sql",
+    "objectID": "slides/session02.html#how-large-are-peer-groups",
+    "href": "slides/session02.html#how-large-are-peer-groups",
     "title": "Median of Peer Multiples",
-    "section": "Read the SQL",
-    "text": "Read the SQL\n\nYou are not checking whether it is elegant. You are checking four things.\n\n\n\n\n\n\n\n\nDid it filter the dimension?\nWithout dimension = 'MRY' you get six rows per company-year\n\n\nDid it cast the dates?\nText comparison on dates goes wrong quietly\n\n\nIs the join key right?\nticker is not unique across time — see actions\n\n\nHow many rows came back?\nYou know roughly how many listed stocks there are"
+    "section": "How Large are Peer Groups",
+    "text": "How Large are Peer Groups\n\n\n\nGrouping\nGroups\nMedian group\nMedian cell\nCells under 10\n\n\n\n\nsector\n11\n229\n51\n2%\n\n\nfamaindustry\n49\n50\n10\n50%\n\n\nindustry\n143\n16\n4\n84%\n\n\nsicindustry\n379\n4\n2\n93%\n\n\n\n\nThe 4,039 live, non-shell companies, crossed with market-cap quintiles built from daily.marketcap. Note that nineteen companies have a blank famaindustry and will form a peer group of their own if not dropped."
+  },
+  {
+    "objectID": "slides/session02.html#what-you-multiply-by-what",
+    "href": "slides/session02.html#what-you-multiply-by-what",
+    "title": "Median of Peer Multiples",
+    "section": "What You Multiply by What",
+    "text": "What You Multiply by What\n\n\n\n\n\n\n\n\n\nMultiple\nColumn in daily\nCompany’s own figure in sf1\nGives you\n\n\n\n\nPrice / earnings\npe\nnetinccmnusd\nEquity value\n\n\nPrice / book\npb\nequityusd\nEquity value\n\n\nPrice / sales\nps\nrevenueusd\nEquity value\n\n\nEV / EBITDA\nevebitda\nebitdausd\nEnterprise value"
+  },
+  {
+    "objectID": "slides/session02.html#value-it-four-ways",
+    "href": "slides/session02.html#value-it-four-ways",
+    "title": "Median of Peer Multiples",
+    "section": "Value It Four Ways",
+    "text": "Value It Four Ways\n\n\nFix the peer set — same industry, same size bucket, same date — and count it\nTake the median of each of the four multiples across those peers\nMultiply each median by the company’s own denominator\nFor EV/EBITDA, cross back from enterprise value to equity\n\n\n\nFour implied equity values for one company. Compare each with the market cap it actually trades at."
   },
   {
     "objectID": "slides/session02.html#what-a-pe-of-12-means",
     "href": "slides/session02.html#what-a-pe-of-12-means",
     "title": "Median of Peer Multiples",
     "section": "What a P/E of –12 Means",
-    "text": "What a P/E of –12 Means\n\nNothing. It means the company lost money.\n\n\nA negative P/E is not a cheap stock. It is a stock with no E. Left in the sample it drags the median in the wrong direction and makes the cheapest-looking companies the ones that are losing the most.\n\nTell GLM\n\nDrop the negative P/E rows, and show me how many you dropped by sector."
-  },
-  {
-    "objectID": "slides/session02.html#look-before-you-compute",
-    "href": "slides/session02.html#look-before-you-compute",
-    "title": "Median of Peer Multiples",
-    "section": "Look Before You Compute",
-    "text": "Look Before You Compute\nTell GLM\n\nHistogram of P/E across all stocks. Then the same by sector, and a table of the count, median, and the 10th and 90th percentiles in each.\n\n\nYou are looking for two things: how fat the right tail is, and whether the sectors actually differ. If they do not, the peer group is doing no work and the method has nothing to offer."
+    "text": "What a P/E of –12 Means\n\nNothing. It means the company lost money.\n\n\nA negative P/E is not a cheap stock. It is a stock with no E. Left in the sample it drags the median in the wrong direction and makes the cheapest-looking companies the ones losing the most.\n\nEV/EBITDA fails the same way on negative EBITDA. P/B is close to meaningless where the assets walk out of the building at six o’clock — and it means something else again for a bank, where the balance sheet is the business. P/S always exists, which is not the same as always meaning something.\n\nFilter out the negative values. We won’t try to value them or to use them for valuing others."
   },
   {
     "objectID": "slides/session02.html#why-the-median",
     "href": "slides/session02.html#why-the-median",
     "title": "Median of Peer Multiples",
     "section": "Why the Median",
-    "text": "Why the Median\n\n\nThe mean\nOne company with a P/E of 900 — a real company that barely broke even — and the average for the industry is meaningless.\n\nThe median\nUnmoved by the tail. With ratios, where the numerator is bounded below and the denominator can approach zero, this is not a refinement. It is the difference between a number and noise."
+    "text": "Why the Median\n\n\nThe mean\nOne company with a P/E of 900 — a real company that barely broke even — and the average for the industry is meaningless.\n\nThe median\nUnmoved by the tail. With ratios, where the numerator is bounded below and the denominator can approach zero, this is not a refinement. It is the difference between a number and noise.\n\n\nReport the count alongside every median. A median of four is a different object from a median of four hundred, and the table does not tell you which you have."
   },
   {
-    "objectID": "slides/session02.html#which-peers",
-    "href": "slides/session02.html#which-peers",
+    "objectID": "slides/session02.html#deviations",
+    "href": "slides/session02.html#deviations",
     "title": "Median of Peer Multiples",
-    "section": "Which Peers?",
-    "text": "Which Peers?\n\n\nSector\nEleven of them. Always enough companies, often not comparable ones.\n\n\nIndustry\nMuch finer. Sometimes four companies, and then the median is one company’s P/E.\n\n\nIndustry and size\nBetter in principle. Cuts the group again, so you need to watch the count.\n\n\n\nThere is no correct answer. There is a choice you make, write down, and defend when you present."
+    "section": "Deviations",
+    "text": "Deviations\n\nDeviation = log( market cap / implied value ).\n\nPositive means the market pays more for this company than its peers say it is worth. Negative means the company is cheap compared to peers."
   },
   {
-    "objectID": "slides/session02.html#the-calculation",
-    "href": "slides/session02.html#the-calculation",
+    "objectID": "slides/session02.html#claude.md",
+    "href": "slides/session02.html#claude.md",
     "title": "Median of Peer Multiples",
-    "section": "The Calculation",
-    "text": "The Calculation\n\n\nGroup the stocks by peer set, and drop the ones with no meaningful P/E\nTake the median P/E in each group\nMultiply it by the company’s own earnings per share\nCompare with the price it actually trades at\n\n\n\nThe gap is the whole output. A company trading well below its peer median is either cheap or different, and the method cannot tell you which."
+    "section": "CLAUDE.md",
+    "text": "CLAUDE.md\n\nWhat is always true in this folder: what the project is, where things live, the conventions, and what never to do.\n\nIt is read at the start of every session in that folder, before you type anything.\n\nThree people, three containers, one repository. CLAUDE.md is how a decision one of you makes on Thursday is still in force when somebody else opens the folder on Sunday. Everything you type into a prompt window instead dies with that conversation."
   },
   {
-    "objectID": "slides/session02.html#now-do-it",
-    "href": "slides/session02.html#now-do-it",
+    "objectID": "slides/session02.html#tell-claude-to-edit-it",
+    "href": "slides/session02.html#tell-claude-to-edit-it",
     "title": "Median of Peer Multiples",
-    "section": "Now Do It",
-    "text": "Now Do It\nTell GLM\n\nCompute the median P/E within each industry. For every stock, report its own P/E, its industry median, and the ratio of the two. Show me the twenty most expensive and the twenty cheapest by that ratio.\n\n\nRead the two lists. If the cheap list is all one industry, or all tiny companies, something in the peer definition is doing work you did not intend."
+    "section": "Tell Claude to Edit It",
+    "text": "Tell Claude to Edit It\nWhen your group settles something:\n\nAdd to CLAUDE.md: peers are famaindustry crossed with market cap quintiles; minimum group size is eight.\n\n\nYou never open the file yourself. You say what you decided and the AI writes it down."
   },
   {
-    "objectID": "slides/session02.html#stop-re-explaining-yourself",
-    "href": "slides/session02.html#stop-re-explaining-yourself",
+    "objectID": "slides/session02.html#keep-a-record-of-scripts-and-outputs",
+    "href": "slides/session02.html#keep-a-record-of-scripts-and-outputs",
     "title": "Median of Peer Multiples",
-    "section": "Stop Re-Explaining Yourself",
-    "text": "Stop Re-Explaining Yourself\n\n\nAlways on\nApplies to every conversation you have.\nWho you are, how you want to be written to, what never to do.\n\n\nPer project\nApplies inside one folder.\nThis course, this dataset, its quirks.\n\n\nWhen relevant\nA skill: read only when what you asked matches what it is for.\n\n\n\nThree scopes, and the third is the interesting one — because it costs nothing until it applies."
+    "section": "Keep a Record of Scripts and Outputs",
+    "text": "Keep a Record of Scripts and Outputs\nPut this in CLAUDE.md\n\nAfter running any script, append a row to RUNS.md: who ran it, the date and time, the script, and where the output went.\n\n\nKeep the log in its own file. CLAUDE.md is read at the top of every session, so a hundred rows of history there is a hundred rows you would pay for on every prompt."
   },
   {
-    "objectID": "slides/session02.html#a-skill-is-written-instructions-filed-where-they-can-be-found",
-    "href": "slides/session02.html#a-skill-is-written-instructions-filed-where-they-can-be-found",
+    "objectID": "slides/session02.html#use-ai-to-pull-commit-and-push",
+    "href": "slides/session02.html#use-ai-to-pull-commit-and-push",
     "title": "Median of Peer Multiples",
-    "section": "A Skill Is Written Instructions, Filed Where They Can Be Found",
-    "text": "A Skill Is Written Instructions, Filed Where They Can Be Found\nA folder with a SKILL.md in it. Two parts: a line saying when to use it, and the instructions for how.\n\n\nAt startup\nIt reads only the name and the one-line description — a few dozen words per skill.\n\n\nWhen it matches\nOnly then does it open the file and read the rest.\n\n\nWhich is why you can have many\nA hundred installed skills cost nothing until one of them is relevant.\n\n\n\nNot a plugin, and not code. A written procedure."
+    "section": "Use AI to Pull, Commit, and Push",
+    "text": "Use AI to Pull, Commit, and Push\n\nLet GLM run Git for you. It will write better commit messages and resolve merge conflicts."
   },
   {
-    "objectID": "slides/session02.html#claude.md-versus-a-skill",
-    "href": "slides/session02.html#claude.md-versus-a-skill",
+    "objectID": "slides/session02.html#data-files",
+    "href": "slides/session02.html#data-files",
     "title": "Median of Peer Multiples",
-    "section": "CLAUDE.md Versus a Skill",
-    "text": "CLAUDE.md Versus a Skill\n\n\nCLAUDE.md — always read\nWhat is always true here: what the project is, where things live, the conventions, what never to do.\nRead at the start of every session in that folder.\n\nA skill — read when relevant\nA procedure for a particular kind of job.\nStanding facts go in CLAUDE.md. Procedures go in skills.\n\n\nAsk GLM to write the first CLAUDE.md for you — it will read the folder and draft it."
+    "section": "Data Files",
+    "text": "Data Files\n\nKeep your data files in your workspace so you don’t waste time getting the data each time\nParquet is the fastest file type for reading and writing and also the smallest\nTell GLM to gitignore them. This means they won’t be pushed to GitHub.\nPushing large files to GitHub is slow, and GitHuB rejects files &gt; 100MB."
   },
   {
-    "objectID": "slides/session02.html#why-this-matters-to-a-group",
-    "href": "slides/session02.html#why-this-matters-to-a-group",
+    "objectID": "slides/session02.html#todays-work",
+    "href": "slides/session02.html#todays-work",
     "title": "Median of Peer Multiples",
-    "section": "Why This Matters to a Group",
-    "text": "Why This Matters to a Group\n\nThe skill is a file. The file is in the repository.\n\n\nWhich means the decision is made once, by one of you, and the other two get it by pulling. It also means the decision is visible: when you present, the skill is the record of what you chose and why.\n\nEvery ad-hoc instruction typed into a prompt window dies with that conversation."
+    "section": "Today’s Work",
+    "text": "Today’s Work\n\n\nBuild the peer table — universe, industry grouping, size buckets, and the count in every cell\nTake the four medians in each cell, and value every company four ways\nWhich median multiple matches the market the best?\nWhy do medians deviate from the market — is it asset turnover, margins, leverage, investment rate, … — using the most recent 10K (sf1 with dimension = MRY)?\n\n\n\nStep 1 is the one that takes the longest and the one everything else rests on. Do not let it be the step you rush."
   },
   {
-    "objectID": "slides/session02.html#get-it-right-once-then-save-it",
-    "href": "slides/session02.html#get-it-right-once-then-save-it",
+    "objectID": "slides/session02.html#what-to-present-tuesday",
+    "href": "slides/session02.html#what-to-present-tuesday",
     "title": "Median of Peer Multiples",
-    "section": "Get It Right Once, Then Save It",
-    "text": "Get It Right Once, Then Save It\n\n\nGet the peer-median valuation working the way you want it, in a conversation\nSay: save that as a skill\nStart a fresh session and ask it to value a different company\n\n\n\nStep 3 is the test. If it needs to be told anything you already decided, the skill is not finished."
-  },
-  {
-    "objectID": "slides/session02.html#what-has-to-be-written-down",
-    "href": "slides/session02.html#what-has-to-be-written-down",
-    "title": "Median of Peer Multiples",
-    "section": "What Has to Be Written Down",
-    "text": "What Has to Be Written Down\n\n\nThe decisions\nWhich multiple. Which peer definition. Median, not mean. What the minimum group size is.\n\n\nThe traps\ndimension = 'MRY'. Cast the dates. Market cap is in thousands. Drop negative earnings.\n\n\nThe output\nWhat it should hand back every time: the peer set and its size, the median, the implied value, the gap.\n\n\n\nThe middle card is the one that pays for itself. Those four traps will otherwise bite each of you, separately, for six weeks."
-  },
-  {
-    "objectID": "slides/session02.html#exercise",
-    "href": "slides/session02.html#exercise",
-    "title": "Median of Peer Multiples",
-    "section": "Exercise",
-    "text": "Exercise\n\n\nBuild the skill in your group’s repository\nTest it on a company none of you used while building it\nThen test it on a bank, and on a company that lost money last year\nCommit and push it\n\n\n\nSteps 2 and 3 are where you find out what you left implicit. Write down what broke — it is what you will present on Tuesday."
-  },
-  {
-    "objectID": "slides/session02.html#where-it-will-fail",
-    "href": "slides/session02.html#where-it-will-fail",
-    "title": "Median of Peer Multiples",
-    "section": "Where It Will Fail",
-    "text": "Where It Will Fail\n\n\nThe industry of one\nA peer group with three companies in it has a median that is one company’s opinion.\n\n\nFinancials\nP/E means something different for a bank. So does book value.\n\n\nGrowth\nTwo companies in the same industry with different growth rates should not trade at the same multiple. The method assumes they do.\n\n\n\nThe third one is what Thursday of next week is about: predicting the multiple instead of borrowing it."
-  },
-  {
-    "objectID": "slides/session02.html#three-things-1",
-    "href": "slides/session02.html#three-things-1",
-    "title": "Median of Peer Multiples",
-    "section": "Three Things",
-    "text": "Three Things\n\n\nFinish the skill, and push it\nRun it on five companies you know something about, and see whether the answers are sane\nBring the one case where it was most obviously wrong\n\n\n\nTuesday we turn this into a trade: rank every stock by the gap, buy the cheap ones, sell the expensive ones, and find out what that would have earned."
+    "section": "What to Present Tuesday",
+    "text": "What to Present Tuesday\n\n\nThe peer definition\nWhich grouping, which size buckets, what minimum count — and the cell counts that justify it.\n\n\nCoverage\nHow many of the companies got a value under each of the four multiples, and which multiple lost the most.\n\n\nWhat the deviations track\nProfitability, growth, leverage — or nothing.\n\n\nThe disagreement case\nThe company where the four methods were furthest apart, and your diagnosis.\n\n\n\nFive minutes, from the repository. Three groups drawn at random — so all of you are ready."
   },
   {
     "objectID": "index.html",

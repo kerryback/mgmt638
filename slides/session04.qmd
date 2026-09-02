@@ -226,15 +226,6 @@ data when training. We use the held-out data to test the model.
 2. Ask AI to create an html doc explaining what was done and explaining the performance on the test data.
 :::
 
-## What the Splits Say {.no-title}
-
-![](images/session04-oos.svg){.nostretch width="100%"}
-
-::: {.note .note-plum}
-A negative out-of-sample R-squared is worse than predicting the mean. Log the
-multiple and winsorize the features, and the ten splits stop disagreeing.
-:::
-
 ## Assignment for Tuesday {.band-bottom}
 
 ::: {.lead}

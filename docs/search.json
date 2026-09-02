@@ -98,13 +98,6 @@
     "text": "Train-Test Split\n\nTo assess expected out-of-sample performance, we withhold some of our current data when training. We use the held-out data to test the model.\n\n\n\nAsk AI to use scikit-learn to do a train-test split, to transform features (x variables) on the training data, apply the same transformations on the test data, and determine goodness of fit on the test data.\nAsk AI to create an html doc explaining what was done and explaining the performance on the test data."
   },
   {
-    "objectID": "slides/session04.html#what-the-splits-say",
-    "href": "slides/session04.html#what-the-splits-say",
-    "title": "Linear Regression for Multiples",
-    "section": "What the Splits Say",
-    "text": "What the Splits Say\n\n\nA negative out-of-sample R-squared is worse than predicting the mean. Log the multiple and winsorize the features, and the ten splits stop disagreeing."
-  },
-  {
     "objectID": "slides/session04.html#assignment-for-tuesday",
     "href": "slides/session04.html#assignment-for-tuesday",
     "title": "Linear Regression for Multiples",

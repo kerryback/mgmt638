@@ -131,7 +131,6 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Linear Regression for Multiples</h1>
-  <p class="subtitle">One cross-section, then twenty-five of them</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -143,307 +142,338 @@ Kerry Back
 
   <p class="date">Thu Sep 3, 2026</p>
 </section>
-<section>
-<section id="presentations" class="title-slide slide level1 center">
-<h1>Presentations</h1>
-
-</section>
-<section id="three-groups" class="slide level2 plain-title">
-<h2>Three Groups</h2>
+<section id="today" class="slide level2">
+<h2>Today</h2>
 <div class="steps">
 <ol type="1">
-<li>What your backtest earned, and what you compared it against</li>
-<li>What changed when you switched to <code>ARY</code> and <code>datekey</code></li>
-<li>The thing that broke</li>
+<li>Fit a linear regression to predict multiples</li>
+<li>Filtering, transforming variables</li>
+<li>Train/test split and out-of-sample goodness of fit</li>
 </ol>
 </div>
-<div class="note note-plum">
-<p>If your annual return went down when you fixed the point-in-time problem, that is the most useful slide anyone will show today. Say by how much.</p>
-</div>
-</section></section>
-<section>
-<section id="stop-borrowing-start-predicting" class="title-slide slide level1 center">
-<h1>Stop Borrowing, Start Predicting</h1>
-
 </section>
-<section id="what-the-peer-median-assumes" class="slide level2">
-<h2>What the Peer Median Assumes</h2>
+<section id="data-session4.parquet" class="slide level2 plain-title">
+<h2>Data: session4.parquet</h2>
 <div class="lead">
-<p>That every company in an industry deserves the same multiple.</p>
+<p>Today’s data, 4161 rows.</p>
 </div>
-<div class="note note-plum">
-<p>Two software companies, same industry. One grows at twenty percent with a forty percent margin; the other grows at three percent and barely breaks even. The peer median says they should trade at the same P/E, and calls the difference mispricing.</p>
-</div>
-<p>It is not mispricing. It is the model being wrong.</p>
-</section>
-<section id="the-alternative" class="slide level2 band-bottom">
-<h2>The Alternative</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">Borrow a multiple</span></p>
-<p>Find companies that look like this one. Use the middle of what they trade at.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Predict a multiple</span></p>
-<p>Estimate what the market pays for growth, for profitability, for leverage. Apply those prices to this company.</p>
-</div>
-</div>
-<div class="note">
-<p>The second one is a regression, and the first one is a special case of it — a regression on industry dummies and nothing else.</p>
-</div>
-</section></section>
-<section>
-<section id="one-cross-section" class="title-slide slide level1 center">
-<h1>One Cross-Section</h1>
-
-</section>
-<section id="freeze-a-date" class="slide level2">
-<h2>Freeze a Date</h2>
-<div class="lead">
-<p>One row per company, on a single day. Three thousand rows, and no time dimension at all.</p>
-</div>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>Build a cross-section as of June 30 of last year: one row per stock, with P/E from <code>daily</code>, and from the most recent <code>sf1</code> annual filing bring in ROE, revenue growth, the operating margin, leverage, and payout. Add sector.</p>
-</blockquote>
-<div class="note">
-<p>Everything today happens inside this one table. The time series comes back at the end.</p>
-</div>
-</section>
-<section id="what-goes-on-the-left" class="slide level2">
-<h2>What Goes on the Left</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">P/E</span></p>
-<p>Bounded below at zero, unbounded above, and violently skewed. OLS on this is mostly fitting the tail.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">log P/E</span></p>
-<p>Roughly symmetric. Coefficients read as percentage effects on the multiple, which is how you want to think about them anyway.</p>
-</div>
-</div>
-<div class="note note-plum">
-<p>And the negative-earnings problem does not go away — you cannot take the log of a negative P/E, so those companies leave the sample. Note how many, and which kind.</p>
-</div>
-</section>
-<section id="what-goes-on-the-right" class="slide level2 plain-title">
-<h2>What Goes on the Right</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 19%">
+<col style="width: 80%">
 </colgroup>
 <tbody>
 <tr class="odd">
-<td>Growth</td>
-<td>Revenue growth, earnings growth — what the multiple is supposed to be paying for</td>
+<td>Multiples</td>
+<td>ps, pb, pe, evebitda</td>
 </tr>
 <tr class="even">
-<td>Profitability</td>
-<td>ROE, ROA, margins</td>
+<td>Denominators</td>
+<td>revenue, book value, net income, EBITDA</td>
 </tr>
 <tr class="odd">
-<td>Risk</td>
-<td>Leverage, and how variable the earnings have been</td>
+<td>Industry variables</td>
+<td>SIC4, SIC3, SIC2, industry, famaindustry, sector</td>
+</tr>
+<tr class="even">
+<td>Ratios</td>
+<td>net margin, gross margin, EBITDA margin, asset turnover, ROE, ROA, ROIC, debt-to-equity, current ratio, payout ratio, dividend yield</td>
+</tr>
+<tr class="odd">
+<td>Growth</td>
+<td>year-over-year sales growth</td>
 </tr>
 <tr class="even">
 <td>Size</td>
-<td>Log market cap</td>
-</tr>
-<tr class="odd">
-<td>Sector</td>
-<td>Dummies — which is where the peer median hides</td>
+<td>marketcap</td>
 </tr>
 </tbody>
 </table>
-<div class="note">
-<p>Start with a handful you can defend. A regression with forty right-hand variables is a machine learning problem, and that is Tuesday.</p>
-</div>
-</section>
-<section id="run-it" class="slide level2">
-<h2>Run It</h2>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>Regress log P/E on those characteristics with sector fixed effects. Winsorize the right-hand variables at 1 and 99 percent. Show me the coefficients, the standard errors, and the R-squared.</p>
-</blockquote>
 <div class="note note-plum">
-<p>Then read the coefficients before you look at anything else. Does the market pay more for growth? For profitability? If a sign is backwards, that is the finding, and it usually means a variable is built wrong.</p>
+<p>Ask AI to describe <code>session4.parquet</code> and confirm that it contains this data.</p>
 </div>
 </section>
-<section id="what-r-squared-to-expect" class="slide level2">
-<h2>What R-Squared to Expect</h2>
-<div class="lead">
-<p>Somewhere between a third and a half. Which is enormous, and does not mean what you want it to mean.</p>
-</div>
-<div class="note">
-<p>Cross-sectional valuation regressions fit well because companies genuinely do trade on their fundamentals. The question is not whether the fit is good. It is whether what is left over is worth trading.</p>
-</div>
-</section></section>
-<section>
-<section id="relative-value" class="title-slide slide level1 center">
-<h1>Relative Value</h1>
-
-</section>
-<section id="fitted-and-residual" class="slide level2 band-bottom">
-<h2>Fitted and Residual</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Fitted</span></p>
-<p>What the market, on average, pays for a company with these characteristics.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Actual</span></p>
-<p>What this company actually trades at.</p>
-</div>
-<div class="card">
-<p><span class="card-title">Residual</span></p>
-<p>The gap. Negative means it trades below what its own characteristics justify.</p>
-</div>
-</div>
-<div class="note note-plum">
-<p>The residual is the signal, and it is exactly the same shape as last session’s signal — own multiple against a predicted one. All that changed is how the prediction is made.</p>
-</div>
-</section>
-<section id="two-readings-of-a-negative-residual" class="slide level2 compare">
-<h2>Two Readings of a Negative Residual</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">It is cheap</span></p>
-<p>The market has not noticed. Buy it, wait for the gap to close.</p>
-<p>This is the assumption the whole strategy rests on.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Your model is missing something</span></p>
-<p>The company is in litigation, or its growth is about to stop, and the market knows. The gap is information you failed to include.</p>
-</div></div>
-<div class="note">
-<p>You cannot tell these apart for any single company. You can only find out in aggregate, over many companies and many years, which is what the backtest is for.</p>
-</div>
-</section>
-<section id="look-at-the-extremes" class="slide level2">
-<h2>Look at the Extremes</h2>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>Show me the twenty largest positive and twenty largest negative residuals, with their characteristics and their sector.</p>
-</blockquote>
-<div class="note note-plum">
-<p>If the cheap list is all one sector, your sector dummies are not doing their job. If it is all microcaps, size is entering the pricing in a way your model has not captured. Either way you learn it in thirty seconds by looking.</p>
-</div>
-</section>
-<section id="against-last-session" class="slide level2 plain-title">
-<h2>Against Last Session</h2>
-<div class="lead">
-<p>The peer median is the same regression with only sector dummies on the right.</p>
-</div>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>Fit it three ways on this cross-section: sector dummies only, characteristics only, and both. Compare the R-squared and the correlation between the three sets of residuals.</p>
-</blockquote>
-<div class="note">
-<p>If the residuals correlate at 0.9, the extra machinery is not buying you a new signal. It is buying you the same signal with more steps.</p>
-</div>
-</section></section>
-<section>
-<section id="twenty-five-cross-sections" class="title-slide slide level1 center">
-<h1>Twenty-Five Cross-Sections</h1>
-
-</section>
-<section id="refit-every-year" class="slide level2 band-bottom">
-<h2>Refit Every Year</h2>
-<div class="lead">
-<p>One regression per year, using only that year’s data.</p>
-</div>
-<div class="note note-plum">
-<p>The temptation is to fit once on everything and apply the coefficients throughout. That uses 2024 data to price a 2004 company. It is the same look-ahead as <code>MRY</code>, wearing a different hat, and it is harder to spot because nothing about the code looks wrong.</p>
-</div>
-</section>
-<section id="the-loop" class="slide level2">
-<h2>The Loop</h2>
+<section id="linear-regression" class="slide level2">
+<h2>Linear Regression</h2>
 <div class="steps">
 <ol type="1">
-<li>For each June 30 from 2001 to 2025, build the cross-section</li>
-<li>Fit the regression on that year alone</li>
-<li>Take the residuals</li>
-<li>Sort into deciles, long the cheapest, short the most expensive</li>
-<li>Hold twelve months, record the return</li>
+<li>Ask AI to use the statsmodels library to regress ps on the ratios and sales growth.</li>
+<li>Think about what you want to do with negative ps firms and tell AI. Or discuss it with AI.</li>
+<li>Analyze the regression output.</li>
 </ol>
 </div>
-<div class="note">
-<p>Step 2 is the only thing that changed from Tuesday. Everything else is the backtest you already have — which is the point of having written it as code you can read.</p>
-</div>
 </section>
-<section id="watch-the-coefficients-move" class="slide level2">
-<h2>Watch the Coefficients Move</h2>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>Plot each coefficient by year, with its confidence band.</p>
-</blockquote>
+<section id="industry-membership" class="slide level2 plain-title">
+<h2>Industry Membership</h2>
+<div class="lead">
+<p>Including industry dummy variables (1 if in industry, 0 if not, for each industry) allows the intercept of the regression to vary by industry.</p>
+</div>
 <div class="note note-plum">
-<p>The price of growth is not a constant. If a coefficient flips sign in 2009 and again in 2021, that is worth a slide in your presentation — and it is a reason to be suspicious of any model that assumes the relationship is fixed.</p>
+<p>Ask AI what industry variable it recommends using. Then ask it to run the regression with statsmodels and to evaluate the goodness of fit.</p>
 </div>
 </section>
-<section id="how-many-companies-survive-each-year" class="slide level2 plain-title">
-<h2>How Many Companies Survive Each Year</h2>
-<p><span class="eyebrow">Tell GLM</span></p>
-<blockquote>
-<p>For each year, report how many stocks had all the variables and how many were dropped, broken out by which variable was missing.</p>
-</blockquote>
-<div class="note">
-<p>Every characteristic you add shrinks the sample, and it does not shrink it randomly. A model that requires five years of earnings history is a model estimated on established companies only.</p>
-</div>
-</section></section>
 <section>
-<section id="did-it-pay" class="title-slide slide level1 center">
-<h1>Did It Pay</h1>
+<section id="the-effect-of-outliers" class="title-slide slide level1 center">
+<h1>The Effect of Outliers</h1>
 
 </section>
-<section id="three-backtests-one-table" class="slide level2 band-bottom">
-<h2>Three Backtests, One Table</h2>
+<section id="both-directions" class="slide level2 no-title">
+<h2>Both Directions</h2>
+<p><img data-src="images/session04-outliers.svg" class="" style="width:100.0%"></p>
+<div class="note note-plum">
+<p>Six points either way, and least squares has no way of telling you which of these two pictures it is looking at. It reports the same kind of R-squared for both.</p>
+</div>
+</section>
+<section id="it-destroys-a-real-relationship" class="slide level2 plain-title compare">
+<h2>It Destroys a Real Relationship</h2>
 <table class="caption-top">
+<thead>
+<tr class="header">
+<th>x</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th></th>
+<th>20</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
-<td>Peer median</td>
-<td>Tuesday’s result</td>
+<td>y</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Five points</span></p>
+<p>Slope 1.00, R-squared 1.00. A perfect line.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Add the sixth</span></p>
+<p>Slope -0.13, R-squared 0.24. The sign is now wrong.</p>
+</div></div>
+</section>
+<section id="and-it-invents-one-that-is-not-there" class="slide level2 band-bottom">
+<h2>And It Invents One That Is Not There</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>x</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th></th>
+<th>100</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>y</td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+<td>2</td>
+<td>3</td>
+<td></td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">Five points of noise</span></p>
+<p>R-squared 0.019, t = 0.24. Correctly, nothing.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Add the sixth</span></p>
+<p>R-squared 0.999, t = 55. A perfect fit through one observation.</p>
+</div>
+</div>
+<div class="note note-plum">
+<p>Six points here, and a few thousand in the file. It does not take many.</p>
+</div>
+</section></section>
+<section>
+<section id="variable-transformations" class="title-slide slide level1 center">
+<h1>Variable Transformations</h1>
+
+</section>
+<section id="the-moves" class="slide level2 band-bottom">
+<h2>The Moves</h2>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Winsorize</span></p>
+<p>Clip each variable at its 1st and 99th percentile. Keeps the company, discards the magnitude.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Standardize</span></p>
+<p>Subtract the mean, divide by the standard deviation. Puts every variable on the same scale.</p>
+</div>
+<div class="card">
+<p><span class="card-title">Log</span></p>
+<p>Take logs. Converts right-skewed distributions (marketcap, household income, …) into more symmetric ones.</p>
+</div>
+</div>
+<div class="note">
+<p>They are not interchangeable, and only two of the three will do anything to an OLS R-squared.</p>
+</div>
+</section>
+<section id="winsorizing" class="slide level2 plain-title">
+<h2>Winsorizing</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>values</th>
+<th>mean</th>
+<th>std</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Raw</td>
+<td>1, 2, 3, 4, 1000</td>
+<td>202.0</td>
+<td>446.1</td>
 </tr>
 <tr class="even">
-<td>Regression residual</td>
-<td>Today’s</td>
-</tr>
-<tr class="odd">
-<td>Plain P/E</td>
-<td>No prediction at all — just buy the low multiples</td>
+<td>Clipped at 4</td>
+<td>1, 2, 3, 4, <strong>4</strong></td>
+<td>2.8</td>
+<td>1.3</td>
 </tr>
 </tbody>
 </table>
 <div class="note note-plum">
-<p>Report the average annual return, the volatility, the t-stat, and the worst year for all three. Same dates, same universe, same weighting, or the comparison means nothing.</p>
+<p>The company stays in the sample and keeps its rank. What it loses is the ability to dominate a sum of squares. Winsorizing is a statement that you believe the ordering and not the size.</p>
 </div>
 </section>
-<section id="the-honest-outcome" class="slide level2">
-<h2>The Honest Outcome</h2>
-<div class="lead">
-<p>It is entirely possible that plain P/E wins.</p>
-</div>
+<section id="logs" class="slide level2">
+<h2>Logs</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Raw</td>
+<td>1, 2, 3, 4, 1000</td>
+</tr>
+<tr class="even">
+<td>Log</td>
+<td>0.00, 0.69, 1.10, 1.39, <strong>6.91</strong></td>
+</tr>
+</tbody>
+</table>
 <div class="note">
-<p>That would be a real result, and a well-known one. The elaborate model has more ways to be wrong, more parameters to fit to noise, and a smaller sample to fit them on. Report it if you find it.</p>
+<p>A thousand is a thousand times the smallest value and seven times its log. Taking logs is useful for right-skewed variables.</p>
 </div>
-<p>What you must not do is keep trying specifications until one of them beats the others, and then present that one.</p>
+</section>
+<section id="standardizing" class="slide level2 plain-title">
+<h2>Standardizing</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>values</th>
+<th>mean</th>
+<th>std</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Raw</td>
+<td>ninety-nine 0.5s, and one 3374</td>
+<td>34.2</td>
+<td>335.7</td>
+</tr>
+<tr class="even">
+<td>Standardized</td>
+<td>ninety-nine -0.1005s, and one 9.95</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<div class="lead">
+<p>Standardizing is a linear change of variables, and OLS is invariant to it. The coefficients move and are easier to compare across variables, but the predictions of the dependent variable do not change.</p>
+</div>
+</section>
+<section id="re-run-the-regression" class="slide level2">
+<h2>Re-run the regression</h2>
+<div class="lead">
+<p>Talk with AI about which transformations might be useful for which variables. Then re-run the regression.</p>
+</div>
+<div class="note note-plum">
+<p>How do coefficients, t-stats, and the R-squared change?</p>
+</div>
 </section></section>
 <section>
-<section id="before-tuesday" class="title-slide slide level1 center">
-<h1>Before Tuesday</h1>
+<section id="out-of-sample-performance" class="title-slide slide level1 center">
+<h1>Out of Sample Performance</h1>
 
 </section>
-<section id="three-things" class="slide level2 plain-title">
-<h2>Three Things</h2>
+<section id="machine-learning" class="slide level2 plain-title">
+<h2>Machine Learning</h2>
+<div class="lead">
+<p>Machine learning deals with the following type of situation.</p>
+</div>
+<ul>
+<li>In the future, I will have some data. I want to use it to make a prediction about another variable.</li>
+<li>I also have past data on the predictors (x variables) and the dependent variable (y).</li>
+<li>I want to build a model using the past data that predicts y from the x variables.</li>
+<li>In the future, I will use the model to make predictions.</li>
+</ul>
+<div class="note note-plum">
+<p>What machine learning cares about is how well a model trained (fitted) on past data will perform on future data. This is out-of-sample performance, because the future x’s and y are not part of the sample used to build the model.</p>
+</div>
+</section>
+<section id="train-test-split" class="slide level2">
+<h2>Train-Test Split</h2>
+<div class="lead">
+<p>To assess expected out-of-sample performance, we withhold some of our current data when training. We use the held-out data to test the model.</p>
+</div>
 <div class="steps">
 <ol type="1">
-<li>Get the annual refit loop running, and produce the three-way comparison table</li>
-<li>Save the cross-section builder as a skill — you will use it every week from here</li>
-<li>Write the memory file, including which specifications you tried and rejected</li>
+<li>Ask AI to use scikit-learn to do a train-test split, to transform features (x variables) on the training data, apply the same transformations on the test data, and determine goodness of fit on the test data.</li>
+<li>Ask AI to create an html doc explaining what was done and explaining the performance on the test data.</li>
+</ol>
+</div>
+</section>
+<section id="what-the-splits-say" class="slide level2 no-title">
+<h2>What the Splits Say</h2>
+<p><img data-src="images/session04-oos.svg" class="" style="width:100.0%"></p>
+<div class="note note-plum">
+<p>A negative out-of-sample R-squared is worse than predicting the mean. Log the multiple and winsorize the features, and the ten splits stop disagreeing.</p>
+</div>
+</section>
+<section id="assignment-for-tuesday" class="slide level2 band-bottom">
+<h2>Assignment for Tuesday</h2>
+<div class="lead">
+<p>Can we trade on this? Use <code>session4_monthly.parquet</code>. In each row, everything except the return is known at the beginning of the month.</p>
+</div>
+<div class="steps">
+<ol type="1">
+<li>Run a linear regression each month, using some multiple on the left-hand side. Use scikit-learn, but do not use train-test splits. Our test will be whether we make money.</li>
+<li>Sort stocks each month based on the regression error. If the left-hand side is ps, or log ps, then positive errors (ps &gt; predicted) are expensive firms. You would want to buy stocks with the “most negative” errors.</li>
+<li>Form a portfolio each month and compute its return. Evaluate the returns of the strategy — annualized mean, Sharpe ratio, CAPM alpha, …</li>
 </ol>
 </div>
 <div class="note note-plum">
-<p>Tuesday we replace the regression with something that can find relationships you did not specify. Come with the linear result written down, because it is the benchmark that machine learning has to beat.</p>
+<p>Be prepared to present on Tuesday — slides if you want them but be prepared to dig into the analysis.</p>
 </div>
 
 
@@ -629,12 +659,14 @@ Kerry Back
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1280,
 
-        height: 700,
+        height: 720,
 
         // Factor of the display size that should remain empty around the content
         margin: 0,
+
+        maxScale: 5,
 
         math: {
           mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',

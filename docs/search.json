@@ -1,136 +1,115 @@
 [
   {
-    "objectID": "slides/session04.html#three-groups",
-    "href": "slides/session04.html#three-groups",
+    "objectID": "slides/session04.html#today",
+    "href": "slides/session04.html#today",
     "title": "Linear Regression for Multiples",
-    "section": "Three Groups",
-    "text": "Three Groups\n\n\nWhat your backtest earned, and what you compared it against\nWhat changed when you switched to ARY and datekey\nThe thing that broke\n\n\n\nIf your annual return went down when you fixed the point-in-time problem, that is the most useful slide anyone will show today. Say by how much."
+    "section": "Today",
+    "text": "Today\n\n\nFit a linear regression to predict multiples\nFiltering, transforming variables\nTrain/test split and out-of-sample goodness of fit"
   },
   {
-    "objectID": "slides/session04.html#what-the-peer-median-assumes",
-    "href": "slides/session04.html#what-the-peer-median-assumes",
+    "objectID": "slides/session04.html#data-session4.parquet",
+    "href": "slides/session04.html#data-session4.parquet",
     "title": "Linear Regression for Multiples",
-    "section": "What the Peer Median Assumes",
-    "text": "What the Peer Median Assumes\n\nThat every company in an industry deserves the same multiple.\n\n\nTwo software companies, same industry. One grows at twenty percent with a forty percent margin; the other grows at three percent and barely breaks even. The peer median says they should trade at the same P/E, and calls the difference mispricing.\n\nIt is not mispricing. It is the model being wrong."
+    "section": "Data: session4.parquet",
+    "text": "Data: session4.parquet\n\nToday’s data, 4161 rows.\n\n\n\n\n\n\n\n\nMultiples\nps, pb, pe, evebitda\n\n\nDenominators\nrevenue, book value, net income, EBITDA\n\n\nIndustry variables\nSIC4, SIC3, SIC2, industry, famaindustry, sector\n\n\nRatios\nnet margin, gross margin, EBITDA margin, asset turnover, ROE, ROA, ROIC, debt-to-equity, current ratio, payout ratio, dividend yield\n\n\nGrowth\nyear-over-year sales growth\n\n\nSize\nmarketcap\n\n\n\n\nAsk AI to describe session4.parquet and confirm that it contains this data."
   },
   {
-    "objectID": "slides/session04.html#the-alternative",
-    "href": "slides/session04.html#the-alternative",
+    "objectID": "slides/session04.html#linear-regression",
+    "href": "slides/session04.html#linear-regression",
     "title": "Linear Regression for Multiples",
-    "section": "The Alternative",
-    "text": "The Alternative\n\n\nBorrow a multiple\nFind companies that look like this one. Use the middle of what they trade at.\n\n\nPredict a multiple\nEstimate what the market pays for growth, for profitability, for leverage. Apply those prices to this company.\n\n\n\nThe second one is a regression, and the first one is a special case of it — a regression on industry dummies and nothing else."
+    "section": "Linear Regression",
+    "text": "Linear Regression\n\n\nAsk AI to use the statsmodels library to regress ps on the ratios and sales growth.\nThink about what you want to do with negative ps firms and tell AI. Or discuss it with AI.\nAnalyze the regression output."
   },
   {
-    "objectID": "slides/session04.html#freeze-a-date",
-    "href": "slides/session04.html#freeze-a-date",
+    "objectID": "slides/session04.html#industry-membership",
+    "href": "slides/session04.html#industry-membership",
     "title": "Linear Regression for Multiples",
-    "section": "Freeze a Date",
-    "text": "Freeze a Date\n\nOne row per company, on a single day. Three thousand rows, and no time dimension at all.\n\nTell GLM\n\nBuild a cross-section as of June 30 of last year: one row per stock, with P/E from daily, and from the most recent sf1 annual filing bring in ROE, revenue growth, the operating margin, leverage, and payout. Add sector.\n\n\nEverything today happens inside this one table. The time series comes back at the end."
+    "section": "Industry Membership",
+    "text": "Industry Membership\n\nIncluding industry dummy variables (1 if in industry, 0 if not, for each industry) allows the intercept of the regression to vary by industry.\n\n\nAsk AI what industry variable it recommends using. Then ask it to run the regression with statsmodels and to evaluate the goodness of fit."
   },
   {
-    "objectID": "slides/session04.html#what-goes-on-the-left",
-    "href": "slides/session04.html#what-goes-on-the-left",
+    "objectID": "slides/session04.html#both-directions",
+    "href": "slides/session04.html#both-directions",
     "title": "Linear Regression for Multiples",
-    "section": "What Goes on the Left",
-    "text": "What Goes on the Left\n\n\nP/E\nBounded below at zero, unbounded above, and violently skewed. OLS on this is mostly fitting the tail.\n\n\nlog P/E\nRoughly symmetric. Coefficients read as percentage effects on the multiple, which is how you want to think about them anyway.\n\n\n\nAnd the negative-earnings problem does not go away — you cannot take the log of a negative P/E, so those companies leave the sample. Note how many, and which kind."
+    "section": "Both Directions",
+    "text": "Both Directions\n\n\nSix points either way, and least squares has no way of telling you which of these two pictures it is looking at. It reports the same kind of R-squared for both."
   },
   {
-    "objectID": "slides/session04.html#what-goes-on-the-right",
-    "href": "slides/session04.html#what-goes-on-the-right",
+    "objectID": "slides/session04.html#it-destroys-a-real-relationship",
+    "href": "slides/session04.html#it-destroys-a-real-relationship",
     "title": "Linear Regression for Multiples",
-    "section": "What Goes on the Right",
-    "text": "What Goes on the Right\n\n\n\n\n\n\n\nGrowth\nRevenue growth, earnings growth — what the multiple is supposed to be paying for\n\n\nProfitability\nROE, ROA, margins\n\n\nRisk\nLeverage, and how variable the earnings have been\n\n\nSize\nLog market cap\n\n\nSector\nDummies — which is where the peer median hides\n\n\n\n\nStart with a handful you can defend. A regression with forty right-hand variables is a machine learning problem, and that is Tuesday."
+    "section": "It Destroys a Real Relationship",
+    "text": "It Destroys a Real Relationship\n\n\n\nx\n1\n2\n3\n4\n5\n\n20\n\n\n\n\ny\n1\n2\n3\n4\n5\n\n0\n\n\n\n\n\nFive points\nSlope 1.00, R-squared 1.00. A perfect line.\n\nAdd the sixth\nSlope -0.13, R-squared 0.24. The sign is now wrong."
   },
   {
-    "objectID": "slides/session04.html#run-it",
-    "href": "slides/session04.html#run-it",
+    "objectID": "slides/session04.html#and-it-invents-one-that-is-not-there",
+    "href": "slides/session04.html#and-it-invents-one-that-is-not-there",
     "title": "Linear Regression for Multiples",
-    "section": "Run It",
-    "text": "Run It\nTell GLM\n\nRegress log P/E on those characteristics with sector fixed effects. Winsorize the right-hand variables at 1 and 99 percent. Show me the coefficients, the standard errors, and the R-squared.\n\n\nThen read the coefficients before you look at anything else. Does the market pay more for growth? For profitability? If a sign is backwards, that is the finding, and it usually means a variable is built wrong."
+    "section": "And It Invents One That Is Not There",
+    "text": "And It Invents One That Is Not There\n\n\n\nx\n1\n2\n3\n4\n5\n\n100\n\n\n\n\ny\n3\n1\n4\n2\n3\n\n200\n\n\n\n\n\nFive points of noise\nR-squared 0.019, t = 0.24. Correctly, nothing.\n\n\nAdd the sixth\nR-squared 0.999, t = 55. A perfect fit through one observation.\n\n\n\nSix points here, and a few thousand in the file. It does not take many."
   },
   {
-    "objectID": "slides/session04.html#what-r-squared-to-expect",
-    "href": "slides/session04.html#what-r-squared-to-expect",
+    "objectID": "slides/session04.html#the-moves",
+    "href": "slides/session04.html#the-moves",
     "title": "Linear Regression for Multiples",
-    "section": "What R-Squared to Expect",
-    "text": "What R-Squared to Expect\n\nSomewhere between a third and a half. Which is enormous, and does not mean what you want it to mean.\n\n\nCross-sectional valuation regressions fit well because companies genuinely do trade on their fundamentals. The question is not whether the fit is good. It is whether what is left over is worth trading."
+    "section": "The Moves",
+    "text": "The Moves\n\n\nWinsorize\nClip each variable at its 1st and 99th percentile. Keeps the company, discards the magnitude.\n\n\nStandardize\nSubtract the mean, divide by the standard deviation. Puts every variable on the same scale.\n\n\nLog\nTake logs. Converts right-skewed distributions (marketcap, household income, …) into more symmetric ones.\n\n\n\nThey are not interchangeable, and only two of the three will do anything to an OLS R-squared."
   },
   {
-    "objectID": "slides/session04.html#fitted-and-residual",
-    "href": "slides/session04.html#fitted-and-residual",
+    "objectID": "slides/session04.html#winsorizing",
+    "href": "slides/session04.html#winsorizing",
     "title": "Linear Regression for Multiples",
-    "section": "Fitted and Residual",
-    "text": "Fitted and Residual\n\n\nFitted\nWhat the market, on average, pays for a company with these characteristics.\n\n\nActual\nWhat this company actually trades at.\n\n\nResidual\nThe gap. Negative means it trades below what its own characteristics justify.\n\n\n\nThe residual is the signal, and it is exactly the same shape as last session’s signal — own multiple against a predicted one. All that changed is how the prediction is made."
+    "section": "Winsorizing",
+    "text": "Winsorizing\n\n\n\n\nvalues\nmean\nstd\n\n\n\n\nRaw\n1, 2, 3, 4, 1000\n202.0\n446.1\n\n\nClipped at 4\n1, 2, 3, 4, 4\n2.8\n1.3\n\n\n\n\nThe company stays in the sample and keeps its rank. What it loses is the ability to dominate a sum of squares. Winsorizing is a statement that you believe the ordering and not the size."
   },
   {
-    "objectID": "slides/session04.html#two-readings-of-a-negative-residual",
-    "href": "slides/session04.html#two-readings-of-a-negative-residual",
+    "objectID": "slides/session04.html#logs",
+    "href": "slides/session04.html#logs",
     "title": "Linear Regression for Multiples",
-    "section": "Two Readings of a Negative Residual",
-    "text": "Two Readings of a Negative Residual\n\n\nIt is cheap\nThe market has not noticed. Buy it, wait for the gap to close.\nThis is the assumption the whole strategy rests on.\n\nYour model is missing something\nThe company is in litigation, or its growth is about to stop, and the market knows. The gap is information you failed to include.\n\n\nYou cannot tell these apart for any single company. You can only find out in aggregate, over many companies and many years, which is what the backtest is for."
+    "section": "Logs",
+    "text": "Logs\n\n\n\n\nvalues\n\n\n\n\nRaw\n1, 2, 3, 4, 1000\n\n\nLog\n0.00, 0.69, 1.10, 1.39, 6.91\n\n\n\n\nA thousand is a thousand times the smallest value and seven times its log. Taking logs is useful for right-skewed variables."
   },
   {
-    "objectID": "slides/session04.html#look-at-the-extremes",
-    "href": "slides/session04.html#look-at-the-extremes",
+    "objectID": "slides/session04.html#standardizing",
+    "href": "slides/session04.html#standardizing",
     "title": "Linear Regression for Multiples",
-    "section": "Look at the Extremes",
-    "text": "Look at the Extremes\nTell GLM\n\nShow me the twenty largest positive and twenty largest negative residuals, with their characteristics and their sector.\n\n\nIf the cheap list is all one sector, your sector dummies are not doing their job. If it is all microcaps, size is entering the pricing in a way your model has not captured. Either way you learn it in thirty seconds by looking."
+    "section": "Standardizing",
+    "text": "Standardizing\n\n\n\n\nvalues\nmean\nstd\n\n\n\n\nRaw\nninety-nine 0.5s, and one 3374\n34.2\n335.7\n\n\nStandardized\nninety-nine -0.1005s, and one 9.95\n0.0\n1.0\n\n\n\n\nStandardizing is a linear change of variables, and OLS is invariant to it. The coefficients move and are easier to compare across variables, but the predictions of the dependent variable do not change."
   },
   {
-    "objectID": "slides/session04.html#against-last-session",
-    "href": "slides/session04.html#against-last-session",
+    "objectID": "slides/session04.html#re-run-the-regression",
+    "href": "slides/session04.html#re-run-the-regression",
     "title": "Linear Regression for Multiples",
-    "section": "Against Last Session",
-    "text": "Against Last Session\n\nThe peer median is the same regression with only sector dummies on the right.\n\nTell GLM\n\nFit it three ways on this cross-section: sector dummies only, characteristics only, and both. Compare the R-squared and the correlation between the three sets of residuals.\n\n\nIf the residuals correlate at 0.9, the extra machinery is not buying you a new signal. It is buying you the same signal with more steps."
+    "section": "Re-run the regression",
+    "text": "Re-run the regression\n\nTalk with AI about which transformations might be useful for which variables. Then re-run the regression.\n\n\nHow do coefficients, t-stats, and the R-squared change?"
   },
   {
-    "objectID": "slides/session04.html#refit-every-year",
-    "href": "slides/session04.html#refit-every-year",
+    "objectID": "slides/session04.html#machine-learning",
+    "href": "slides/session04.html#machine-learning",
     "title": "Linear Regression for Multiples",
-    "section": "Refit Every Year",
-    "text": "Refit Every Year\n\nOne regression per year, using only that year’s data.\n\n\nThe temptation is to fit once on everything and apply the coefficients throughout. That uses 2024 data to price a 2004 company. It is the same look-ahead as MRY, wearing a different hat, and it is harder to spot because nothing about the code looks wrong."
+    "section": "Machine Learning",
+    "text": "Machine Learning\n\nMachine learning deals with the following type of situation.\n\n\nIn the future, I will have some data. I want to use it to make a prediction about another variable.\nI also have past data on the predictors (x variables) and the dependent variable (y).\nI want to build a model using the past data that predicts y from the x variables.\nIn the future, I will use the model to make predictions.\n\n\nWhat machine learning cares about is how well a model trained (fitted) on past data will perform on future data. This is out-of-sample performance, because the future x’s and y are not part of the sample used to build the model."
   },
   {
-    "objectID": "slides/session04.html#the-loop",
-    "href": "slides/session04.html#the-loop",
+    "objectID": "slides/session04.html#train-test-split",
+    "href": "slides/session04.html#train-test-split",
     "title": "Linear Regression for Multiples",
-    "section": "The Loop",
-    "text": "The Loop\n\n\nFor each June 30 from 2001 to 2025, build the cross-section\nFit the regression on that year alone\nTake the residuals\nSort into deciles, long the cheapest, short the most expensive\nHold twelve months, record the return\n\n\n\nStep 2 is the only thing that changed from Tuesday. Everything else is the backtest you already have — which is the point of having written it as code you can read."
+    "section": "Train-Test Split",
+    "text": "Train-Test Split\n\nTo assess expected out-of-sample performance, we withhold some of our current data when training. We use the held-out data to test the model.\n\n\n\nAsk AI to use scikit-learn to do a train-test split, to transform features (x variables) on the training data, apply the same transformations on the test data, and determine goodness of fit on the test data.\nAsk AI to create an html doc explaining what was done and explaining the performance on the test data."
   },
   {
-    "objectID": "slides/session04.html#watch-the-coefficients-move",
-    "href": "slides/session04.html#watch-the-coefficients-move",
+    "objectID": "slides/session04.html#what-the-splits-say",
+    "href": "slides/session04.html#what-the-splits-say",
     "title": "Linear Regression for Multiples",
-    "section": "Watch the Coefficients Move",
-    "text": "Watch the Coefficients Move\nTell GLM\n\nPlot each coefficient by year, with its confidence band.\n\n\nThe price of growth is not a constant. If a coefficient flips sign in 2009 and again in 2021, that is worth a slide in your presentation — and it is a reason to be suspicious of any model that assumes the relationship is fixed."
+    "section": "What the Splits Say",
+    "text": "What the Splits Say\n\n\nA negative out-of-sample R-squared is worse than predicting the mean. Log the multiple and winsorize the features, and the ten splits stop disagreeing."
   },
   {
-    "objectID": "slides/session04.html#how-many-companies-survive-each-year",
-    "href": "slides/session04.html#how-many-companies-survive-each-year",
+    "objectID": "slides/session04.html#assignment-for-tuesday",
+    "href": "slides/session04.html#assignment-for-tuesday",
     "title": "Linear Regression for Multiples",
-    "section": "How Many Companies Survive Each Year",
-    "text": "How Many Companies Survive Each Year\nTell GLM\n\nFor each year, report how many stocks had all the variables and how many were dropped, broken out by which variable was missing.\n\n\nEvery characteristic you add shrinks the sample, and it does not shrink it randomly. A model that requires five years of earnings history is a model estimated on established companies only."
-  },
-  {
-    "objectID": "slides/session04.html#three-backtests-one-table",
-    "href": "slides/session04.html#three-backtests-one-table",
-    "title": "Linear Regression for Multiples",
-    "section": "Three Backtests, One Table",
-    "text": "Three Backtests, One Table\n\n\n\nPeer median\nTuesday’s result\n\n\nRegression residual\nToday’s\n\n\nPlain P/E\nNo prediction at all — just buy the low multiples\n\n\n\n\nReport the average annual return, the volatility, the t-stat, and the worst year for all three. Same dates, same universe, same weighting, or the comparison means nothing."
-  },
-  {
-    "objectID": "slides/session04.html#the-honest-outcome",
-    "href": "slides/session04.html#the-honest-outcome",
-    "title": "Linear Regression for Multiples",
-    "section": "The Honest Outcome",
-    "text": "The Honest Outcome\n\nIt is entirely possible that plain P/E wins.\n\n\nThat would be a real result, and a well-known one. The elaborate model has more ways to be wrong, more parameters to fit to noise, and a smaller sample to fit them on. Report it if you find it.\n\nWhat you must not do is keep trying specifications until one of them beats the others, and then present that one."
-  },
-  {
-    "objectID": "slides/session04.html#three-things",
-    "href": "slides/session04.html#three-things",
-    "title": "Linear Regression for Multiples",
-    "section": "Three Things",
-    "text": "Three Things\n\n\nGet the annual refit loop running, and produce the three-way comparison table\nSave the cross-section builder as a skill — you will use it every week from here\nWrite the memory file, including which specifications you tried and rejected\n\n\n\nTuesday we replace the regression with something that can find relationships you did not specify. Come with the linear result written down, because it is the benchmark that machine learning has to beat."
+    "section": "Assignment for Tuesday",
+    "text": "Assignment for Tuesday\n\nCan we trade on this? Use session4_monthly.parquet. In each row, everything except the return is known at the beginning of the month.\n\n\n\nRun a linear regression each month, using some multiple on the left-hand side. Use scikit-learn, but do not use train-test splits. Our test will be whether we make money.\nSort stocks each month based on the regression error. If the left-hand side is ps, or log ps, then positive errors (ps &gt; predicted) are expensive firms. You would want to buy stocks with the “most negative” errors.\nForm a portfolio each month and compute its return. Evaluate the returns of the strategy — annualized mean, Sharpe ratio, CAPM alpha, …\n\n\n\nBe prepared to present on Tuesday — slides if you want them but be prepared to dig into the analysis."
   },
   {
     "objectID": "slides/session02.html#today",
@@ -291,7 +270,7 @@
     "href": "index.html",
     "title": "",
     "section": "",
-    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course mechanics.  Intro to quant investing.  Intro to gen AI.  Our AI Lab (Claude Code/GLM 4.7 + Python in a container).\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Introduction to the Nasdaq Data Link data.  Finding industry/size peers and valuing by multiples.  Analyzing model/market differences.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's fundamentals. Regression, fitted values, and a backtest of the signal.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Introduction to Machine Learning\n        Tree-based models. Training and test samples, overfitting, and cross-validation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n        Predicting Multiples with Machine Learning\n        Swapping the regression for a machine learning model, and backtesting the trading signal.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Predicting Returns with Machine Learning\n        Predicting returns directly rather than by way of valuation. Building features, fitting the model, and backtesting the result.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Short Sales and Insider Trading\n        Short interest, short volume,  and Form 4 filings.  Turning data into signals and backtesting. \n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Text Analysis and Sentiment\n        Working with a corpus of financial news. Measuring sentiment in text.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        Trading on Sentiment\n        Building a signal out of the news corpus and backtesting.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Risk Models\n        Factor models of how stocks move together.  Market, industry and style factors.  Covariance shrinkage.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        Portfolio Risk\n        Putting the risk model to work: measuring a portfolio's factor exposures and risks, and building one that takes only the bets you meant to take.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
+    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course mechanics.  Intro to quant investing.  Intro to gen AI.  Our AI Lab (Claude Code/GLM 4.7 + Python in a container).\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Introduction to the Nasdaq Data Link data.  Finding industry/size peers and valuing by multiples.  Analyzing model/market differences.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      Slides·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's fundamentals. Reading the regression output, holding out a test sample, and the transformations that decide the answer.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Introduction to Machine Learning\n        Tree-based models. Training and test samples, overfitting, and cross-validation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n        Predicting Multiples with Machine Learning\n        Swapping the regression for a machine learning model, and backtesting the trading signal.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Predicting Returns with Machine Learning\n        Predicting returns directly rather than by way of valuation. Building features, fitting the model, and backtesting the result.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Short Sales and Insider Trading\n        Short interest, short volume,  and Form 4 filings.  Turning data into signals and backtesting. \n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Text Analysis and Sentiment\n        Working with a corpus of financial news. Measuring sentiment in text.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        Trading on Sentiment\n        Building a signal out of the news corpus and backtesting.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Risk Models\n        Factor models of how stocks move together.  Market, industry and style factors.  Covariance shrinkage.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        Portfolio Risk\n        Putting the risk model to work: measuring a portfolio's factor exposures and risks, and building one that takes only the bets you meant to take.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
   },
   {
     "objectID": "slides/session01.html#course-overview",

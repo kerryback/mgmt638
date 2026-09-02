@@ -1,338 +1,254 @@
 ---
 title: "Linear Regression for Multiples"
-subtitle: "One cross-section, then twenty-five of them"
 author: "Kerry Back"
 date: "2026-09-03"
 format:
   revealjs:
     theme: shoji2.scss
-    width: 1050
-    height: 700
+    width: 1280
+    height: 720
+    max-scale: 5
 ---
 
-# Presentations
-
-## Three Groups {.plain-title}
+## Today
 
 ::: {.steps}
-1. What your backtest earned, and what you compared it against
-2. What changed when you switched to `ARY` and `datekey`
-3. The thing that broke
+1. Fit a linear regression to predict multiples
+2. Filtering, transforming variables
+3. Train/test split and out-of-sample goodness of fit
 :::
 
-::: {.note .note-plum}
-If your annual return went down when you fixed the point-in-time problem, that
-is the most useful slide anyone will show today. Say by how much.
-:::
-
-# Stop Borrowing, Start Predicting
-
-## What the Peer Median Assumes
+## Data: session4.parquet {.plain-title}
 
 ::: {.lead}
-That every company in an industry deserves the same multiple.
+Today's data, 4161 rows.
 :::
-
-::: {.note .note-plum}
-Two software companies, same industry. One grows at twenty percent with a forty
-percent margin; the other grows at three percent and barely breaks even. The
-peer median says they should trade at the same P/E, and calls the difference
-mispricing.
-:::
-
-It is not mispricing. It is the model being wrong.
-
-## The Alternative {.band-bottom}
-
-::: {.cards .cards-2}
-::: {.card}
-[Borrow a multiple]{.card-title}
-
-Find companies that look like this one. Use the middle of what they trade at.
-:::
-
-::: {.card .card-blue}
-[Predict a multiple]{.card-title}
-
-Estimate what the market pays for growth, for profitability, for leverage. Apply
-those prices to this company.
-:::
-:::
-
-::: {.note}
-The second one is a regression, and the first one is a special case of it --- a
-regression on industry dummies and nothing else.
-:::
-
-# One Cross-Section
-
-## Freeze a Date
-
-::: {.lead}
-One row per company, on a single day. Three thousand rows, and no time
-dimension at all.
-:::
-
-[Tell GLM]{.eyebrow}
-
-> Build a cross-section as of June 30 of last year: one row per stock, with P/E
-> from `daily`, and from the most recent `sf1` annual filing bring in ROE,
-> revenue growth, the operating margin, leverage, and payout. Add sector.
-
-::: {.note}
-Everything today happens inside this one table. The time series comes back at
-the end.
-:::
-
-## What Goes on the Left
-
-::: {.cards .cards-2}
-::: {.card}
-[P/E]{.card-title}
-
-Bounded below at zero, unbounded above, and violently skewed. OLS on this is
-mostly fitting the tail.
-:::
-
-::: {.card .card-blue}
-[log P/E]{.card-title}
-
-Roughly symmetric. Coefficients read as percentage effects on the multiple,
-which is how you want to think about them anyway.
-:::
-:::
-
-::: {.note .note-plum}
-And the negative-earnings problem does not go away --- you cannot take the log
-of a negative P/E, so those companies leave the sample. Note how many, and which
-kind.
-:::
-
-## What Goes on the Right {.plain-title}
 
 | | |
-|---|---|
-| Growth | Revenue growth, earnings growth --- what the multiple is supposed to be paying for |
-| Profitability | ROE, ROA, margins |
-| Risk | Leverage, and how variable the earnings have been |
-| Size | Log market cap |
-| Sector | Dummies --- which is where the peer median hides |
-
-::: {.note}
-Start with a handful you can defend. A regression with forty right-hand
-variables is a machine learning problem, and that is Tuesday.
-:::
-
-## Run It
-
-[Tell GLM]{.eyebrow}
-
-> Regress log P/E on those characteristics with sector fixed effects. Winsorize
-> the right-hand variables at 1 and 99 percent. Show me the coefficients, the
-> standard errors, and the R-squared.
+|-------|-----------------------------|
+| Multiples | ps, pb, pe, evebitda |
+| Denominators | revenue, book value, net income, EBITDA |
+| Industry variables | SIC4, SIC3, SIC2, industry, famaindustry, sector |
+| Ratios | net margin, gross margin, EBITDA margin, asset turnover, ROE, ROA, ROIC, debt-to-equity, current ratio, payout ratio, dividend yield |
+| Growth | year-over-year sales growth |
+| Size | marketcap |
 
 ::: {.note .note-plum}
-Then read the coefficients before you look at anything else. Does the market pay
-more for growth? For profitability? If a sign is backwards, that is the finding,
-and it usually means a variable is built wrong.
+Ask AI to describe `session4.parquet` and confirm that it contains this data.
 :::
 
-## What R-Squared to Expect
+
+## Linear Regression
+
+::: {.steps}
+1. Ask AI to use the statsmodels library to regress ps on the ratios and sales growth.
+2. Think about what you want to do with negative ps firms and tell AI. Or discuss it with AI.
+3. Analyze the regression output.
+:::
+
+## Industry Membership {.plain-title}
 
 ::: {.lead}
-Somewhere between a third and a half. Which is enormous, and does not mean what
-you want it to mean.
-:::
-
-::: {.note}
-Cross-sectional valuation regressions fit well because companies genuinely do
-trade on their fundamentals. The question is not whether the fit is good. It is
-whether what is left over is worth trading.
-:::
-
-# Relative Value
-
-## Fitted and Residual {.band-bottom}
-
-::: {.cards .cards-3}
-::: {.card}
-[Fitted]{.card-title}
-
-What the market, on average, pays for a company with these characteristics.
-:::
-
-::: {.card .card-blue}
-[Actual]{.card-title}
-
-What this company actually trades at.
-:::
-
-::: {.card}
-[Residual]{.card-title}
-
-The gap. Negative means it trades below what its own characteristics justify.
-:::
+Including industry dummy variables (1 if in industry, 0 if not, for each
+industry) allows the intercept of the regression to vary by industry.
 :::
 
 ::: {.note .note-plum}
-The residual is the signal, and it is exactly the same shape as last session's
-signal --- own multiple against a predicted one. All that changed is how the
-prediction is made.
+Ask AI what industry variable it recommends using. Then ask it to run the
+regression with statsmodels and to evaluate the goodness of fit.
 :::
 
-## Two Readings of a Negative Residual {.compare}
+# The Effect of Outliers
+
+## Both Directions {.no-title}
+
+![](images/session04-outliers.svg){.nostretch width="100%"}
+
+::: {.note .note-plum}
+Six points either way, and least squares has no way of telling you which of
+these two pictures it is looking at. It reports the same kind of R-squared for
+both.
+:::
+
+## It Destroys a Real Relationship {.plain-title .compare}
+
+| x | 1 | 2 | 3 | 4 | 5 | | 20 |
+|---|---|---|---|---|---|---|---|
+| y | 1 | 2 | 3 | 4 | 5 | | 0 |
 
 :::: {.columns}
 ::: {.column width="50%"}
-[It is cheap]{.eyebrow}
+[Five points]{.eyebrow}
 
-The market has not noticed. Buy it, wait for the gap to close.
-
-This is the assumption the whole strategy rests on.
+Slope 1.00, R-squared 1.00. A perfect line.
 :::
 
 ::: {.column width="50%"}
-[Your model is missing something]{.eyebrow}
+[Add the sixth]{.eyebrow}
 
-The company is in litigation, or its growth is about to stop, and the market
-knows. The gap is information you failed to include.
+Slope -0.13, R-squared 0.24. The sign is now wrong.
 :::
 ::::
 
-::: {.note}
-You cannot tell these apart for any single company. You can only find out in
-aggregate, over many companies and many years, which is what the backtest is for.
+## And It Invents One That Is Not There {.band-bottom}
+
+| x | 1 | 2 | 3 | 4 | 5 | | 100 |
+|---|---|---|---|---|---|---|---|
+| y | 3 | 1 | 4 | 2 | 3 | | 200 |
+
+::: {.cards .cards-2}
+::: {.card}
+[Five points of noise]{.card-title}
+
+R-squared 0.019, t = 0.24. Correctly, nothing.
 :::
 
-## Look at the Extremes
+::: {.card .card-blue}
+[Add the sixth]{.card-title}
 
-[Tell GLM]{.eyebrow}
-
-> Show me the twenty largest positive and twenty largest negative residuals,
-> with their characteristics and their sector.
-
-::: {.note .note-plum}
-If the cheap list is all one sector, your sector dummies are not doing their
-job. If it is all microcaps, size is entering the pricing in a way your model
-has not captured. Either way you learn it in thirty seconds by looking.
+R-squared 0.999, t = 55. A perfect fit through one observation.
 :::
-
-## Against Last Session {.plain-title}
-
-::: {.lead}
-The peer median is the same regression with only sector dummies on the right.
-:::
-
-[Tell GLM]{.eyebrow}
-
-> Fit it three ways on this cross-section: sector dummies only, characteristics
-> only, and both. Compare the R-squared and the correlation between the three
-> sets of residuals.
-
-::: {.note}
-If the residuals correlate at 0.9, the extra machinery is not buying you a new
-signal. It is buying you the same signal with more steps.
-:::
-
-# Twenty-Five Cross-Sections
-
-## Refit Every Year {.band-bottom}
-
-::: {.lead}
-One regression per year, using only that year's data.
 :::
 
 ::: {.note .note-plum}
-The temptation is to fit once on everything and apply the coefficients
-throughout. That uses 2024 data to price a 2004 company. It is the same
-look-ahead as `MRY`, wearing a different hat, and it is harder to spot because
-nothing about the code looks wrong.
+Six points here, and a few thousand in the file. It does not take many.
 :::
 
-## The Loop
 
-::: {.steps}
-1. For each June 30 from 2001 to 2025, build the cross-section
-2. Fit the regression on that year alone
-3. Take the residuals
-4. Sort into deciles, long the cheapest, short the most expensive
-5. Hold twelve months, record the return
+# Variable Transformations
+
+## The Moves {.band-bottom}
+
+::: {.cards .cards-3}
+::: {.card}
+[Winsorize]{.card-title}
+
+Clip each variable at its 1st and 99th percentile. Keeps the company, discards
+the magnitude.
+:::
+
+::: {.card .card-blue}
+[Standardize]{.card-title}
+
+Subtract the mean, divide by the standard deviation. Puts every variable on the
+same scale.
+:::
+
+::: {.card}
+[Log]{.card-title}
+
+Take logs. Converts right-skewed distributions (marketcap, household income, ...) into more symmetric ones.
+:::
 :::
 
 ::: {.note}
-Step 2 is the only thing that changed from Tuesday. Everything else is the
-backtest you already have --- which is the point of having written it as code
-you can read.
+They are not interchangeable, and only two of the three will do anything to an
+OLS R-squared.
 :::
 
-## Watch the Coefficients Move
+## Winsorizing {.plain-title}
 
-[Tell GLM]{.eyebrow}
-
-> Plot each coefficient by year, with its confidence band.
+| | values | mean | std |
+|---|---|---|---|
+| Raw | 1, 2, 3, 4, 1000 | 202.0 | 446.1 |
+| Clipped at 4 | 1, 2, 3, 4, **4** | 2.8 | 1.3 |
 
 ::: {.note .note-plum}
-The price of growth is not a constant. If a coefficient flips sign in 2009 and
-again in 2021, that is worth a slide in your presentation --- and it is a reason
-to be suspicious of any model that assumes the relationship is fixed.
+The company stays in the sample and keeps its rank. What it loses is the ability
+to dominate a sum of squares. Winsorizing is a statement that you believe the
+ordering and not the size.
 :::
 
-## How Many Companies Survive Each Year {.plain-title}
+## Logs
 
-[Tell GLM]{.eyebrow}
-
-> For each year, report how many stocks had all the variables and how many were
-> dropped, broken out by which variable was missing.
-
-::: {.note}
-Every characteristic you add shrinks the sample, and it does not shrink it
-randomly. A model that requires five years of earnings history is a model
-estimated on established companies only.
-:::
-
-# Did It Pay
-
-## Three Backtests, One Table {.band-bottom}
-
-| | |
+| | values |
 |---|---|
-| Peer median | Tuesday's result |
-| Regression residual | Today's |
-| Plain P/E | No prediction at all --- just buy the low multiples |
-
-::: {.note .note-plum}
-Report the average annual return, the volatility, the t-stat, and the worst year
-for all three. Same dates, same universe, same weighting, or the comparison
-means nothing.
-:::
-
-## The Honest Outcome
-
-::: {.lead}
-It is entirely possible that plain P/E wins.
-:::
+| Raw | 1, 2, 3, 4, 1000 |
+| Log | 0.00, 0.69, 1.10, 1.39, **6.91** |
 
 ::: {.note}
-That would be a real result, and a well-known one. The elaborate model has more
-ways to be wrong, more parameters to fit to noise, and a smaller sample to fit
-them on. Report it if you find it.
+A thousand is a thousand times the smallest value and seven times its log. Taking logs is useful for right-skewed variables.
 :::
 
-What you must not do is keep trying specifications until one of them beats the
-others, and then present that one.
 
-# Before Tuesday
+## Standardizing {.plain-title}
 
-## Three Things {.plain-title}
+| | values | mean | std |
+|---|---|---|---|
+| Raw | ninety-nine 0.5s, and one 3374 | 34.2 | 335.7 |
+| Standardized | ninety-nine -0.1005s, and one 9.95 | 0.0 | 1.0 |
 
-::: {.steps}
-1. Get the annual refit loop running, and produce the three-way comparison table
-2. Save the cross-section builder as a skill --- you will use it every week from here
-3. Write the memory file, including which specifications you tried and rejected
+
+::: {.lead}
+Standardizing is a linear change of variables, and OLS is invariant to it. The
+coefficients move and are easier to compare across variables, but the predictions of the dependent variable do not change.
+:::
+
+## Re-run the regression
+
+::: {.lead}
+Talk with AI about which transformations might be useful for which variables.
+Then re-run the regression.
 :::
 
 ::: {.note .note-plum}
-Tuesday we replace the regression with something that can find relationships you
-did not specify. Come with the linear result written down, because it is the
-benchmark that machine learning has to beat.
+How do coefficients, t-stats, and the R-squared change?
+:::
+
+# Out of Sample Performance
+
+## Machine Learning {.plain-title}
+
+::: {.lead}
+Machine learning deals with the following type of situation.
+:::
+
+- In the future, I will have some data.  I want to use it to make a prediction about another variable.
+- I also have past data on the predictors (x variables) and the dependent variable (y).
+- I want to build a model using the past data that predicts y from the x variables.
+- In the future, I will use the model to make predictions.
+
+::: {.note .note-plum}
+What machine learning cares about is how well a model trained (fitted) on past
+data will perform on future data. This is out-of-sample performance, because the
+future x's and y are not part of the sample used to build the model.
+:::
+
+## Train-Test Split
+
+::: {.lead}
+To assess expected out-of-sample performance, we withhold some of our current
+data when training. We use the held-out data to test the model.
+:::
+
+::: {.steps}
+1. Ask AI to use scikit-learn to do a train-test split, to transform features (x variables) on the training data, apply the same transformations on the test data, and determine goodness of fit on the test data.
+2. Ask AI to create an html doc explaining what was done and explaining the performance on the test data.
+:::
+
+## What the Splits Say {.no-title}
+
+![](images/session04-oos.svg){.nostretch width="100%"}
+
+::: {.note .note-plum}
+A negative out-of-sample R-squared is worse than predicting the mean. Log the
+multiple and winsorize the features, and the ten splits stop disagreeing.
+:::
+
+## Assignment for Tuesday {.band-bottom}
+
+::: {.lead}
+Can we trade on this? Use `session4_monthly.parquet`. In each row, everything
+except the return is known at the beginning of the month.
+:::
+
+::: {.steps}
+1. Run a linear regression each month, using some multiple on the left-hand side. Use scikit-learn, but do not use train-test splits. Our test will be whether we make money.
+2. Sort stocks each month based on the regression error. If the left-hand side is ps, or log ps, then positive errors (ps > predicted) are expensive firms. You would want to buy stocks with the "most negative" errors.
+3. Form a portfolio each month and compute its return. Evaluate the returns of the strategy --- annualized mean, Sharpe ratio, CAPM alpha, ...
+:::
+
+::: {.note .note-plum}
+Be prepared to present on Tuesday --- slides if you want them but be prepared to
+dig into the analysis.
 :::

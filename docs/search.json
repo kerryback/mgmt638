@@ -1,5 +1,166 @@
 [
   {
+    "objectID": "slides/session09.html#today",
+    "href": "slides/session09.html#today",
+    "title": "Train and Test",
+    "section": "Today",
+    "text": "Today\n\n\nScore every submission against August, live\nRead the leaderboard, including the parts that surprise you\nWhat the coefficients say carried the signal\nWhy this is not yet a trading strategy"
+  },
+  {
+    "objectID": "slides/session09.html#the-bar",
+    "href": "slides/session09.html#the-bar",
+    "title": "Train and Test",
+    "section": "The Bar",
+    "text": "The Bar\n\nAugust 2026 calls. The earnings surprise alone, with no help from anyone’s signals, explains this much of the cross-section of reactions.\n\n\n\n0.0__ R-squared, surprise alone\n\n\n___ August events scored\n\n\n\nEverything on the leaderboard is the gain on top of this number. Half of it is not a starting point; zero is.\n\n\npython leaderboard.py submissions/"
+  },
+  {
+    "objectID": "slides/session09.html#four-results-you-should-expect",
+    "href": "slides/session09.html#four-results-you-should-expect",
+    "title": "Train and Test",
+    "section": "Four Results You Should Expect",
+    "text": "Four Results You Should Expect\n\n\n\n\n\n\n\nTwo groups with identical scores\none of them flipped every sign\n\n\nA group near +0.015\nthat is the noise floor, not a small edge\n\n\nA group at exactly 0.000\nconstant predictions; no variance, no coefficient\n\n\nA group with 60% coverage\nmissing events filled with their own mean\n\n\n\n\nCoverage is imputed with the submission’s own mean, computed before filling. You cannot improve your rank by predicting only the easy events."
+  },
+  {
+    "objectID": "slides/session09.html#train-versus-test",
+    "href": "slides/session09.html#train-versus-test",
+    "title": "Train and Test",
+    "section": "Train Versus Test",
+    "text": "Train Versus Test\n\n\nMay, in sample\nWhat you saw Thursday. Cross-validated, but you tuned your dimensions against it, repeatedly.\n\nAugust, held out\nYou never saw these returns. Neither did the model that made the prediction.\n\n\nThe gap between the two columns is the most honest number in the course."
+  },
+  {
+    "objectID": "slides/session09.html#the-coefficient-table",
+    "href": "slides/session09.html#the-coefficient-table",
+    "title": "Train and Test",
+    "section": "The Coefficient Table",
+    "text": "The Coefficient Table\n\nRidge on standardised signals. This is the slide worth arguing about.\n\n    capital_return  0.0458\nguidance_magnitude  0.0361\n guidance_revision  0.0304\n demand_commentary  0.0271\n  margin_direction  0.0221\n  revenue_momentum  0.0164\nmanagement_hedging  0.0147\n         mix_shift -0.0043\none_off_dependence -0.0023\n\nFrom my run on a different period. Yours will differ, and the differences are the discussion."
+  },
+  {
+    "objectID": "slides/session09.html#questions-for-the-table",
+    "href": "slides/session09.html#questions-for-the-table",
+    "title": "Train and Test",
+    "section": "Questions for the Table",
+    "text": "Questions for the Table\n\n\nWhich survived?\nA dimension that matters in May and vanishes in August was probably never real.\n\n\nWhich are the same thing?\nguidance_revision and guidance_magnitude are close to collinear. Ridge splits them; the split is arbitrary.\n\n\nWhat is missing?\nAnything the ten facts never mention, your signals cannot see."
+  },
+  {
+    "objectID": "slides/session09.html#where-the-bodies-are-buried",
+    "href": "slides/session09.html#where-the-bodies-are-buried",
+    "title": "Train and Test",
+    "section": "Where the Bodies Are Buried",
+    "text": "Where the Bodies Are Buried\n\n\nTen dimensions, tuned by hand against a training number you looked at many times\nOne month, one market regime\nNo standard errors on any coefficient\nSmall caps with violent reactions dominate the tails\n\n\n\nEvery one of these is a reason your held-out number is lower than your training number. None of them is a reason to stop."
+  },
+  {
+    "objectID": "slides/session09.html#explaining-is-not-predicting",
+    "href": "slides/session09.html#explaining-is-not-predicting",
+    "title": "Train and Test",
+    "section": "Explaining Is Not Predicting",
+    "text": "Explaining Is Not Predicting\n\nWe explained a return using information released at the same time as the return. That is comprehension, not a trade.\n\n\n\n20% R-squared in the paper\n\n\n0% of it is alpha\n\n\n\nTo trade this you would need the signal before the market has it. The call is public the moment it ends."
+  },
+  {
+    "objectID": "slides/session09.html#what-would-make-it-a-strategy",
+    "href": "slides/session09.html#what-would-make-it-a-strategy",
+    "title": "Train and Test",
+    "section": "What Would Make It a Strategy",
+    "text": "What Would Make It a Strategy\n\n\nSpeed\nHave the number before the price does. Minutes, and against everyone else doing the same thing.\n\n\nDrift\nPredict the days after the reaction, not the day of it. Post-earnings announcement drift is a real and long-documented effect.\n\n\n\nThe second one uses everything you built today and changes only the label. Thursday we go there."
+  },
+  {
+    "objectID": "slides/session09.html#the-transferable-part",
+    "href": "slides/session09.html#the-transferable-part",
+    "title": "Train and Test",
+    "section": "The Transferable Part",
+    "text": "The Transferable Part\n\n\nThe model turns text into a number; conventional code decides what it means\nThe expensive step is shared; you differentiate on the cheap one\nSignals are formed without the outcome, enforced by the imports\nA positive R-squared is a hypothesis until a permutation test survives it\n\n\n\nNone of that is about earnings calls. It is how you build anything that reads text and takes a position."
+  },
+  {
+    "objectID": "slides/session06.html#today",
+    "href": "slides/session06.html#today",
+    "title": "Build a Stock Recommender App",
+    "section": "Today",
+    "text": "Today\n\nYou have two fitted models sitting in a file. Today you wrap them in something a person who has never opened Python can use.\n\n\n\nHow software works.\nWhat we might want in a stock recommender app.\nDeploying an app."
+  },
+  {
+    "objectID": "slides/session06.html#frontend-and-backend",
+    "href": "slides/session06.html#frontend-and-backend",
+    "title": "Build a Stock Recommender App",
+    "section": "Frontend and Backend",
+    "text": "Frontend and Backend\n\n\nFrontend\nThe browser. HTML, CSS, and JavaScript — it draws the page and collects the clicks.\n\nBackend\nA program on a server that listens continuously for requests. Yours will be Python.\n\n\nYou open a URL. The browser sends a GET request. The server sends back the HTML, CSS, and JavaScript it was written to send. The browser interprets that and shows you a page.\n\n\nRight-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over."
+  },
+  {
+    "objectID": "slides/session06.html#then-you-click-something",
+    "href": "slides/session06.html#then-you-click-something",
+    "title": "Build a Stock Recommender App",
+    "section": "Then You Click Something",
+    "text": "Then You Click Something\n\nA POST request carries data the other way — a form, a ticker you typed. The server does what it was written to do and replies."
+  },
+  {
+    "objectID": "slides/session06.html#where-it-runs",
+    "href": "slides/session06.html#where-it-runs",
+    "title": "Stock Recommender App",
+    "section": "Where It Runs",
+    "text": "Where It Runs\n\n\n127.0.0.1\nThe loopback address, also spelled localhost. Traffic never leaves the machine — and the machine is your container, not your laptop.\n\n\nPort 8000\nA number telling the operating system which program gets the request. Every container has its own network, so all of you can use 8000 at once.\n\n\n\nFastAPI writes the backend, uvicorn serves it: python3 -m uvicorn app:app --reload. Then open the View tab in the left panel — that tab is port 8000 of your own container."
+  },
+  {
+    "objectID": "slides/session06.html#why-an-app-at-all",
+    "href": "slides/session06.html#why-an-app-at-all",
+    "title": "Stock Recommender App",
+    "section": "Why an App at All",
+    "text": "Why an App at All\n\n\nPrompt\nYou type the question again next quarter. AI writes the code again. You check it again.\n\n\nSkill\nThe code you already verified, saved and run the same way every time. Still needs AI, and still needs you.\n\n\nApp\nA URL. Someone with no Python, no key, and no idea what a model is can use what you built.\n\n\n\nSame job, three levels of packaging. Your models are worth the third one only if someone other than you would open it."
+  },
+  {
+    "objectID": "slides/session06.html#what-you-already-have",
+    "href": "slides/session06.html#what-you-already-have",
+    "title": "Stock Recommender App",
+    "section": "What You Already Have",
+    "text": "What You Already Have\n\n\nTwo saved models\nThe linear regression and the tuned gradient boosting, refit on the whole sample and written out with joblib.\n\n\nThe cross-section\nsession4.parquet — 4,161 companies, the multiples, and every feature the models were fit on.\n\n\n\nThe app loads the models. It does not refit them. Nobody waits thirty seconds for a GridSearchCV after clicking a button."
+  },
+  {
+    "objectID": "slides/session06.html#the-obvious-version",
+    "href": "slides/session06.html#the-obvious-version",
+    "title": "Stock Recommender App",
+    "section": "The Obvious Version",
+    "text": "The Obvious Version\n\n\nA box to type a ticker.\nPull that company’s row and run both models on it.\nShow the predicted multiple beside the actual one.\nSay something: cheap, expensive, or close enough.\n\n\n\nA second view drops the ticker box and ranks the whole cross-section by the gap — the twenty most undervalued names, and the twenty most over."
+  },
+  {
+    "objectID": "slides/session06.html#questions-i-am-not-answering",
+    "href": "slides/session06.html#questions-i-am-not-answering",
+    "title": "Stock Recommender App",
+    "section": "Questions I Am Not Answering",
+    "text": "Questions I Am Not Answering\n\n\nAbout the model\n\nWhich multiple — ps, pe, pb, evebitda?\nOne model, or both side by side?\nWhat do you do with a company the model has never seen?\n\n\nAbout the verdict\n\nHow big a gap is a recommendation?\nRelative to everything, or to the industry?\nDo you show the reasoning, or just the answer?\n\n\n\nArgue these out with AI before you write code. It will have opinions, and some of them will be wrong."
+  },
+  {
+    "objectID": "slides/session06.html#what-deploying-means",
+    "href": "slides/session06.html#what-deploying-means",
+    "title": "Stock Recommender App",
+    "section": "What Deploying Means",
+    "text": "What Deploying Means\n\n\nThe code goes into a GitHub repository.\nA host — we will use Koyeb, which has a free tier — watches that repo.\nIt builds your app, runs it, and puts it behind a public URL.\nYou push a change; it rebuilds.\n\n\n\nYour app then runs on someone else’s computer, all the time, whether or not the lab is up.\nIn a company this is where you hand the thing to IT."
+  },
+  {
+    "objectID": "slides/session06.html#two-prompts",
+    "href": "slides/session06.html#two-prompts",
+    "title": "Stock Recommender App",
+    "section": "Two Prompts",
+    "text": "Two Prompts\n\n\nPrompt\n\nCreate a git repo for this app and push it to GitHub as a new public repo. Write a requirements.txt. Make the app read the port from the PORT environment variable and bind to 0.0.0.0.\n\n\n\nPrompt\n\nWalk me through creating a Koyeb service linked to that repo, one step at a time, and tell me what to click."
+  },
+  {
+    "objectID": "slides/session06.html#two-things-that-will-bite-you",
+    "href": "slides/session06.html#two-things-that-will-bite-you",
+    "title": "Stock Recommender App",
+    "section": "Two Things That Will Bite You",
+    "text": "Two Things That Will Bite You\n\n\nYour .gitignore\nOn day one you told it to ignore parquet files. The host builds only what is in the repo, so the model file and whatever data the app reads have to get there.\n\n\nYour keys\nNothing from .env belongs in a public repo. Secrets go in the host’s environment settings, and the repo stays clean.\n\n\n\nAsk AI what the app needs at runtime and how big those files are before you push. A 400-tree model is small; the full panel is not."
+  },
+  {
+    "objectID": "slides/session06.html#hands-on",
+    "href": "slides/session06.html#hands-on",
+    "title": "Stock Recommender App",
+    "section": "Hands On",
+    "text": "Hands On\n\n\nGet something — anything — serving on port 8000 and visible in the View tab.\nThen make it do the thing you actually want.\nDeploy it if you get that far.\n\n\n\nInstall the frontend design plugin first if you care how it looks: /plugin install frontend-design@claude-plugins-official"
+  },
+  {
+    "objectID": "slides/session06.html#last-half-hour",
+    "href": "slides/session06.html#last-half-hour",
+    "title": "Stock Recommender App",
+    "section": "Last Half Hour",
+    "text": "Last Half Hour\n\nEvery group shows theirs. What it does, what you decided and why, and the part that did not work.\n\n\nNobody’s is going to be finished. That is not what we are looking at."
+  },
+  {
     "objectID": "slides/session04.html#today",
     "href": "slides/session04.html#today",
     "title": "Linear Regression for Multiples",
@@ -263,7 +424,7 @@
     "href": "index.html",
     "title": "",
     "section": "",
-    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course mechanics.  Intro to quant investing.  Intro to gen AI.  Our AI Lab (Claude Code/GLM 4.7 + Python in a container).\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Introduction to the Nasdaq Data Link data.  Finding industry/size peers and valuing by multiples.  Analyzing model/market differences.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      Slides·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's fundamentals. Reading the regression output, holding out a test sample, and the transformations that decide the answer.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Introduction to Machine Learning\n        Tree-based models. Training and test samples, overfitting, and cross-validation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n        Predicting Multiples with Machine Learning\n        Swapping the regression for a machine learning model, and backtesting the trading signal.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Predicting Returns with Machine Learning\n        Predicting returns directly rather than by way of valuation. Building features, fitting the model, and backtesting the result.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Short Sales and Insider Trading\n        Short interest, short volume,  and Form 4 filings.  Turning data into signals and backtesting. \n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Text Analysis and Sentiment\n        Working with a corpus of financial news. Measuring sentiment in text.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        Trading on Sentiment\n        Building a signal out of the news corpus and backtesting.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Risk Models\n        Factor models of how stocks move together.  Market, industry and style factors.  Covariance shrinkage.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        Portfolio Risk\n        Putting the risk model to work: measuring a portfolio's factor exposures and risks, and building one that takes only the bets you meant to take.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
+    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course mechanics.  Intro to quant investing.  Intro to gen AI.  Our AI Lab (Claude Code/GLM 4.7 + Python in a container).\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Introduction to the Nasdaq Data Link data.  Finding industry/size peers and valuing by multiples.  Analyzing model/market differences.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      Slides·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's fundamentals. Reading the regression output, holding out a test sample, and the transformations that decide the answer.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Ridge, Lasso, and Trees\n        Penalized regression, regression trees, and gradient boosting, each with a slider on the slide. Overfitting, and choosing a tuning parameter by cross-validation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n        Build a Stock Recommender App\n        Wrapping the fitted models in a web app.  Pick a stock, predict its multiple from its fundamentals, and see how far the market price sits from the model's.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Predicting Returns with Machine Learning\n        Predicting returns directly rather than by way of valuation. Building features, fitting the model, and backtesting the result.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Analyzing Earnings Calls\n        Where transcripts come from and what they cost.  Can a model read a call and tell you to buy, and how fast would you have to act?  Four architectures, and what we already know.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Trading on Earnings Calls\n        Turning what the model reads in a transcript into a signal, and backtesting it.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        Short Sales and Insider Trading\n        Short interest and Form 4 insider filings as signals.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        To be announced\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        To be announced\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
   },
   {
     "objectID": "slides/session01.html#course-overview",
@@ -607,5 +768,488 @@
     "title": "Trading on Predictions",
     "section": "Three Things",
     "text": "Three Things\n\n\nGet the backtest running end to end, however crude\nRe-run it with ARY and datekey, and record what changed\nWrite the memory file, and push it\n\n\n\nThursday we stop borrowing the peer median and start predicting the multiple — which turns valuation into a regression, and gives you something to compare today’s result against."
+  },
+  {
+    "objectID": "slides/session05.html#empirical-asset-pricing-via-machine-learning",
+    "href": "slides/session05.html#empirical-asset-pricing-via-machine-learning",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Empirical Asset Pricing via Machine Learning",
+    "text": "Empirical Asset Pricing via Machine Learning\n\nThe Review of Financial Studies, February 2020.\n\n\n\nShihao Gu\nBooth School of Business, University of Chicago\n\n\nBryan Kelly\nYale University; Head of Machine Learning, AQR\n\n\nDacheng Xiu\nBooth School of Business, University of Chicago\n\n\n\nA horse race: one task, one dataset, a dozen methods scored side by side. Predict next month’s return for every U.S. stock from roughly 900 signals — 94 firm characteristics, their interactions with eight macro series, and industry dummies — and grade each method by out-of-sample \\(R^2\\). Trees and neural networks win, and the gains come from interactions a linear model cannot see. A value-weighted long-short decile spread on the neural network forecasts earns an out-of-sample Sharpe ratio of 1.35."
+  },
+  {
+    "objectID": "slides/session05.html#today",
+    "href": "slides/session05.html#today",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Today",
+    "text": "Today\n\n\nRidge and lasso — linear regression with a penalty on the coefficients\nHyperparameters\nCross validation\nRegression trees and gradient boosting\nPredicting a multiple from characteristics"
+  },
+  {
+    "objectID": "slides/session05.html#root-mean-squared-error",
+    "href": "slides/session05.html#root-mean-squared-error",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Root Mean Squared Error",
+    "text": "Root Mean Squared Error\n\nA standard deviation measures spread around a mean. RMSE measures spread around a prediction, and it is the same arithmetic.\n\n\n\nStandard deviation of a sample\n\\[s_x \\;=\\; \\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}\\left(x_i - \\bar{x}\\right)^{2}}\\]\n\nRoot mean squared error\n\\[\\text{RMSE} \\;=\\; \\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}\\left(y_i - \\hat{y}_i\\right)^{2}}\\]\n\n\nEach point’s own prediction \\(\\hat{y}_i\\) takes the place of the one number \\(\\bar{x}\\)."
+  },
+  {
+    "objectID": "slides/session05.html#r-squared",
+    "href": "slides/session05.html#r-squared",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "R-Squared",
+    "text": "R-Squared\n\nThe squared error you removed, over the squared error you started with.\n\n\\[R^{2} \\;=\\; \\frac{\\dfrac{1}{n}\\sum_{i}\\left(y_i - \\bar{y}\\right)^{2} \\;-\\; \\dfrac{1}{n}\\sum_{i}\\left(y_i - \\hat{y}_i\\right)^{2}}{\\dfrac{1}{n}\\sum_{i}\\left(y_i - \\bar{y}\\right)^{2}}\\]\n\\[R^{2} \\;=\\; \\frac{\\text{variance} \\;-\\; \\text{mean squared error}}{\\text{variance}}\\]"
+  },
+  {
+    "objectID": "slides/session05.html#one-small-example",
+    "href": "slides/session05.html#one-small-example",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "One Small Example",
+    "text": "One Small Example\n\nEvery app today is fitted to the same 40 firms and scored on the same 120, all with market cap above $2b.\n\n\nForty is small on purpose. Everything that goes wrong with a thousand features and ten thousand rows goes wrong here too, and here you can watch it happen."
+  },
+  {
+    "objectID": "slides/session05.html#what-ols-is-doing",
+    "href": "slides/session05.html#what-ols-is-doing",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "What OLS Is Doing",
+    "text": "What OLS Is Doing\n\nPick the coefficients that make the sum of squared errors on the training data as small as possible. Nothing else is asked of them.\n\n\n\n0.68 train R-squared\n\n\n0.44 test R-squared\n\n\n8 features, 40 firms\n\n\n\nThe fit was chosen to make the first number large. The second is what it is worth on firms it has not seen."
+  },
+  {
+    "objectID": "slides/session05.html#features-that-move-together",
+    "href": "slides/session05.html#features-that-move-together",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Features That Move Together",
+    "text": "Features That Move Together\n\nNet margin and EBITDA margin have a correlation of 0.82 across these firms. Least squares is asked which of them explains P/S, and the data cannot say.\n\n\n\n\n\nOLS coefficient\n\n\n\n\nnet margin\n+0.63\n\n\nEBITDA margin\n−0.27\n\n\n\n\nA large positive on one and a negative on its near-twin. The pair predicts almost nothing between them, and the sign on the second is an accident of these 40 firms."
+  },
+  {
+    "objectID": "slides/session05.html#the-ridge-criterion",
+    "href": "slides/session05.html#the-ridge-criterion",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Ridge Criterion",
+    "text": "The Ridge Criterion\n\\[\\min_{\\beta} \\; \\sum_{i=1}^{n} \\left( y_i - \\beta_0 - \\sum_j \\beta_j x_{ij} \\right)^{2} \\;+\\; \\lambda \\sum_j \\beta_j^{2}\\]\n\n\nThe second term\nA price on size. Large coefficients now have to earn their keep.\n\n\nStandardize first\nOne penalty for all the coefficients only works if the features share a scale.\n\n\nNot the intercept\n\\(\\beta_0\\) is left out of the sum. Shrinking it would just move the whole fit.\n\n\n\n\\(\\lambda\\) is a hyperparameter — a number you set before fitting, rather than one the fitting picks for you. The \\(\\beta\\)’s are parameters and come out of the data; \\(\\lambda\\) decides how hard the data has to argue for them."
+  },
+  {
+    "objectID": "slides/session05.html#ridge-1",
+    "href": "slides/session05.html#ridge-1",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Ridge",
+    "text": "Ridge"
+  },
+  {
+    "objectID": "slides/session05.html#what-the-slider-showed",
+    "href": "slides/session05.html#what-the-slider-showed",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "What the Slider Showed",
+    "text": "What the Slider Showed\n\n\nEverything shrinks\nToward zero, together. At \\(\\lambda = 0\\) the fit is exactly OLS; the gold ticks are where it started.\n\n\nThe twins converge\n+0.63 and −0.27 become +0.15 and +0.13. Ridge splits the credit rather than picking a winner.\n\n\nNothing reaches zero\nRidge shrinks every coefficient and drops none. All eight features stay in the model.\n\n\n\nTest R-squared climbs from 0.44 to 0.66 and then falls away again. The training R-squared drops the whole way."
+  },
+  {
+    "objectID": "slides/session05.html#the-lasso-criterion",
+    "href": "slides/session05.html#the-lasso-criterion",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Lasso Criterion",
+    "text": "The Lasso Criterion\n\\[\\min_{\\beta} \\; \\sum_{i=1}^{n} \\left( y_i - \\beta_0 - \\sum_j \\beta_j x_{ij} \\right)^{2} \\;+\\; \\lambda \\sum_j \\left| \\beta_j \\right|\\]\n\nOne character different, and the behavior is not the same. Squaring makes the penalty on a small coefficient negligible; the absolute value does not.\n\n\nA coefficient that is not paying for itself is pushed all the way to zero and stays there."
+  },
+  {
+    "objectID": "slides/session05.html#the-shape-of-the-penalty",
+    "href": "slides/session05.html#the-shape-of-the-penalty",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Shape of the Penalty",
+    "text": "The Shape of the Penalty\n\n\nNear zero the square has nothing left to charge; the absolute value still charges full price."
+  },
+  {
+    "objectID": "slides/session05.html#lasso-1",
+    "href": "slides/session05.html#lasso-1",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Lasso",
+    "text": "Lasso"
+  },
+  {
+    "objectID": "slides/session05.html#ridge-shrinks-lasso-drops",
+    "href": "slides/session05.html#ridge-shrinks-lasso-drops",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Ridge Shrinks, Lasso Drops",
+    "text": "Ridge Shrinks, Lasso Drops\n\n\nEvery coefficient, plotted against the penalty. The two correlated margins are picked out; the other six are gray."
+  },
+  {
+    "objectID": "slides/session05.html#how-a-tree-fits",
+    "href": "slides/session05.html#how-a-tree-fits",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "How a Tree Fits",
+    "text": "How a Tree Fits\n\n\nSearch every feature and every cut point for the one split that reduces the sum of squared errors the most.\nCut the sample in two on that rule.\nRepeat inside each piece, and inside the pieces of those pieces.\nPredict the average of the training firms that land in each final piece.\n\n\n\nNo linear form is assumed, so a tree handles a kink or a threshold that a regression has to be told about. The next two slides use gross margin and net margin, because two is the most you can draw."
+  },
+  {
+    "objectID": "slides/session05.html#splitting-on-two-features",
+    "href": "slides/session05.html#splitting-on-two-features",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Splitting on Two Features",
+    "text": "Splitting on Two Features\n\n\nEach cut is chosen over both variables at once. The winner is whichever single line, in whichever variable, increases the training \\(R^2\\) the most."
+  },
+  {
+    "objectID": "slides/session05.html#one-tree",
+    "href": "slides/session05.html#one-tree",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "One Tree",
+    "text": "One Tree\n\n\nThe boxes and the tree are the same object. A path down the tree is a box; a leaf’s colour is the average of the firms that landed in it."
+  },
+  {
+    "objectID": "slides/session05.html#two-ways-to-stop-it",
+    "href": "slides/session05.html#two-ways-to-stop-it",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Two Ways to Stop It",
+    "text": "Two Ways to Stop It\n\n\nMax depth\nHow many cuts deep the tree may go. Depth \\(d\\) allows up to \\(2^d\\) leaves; depth 8 here gives 28 boxes for 40 firms.\n\n\nMinimum per leaf\nThe smallest number of training points a leaf may hold. A leaf of one is a memorized observation.\n\n\n\nAt depth 2 the tree scores 0.57 on the training firms and 0.29 on the test firms. At depth 8 it scores 0.96 and \\(-0.14\\) — worse than a flat line at the average."
+  },
+  {
+    "objectID": "slides/session05.html#the-idea",
+    "href": "slides/session05.html#the-idea",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Idea",
+    "text": "The Idea\n\n\nStart by predicting the training mean for everyone.\nCompute the residuals — what the current prediction is missing.\nFit a small tree to the residuals.\nAdd a fraction of that tree, the learning rate, to the prediction.\nGo back to step 2.\n\n\n\nNo single tree is any good. The sum of a few hundred deliberately weak ones is the model that wins most tabular prediction contests. Back to one feature here, so the sum can be drawn as a curve."
+  },
+  {
+    "objectID": "slides/session05.html#fitting-the-residuals",
+    "href": "slides/session05.html#fitting-the-residuals",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Fitting the Residuals",
+    "text": "Fitting the Residuals\n\n\n\n\nWhat each tree is given\nEvery tree after the first is fitted to what the ones before it got wrong.\nWhat rises is the training \\(R^2\\): nothing before any tree, 0.66 after ten.\nNo one of these trees is a model. The sum of them is."
+  },
+  {
+    "objectID": "slides/session05.html#gradient-boosting-1",
+    "href": "slides/session05.html#gradient-boosting-1",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Gradient Boosting",
+    "text": "Gradient Boosting"
+  },
+  {
+    "objectID": "slides/session05.html#three-knobs-not-independent",
+    "href": "slides/session05.html#three-knobs-not-independent",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Three Knobs, Not Independent",
+    "text": "Three Knobs, Not Independent\n\n\nNumber of trees\nThe only knob that keeps improving the training fit forever. Test R-squared peaks early — here, after about five.\n\n\nLearning rate\nHow much of each tree is added. Small rates need more trees and usually end up better.\n\n\nDepth\nHow much each tree may do on its own. Two or three is standard; the boosting is supposed to do the work.\n\n\n\nHalve the learning rate and you roughly double the number of trees you need. Set the rate low, then stop adding trees when validation R-squared stops rising."
+  },
+  {
+    "objectID": "slides/session05.html#every-boosting-hyperparameter",
+    "href": "slides/session05.html#every-boosting-hyperparameter",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Every Boosting Hyperparameter",
+    "text": "Every Boosting Hyperparameter\n\n\nHow much ensemble\n\nn_estimators — how many trees\nlearning_rate — shrinkage per tree\nsubsample — rows per tree\nloss — squared, absolute, huber\nn_iter_no_change — early stopping\n\n\nHow much tree\n\nmax_depth — how deep\nmax_leaf_nodes — or how many\nmin_samples_leaf — smallest box\nmin_samples_split — node minimum\nmax_features — features per split\n\n\n\nAll are set before fitting. Tune the first three and leave the rest alone."
+  },
+  {
+    "objectID": "slides/session05.html#cross-validation",
+    "href": "slides/session05.html#cross-validation",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Cross-Validation",
+    "text": "Cross-Validation\n\nSplit the training sample into 5 subsets. For each hyperparameter value, fit on 4, test (validate) on the 5th. Repeat across all 5 folds. Choose the hyperparameter with the best average performance on the 5 validation folds."
+  },
+  {
+    "objectID": "slides/session05.html#the-same-shape-every-time",
+    "href": "slides/session05.html#the-same-shape-every-time",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Same Shape Every Time",
+    "text": "The Same Shape Every Time\n\nEvery app in this deck drew the same picture. Training R-squared rises as the model is allowed more freedom; test R-squared rises, peaks, and falls away.\n\n\n\n\n\nknob\nread off the test curve\ntest R-squared\n\n\n\n\nOLS\n—\n—\n0.44\n\n\nRidge\n\\(\\lambda \\approx 20\\)\nshrunk, all 8 kept\n0.66\n\n\nLasso\n\\(\\lambda \\approx 0.08\\)\n7 of 8 kept\n0.62\n\n\nTree\ndepth 2\n4 boxes\n0.29\n\n\nBoosting\n5 trees, rate 0.3\ndepth 2\n0.37\n\n\n\n\nEvery one of those knobs was set by looking at the test curve, which is the one thing you are not allowed to do."
+  },
+  {
+    "objectID": "slides/session05.html#done-properly",
+    "href": "slides/session05.html#done-properly",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Done Properly",
+    "text": "Done Properly\n\n\n\n\nfeatures\ncross-validation picked\ntest R-squared\n\n\n\n\nRidge\n8\n\\(\\lambda = 14\\)\n0.65\n\n\nLasso\n8\n\\(\\lambda = 0.014\\)\n0.55\n\n\nOne tree\n2\ndepth 2\n0.29\n\n\nOne tree\n8\ndepth 4\n0.32\n\n\nBoosting\n1\n25 trees, rate 0.1\n0.35\n\n\nBoosting\n8\n400 trees, rate 0.1\n0.61\n\n\nRandom forest\n8\n300 trees, 3 features a split\n0.69\n\n\n\n\nThe small-feature rows are the versions the apps draw. Given all eight, boosting nearly catches ridge — and a random forest, which is only many deep trees averaged, wins."
+  },
+  {
+    "objectID": "slides/session05.html#hands-on",
+    "href": "slides/session05.html#hands-on",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Hands On",
+    "text": "Hands On\n\n\nUse session4.parquet and do a train/test split.\nTrain LinearRegression.\nUse GridSearchCV to find the optimal n_estimators, learning_rate and max_depth hyperparameters for GradientBoostingRegressor.\nReport the \\(R^2\\) on the test sample for both methods.\n\n\n\nTell AI to do it. You do not need to name LinearRegression, GridSearchCV, or GradientBoostingRegressor. You could just say your goal is to test linear regression and gradient boosting to predict ps from the ratios and sales growth."
+  },
+  {
+    "objectID": "slides/session05.html#refit-and-save-your-models",
+    "href": "slides/session05.html#refit-and-save-your-models",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Refit and Save Your Models",
+    "text": "Refit and Save Your Models\n\n\nRefit LinearRegression on the entire sample.\nRerun GridSearchCV for GradientBoostingRegressor on the entire sample.\nSave both refit models.\n\n\n\nWe will use the models to build Stock Recommender apps on Thursday. Ask AI to save them with joblib.dump and to check that they load back."
+  },
+  {
+    "objectID": "slides/session08.html#today",
+    "href": "slides/session08.html#today",
+    "title": "Analyzing Earnings Calls",
+    "section": "Today",
+    "text": "Today\n\n\nWhere earnings call transcripts come from, and what they cost\nA question: can a model read a call and tell you to buy?\nHow fast you would have to act on the answer\nDirections we could take it"
+  },
+  {
+    "objectID": "slides/session08.html#the-question",
+    "href": "slides/session08.html#the-question",
+    "title": "Explaining Earnings Reactions",
+    "section": "The Question",
+    "text": "The Question\n\nA company reports. The stock moves 8% the next morning. How much of that move can you account for from the call itself?\n\nNot will it go up. How much of the cross-section of reactions you can explain, using only what was knowable when the call ended.\n\nKoijen and Levy, NBER 35431. Their best systems roughly double the explained variation, R-squared from 8% to near 20%."
+  },
+  {
+    "objectID": "slides/session08.html#why-anyone-built-this",
+    "href": "slides/session08.html#why-anyone-built-this",
+    "title": "Explaining Earnings Reactions",
+    "section": "Why Anyone Built This",
+    "text": "Why Anyone Built This\n\nThere is a competition, a paper, and an SDK behind this question. The reason they exist is a problem you already half know.\n\n\nmodels are trained on all data, implying that any backtest using historical data suffers from look-ahead bias\n\n\nSo they run it forward, in real time, on live earnings. We are going to reproduce the structure on our own data instead."
+  },
+  {
+    "objectID": "slides/session08.html#two-different-problems",
+    "href": "slides/session08.html#two-different-problems",
+    "title": "Explaining Earnings Reactions",
+    "section": "Two Different Problems",
+    "text": "Two Different Problems\n\n\nWhat you learned Sep 8\nFit on one sample, test on another. You control the split, so you can enforce it.\n\nWhat is new here\nYou do not control what the model read. Ask it about a 2024 announcement and it may simply remember.\n\n\nNo hold-out fixes this. A backtest of an LLM signal on history is not falsifiable in the way a backtest of a gradient boosting model is."
+  },
+  {
+    "objectID": "slides/session08.html#what-you-can-do-about-it",
+    "href": "slides/session08.html#what-you-can-do-about-it",
+    "title": "Explaining Earnings Reactions",
+    "section": "What You Can Do About It",
+    "text": "What You Can Do About It\n\n\nLimit what it sees\nThe transcript and nothing else. No ticker, no date, no consensus estimate, no prices.\n\n\nAsk for facts\n“What does this call say” invites much less recall than “how will the stock react”.\n\n\nFit separately\nThe regression that turns facts into a prediction is ordinary supervised learning. That part you can audit."
+  },
+  {
+    "objectID": "slides/session08.html#the-architecture-rule",
+    "href": "slides/session08.html#the-architecture-rule",
+    "title": "Explaining Earnings Reactions",
+    "section": "The Architecture Rule",
+    "text": "The Architecture Rule\ntranscripts -&gt; facts -&gt; signals          never see a return\n                            labels       never sees a fact\n                                 score   the only place they meet\n\nThis is enforced by the imports, not by good intentions. If a signal were formed knowing what the stock did, the R-squared would be circular."
+  },
+  {
+    "objectID": "slides/session08.html#ten-facts",
+    "href": "slides/session08.html#ten-facts",
+    "title": "Explaining Earnings Reactions",
+    "section": "Ten Facts",
+    "text": "Ten Facts\n\nEvery call is distilled to exactly ten quantified sentences. Same prompt for every group, so your results are comparable to each other’s.\n\n\n“Full-year revenue guidance was raised to $3.38-3.42 billion from $3.28-3.34 billion and adjusted EBITDA guidance to $472-488 million from $430-450 million.”\n\n\n“Gross margin expanded 310 basis points year over year to 27.4%, driven primarily by automated load matching rising to 71% of volume from 54%.”"
+  },
+  {
+    "objectID": "slides/session08.html#i-ran-the-extraction",
+    "href": "slides/session08.html#i-ran-the-extraction",
+    "title": "Explaining Earnings Reactions",
+    "section": "I Ran the Extraction",
+    "text": "I Ran the Extraction\n\n\n10,754 input tokens per transcript\n\n\n~1,500 tokens to score your signals\n\n\n1 extraction, shared by all\n\n\n\nThe expensive step is identical across groups. The cheap step is the only one where you differ. Spend your time there."
+  },
+  {
+    "objectID": "slides/session08.html#from-ten-sentences-to-ten-numbers",
+    "href": "slides/session08.html#from-ten-sentences-to-ten-numbers",
+    "title": "Explaining Earnings Reactions",
+    "section": "From Ten Sentences to Ten Numbers",
+    "text": "From Ten Sentences to Ten Numbers\n\nYou define the dimensions. The model scores the facts on them, from -1 to +1.\n\n\n\n\n\n\n\n\nguidance_revision\nguidance was raised, cut, or maintained\n\n\nmargin_durability\nthe margin move looks structural, not a one-off refund\n\n\ndemand_commentary\nmanagement describes demand strengthening\n\n\nmanagement_hedging\nhow much they deflect\n\n\n\n\nTen of these ship as a starting point. They are a starting point, not an answer."
+  },
+  {
+    "objectID": "slides/session08.html#the-regression",
+    "href": "slides/session08.html#the-regression",
+    "title": "Explaining Earnings Reactions",
+    "section": "The Regression",
+    "text": "The Regression\n\\[y = \\alpha + \\beta_1 \\cdot \\text{your prediction} + \\beta_2 \\cdot \\text{surprise}\\]\n\ny is the percentile rank of the one-day market-adjusted return. You are ranked on how much R-squared you add over the surprise alone.\n\n\nThe earnings surprise is already in the regression. A signal that amounts to “did they beat EPS” earns approximately nothing."
+  },
+  {
+    "objectID": "slides/session08.html#two-properties-worth-knowing",
+    "href": "slides/session08.html#two-properties-worth-knowing",
+    "title": "Explaining Earnings Reactions",
+    "section": "Two Properties Worth Knowing",
+    "text": "Two Properties Worth Knowing\n\n\nSign does not matter\n\\(\\beta_1\\) enters squared. Flip every prediction \\(p\\) to \\(1-p\\) and your score is identical.\n\nShape does\nIt is OLS on levels. A nonlinear monotone remap changes the fit even when the ordering does not.\n\n\nMost people assume the opposite of both."
+  },
+  {
+    "objectID": "slides/session08.html#a-positive-number-is-not-a-result",
+    "href": "slides/session08.html#a-positive-number-is-not-a-result",
+    "title": "Explaining Earnings Reactions",
+    "section": "A Positive Number Is Not a Result",
+    "text": "A Positive Number Is Not a Result\n\nAdding any regressor raises R-squared. At n=70, a purely random predictor earns about +0.014.\n\n\n\n+0.0958 observed\n\n\n+0.0138 from pure noise\n\n\n0.007 permutation p-value\n\n\n\nShuffle your predictions 2,000 times and refit. If your number sits inside that distribution, you have found nothing."
+  },
+  {
+    "objectID": "slides/session08.html#what-you-have",
+    "href": "slides/session08.html#what-you-have",
+    "title": "Explaining Earnings Reactions",
+    "section": "What You Have",
+    "text": "What You Have\n\n\n\n\n\n\n\ndist/train.jsonl\nMay 2026 calls: ten facts, the surprise, and car1\n\n\ndist/test.jsonl\nAugust 2026 calls: ten facts and the surprise. No car1.\n\n\nstarter.py\nsignals, fit, predict, write your submission\n\n\n\n\nI am holding the August returns. You will not see them until Tuesday. That is the point."
+  },
+  {
+    "objectID": "slides/session08.html#in-class-now",
+    "href": "slides/session08.html#in-class-now",
+    "title": "Explaining Earnings Reactions",
+    "section": "In Class Now",
+    "text": "In Class Now\n\n\nRead the ten facts for three companies you know. What moved the stock?\nEdit DIMENSIONS in signals.py. Cut what is useless, add what is missing.\nRun python starter.py --quick 60 and look at the training number.\nCheck it against the permutation p-value before you believe it."
+  },
+  {
+    "objectID": "slides/session08.html#before-tuesday",
+    "href": "slides/session08.html#before-tuesday",
+    "title": "Explaining Earnings Reactions",
+    "section": "Before Tuesday",
+    "text": "Before Tuesday\n\n\nIterate\nChange the dimensions, refit, see what moves. The signals pass is cheap; run it several times.\n\n\nSubmit\nSet GROUP at the top of starter.py and commit your submissions/&lt;group&gt;.csv to your repo.\n\n\n\nTuesday I score every submission against the held-out August returns, live."
+  },
+  {
+    "objectID": "slides/session05.html#multi-collinearity",
+    "href": "slides/session05.html#multi-collinearity",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Multi-Collinearity",
+    "text": "Multi-Collinearity\n\nNet margin and EBITDA margin have a correlation of 0.82 across these firms. Least squares is asked which of them explains P/S, and the data cannot say.\n\n\n\n\n\nOLS coefficient\n\n\n\n\nnet margin\n+0.63\n\n\nEBITDA margin\n−0.27\n\n\n\n\nA large positive on one and a negative on its near-twin."
+  },
+  {
+    "objectID": "slides/session05.html#hyperparameters-to-control-overfitting",
+    "href": "slides/session05.html#hyperparameters-to-control-overfitting",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Hyperparameters to Control Overfitting",
+    "text": "Hyperparameters to Control Overfitting\n\n\nMax depth\nHow many cuts deep the tree may go. Depth \\(d\\) allows up to \\(2^d\\) leaves; depth 8 here gives 28 boxes for 40 firms.\n\n\nMinimum per leaf\nThe smallest number of training points a leaf may hold. A leaf of one is a memorized observation.\n\n\n\nAt depth 2 the tree scores 0.57 on the training firms and 0.29 on the test firms. At depth 8 it scores 0.96 and \\(-0.14\\) — worse than a flat line at the average."
+  },
+  {
+    "objectID": "slides/session05.html#important-hyperparameters",
+    "href": "slides/session05.html#important-hyperparameters",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Important Hyperparameters",
+    "text": "Important Hyperparameters\n\n\nNumber of trees\nThe only knob that keeps improving the training fit forever. Test R-squared peaks early — here, after about five.\n\n\nLearning rate\nHow much of each tree is added. Small rates need more trees and usually end up better.\n\n\nDepth\nHow much each tree may do on its own. Two or three is standard; the boosting is supposed to do the work.\n\n\n\nHalve the learning rate and you roughly double the number of trees you need. Set the rate low, then stop adding trees when validation R-squared stops rising. Min observations per leaf is also important. We set it to 1 here for simplicity."
+  },
+  {
+    "objectID": "slides/session05.html#todays-example",
+    "href": "slides/session05.html#todays-example",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Today’s Example",
+    "text": "Today’s Example\n\nWe will use session4.parquet to predict the log of the price-to-sales ratio.\n\n\n\n\ngrossmargin\ngross margin\n\n\nebitdamargin\nEBITDA margin\n\n\nnetmargin\nnet margin\n\n\nassetturnover\nasset turnover\n\n\nrndint\nR&D / sales\n\n\ncurrentratio\ncurrent ratio\n\n\ngrowth\nsales growth\n\n\nde\ndebt / equity"
+  },
+  {
+    "objectID": "slides/session05.html#which-features-mattered",
+    "href": "slides/session05.html#which-features-mattered",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Which Features Mattered",
+    "text": "Which Features Mattered\n\nBoosting will tell you which features its trees actually used.\n\n\n\n\n\n\nnet margin\n0.25\n\n\nR&D / sales\n0.23\n\n\ngross margin\n0.15\n\n\nsales growth\n0.14\n\n\nEBITDA margin\n0.13\n\n\ndebt / equity\n0.04\n\n\ncurrent ratio\n0.03\n\n\nasset turnover\n0.02\n\n\n\n\nWhere the numbers come from\nThe fraction of the total training error removed that each feature is responsible for, based on error reduction at each split in each tree.\nWhat they do not say\nNot the sign of the effect — only that the feature got used. Two features that move together split the credit between them, so neither looks essential.\n\n\nmodel.feature_importances_, in the order of the feature columns. Here: 200 trees, rate 0.1, depth 2, test \\(R^2\\) of 0.60."
+  },
+  {
+    "objectID": "slides/session06.html#running-locally",
+    "href": "slides/session06.html#running-locally",
+    "title": "Build a Stock Recommender App",
+    "section": "Running Locally",
+    "text": "Running Locally\n\nThe backend and the frontend can be the same computer — lab638, or your own laptop if you have Python installed on it.\n\n\n\nlocalhost\n127.0.0.1 is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.\n\n\nPorts\nOne machine can run many programs listening at once. The port number tells the operating system which of them gets the request.\n\n\n\nYou write the app as a .py file. FastAPI is the dominant Python library for writing one; uvicorn runs it and starts it listening on a port: python3 -m uvicorn app:app --reload."
+  },
+  {
+    "objectID": "slides/session06.html#basic-design",
+    "href": "slides/session06.html#basic-design",
+    "title": "Build a Stock Recommender App",
+    "section": "Basic Design",
+    "text": "Basic Design\n\n\nThe app loads the saved linear regression and gradient boosting models at startup. It does not refit anything in real time.\nThe user types a ticker.\nThe app pulls that company’s row, runs the models, and compares the actual ps to the warranted ps the models predict.\nIt answers: Strong Buy, Buy, Hold, Sell, or Strong Sell."
+  },
+  {
+    "objectID": "slides/session06.html#questions",
+    "href": "slides/session06.html#questions",
+    "title": "Build a Stock Recommender App",
+    "section": "Questions",
+    "text": "Questions\n\n\nThe verdict\n\nWhat cutoffs? How big a gap makes it a Strong Buy rather than a Buy?\nBoth models, one of them, or the average of the two?\n\n\nThe comparison\n\nThe whole cross-section, and where the ticker falls in it?\nAgainst its own industry?\nAgainst companies of its size?\n\n\n\nArgue these out with AI before you write code."
+  },
+  {
+    "objectID": "slides/session06.html#platform-as-a-service",
+    "href": "slides/session06.html#platform-as-a-service",
+    "title": "Build a Stock Recommender App",
+    "section": "Platform as a Service",
+    "text": "Platform as a Service\n\nYou hand a host your repository. It builds the app, runs it, and puts it behind a public URL — there is no server for you to administer. Railway, Render, Koyeb, and Heroku all do this. We will use Koyeb, which has a free tier.\n\n\n\nCreate a free account at koyeb.com.\nIn the control panel, create an API access token. Koyeb shows it once, so copy it then.\nIn a terminal, add it to your .env file:\n\n\nprintf '\\nKOYEB_ACCESS_TOKEN=your_access_token\\n' &gt;&gt; $HOME/.env\n\n&gt;&gt; appends, and creates the file if you do not have one. Koyeb’s web UI will link a GitHub repo with no token at all — the token is what lets AI do the deploying for you, which is the path we are taking."
+  },
+  {
+    "objectID": "slides/session06.html#deploy-the-app",
+    "href": "slides/session06.html#deploy-the-app",
+    "title": "Build a Stock Recommender App",
+    "section": "Deploy the App",
+    "text": "Deploy the App\n\n\nPrompt\n\nMy goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to that repo. Walk me through it one step at a time.\n\n\nOn day one you told git to ignore parquet files. The host builds only what is in the repo, so the model file and the data the app reads have to get there. And nothing from .env belongs in a public repo — secrets go in Koyeb’s environment settings."
+  },
+  {
+    "objectID": "slides/session06.html#get-a-custom-domain",
+    "href": "slides/session06.html#get-a-custom-domain",
+    "title": "Build a Stock Recommender App",
+    "section": "Get a Custom Domain",
+    "text": "Get a Custom Domain\n\nOptional. The Koyeb URL works fine on its own.\n\n\n\nCreate an account at dnsimple.com and buy a domain name.\nIn your DNSimple account settings, create an API access token and add it to .env:\n\n\nprintf '\\nDNSIMPLE_ACCESS_TOKEN=your_access_token\\n' &gt;&gt; $HOME/.env\n\n\nPrompt\n\nI bought mydomain.com at DNSimple and my app is running on Koyeb. Use the DNSimple API v2 with DNSIMPLE_ACCESS_TOKEN to create the record Koyeb needs, and tell me what to configure on the Koyeb side."
+  },
+  {
+    "objectID": "slides/session06.html#demo-vs-production",
+    "href": "slides/session06.html#demo-vs-production",
+    "title": "Build a Stock Recommender App",
+    "section": "Demo vs Production",
+    "text": "Demo vs Production\n\n\nThe demo\nThe models and session4.parquet ship inside the app. It is a snapshot — the same rows every time anyone opens it.\n\n\nProduction\nThe session 4 data would be updated daily, and the models refit periodically as new data accumulates."
+  },
+  {
+    "objectID": "slides/session08.html#transcripts-free",
+    "href": "slides/session08.html#transcripts-free",
+    "title": "Analyzing Earnings Calls",
+    "section": "Transcripts, Free",
+    "text": "Transcripts, Free\n\n\nMotley Fool\nThe archive, scraped. 2021 to now, roughly 45,000 calls. Prepared remarks and Q&A in full.\n\n\nEarningsCall\nClean API, good SDK. The free tier is two companies: Apple and Microsoft.\n\n\nSEC EDGAR\n8-K Item 2.02 is the press release, not the call. Public domain, timestamped to the second.\n\n\n\nThe Fool archive paginates at 50 pages, about three weeks. The monthly sitemap has no cap and is how you reach 2021."
+  },
+  {
+    "objectID": "slides/session08.html#transcripts-paid",
+    "href": "slides/session08.html#transcripts-paid",
+    "title": "Analyzing Earnings Calls",
+    "section": "Transcripts, Paid",
+    "text": "Transcripts, Paid\n\n\n\n\n\n\n\nEarningsCall\n9,000+ companies, speaker-segmented, MIT-licensed SDK\n\n\nFinancial Modeling Prep\ntranscripts on a paid tier; you may already hold a key\n\n\nAPI Ninjas\none endpoint, history to 2000, premium below 2026\n\n\nCapital IQ via WRDS\nthe research standard, 2004 on, ~5,000 US firms\n\n\n\n\nRice does not subscribe to Capital IQ Transcripts. ciq_transcripts returns permission denied; the sample is 20 calls from 2005."
+  },
+  {
+    "objectID": "slides/session08.html#the-other-half-labels",
+    "href": "slides/session08.html#the-other-half-labels",
+    "title": "Analyzing Earnings Calls",
+    "section": "The Other Half: Labels",
+    "text": "The Other Half: Labels\n\n\nFree and current\nYahoo for returns, Finnhub for consensus. Current to yesterday. Runs in your container.\n\nResearch grade, but stale\nCRSP daily ends 2025-12-31. The market index file ends 2024-12-31. IBES ends 2026-05-14.\n\n\nWRDS cannot label a call from last month. That is not a small detail; it decides which sample you can study."
+  },
+  {
+    "objectID": "slides/session08.html#can-a-model-read-a-call-and-tell-you-to-buy",
+    "href": "slides/session08.html#can-a-model-read-a-call-and-tell-you-to-buy",
+    "title": "Analyzing Earnings Calls",
+    "section": "Can a Model Read a Call and Tell You to Buy?",
+    "text": "Can a Model Read a Call and Tell You to Buy?\n\nA transcript is 43,000 characters of management telling you how the quarter went. Somewhere in there is information about what the stock is worth.\n\n\nThe question is not whether a model can summarize it. It obviously can. The question is whether anything it produces survives contact with a price."
+  },
+  {
+    "objectID": "slides/session08.html#how-fast-would-we-have-to-act",
+    "href": "slides/session08.html#how-fast-would-we-have-to-act",
+    "title": "Analyzing Earnings Calls",
+    "section": "How Fast Would We Have to Act?",
+    "text": "How Fast Would We Have to Act?\n\nThe call is public the moment it ends. Our transcripts are not.\n\n\n\n4 days median lag, call to Fool transcript\n\n\n53% posted 3+ days after the call\n\n\n5 min what the professionals allow themselves\n\n\n\nMeasured on 449 of our own transcripts. Anything that trades on the announcement itself is gone before we can read it."
+  },
+  {
+    "objectID": "slides/session08.html#where-the-move-actually-is",
+    "href": "slides/session08.html#where-the-move-actually-is",
+    "title": "Analyzing Earnings Calls",
+    "section": "Where the Move Actually Is",
+    "text": "Where the Move Actually Is\n\nSo the announcement day is out of reach. Is that where the money was?\n\n\n\n\n\n\n\n\n\n\nmean absolute move\nis it predictable?\n\n\n\n\nAnnouncement day\n8.1%\nyes, partly. R-squared 0.05 on the surprise alone\n\n\nNext 60 days\n17.3%\nnot from the surprise. R-squared 0.001\n\n\n\n\nTwo thirds of the movement happens after the day we cannot trade. None of it that we know how to forecast. Size and predictability are different things."
+  },
+  {
+    "objectID": "slides/session08.html#four-architectures",
+    "href": "slides/session08.html#four-architectures",
+    "title": "Analyzing Earnings Calls",
+    "section": "Four Architectures",
+    "text": "Four Architectures\n\n\nFine-tune\nTrain a model on transcripts paired with the subsequent price move. End to end, no features.\n\n\nExtract, then model\nThe LLM reads the call and emits numbers. A separate ML model turns those into a recommendation.\n\n\nEmbed\nTurn the transcript into a vector. Use the vector as a feature list.\n\n\nJust ask\nOne prompt, one answer. The thing all three of the above have to beat."
+  },
+  {
+    "objectID": "slides/session08.html#fine-tuning",
+    "href": "slides/session08.html#fine-tuning",
+    "title": "Analyzing Earnings Calls",
+    "section": "Fine-Tuning",
+    "text": "Fine-Tuning\n\nShow a model thousands of transcripts and what the stock did next, and let it find its own features.\n\n\n\nFor\nNobody has to guess which features matter. The model is optimized for the actual target.\n\nAgainst\nExpensive, hard to interpret, and easy to overfit. What did it learn? You cannot read it off."
+  },
+  {
+    "objectID": "slides/session08.html#extract-then-model",
+    "href": "slides/session08.html#extract-then-model",
+    "title": "Analyzing Earnings Calls",
+    "section": "Extract, Then Model",
+    "text": "Extract, Then Model\n\nThe model scores the call on dimensions you define. A regression turns those scores into a position.\n\n\nGuidance revision, margin durability, how much management hedges, whether the quarter leans on one-off items.\n\n\nThe appeal is that the middle layer is inspectable. When it works you can say which dimension carried it; when it fails you can see where."
+  },
+  {
+    "objectID": "slides/session08.html#embeddings",
+    "href": "slides/session08.html#embeddings",
+    "title": "Analyzing Earnings Calls",
+    "section": "Embeddings",
+    "text": "Embeddings\n\nSkip the judgment. Turn the whole transcript into a few hundred numbers and regress on those.\n\n\n\nCheap\nOrders of magnitude less than generation. You can embed the whole corpus.\n\n\nOpaque\nDimension 137 is not “margin pressure.” There is nothing to put on a slide."
+  },
+  {
+    "objectID": "slides/session08.html#just-ask-it",
+    "href": "slides/session08.html#just-ask-it",
+    "title": "Analyzing Earnings Calls",
+    "section": "Just Ask It",
+    "text": "Just Ask It\n\nGive the model the transcript and ask for a number. No features, no fitting, no training.\n\n\nThis is the control, and it is the one experiment nobody wants to run. If a one-line prompt does as well as a fine-tuned model, that is the result, and it is worth knowing before you spend a week on the alternative."
+  },
+  {
+    "objectID": "slides/session08.html#three-more-angles",
+    "href": "slides/session08.html#three-more-angles",
+    "title": "Analyzing Earnings Calls",
+    "section": "Three More Angles",
+    "text": "Three More Angles\n\n\nRemarks vs Q&A\nThe prepared remarks are scripted. The Q&A is not. Split the document and see which half carries the signal.\n\n\nChange, not level\nSome CEOs always sound confident. Compare a call to the same firm’s last call and score what moved.\n\n\nModel as analyst\nAsk it what to look for rather than what to conclude. Then test its hypotheses yourself."
+  },
+  {
+    "objectID": "slides/session08.html#what-i-already-know",
+    "href": "slides/session08.html#what-i-already-know",
+    "title": "Analyzing Earnings Calls",
+    "section": "What I Already Know",
+    "text": "What I Already Know\n\nPreliminary, one month, 181 to 198 events. Enough to steer you, not enough to believe.\n\n\n\n\n\n\n\n\nAnnouncement-day reaction\nten extracted features added R-squared 0.096 over the surprise, p = 0.007\n\n\n60-day drift\nnothing. Would need roughly 80x the sample to see a 2% effect\n\n\nVolatility, level\n64% explained by its own past. No room\n\n\nVolatility, change\nbenchmark only 0.058, and the obvious predictors are exhausted"
+  },
+  {
+    "objectID": "slides/session08.html#your-turn",
+    "href": "slides/session08.html#your-turn",
+    "title": "Analyzing Earnings Calls",
+    "section": "Your Turn",
+    "text": "Your Turn\n\n\nPick a direction. Argue for it before you start building.\nDecide what your prediction would have to beat, and write that down first.\nBuild the smallest version that could produce a number.\nTuesday: what you tried, what it gave you, and whether you believe it.\n\n\n\nThe infrastructure is in the repo: transcripts, extraction, labels, scoring. Take what helps and ignore the rest."
   }
 ]

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="252" viewBox="0 0 1080 252" font-family="Meiryo,'Zen Kaku Gothic New','Segoe UI',system-ui,sans-serif">
+<text x="96" y="18" font-size="12" letter-spacing="0.09em" fill="#6f6b77">THE 40 TRAINING FIRMS, SPLIT INTO FIVE</text>
+<text x="82" y="50.0" font-size="14" fill="#6f6b77" text-anchor="end">fold 1</text>
+<rect x="96" y="30" width="116" height="30" fill="#595460"/>
+<text x="154.0" y="50.0" font-size="13" text-anchor="middle" fill="#fbfbfa">validate</text>
+<rect x="217" y="30" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="275.0" y="50.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="338" y="30" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="396.0" y="50.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="459" y="30" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="517.0" y="50.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="580" y="30" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="638.0" y="50.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<line x1="709" y1="45.0" x2="735" y2="45.0" stroke="#97A7B8" stroke-width="2"/>
+<path d="M735 41.0 L743 45.0 L735 49.0 Z" fill="#97A7B8"/>
+<text x="751" y="50.0" font-size="14" fill="#3b3842">R² 1</text>
+<text x="82" y="87.0" font-size="14" fill="#6f6b77" text-anchor="end">fold 2</text>
+<rect x="96" y="67" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="154.0" y="87.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="217" y="67" width="116" height="30" fill="#595460"/>
+<text x="275.0" y="87.0" font-size="13" text-anchor="middle" fill="#fbfbfa">validate</text>
+<rect x="338" y="67" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="396.0" y="87.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="459" y="67" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="517.0" y="87.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="580" y="67" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="638.0" y="87.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<line x1="709" y1="82.0" x2="735" y2="82.0" stroke="#97A7B8" stroke-width="2"/>
+<path d="M735 78.0 L743 82.0 L735 86.0 Z" fill="#97A7B8"/>
+<text x="751" y="87.0" font-size="14" fill="#3b3842">R² 2</text>
+<text x="82" y="124.0" font-size="14" fill="#6f6b77" text-anchor="end">fold 3</text>
+<rect x="96" y="104" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="154.0" y="124.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="217" y="104" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="275.0" y="124.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="338" y="104" width="116" height="30" fill="#595460"/>
+<text x="396.0" y="124.0" font-size="13" text-anchor="middle" fill="#fbfbfa">validate</text>
+<rect x="459" y="104" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="517.0" y="124.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="580" y="104" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="638.0" y="124.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<line x1="709" y1="119.0" x2="735" y2="119.0" stroke="#97A7B8" stroke-width="2"/>
+<path d="M735 115.0 L743 119.0 L735 123.0 Z" fill="#97A7B8"/>
+<text x="751" y="124.0" font-size="14" fill="#3b3842">R² 3</text>
+<text x="82" y="161.0" font-size="14" fill="#6f6b77" text-anchor="end">fold 4</text>
+<rect x="96" y="141" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="154.0" y="161.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="217" y="141" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="275.0" y="161.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="338" y="141" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="396.0" y="161.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="459" y="141" width="116" height="30" fill="#595460"/>
+<text x="517.0" y="161.0" font-size="13" text-anchor="middle" fill="#fbfbfa">validate</text>
+<rect x="580" y="141" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="638.0" y="161.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<line x1="709" y1="156.0" x2="735" y2="156.0" stroke="#97A7B8" stroke-width="2"/>
+<path d="M735 152.0 L743 156.0 L735 160.0 Z" fill="#97A7B8"/>
+<text x="751" y="161.0" font-size="14" fill="#3b3842">R² 4</text>
+<text x="82" y="198.0" font-size="14" fill="#6f6b77" text-anchor="end">fold 5</text>
+<rect x="96" y="178" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="154.0" y="198.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="217" y="178" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="275.0" y="198.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="338" y="178" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="396.0" y="198.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="459" y="178" width="116" height="30" fill="#EBEDEB" stroke="#dcdcd8" stroke-width="1"/>
+<text x="517.0" y="198.0" font-size="13" text-anchor="middle" fill="#6f6b77">fit</text>
+<rect x="580" y="178" width="116" height="30" fill="#595460"/>
+<text x="638.0" y="198.0" font-size="13" text-anchor="middle" fill="#fbfbfa">validate</text>
+<line x1="709" y1="193.0" x2="735" y2="193.0" stroke="#97A7B8" stroke-width="2"/>
+<path d="M735 189.0 L743 193.0 L735 197.0 Z" fill="#97A7B8"/>
+<text x="751" y="198.0" font-size="14" fill="#3b3842">R² 5</text>
+<path d="M830 30 L840 30 L840 111.0 L850 119.0 L840 127.0 L840 208 L830 208" fill="none" stroke="#595460" stroke-width="1.6"/>
+<text x="862" y="111.0" font-size="15" fill="#595460" font-weight="700">their average</text>
+<text x="862" y="131.0" font-size="15" fill="#6f6b77">is the score for one</text>
+<text x="862" y="150.0" font-size="15" fill="#6f6b77">candidate λ</text>
+<line x1="96" y1="226" x2="1040" y2="226" stroke="#dcdcd8" stroke-width="1"/>
+<text x="96" y="246" font-size="14" fill="#6f6b77">Run all five folds for every candidate value, keep the winner, and refit it on all 40 training firms.</text>
+</svg>

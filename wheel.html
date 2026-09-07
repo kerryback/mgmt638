@@ -466,12 +466,12 @@ function spin() {
   // land the winning wedge's centre on the marker at angle 0
   const jitter = (Math.random() - 0.5) * seg * 0.7;
   const target = -((idx + 0.5) * seg) + jitter;
-  const turns = reduced ? 1 : 5 + Math.floor(Math.random() * 3);
+  const turns = reduced ? 1 : 10 + Math.floor(Math.random() * 3);
   const start = rotation;
   const norm = ((target - start) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
   const total = norm + turns * Math.PI * 2;
 
-  const dur = reduced ? 700 : 5400;
+  const dur = reduced ? 700 : 9000;
   const t0 = performance.now();
   let lastPeg = null;
 

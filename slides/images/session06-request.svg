@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" width="1000" height="300"
+     font-family="Meiryo, 'Zen Kaku Gothic New', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6f8497"/>
+    </marker>
+    <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#595460"/>
+    </marker>
+  </defs>
+
+  <!-- labels -->
+  <text x="185" y="20" text-anchor="middle" font-size="13" letter-spacing="2.5" fill="#6f8497">FRONTEND</text>
+  <text x="815" y="20" text-anchor="middle" font-size="13" letter-spacing="2.5" fill="#595460">BACKEND</text>
+
+  <!-- browser -->
+  <rect x="20" y="34" width="330" height="246" rx="8" fill="#fbfbfa" stroke="#97A7B8" stroke-width="2"/>
+  <path d="M20 64 H350" stroke="#97A7B8" stroke-width="2"/>
+  <circle cx="38" cy="49" r="4" fill="#97A7B8"/>
+  <circle cx="52" cy="49" r="4" fill="#97A7B8"/>
+  <circle cx="66" cy="49" r="4" fill="#97A7B8"/>
+  <rect x="84" y="41" width="248" height="16" rx="8" fill="#EBEDEB"/>
+
+  <text x="42" y="96" font-size="13" fill="#6f8497">Ticker</text>
+  <rect x="40" y="106" width="176" height="34" rx="4" fill="#ffffff" stroke="#97A7B8" stroke-width="2"/>
+  <text x="54" y="129" font-size="16" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#3b3842">NVDA</text>
+  <rect x="228" y="106" width="102" height="34" rx="4" fill="#595460"/>
+  <text x="279" y="128" text-anchor="middle" font-size="13" fill="#ffffff">Recommend</text>
+
+  <rect x="40" y="164" width="290" height="96" rx="4" fill="#EBEDEB"/>
+  <text x="58" y="192" font-size="14" fill="#3b3842">Model says</text>
+  <text x="312" y="192" text-anchor="end" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#3b3842">3.2</text>
+  <text x="58" y="216" font-size="14" fill="#3b3842">Market says</text>
+  <text x="312" y="216" text-anchor="end" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#3b3842">5.1</text>
+  <text x="58" y="246" font-size="16" font-weight="bold" letter-spacing="1" fill="#595460">EXPENSIVE</text>
+
+  <!-- server -->
+  <rect x="650" y="34" width="330" height="246" rx="8" fill="#fbfbfa" stroke="#595460" stroke-width="2"/>
+  <text x="672" y="88" font-size="13" fill="#6f8497">A FastAPI app, served by uvicorn</text>
+
+  <rect x="670" y="102" width="290" height="36" rx="4" fill="#EBEDEB"/>
+  <path d="M670 102 V138" stroke="#97A7B8" stroke-width="4"/>
+  <text x="688" y="126" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#3b3842">@app.get("/")</text>
+
+  <rect x="670" y="148" width="290" height="36" rx="4" fill="#EBEDEB"/>
+  <path d="M670 148 V184" stroke="#595460" stroke-width="4"/>
+  <text x="688" y="172" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#3b3842">@app.post("/predict")</text>
+
+  <text x="672" y="220" font-size="13" fill="#3b3842">loads your saved model once, at startup</text>
+  <text x="672" y="244" font-size="13" fill="#3b3842">looks the ticker up in the cross-section</text>
+
+  <!-- exchanges -->
+  <text x="500" y="98" text-anchor="middle" font-size="12" fill="#6f8497">GET / &#8212; ask for the page</text>
+  <path d="M362 108 H638" stroke="#6f8497" stroke-width="2" marker-end="url(#ab)"/>
+
+  <text x="500" y="134" text-anchor="middle" font-size="12" fill="#6f8497">the HTML page comes back</text>
+  <path d="M638 144 H362" stroke="#6f8497" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ab)"/>
+
+  <text x="500" y="196" text-anchor="middle" font-size="12" fill="#595460">POST /predict &#8212; send the ticker</text>
+  <path d="M362 206 H638" stroke="#595460" stroke-width="2" marker-end="url(#ap)"/>
+
+  <text x="500" y="232" text-anchor="middle" font-size="12" fill="#595460">the verdict comes back</text>
+  <path d="M638 242 H362" stroke="#595460" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ap)"/>
+</svg>

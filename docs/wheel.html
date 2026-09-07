@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MGMT 638 Presentation Draw</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@500;600;700&display=swap">
+<style>
+  :root {
+    --ink:        #12101a;
+    --stage:      #1a1622;
+    --panel:      #221d2d;
+    --panel-2:    #2a2436;
+    --line:       #3a3247;
+    --cream:      #f3eee4;
+    --muted:      #a49bb2;
+    --brass:      #e0b45c;
+    --brass-dim:  #8d7237;
+    --plum:       #a4517f;
+    --blue:       #7fa3c4;
+    --radius:     10px;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(120% 80% at 50% -10%, #26203200 0%, #0d0b12 100%),
+      radial-gradient(60% 45% at 32% 38%, rgba(224,180,92,.10) 0%, transparent 70%),
+      var(--ink);
+    color: var(--cream);
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 30px 24px 56px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  /* ---------- masthead ---------- */
+  header.masthead { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+  h1 {
+    font-family: "Bodoni Moda", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 44px);
+    letter-spacing: .01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h1 em { font-style: italic; color: var(--brass); }
+  .course {
+    font-family: "Archivo Narrow", Arial, sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .22em;
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ---------- wheel ---------- */
+  .stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .wheel-wrap { position: relative; width: 100%; aspect-ratio: 1 / 1; max-width: 620px; }
+  canvas { width: 100%; height: 100%; display: block; }
+
+  .spin {
+    appearance: none;
+    border: 1px solid var(--brass-dim);
+    background: linear-gradient(180deg, #2d2534, #201a29);
+    color: var(--brass);
+    font-family: "Archivo Narrow", Arial, sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .3em;
+    font-size: 17px;
+    padding: 15px 46px 15px 52px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .2s ease, color .2s ease;
+    box-shadow: 0 0 0 0 rgba(224,180,92,.35), 0 10px 26px rgba(0,0,0,.45);
+  }
+  .spin:hover:not(:disabled) { color: #ffdf9a; box-shadow: 0 0 26px 0 rgba(224,180,92,.28), 0 10px 26px rgba(0,0,0,.45); }
+  .spin:active:not(:disabled) { transform: translateY(1px); }
+  .spin:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; }
+  .spin:disabled { opacity: .4; cursor: default; }
+
+  .stage-note { font-size: 13px; color: var(--muted); min-height: 20px; text-align: center; }
+
+  /* ---------- rail ---------- */
+  .rail { display: flex; flex-direction: column; gap: 20px; }
+  .rail h2 {
+    font-family: "Archivo Narrow", Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+
+  .tally { display: flex; gap: 10px; }
+  .tally div {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+  }
+  .tally .n { font-family: "Bodoni Moda", Georgia, serif; font-size: 26px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .tally .n.done { color: var(--brass); }
+  .tally span { display: block; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
+
+  ul.roster { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .team {
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--swatch, var(--line));
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, opacity .15s ease;
+  }
+  .team:hover { background: var(--panel-2); }
+  .team:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  .team .num {
+    font-family: "Bodoni Moda", Georgia, serif;
+    font-size: 21px;
+    line-height: 1;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .team .names { font-size: 13px; line-height: 1.35; color: #d9d2e2; }
+  .team .state { font-family: "Archivo Narrow", Arial, sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .team.done { opacity: .5; border-left-color: var(--line); }
+  .team.done .names { text-decoration: line-through; text-decoration-color: rgba(164,155,178,.6); }
+  .team.done .state { color: var(--brass); }
+  .team.up { border-color: var(--brass); background: #2b2333; }
+
+  .reset {
+    align-self: flex-start;
+    background: none;
+    border: 0;
+    padding: 4px 0;
+    color: var(--muted);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--line);
+  }
+  .reset:hover { color: var(--cream); border-bottom-color: var(--brass); }
+  .reset:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; }
+
+  .hint { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+
+  .sound { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); cursor: pointer; }
+  .sound input { accent-color: var(--brass); width: 15px; height: 15px; }
+
+  /* ---------- reveal ---------- */
+  .reveal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(10,8,14,.82);
+    backdrop-filter: blur(3px);
+    padding: 24px;
+    z-index: 20;
+    animation: fade .25s ease both;
+  }
+  @keyframes fade { from { opacity: 0; } }
+  .card {
+    background: linear-gradient(180deg, #262032, #1c1725);
+    border: 1px solid var(--brass-dim);
+    border-radius: 14px;
+    padding: 34px 40px 28px;
+    max-width: 470px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(224,180,92,.14), 0 30px 70px rgba(0,0,0,.6);
+    animation: pop .35s cubic-bezier(.2,1.3,.4,1) both;
+  }
+  @keyframes pop { from { transform: scale(.94); opacity: 0; } }
+  .card .eyebrow { font-family: "Archivo Narrow", Arial, sans-serif; text-transform: uppercase; letter-spacing: .3em; font-size: 11px; color: var(--brass); }
+  .card .big { font-family: "Bodoni Moda", Georgia, serif; font-size: clamp(46px, 9vw, 74px); line-height: 1.02; margin: 6px 0 14px; text-wrap: balance; }
+  .card .roster-names { font-size: 16px; line-height: 1.7; color: #ded7e6; }
+  .card .slot { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .1em; text-transform: uppercase; font-family: "Archivo Narrow", Arial, sans-serif; }
+  .card .actions { display: flex; gap: 10px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+  .btn {
+    font: inherit;
+    font-weight: 600;
+    padding: 11px 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    border: 1px solid var(--brass-dim);
+    background: var(--brass);
+    color: #241c07;
+    transition: filter .15s ease;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+  .btn.ghost { background: transparent; color: var(--muted); border-color: var(--line); }
+  .btn.ghost:hover { color: var(--cream); border-color: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .card { animation: none; }
+    * { transition-duration: .01ms !important; }
+  }
+
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; gap: 26px; }
+    .course { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="masthead">
+    <h1>Presentation <em>Draw</em></h1>
+    <div class="course">MGMT 638 &middot; Data-Driven Investments</div>
+  </header>
+
+  <section class="stage">
+    <div class="wheel-wrap">
+      <canvas id="wheel" aria-label="Wheel of teams still in the draw"></canvas>
+    </div>
+    <button class="spin" id="spin">Spin</button>
+    <p class="stage-note" id="note" role="status" aria-live="polite"></p>
+  </section>
+
+  <aside class="rail">
+    <div class="tally">
+      <div><div class="n" id="n-left">0</div><span>In the draw</span></div>
+      <div><div class="n done" id="n-done">0</div><span>Presented</span></div>
+    </div>
+
+    <div>
+      <h2>Teams</h2>
+      <ul class="roster" id="roster"></ul>
+      <p class="hint">Click a team to pull it out of the draw or put it back.</p>
+    </div>
+
+    <label class="sound"><input type="checkbox" id="sound" checked> Wheel sound</label>
+    <button class="reset" id="reset">Start a new round</button>
+  </aside>
+</div>
+
+<script>
+const TEAMS = [
+  { id: 1,  members: ["Robert Kempner", "Samuel Schultz", "Alexander Plant"] },
+  { id: 2,  members: ["Thuy Hang Ngo", "Thao Phan Pham Trang", "Tung Le"] },
+  { id: 3,  members: ["Justin Jin", "Hector Ibarzabal", "Justin Bui"] },
+  { id: 4,  members: ["Damith Ginigalgoda Arachchige"] },
+  { id: 5,  members: ["Sree Nutulapati", "Caylon Thomas", "Beqa Sharabidze"] },
+  { id: 6,  members: ["Marta Antoniv", "Sydney Harrison", "Dietrich Gaitz"] },
+  { id: 7,  members: ["George Peklaris", "Rohan Agnihotri", "Miles Moscariello"] },
+  { id: 8,  members: ["Noelle Phan", "Ryan Berntsen", "Alex Werner"] },
+  { id: 9,  members: ["Tanisha Srivastava", "Ivan Tapia", "Ali Sheriff"] },
+  { id: 10, members: ["Brett Miller", "Rain Li", "Alex Brown", "Olivia Loupe"] },
+];
+
+const WEDGE = ["#7a3557", "#35566e", "#a87a34", "#454168", "#2f6156"];
+const KEY = "mgmt638-draw-v1";
+
+// ---------- state ----------
+let presented = load();          // array of team ids, in the order they went
+let rotation = -Math.PI / 2;     // radians; 0 points at the marker (3 o'clock)
+let spinning = false;
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return [];
+    const ids = JSON.parse(raw);
+    return Array.isArray(ids) ? ids.filter(id => TEAMS.some(t => t.id === id)) : [];
+  } catch (e) { return []; }
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(presented)); } catch (e) {}
+}
+
+const remaining = () => TEAMS.filter(t => !presented.includes(t.id));
+const colorFor = (i, n) => WEDGE[(i === n - 1 && n % WEDGE.length === 1) ? 1 : i % WEDGE.length];
+const firstNames = t => t.members.map(m => m.split(" ")[0]).join(" · ");
+
+// ---------- canvas ----------
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+let R = 0, cx = 0, cy = 0;
+
+function resize() {
+  const box = canvas.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(box.width * dpr);
+  canvas.height = Math.round(box.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  cx = box.width / 2;
+  cy = box.height / 2;
+  R = Math.min(cx, cy) - 16;
+  draw();
+}
+
+function draw() {
+  const teams = remaining();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // outer brass ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, R + 7, 0, Math.PI * 2);
+  ctx.strokeStyle = "#8d7237";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  if (teams.length === 0) {
+    ctx.fillStyle = "#221d2d";
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#a49bb2";
+    ctx.font = '500 17px "Archivo Narrow", Arial, sans-serif';
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText("Every team has presented", cx, cy);
+    drawMarker();
+    return;
+  }
+
+  const seg = (Math.PI * 2) / teams.length;
+
+  teams.forEach((t, i) => {
+    const a0 = rotation + i * seg;
+    const a1 = a0 + seg;
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, R, a0, a1);
+    ctx.closePath();
+    ctx.fillStyle = colorFor(i, teams.length);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(18,16,26,.55)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // radial label: reads outward, upright when the wedge is at the marker
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(a0 + seg / 2);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.fillStyle = "rgba(243,238,228,.62)";
+    ctx.font = '600 ' + Math.max(9, R * 0.035) + 'px "Archivo Narrow", Arial, sans-serif';
+    ctx.fillText("TEAM", R * 0.36, 0);
+
+    ctx.fillStyle = "#f6f2ea";
+    ctx.font = '700 ' + R * 0.145 + 'px "Bodoni Moda", Georgia, serif';
+    ctx.fillText(String(t.id), R * 0.53, 0);
+
+    if (teams.length <= 12) {
+      const label = firstNames(t);
+      let size = Math.max(9, R * 0.042);
+      ctx.font = '500 ' + size + 'px "Archivo Narrow", Arial, sans-serif';
+      const room = R * 0.34;
+      while (ctx.measureText(label).width > room && size > 7) {
+        size -= 0.5;
+        ctx.font = '500 ' + size + 'px "Archivo Narrow", Arial, sans-serif';
+      }
+      ctx.fillStyle = "rgba(243,238,228,.82)";
+      ctx.fillText(label, R * 0.81, 0);
+    }
+    ctx.restore();
+
+    // peg on the boundary
+    ctx.beginPath();
+    ctx.arc(cx + Math.cos(a0) * (R + 7), cy + Math.sin(a0) * (R + 7), 3.2, 0, Math.PI * 2);
+    ctx.fillStyle = "#c8a054";
+    ctx.fill();
+  });
+
+  // hub
+  ctx.beginPath(); ctx.arc(cx, cy, R * 0.13, 0, Math.PI * 2);
+  ctx.fillStyle = "#1a1622"; ctx.fill();
+  ctx.strokeStyle = "#c8a054"; ctx.lineWidth = 2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx, cy, R * 0.045, 0, Math.PI * 2);
+  ctx.fillStyle = "#c8a054"; ctx.fill();
+
+  drawMarker();
+}
+
+function drawMarker() {
+  const x = cx + R + 13;
+  ctx.beginPath();
+  ctx.moveTo(x - 15, cy);
+  ctx.lineTo(x + 12, cy - 12);
+  ctx.lineTo(x + 12, cy + 12);
+  ctx.closePath();
+  ctx.fillStyle = "#e0b45c";
+  ctx.fill();
+  ctx.strokeStyle = "#1a1622";
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
+
+// ---------- sound ----------
+let audio = null;
+const soundOn = () => document.getElementById("sound").checked;
+function tick() {
+  if (!soundOn()) return;
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audio.createOscillator(), g = audio.createGain();
+    o.type = "square";
+    o.frequency.value = 1150;
+    g.gain.setValueAtTime(0.05, audio.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0008, audio.currentTime + 0.045);
+    o.connect(g); g.connect(audio.destination);
+    o.start(); o.stop(audio.currentTime + 0.05);
+  } catch (e) {}
+}
+function fanfare() {
+  if (!soundOn()) return;
+  try {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    [0, .11, .22].forEach((d, i) => {
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.type = "triangle";
+      o.frequency.value = [523.25, 659.25, 783.99][i];
+      const t0 = audio.currentTime + d;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.14, t0 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.42);
+      o.connect(g); g.connect(audio.destination);
+      o.start(t0); o.stop(t0 + 0.45);
+    });
+  } catch (e) {}
+}
+
+// ---------- spin ----------
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function spin() {
+  const teams = remaining();
+  if (spinning || teams.length === 0) return;
+
+  const idx = Math.floor(Math.random() * teams.length);
+  const winner = teams[idx];
+  const seg = (Math.PI * 2) / teams.length;
+
+  // land the winning wedge's centre on the marker at angle 0
+  const jitter = (Math.random() - 0.5) * seg * 0.7;
+  const target = -((idx + 0.5) * seg) + jitter;
+  const turns = reduced ? 1 : 5 + Math.floor(Math.random() * 3);
+  const start = rotation;
+  const norm = ((target - start) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+  const total = norm + turns * Math.PI * 2;
+
+  const dur = reduced ? 700 : 5400;
+  const t0 = performance.now();
+  let lastPeg = null;
+
+  spinning = true;
+  document.getElementById("spin").disabled = true;
+  note("Spinning…");
+
+  function frame(now) {
+    const p = Math.min(1, (now - t0) / dur);
+    const eased = 1 - Math.pow(1 - p, 4);
+    rotation = start + total * eased;
+
+    const peg = Math.floor((rotation + Math.PI * 4) / seg);
+    if (lastPeg !== null && peg !== lastPeg && p < 0.985) tick();
+    lastPeg = peg;
+
+    draw();
+    if (p < 1) {
+      requestAnimationFrame(frame);
+    } else {
+      rotation = ((target % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+      draw();
+      spinning = false;
+      land(winner);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function land(team) {
+  presented.push(team.id);
+  save();
+  render();
+  fanfare();
+  note("Team " + team.id + " is up. " + remaining().length + " left in the draw.");
+  showReveal(team);
+}
+
+// ---------- reveal ----------
+function showReveal(team) {
+  const overlay = document.createElement("div");
+  overlay.className = "reveal";
+  overlay.innerHTML =
+    '<div class="card" role="dialog" aria-modal="true" aria-label="Selected team">' +
+      '<div class="eyebrow">Next to present</div>' +
+      '<div class="big">Team ' + team.id + '</div>' +
+      '<div class="roster-names">' + team.members.map(esc).join("<br>") + '</div>' +
+      '<div class="slot">Presentation ' + presented.length + ' of ' + TEAMS.length + '</div>' +
+      '<div class="actions">' +
+        '<button class="btn" data-go="ok">Got it</button>' +
+        '<button class="btn ghost" data-go="undo">Undo — put back in</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  overlay.querySelector('[data-go="ok"]').focus();
+
+  function close(undo) {
+    if (undo) {
+      presented = presented.filter(id => id !== team.id);
+      save();
+      render();
+      note("Team " + team.id + " is back in the draw.");
+    }
+    overlay.remove();
+    document.removeEventListener("keydown", key);
+    document.getElementById("spin").focus();
+  }
+  function key(e) { if (e.key === "Escape") close(false); }
+
+  overlay.addEventListener("click", e => {
+    const go = e.target.closest("[data-go]");
+    if (go) close(go.dataset.go === "undo");
+    else if (e.target === overlay) close(false);
+  });
+  document.addEventListener("keydown", key);
+}
+
+// ---------- rail ----------
+function esc(s) { return s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])); }
+function note(msg) { document.getElementById("note").textContent = msg; }
+
+function render() {
+  const teams = remaining();
+  const list = document.getElementById("roster");
+  list.innerHTML = "";
+
+  TEAMS.forEach(t => {
+    const done = presented.indexOf(t.id);
+    const i = teams.indexOf(t);
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.className = "team" + (done > -1 ? " done" : "");
+    b.style.setProperty("--swatch", i > -1 ? colorFor(i, teams.length) : "var(--line)");
+    b.innerHTML =
+      '<span class="num">' + t.id + '</span>' +
+      '<span class="names">' + esc(t.members.join(", ")) + '</span>' +
+      '<span class="state">' + (done > -1 ? "#" + (done + 1) : "In") + '</span>';
+    b.addEventListener("click", () => {
+      if (spinning) return;
+      if (done > -1) presented = presented.filter(id => id !== t.id);
+      else presented.push(t.id);
+      save();
+      render();
+    });
+    li.appendChild(b);
+    list.appendChild(li);
+  });
+
+  document.getElementById("n-left").textContent = teams.length;
+  document.getElementById("n-done").textContent = presented.length;
+  document.getElementById("spin").disabled = teams.length === 0 || spinning;
+  draw();
+}
+
+document.getElementById("spin").addEventListener("click", spin);
+document.getElementById("reset").addEventListener("click", () => {
+  if (presented.length && !confirm("Put all " + presented.length + " presented teams back into the draw?")) return;
+  presented = [];
+  save();
+  render();
+  note("");
+});
+document.addEventListener("keydown", e => {
+  if (e.code === "Space" && e.target === document.body) { e.preventDefault(); spin(); }
+});
+window.addEventListener("resize", resize);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+
+render();
+resize();
+</script>
+</body>
+</html>

@@ -12,11 +12,11 @@ project:
     - slides/session02.qmd
     - slides/session03.qmd
     - slides/session04.qmd
-    # - slides/session05.qmd
-    # - slides/session06.qmd
+    - slides/session05.qmd
+    - slides/session06.qmd
     # - slides/session07.qmd
-    # - slides/session08.qmd
-    # - slides/session09.qmd
+    - slides/session08.qmd
+    - slides/session09.qmd
     # - slides/session10.qmd
     # - slides/session11.qmd
     # - slides/session12.qmd
@@ -31,6 +31,9 @@ project:
     # matches the name anywhere in the tree, so it also picked up the staging
     # copy in files/session01/ and published it loose beside the zip.
     - /aqr-report.html
+    # Wheel-of-fortune spinner that draws the next team to present. Hand-written
+    # HTML with no dependencies, so it is copied through verbatim to docs/.
+    - /wheel.html
     - images/RiceBusiness-transparent-logo-sm.png
     - images/headshot-keeper-cropped2.png
     # Session material, linked from the schedule rows in index.qmd.

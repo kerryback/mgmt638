@@ -431,7 +431,7 @@ body > header#quarto-header { display: none; }
         <div class="item-title">Ridge, Lasso, and Trees</div>
         <div class="item-desc">Penalized regression, regression trees, and gradient boosting, each with a slider on the slide. Overfitting, and choosing a tuning parameter by cross-validation.</div>
       </div>
-      <div class="item-links"><span class="has-menu"><a href="slides/session05.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/session05.html" target="_blank" rel="noopener">HTML</a><a href="pdf/session05.pdf" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
+      <div class="item-links"><span class="has-menu"><a href="slides/session05.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/session05.html" target="_blank" rel="noopener">HTML</a><a href="pdf/session05.pdf" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a href="https://www.dropbox.com/scl/fi/xt0ds12k4rl7dpb5jxdkt/session05.zip?rlkey=bt2indzze961dyhe23b3ls8dp&amp;dl=1" target="_blank" rel="noopener">Files</a></div>
     </div>
 
     <div class="item">
@@ -440,7 +440,7 @@ body > header#quarto-header { display: none; }
         <div class="item-title">Build a Stock Recommender App</div>
         <div class="item-desc">Wrapping the fitted models in a web app.  Pick a stock, predict its multiple from its fundamentals, and see how far the market price sits from the model's.</div>
       </div>
-      <div class="item-links"><span class="has-menu"><a href="slides/session06.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/session06.html" target="_blank" rel="noopener">HTML</a><a href="pdf/session06.pdf" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
+      <div class="item-links"><span class="has-menu"><a href="slides/session06.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/session06.html" target="_blank" rel="noopener">HTML</a><a href="pdf/session06.pdf" target="_blank" rel="noopener">PDF</a></span></span><span class="sep phantom">&middot;</span><span class="phantom">Files</span></div>
     </div>
 
     <div class="section-head">

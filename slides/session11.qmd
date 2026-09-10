@@ -1,28 +1,208 @@
 ---
-title: "Session 11"
-subtitle: "Topic TBD"
+title: "Train and Test"
 author: "Kerry Back"
-date: "2026-09-29"
+date: "2026-09-22"
 format:
   revealjs:
     theme: shoji2.scss
-    width: 1050
-    height: 700
+    width: 1280
+    height: 720
+    max-scale: 5
 ---
 
-## Agenda
+## Today
 
-- First thing
-- Second thing
-- Third thing
-
-# Section
-
-## A slide {.plain-title}
-
-::: {.lead}
-One sentence setting up the slide.
+::: {.steps}
+1. Score every submission against August, live
+2. Read the leaderboard, including the parts that surprise you
+3. What the coefficients say carried the signal
+4. Why this is not yet a trading strategy
 :::
 
-- A short bullet
-- Another one
+# The Reveal
+
+## The Bar {.plain-title}
+
+::: {.lead}
+August 2026 calls. The earnings surprise alone, with no help from anyone's
+signals, explains this much of the cross-section of reactions.
+:::
+
+::: {.stats}
+::: {.stat}
+[0.0__]{.stat-value}
+[R-squared, surprise alone]{.stat-label}
+:::
+::: {.stat}
+[___]{.stat-value}
+[August events scored]{.stat-label}
+:::
+:::
+
+::: {.note .note-plum}
+Everything on the leaderboard is the gain on top of this number. Half of it is
+not a starting point; zero is.
+:::
+
+::: {.note}
+`python leaderboard.py submissions/`
+:::
+
+## Four Results You Should Expect {.band-bottom}
+
+| | |
+|---|---|
+| Two groups with identical scores | one of them flipped every sign |
+| A group near +0.015 | that is the noise floor, not a small edge |
+| A group at exactly 0.000 | constant predictions; no variance, no coefficient |
+| A group with 60% coverage | missing events filled with their own mean |
+
+::: {.note .note-plum}
+Coverage is imputed with the submission's own mean, computed before filling. You
+cannot improve your rank by predicting only the easy events.
+:::
+
+## Train Versus Test {.compare}
+
+:::: {.columns}
+::: {.column width="50%"}
+[May, in sample]{.eyebrow}
+
+What you saw Thursday. Cross-validated, but you tuned your dimensions against
+it, repeatedly.
+:::
+
+::: {.column width="50%"}
+[August, held out]{.eyebrow}
+
+You never saw these returns. Neither did the model that made the prediction.
+:::
+::::
+
+::: {.note}
+The gap between the two columns is the most honest number in the course.
+:::
+
+# What Carried It
+
+## The Coefficient Table
+
+::: {.lead}
+Ridge on standardised signals. This is the slide worth arguing about.
+:::
+
+```
+    capital_return  0.0458
+guidance_magnitude  0.0361
+ guidance_revision  0.0304
+ demand_commentary  0.0271
+  margin_direction  0.0221
+  revenue_momentum  0.0164
+management_hedging  0.0147
+         mix_shift -0.0043
+one_off_dependence -0.0023
+```
+
+::: {.note}
+From my run on a different period. Yours will differ, and the differences are
+the discussion.
+:::
+
+## Questions for the Table {.plain-title}
+
+::: {.cards .cards-3}
+::: {.card}
+[Which survived?]{.card-title}
+
+A dimension that matters in May and vanishes in August was probably never real.
+:::
+
+::: {.card .card-blue}
+[Which are the same thing?]{.card-title}
+
+`guidance_revision` and `guidance_magnitude` are close to collinear. Ridge
+splits them; the split is arbitrary.
+:::
+
+::: {.card}
+[What is missing?]{.card-title}
+
+Anything the ten facts never mention, your signals cannot see.
+:::
+:::
+
+## Where the Bodies Are Buried
+
+::: {.steps}
+1. Ten dimensions, tuned by hand against a training number you looked at many times
+2. One month, one market regime
+3. No standard errors on any coefficient
+4. Small caps with violent reactions dominate the tails
+:::
+
+::: {.note .note-plum}
+Every one of these is a reason your held-out number is lower than your training
+number. None of them is a reason to stop.
+:::
+
+# What This Is Not
+
+## Explaining Is Not Predicting {.plain-title}
+
+::: {.lead}
+We explained a return using information released at the same time as the return.
+That is comprehension, not a trade.
+:::
+
+::: {.stats}
+::: {.stat}
+[20%]{.stat-value}
+[R-squared in the paper]{.stat-label}
+:::
+::: {.stat}
+[0%]{.stat-value}
+[of it is alpha]{.stat-label}
+:::
+:::
+
+::: {.note .note-plum}
+To trade this you would need the signal before the market has it. The call is
+public the moment it ends.
+:::
+
+## What Would Make It a Strategy {.band-bottom}
+
+::: {.cards .cards-2}
+::: {.card}
+[Speed]{.card-title}
+
+Have the number before the price does. Minutes, and against everyone else doing
+the same thing.
+:::
+
+::: {.card .card-blue}
+[Drift]{.card-title}
+
+Predict the days *after* the reaction, not the day of it. Post-earnings
+announcement drift is a real and long-documented effect.
+:::
+:::
+
+::: {.note}
+The second one uses everything you built today and changes only the label.
+Thursday we go there.
+:::
+
+## The Transferable Part
+
+::: {.steps}
+1. The model turns text into a number; conventional code decides what it means
+2. The expensive step is shared; you differentiate on the cheap one
+3. Signals are formed without the outcome, enforced by the imports
+4. A positive R-squared is a hypothesis until a permutation test survives it
+:::
+
+::: {.note .note-plum}
+None of that is about earnings calls. It is how you build anything that reads
+text and takes a position.
+:::

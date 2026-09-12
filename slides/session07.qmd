@@ -1,28 +1,279 @@
 ---
-title: "Session 7"
-subtitle: "Topic TBD"
+title: "Build a Stock Recommender App"
 author: "Kerry Back"
 date: "2026-09-15"
 format:
   revealjs:
     theme: shoji2.scss
-    width: 1050
-    height: 700
+    width: 1280
+    height: 720
+    max-scale: 5
 ---
 
-## Agenda
-
-- First thing
-- Second thing
-- Third thing
-
-# Section
-
-## A slide {.plain-title}
+## Today {.plain-title}
 
 ::: {.lead}
-One sentence setting up the slide.
+You have a fitted model sitting in a file. Today you wrap it in something a
+person who has never opened Python can use.
 :::
 
-- A short bullet
-- Another one
+::: {.steps}
+1. How software works.
+2. What we might want in a stock recommender app.
+3. Deploying an app.
+:::
+
+# How Software Works
+
+## Frontend and Backend
+
+:::: {.columns}
+::: {.column width="50%"}
+[Frontend]{.eyebrow}
+
+The browser. HTML, CSS, and JavaScript --- it draws the page and collects the
+clicks.
+:::
+
+::: {.column width="50%"}
+[Backend]{.eyebrow}
+
+A program on a server that listens continuously for requests. Yours will be
+Python.
+:::
+::::
+
+::: {.lead}
+You open a URL. The browser sends a GET request. The server sends back the
+HTML, CSS, and JavaScript it was written to send. The browser interprets that
+and shows you a page.
+:::
+
+::: {.note}
+Right-click any web page and choose View Page Source. That is the frontend
+code, exactly as the backend handed it over.
+:::
+
+## Then You Click Something {.plain-title}
+
+::: {.lead}
+A POST request carries data the other way --- a form, a ticker you typed. The
+server does what it was written to do and replies.
+:::
+
+![](images/session07-request.svg){.nostretch width="90%" fig-align="center"}
+
+## Running Locally {.band-bottom}
+
+::: {.lead}
+The backend and the frontend can be the same computer --- lab638, or your own
+laptop if you have Python installed on it.
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[localhost]{.card-title}
+
+`127.0.0.1` is the loopback address. The browser asks the machine it is already
+running on, and the request never reaches a network.
+:::
+
+::: {.card .card-blue}
+[Ports]{.card-title}
+
+One machine can run many programs listening at once. The port number tells the
+operating system which of them gets the request.
+:::
+:::
+
+::: {.note .note-plum}
+You write the app as a `.py` file. FastAPI is the dominant Python library for
+writing one; uvicorn runs it and starts it listening on a port:
+`python3 -m uvicorn app:app --reload`.
+:::
+
+# Stock Recommender App
+
+## What the Model Gives You {.plain-title}
+
+::: {.lead}
+The model predicts a return --- what it expects the stock to earn over the
+coming month, given what is known about the company today. Every verdict the app
+reaches is a statement about that one number.
+:::
+
+::: {.note .note-plum}
+The predictions sit close together, and a single month's realized return is far
+noisier than the spread across them. The ranking is worth more than the level.
+:::
+
+## The Features Are Ranks {.plain-title}
+
+::: {.lead}
+The model was never shown a gross margin. It was shown where that company's
+gross margin stood among all the companies in the same month --- every feature
+replaced by its cross-sectional rank.
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[Why it was done]{.card-title}
+
+A rank is immune to the outliers and to the drift in levels from one year to the
+next. The tenth percentile means the same thing in 2004 and in 2026.
+:::
+
+::: {.card .card-blue}
+[What it costs the app]{.card-title}
+
+A rank is not a property of one company. To score a single ticker you need the
+whole cross-section of that month sitting beside it.
+:::
+:::
+
+::: {.note .note-plum}
+Rank first, then predict --- and rank exactly the way the training code did:
+same features, same direction, same handling of missing values. An app that gets
+this wrong does not crash. It just answers with the wrong number.
+:::
+
+## Refit Before You Ship {.plain-title}
+
+::: {.cards .cards-2}
+::: {.card}
+[How we chose it]{.card-title}
+
+The gradient boosting model was fit on 2001--2020 and scored on the years held
+out from it. That is what told us it was the model to use.
+:::
+
+::: {.card .card-blue}
+[What goes in the app]{.card-title}
+
+The same model, refit on 2001--2026. The split was there to pick a model, not to
+throw away the most recent years once the pick is made.
+:::
+:::
+
+::: {.note}
+Same features, same hyperparameters --- only the training window changes. Save
+the refit model to its own file and have the app load that one.
+:::
+
+## Basic Design
+
+::: {.steps}
+1. The app loads the refit gradient boosting model at startup. It does not fit anything in real time.
+2. The user types a ticker.
+3. The app takes the most recent month's cross-section, ranks the features within it, and hands the ranked row for that ticker to the model.
+4. It sets that prediction against the predictions for every other stock and answers: Strong Buy, Buy, Hold, Sell, or Strong Sell.
+:::
+
+## Demo vs Production {.plain-title}
+
+::: {.cards .cards-2}
+::: {.card}
+[The demo]{.card-title}
+
+The model and `session4_monthly.parquet` ship inside the app --- the whole
+cross-section, because the ranks need it. A snapshot: the same rows, and so the
+same predictions, every time anyone opens it.
+:::
+
+::: {.card .card-blue}
+[Production]{.card-title}
+
+The characteristics would be refreshed as new data arrives, and the model refit
+periodically on the longer history.
+:::
+:::
+
+## Questions {.band-bottom}
+
+:::: {.columns}
+::: {.column width="50%"}
+[The verdict]{.eyebrow}
+
+- What cutoffs? Is a Strong Buy the top decile of predicted returns, or a predicted return above some number?
+- The same cutoffs every month, or cutoffs that follow the spread of the predictions?
+:::
+
+::: {.column width="50%"}
+[The comparison]{.eyebrow}
+
+- The whole cross-section, and where the ticker falls in it?
+- Against its own industry?
+- Against companies of its size?
+:::
+::::
+
+::: {.note}
+Argue these out with AI before you write code.
+:::
+
+# Deploying an App
+
+## Platform as a Service
+
+::: {.lead}
+You hand a host your repository. It builds the app, runs it, and puts it behind
+a public URL --- there is no server for you to administer. Railway, Render,
+Koyeb, and Heroku all do this. We will use Koyeb, which has a free tier.
+:::
+
+::: {.steps}
+1. Create a free account at `koyeb.com`.
+2. In the control panel, create an API access token. Koyeb shows it once, so copy it then.
+3. In a terminal, add it to your `.env` file:
+:::
+
+```bash
+printf '\nKOYEB_ACCESS_TOKEN=your_access_token\n' >> $HOME/.env
+```
+
+::: {.note}
+`>>` appends, and creates the file if you do not have one. Koyeb's web UI will
+link a GitHub repo with no token at all --- the token is what lets AI do the
+deploying for you, which is the path we are taking.
+:::
+
+## Deploy the App {.plain-title}
+
+::: {.prompt-box}
+::: {.box-title}
+Prompt
+:::
+My goal is to push this app to GitHub as a new public repo and then create a
+Koyeb service connected to that repo. Walk me through it one step at a time.
+:::
+
+::: {.note .note-plum}
+On day one you told git to ignore parquet files. The host builds only what is in
+the repo, so the model file and the data the app reads have to get there. And
+nothing from `.env` belongs in a public repo --- secrets go in Koyeb's
+environment settings.
+:::
+
+## Get a Custom Domain
+
+::: {.lead}
+Optional. The Koyeb URL works fine on its own.
+:::
+
+::: {.steps}
+1. Create an account at `dnsimple.com` and buy a domain name.
+2. In your DNSimple account settings, create an API access token and add it to `.env`:
+:::
+
+```bash
+printf '\nDNSIMPLE_ACCESS_TOKEN=your_access_token\n' >> $HOME/.env
+```
+
+::: {.prompt-box}
+::: {.box-title}
+Prompt
+:::
+I bought mydomain.com at DNSimple and my app is running on Koyeb. Use the
+DNSimple API v2 with DNSIMPLE_ACCESS_TOKEN to create the record Koyeb needs, and
+tell me what to configure on the Koyeb side.
+:::

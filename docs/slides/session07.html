@@ -206,12 +206,12 @@ Kerry Back
 </div>
 </div>
 
-  <p class="date">Thu Sep 10, 2026</p>
+  <p class="date">Tue Sep 15, 2026</p>
 </section>
 <section id="today" class="slide level2 plain-title">
 <h2>Today</h2>
 <div class="lead">
-<p>You have two fitted models sitting in a file. Today you wrap them in something a person who has never opened Python can use.</p>
+<p>You have a fitted model sitting in a file. Today you wrap it in something a person who has never opened Python can use.</p>
 </div>
 <div class="steps">
 <ol type="1">
@@ -250,7 +250,7 @@ Kerry Back
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/session06-request.svg" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+<p><img data-src="images/session07-request.svg" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
 </figure>
 </div>
 </section>
@@ -278,14 +278,58 @@ Kerry Back
 <h1>Stock Recommender App</h1>
 
 </section>
+<section id="what-the-model-gives-you" class="slide level2 plain-title">
+<h2>What the Model Gives You</h2>
+<div class="lead">
+<p>The model predicts a return — what it expects the stock to earn over the coming month, given what is known about the company today. Every verdict the app reaches is a statement about that one number.</p>
+</div>
+<div class="note note-plum">
+<p>The predictions sit close together, and a single month’s realized return is far noisier than the spread across them. The ranking is worth more than the level.</p>
+</div>
+</section>
+<section id="the-features-are-ranks" class="slide level2 plain-title">
+<h2>The Features Are Ranks</h2>
+<div class="lead">
+<p>The model was never shown a gross margin. It was shown where that company’s gross margin stood among all the companies in the same month — every feature replaced by its cross-sectional rank.</p>
+</div>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">Why it was done</span></p>
+<p>A rank is immune to the outliers and to the drift in levels from one year to the next. The tenth percentile means the same thing in 2004 and in 2026.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">What it costs the app</span></p>
+<p>A rank is not a property of one company. To score a single ticker you need the whole cross-section of that month sitting beside it.</p>
+</div>
+</div>
+<div class="note note-plum">
+<p>Rank first, then predict — and rank exactly the way the training code did: same features, same direction, same handling of missing values. An app that gets this wrong does not crash. It just answers with the wrong number.</p>
+</div>
+</section>
+<section id="refit-before-you-ship" class="slide level2 plain-title">
+<h2>Refit Before You Ship</h2>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">How we chose it</span></p>
+<p>The gradient boosting model was fit on 2001–2020 and scored on the years held out from it. That is what told us it was the model to use.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">What goes in the app</span></p>
+<p>The same model, refit on 2001–2026. The split was there to pick a model, not to throw away the most recent years once the pick is made.</p>
+</div>
+</div>
+<div class="note">
+<p>Same features, same hyperparameters — only the training window changes. Save the refit model to its own file and have the app load that one.</p>
+</div>
+</section>
 <section id="basic-design" class="slide level2">
 <h2>Basic Design</h2>
 <div class="steps">
 <ol type="1">
-<li>The app loads the saved linear regression and gradient boosting models at startup. It does not refit anything in real time.</li>
+<li>The app loads the refit gradient boosting model at startup. It does not fit anything in real time.</li>
 <li>The user types a ticker.</li>
-<li>The app pulls that company’s row, runs the models, and compares the actual <code>ps</code> to the warranted <code>ps</code> the models predict.</li>
-<li>It answers: Strong Buy, Buy, Hold, Sell, or Strong Sell.</li>
+<li>The app takes the most recent month’s cross-section, ranks the features within it, and hands the ranked row for that ticker to the model.</li>
+<li>It sets that prediction against the predictions for every other stock and answers: Strong Buy, Buy, Hold, Sell, or Strong Sell.</li>
 </ol>
 </div>
 </section>
@@ -294,11 +338,11 @@ Kerry Back
 <div class="cards cards-2">
 <div class="card">
 <p><span class="card-title">The demo</span></p>
-<p>The models and <code>session4.parquet</code> ship inside the app. It is a snapshot — the same rows every time anyone opens it.</p>
+<p>The model and <code>session4_monthly.parquet</code> ship inside the app — the whole cross-section, because the ranks need it. A snapshot: the same rows, and so the same predictions, every time anyone opens it.</p>
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Production</span></p>
-<p>The session 4 data would be updated daily, and the models refit periodically as new data accumulates.</p>
+<p>The characteristics would be refreshed as new data arrives, and the model refit periodically on the longer history.</p>
 </div>
 </div>
 </section>
@@ -308,8 +352,8 @@ Kerry Back
 <div class="column" style="width:50%;">
 <p><span class="eyebrow">The verdict</span></p>
 <ul>
-<li>What cutoffs? How big a gap makes it a Strong Buy rather than a Buy?</li>
-<li>Both models, one of them, or the average of the two?</li>
+<li>What cutoffs? Is a Strong Buy the top decile of predicted returns, or a predicted return above some number?</li>
+<li>The same cutoffs every month, or cutoffs that follow the spread of the predictions?</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><span class="eyebrow">The comparison</span></p>

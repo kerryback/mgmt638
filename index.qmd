@@ -437,10 +437,9 @@ body > header#quarto-header { display: none; }
     <div class="item">
       <div class="chip">THU SEP 10</div>
       <div class="item-body">
-        <div class="item-title">Build a Stock Recommender App</div>
-        <div class="item-desc">Wrapping the fitted models in a web app.  Pick a stock, predict its multiple from its fundamentals, and see how far the market price sits from the model's.</div>
+        <div class="item-title tbd">To be announced</div>
       </div>
-      <div class="item-links"><span class="has-menu"><a href="slides/session06.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/session06.html" target="_blank" rel="noopener">HTML</a><a href="pdf/session06.pdf" target="_blank" rel="noopener">PDF</a></span></span><span class="sep phantom">&middot;</span><span class="phantom">Files</span></div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
     </div>
 
     <div class="section-head">
@@ -451,8 +450,8 @@ body > header#quarto-header { display: none; }
     <div class="item">
       <div class="chip">TUE SEP 15</div>
       <div class="item-body">
-        <div class="item-title">Predicting Returns with Machine Learning</div>
-        <div class="item-desc">Predicting returns directly rather than by way of valuation. Building features, fitting the model, and backtesting the result.</div>
+        <div class="item-title">Build a Stock Recommender App</div>
+        <div class="item-desc">Wrapping the fitted models in a web app.  The models predict returns, and the app turns those return predictions into buy and sell recommendations.</div>
       </div>
       <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
     </div>
@@ -460,10 +459,10 @@ body > header#quarto-header { display: none; }
     <div class="item">
       <div class="chip">THU SEP 17</div>
       <div class="item-body">
-        <div class="item-title">Analyzing Earnings Calls</div>
-        <div class="item-desc">Where transcripts come from and what they cost.  Can a model read a call and tell you to buy, and how fast would you have to act?  Four architectures, and what we already know.</div>
+        <div class="item-title">Build a DCF App</div>
+        <div class="item-desc">Build a web app that retrieves historical financials and generates a two-stage DCF enterprise valuation, allowing the user to input key values or to extrapolate historical trends.</div>
       </div>
-      <div class="item-links"><span class="has-menu"><a href="slides/session08.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/session08.html" target="_blank" rel="noopener">HTML</a><a href="pdf/session08.pdf" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
+      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
     </div>
 
     <div class="section-head">
@@ -474,8 +473,8 @@ body > header#quarto-header { display: none; }
     <div class="item">
       <div class="chip">TUE SEP 22</div>
       <div class="item-body">
-        <div class="item-title">Analyzing News Headlines</div>
-        <div class="item-desc">A corpus of 1.3 million headlines, and what is left of it once you check the coverage. Scoring a headline blind to the price, then asking whether the score knew anything.</div>
+        <div class="item-title">Factor ETFs</div>
+        <div class="item-desc">Explore the construction and performance of the iShares/MSCI factor ETFs.</div>
       </div>
       <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
     </div>
@@ -483,10 +482,10 @@ body > header#quarto-header { display: none; }
     <div class="item">
       <div class="chip">THU SEP 24</div>
       <div class="item-body">
-        <div class="item-title">Short Sales and Insider Trading</div>
-        <div class="item-desc">Short interest and Form 4 insider filings as signals.</div>
+        <div class="item-title">Analyzing Earnings Calls</div>
+        <div class="item-desc">Where transcripts come from and what they cost.  Can a model read a call and tell you to buy, and how fast would you have to act?  Four architectures, and what we already know.</div>
       </div>
-      <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
+      <div class="item-links"><span class="has-menu"><a href="slides/session10.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/session10.html" target="_blank" rel="noopener">HTML</a><a href="pdf/session10.pdf" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
     </div>
 
     <div class="section-head">
@@ -497,8 +496,8 @@ body > header#quarto-header { display: none; }
     <div class="item">
       <div class="chip">TUE SEP 29</div>
       <div class="item-body">
-        <div class="item-title">Train and Test</div>
-        <div class="item-desc">Scoring every submission against a held-out month, live. Reading the leaderboard, what the coefficients say carried the signal, and why none of it is yet a trading strategy.</div>
+        <div class="item-title">Analyzing News Headlines</div>
+        <div class="item-desc">A corpus of 1.3 million headlines, and what is left of it once you check the coverage. Scoring a headline blind to the price, then asking whether the score knew anything.</div>
       </div>
       <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
     </div>

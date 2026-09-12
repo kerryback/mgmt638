@@ -214,6 +214,9 @@ cython_debug/
 # Data files
 *.parquet
 *.csv
+# Fitted models are build artifacts too -- regenerable from the scripts in
+# data/, and binary, so a re-fit adds the whole file to history again.
+*.joblib
 
 # Windows reserved device names
 nul
@@ -224,6 +227,14 @@ Course Roster.pdf
 participation.csv
 
 **/*.quarto_ipynb
+
+# Quarto's per-document library folder. It is a build artifact and belongs
+# under docs/, which the render produces; a copy next to the .qmd is a stray
+# from rendering in place.
+slides/*_files/
+# ...and the rendered deck itself. session05-apps.html is hand-authored and
+# stays tracked; anything matching sessionNN.html next to a .qmd is a render.
+slides/session[0-9][0-9].html
 
 # Course videos. They live in ~/Dropbox/mgmt638-videos and are linked from the
 # decks, never committed -- a single lecture video is tens of megabytes and

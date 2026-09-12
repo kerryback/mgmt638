@@ -436,9 +436,7 @@ body > header#quarto-header { display: none; }
 
     <div class="item">
       <div class="chip">THU SEP 10</div>
-      <div class="item-body">
-        <div class="item-title tbd">To be announced</div>
-      </div>
+      <div class="item-body"></div>
       <div class="item-links"><span class="has-menu"><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="under-construction.html" target="_blank" rel="noopener">HTML</a><a href="under-construction.html" target="_blank" rel="noopener">PDF</a></span></span><span class="sep">&middot;</span><a class="pending" href="under-construction.html" target="_blank" rel="noopener">Files</a></div>
     </div>
 

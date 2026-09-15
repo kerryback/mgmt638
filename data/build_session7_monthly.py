@@ -302,9 +302,11 @@ live_cols = [c for c in COLS if c != "ret"]
 missing_live = set(live_cols) - set(live.columns)
 assert not missing_live, missing_live
 live[live_cols].sort_values("ticker").reset_index(drop=True).to_parquet(
-    "session7_live.parquet", index=False, compression="zstd")
-print(f"\nsaved session7_live.parquet  month {LIVE_MONTH}  "
+    "session7_live_raw.parquet", index=False, compression="zstd")
+print(f"\nsaved session7_live_raw.parquet  month {LIVE_MONTH}  "
       f"{len(live):,} rows, no `ret` column")
+print("  RAW and unscreened -- run make_session7_live.py for the screened,")
+print("  ranked file the app loads.")
 
 if LIVE_ONLY:
     print("--live-only: session7_monthly.parquet left untouched")

@@ -903,94 +903,122 @@
     "text": "Assignment for Tuesday\n\nCan we trade on this? Use session4_monthly.parquet. In each row, everything except the return is known at the beginning of the month.\n\n\n\nRun a linear regression each month, using some multiple on the left-hand side. Use scikit-learn, but do not use train-test splits. Our test will be whether we make money.\nSort stocks each month based on the regression error. If the left-hand side is ps, or log ps, then positive errors (ps &gt; predicted) are expensive firms. You would want to buy stocks with the “most negative” errors.\nForm a portfolio each month and compute its return. Evaluate the returns of the strategy — annualized mean, Sharpe ratio, CAPM alpha, …\n\n\n\nBe prepared to present on Tuesday — slides if you want them but be prepared to dig into the analysis."
   },
   {
-    "objectID": "slides/session07.html#today",
-    "href": "slides/session07.html#today",
-    "title": "Build a Stock Recommender App",
-    "section": "Today",
-    "text": "Today\n\nYou have a fitted model sitting in a file. Today you wrap it in something a person who has never opened Python can use.\n\n\n\nHow software works.\nWhat we might want in a stock recommender app.\nDeploying an app."
+    "objectID": "slides/session07.html#fifteen-features-6-price-and-volume",
+    "href": "slides/session07.html#fifteen-features-6-price-and-volume",
+    "title": "Train, Test, and an App",
+    "section": "Fifteen Features: 6 Price and Volume",
+    "text": "Fifteen Features: 6 Price and Volume\n\n\n\nmomentum\n11-month return, skipping the most recent month\n\n\nret_1m\nlast month’s return\n\n\nvolatility\nvolatility of daily returns within the month\n\n\nvolatility_12m\nvolatility of the last 12 monthly returns\n\n\nilliquidity\nAmihud: average absolute return per dollar traded\n\n\ndollarvol\naverage daily dollar volume\n\n\n\n\nMomentum skips month t–1 because stocks tend to reverse at a one-month horizon. That month is carried separately as ret_1m."
+  },
+  {
+    "objectID": "slides/session07.html#fifteen-features-9-valuation-and-accounting",
+    "href": "slides/session07.html#fifteen-features-9-valuation-and-accounting",
+    "title": "Train, Test, and an App",
+    "section": "Fifteen Features: 9 Valuation and Accounting",
+    "text": "Fifteen Features: 9 Valuation and Accounting\n\n\n\nmarketcap\nmarket capitalization\n\n\npb\nprice to book\n\n\nps\nprice to sales\n\n\nroe\nreturn on equity\n\n\ngrossprofitability\ngross profit over assets\n\n\naccruals\nthe part of earnings not backed by cash flow\n\n\nassetgrowth\nchange in assets since the last annual filing\n\n\nissuance\nlog change in shares outstanding\n\n\ndivyield\ndividend yield"
+  },
+  {
+    "objectID": "slides/session07.html#how-the-model-was-fit",
+    "href": "slides/session07.html#how-the-model-was-fit",
+    "title": "Train, Test, and an App",
+    "section": "How the Model Was Fit",
+    "text": "How the Model Was Fit\n\n\nUse 2001-01 through 2020-12 as the training period.\nFilter to approximate Russell 2000 universe - market cap between 1,001 and 3000, inclusive, at the beginning of each month.\nReplace every feature with its rank (0 to 1) inside that month’s Russell 2000 universe.\nChoose the hyperparameters on expanding-window folds: train on the earliest months, validate on the block that follows.\nRefit on the whole training period with the chosen settings and save the model to a file: session7_model.joblib.\n\n\n\nIndustry is not a feature: an earlier fit with sector dummies picked up the sector returns of the training years."
+  },
+  {
+    "objectID": "slides/session07.html#target-and-scoring",
+    "href": "slides/session07.html#target-and-scoring",
+    "title": "Train, Test, and an App",
+    "section": "Target and Scoring",
+    "text": "Target and Scoring\n\nTry to predict how each stock’s return will rank in the Russell 2000 universe, from 0 to 1.\nNot trying to predict whether stocks are up or down in aggregate — no market timing.\nJust trying to predict which stocks will beat others.\nFor evaluating hyperparameters, rank predictions 0 to 1 and compute correlation with actual ranks. Higher ecorrelation is better."
+  },
+  {
+    "objectID": "slides/session07.html#expanding-window-folds",
+    "href": "slides/session07.html#expanding-window-folds",
+    "title": "Train, Test, and an App",
+    "section": "Expanding-Window Folds",
+    "text": "Expanding-Window Folds\n\nThe 240 training months are cut into six blocks of 40. Each fold trains on the blocks before it and is scored on the one that follows.\n\nblock      1      2      3      4      5      6\nfold 1   train  valid\nfold 2   train  train  valid\nfold 3   train  train  train  valid\nfold 4   train  train  train  train  valid\nfold 5   train  train  train  train  train  valid\n\nSix blocks give five folds. The folds are whole months and always run forward — shuffling the rows would train the model on 2018 to predict 2006."
+  },
+  {
+    "objectID": "slides/session07.html#test-procdure",
+    "href": "slides/session07.html#test-procdure",
+    "title": "Train, Test, and an App",
+    "section": "Test Procdure",
+    "text": "Test Procdure\n\nsession7_test.parquet contains the 15 features ranked within each cross section 2001-01 through 2026-09\nApplying session7_model.joblib to each cross-section gives predictions (of ranks)\nAssignment was to form portfolios based on the predictions and to evaluate the results"
+  },
+  {
+    "objectID": "slides/session07.html#refit-on-all-past-data",
+    "href": "slides/session07.html#refit-on-all-past-data",
+    "title": "Train, Test, and an App",
+    "section": "Refit on All Past Data",
+    "text": "Refit on All Past Data\n\nThe expanding-window cross-validation was repeated on the full dataset 2001-01 through 2026-09\nUsing the best hyperparameters, the model was refit on the full dataset: session7_model_full.joblib"
+  },
+  {
+    "objectID": "slides/session07.html#use-the-model-to-make-predictions",
+    "href": "slides/session07.html#use-the-model-to-make-predictions",
+    "title": "Train, Test, and an App",
+    "section": "Use the Model to Make Predictions",
+    "text": "Use the Model to Make Predictions\n\nOur goal is to use it to make stock predictions for the upcoming month (21 trading days)\nWe should update our features daily based on prices and volumes and any new 10-K’s\nInstead we are going to use data frozen last week: session7_live.parquet"
   },
   {
     "objectID": "slides/session07.html#frontend-and-backend",
     "href": "slides/session07.html#frontend-and-backend",
-    "title": "Build a Stock Recommender App",
+    "title": "Train, Test, and an App",
     "section": "Frontend and Backend",
     "text": "Frontend and Backend\n\n\nFrontend\nThe browser. HTML, CSS, and JavaScript — it draws the page and collects the clicks.\n\nBackend\nA program on a server that listens continuously for requests. Yours will be Python.\n\n\nYou open a URL. The browser sends a GET request. The server sends back the HTML, CSS, and JavaScript it was written to send. The browser interprets that and shows you a page.\n\n\nRight-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over."
   },
   {
     "objectID": "slides/session07.html#then-you-click-something",
     "href": "slides/session07.html#then-you-click-something",
-    "title": "Build a Stock Recommender App",
+    "title": "Train, Test, and an App",
     "section": "Then You Click Something",
     "text": "Then You Click Something\n\nA POST request carries data the other way — a form, a ticker you typed. The server does what it was written to do and replies."
   },
   {
     "objectID": "slides/session07.html#running-locally",
     "href": "slides/session07.html#running-locally",
-    "title": "Build a Stock Recommender App",
+    "title": "Train, Test, and an App",
     "section": "Running Locally",
     "text": "Running Locally\n\nThe backend and the frontend can be the same computer — lab638, or your own laptop if you have Python installed on it.\n\n\n\nlocalhost\n127.0.0.1 is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.\n\n\nPorts\nOne machine can run many programs listening at once. The port number tells the operating system which of them gets the request.\n\n\n\nYou write the app as a .py file. FastAPI is the dominant Python library for writing one; uvicorn runs it and starts it listening on a port: python3 -m uvicorn app:app --reload."
   },
   {
     "objectID": "slides/session07.html#basic-design",
     "href": "slides/session07.html#basic-design",
-    "title": "Build a Stock Recommender App",
+    "title": "Train, Test, and an App",
     "section": "Basic Design",
-    "text": "Basic Design\n\n\nThe app loads the refit gradient boosting model at startup. It does not fit anything in real time.\nThe user types a ticker.\nThe app takes the most recent month’s cross-section, ranks the features within it, and hands the ranked row for that ticker to the model.\nIt sets that prediction against the predictions for every other stock and answers: Strong Buy, Buy, Hold, Sell, or Strong Sell."
+    "text": "Basic Design\n\n\nThe fitted gradient boosting model session7_model_full.joblib is baked into the app (rebuild the app when the model is refitted)\nOvernight, all new data should be pulled, ranks computed, the model run, and predictions made\nThe predictions should be mapped into whatever output you want the app to have (Buy, Sell, etc.)\nUser inputs a ticker and gets the output\nWe’re going to skip the overnight pulling and bake session7_live.parquet into the app"
   },
   {
-    "objectID": "slides/session07.html#demo-vs-production",
-    "href": "slides/session07.html#demo-vs-production",
-    "title": "Build a Stock Recommender App",
-    "section": "Demo vs Production",
-    "text": "Demo vs Production\n\n\nThe demo\nThe model and session4_monthly.parquet ship inside the app — the whole cross-section, because the ranks need it. A snapshot: the same rows, and so the same predictions, every time anyone opens it.\n\n\nProduction\nThe characteristics would be refreshed as new data arrives, and the model refit periodically on the longer history."
+    "objectID": "slides/session07.html#first-what-do-the-predictions-look-like",
+    "href": "slides/session07.html#first-what-do-the-predictions-look-like",
+    "title": "Train, Test, and an App",
+    "section": "First, What do the Predictions Look Like?",
+    "text": "First, What do the Predictions Look Like?\n\nEvery prediction sits between 0.448 and 0.518. Adjacent decile cutoffs in the middle are four thousandths apart."
   },
   {
-    "objectID": "slides/session07.html#questions",
-    "href": "slides/session07.html#questions",
-    "title": "Build a Stock Recommender App",
-    "section": "Questions",
-    "text": "Questions\n\n\nThe verdict\n\nWhat cutoffs? Is a Strong Buy the top decile of predicted returns, or a predicted return above some number?\nThe same cutoffs every month, or cutoffs that follow the spread of the predictions?\n\n\nThe comparison\n\nThe whole cross-section, and where the ticker falls in it?\nAgainst its own industry?\nAgainst companies of its size?\n\n\n\nArgue these out with AI before you write code."
+    "objectID": "slides/session07.html#what-the-app-should-produce",
+    "href": "slides/session07.html#what-the-app-should-produce",
+    "title": "Train, Test, and an App",
+    "section": "What the App Should Produce",
+    "text": "What the App Should Produce\n\nFirst, where does a stock fit within the predictions? Top decile? Middle quintile? …\nWhere does it fit within its sector or industry?\nWithin a marketcap band? (But only small caps here).\n\n\nArgue these out with AI before you ask it to write code."
   },
   {
     "objectID": "slides/session07.html#platform-as-a-service",
     "href": "slides/session07.html#platform-as-a-service",
-    "title": "Build a Stock Recommender App",
+    "title": "Train, Test, and an App",
     "section": "Platform as a Service",
     "text": "Platform as a Service\n\nYou hand a host your repository. It builds the app, runs it, and puts it behind a public URL — there is no server for you to administer. Railway, Render, Koyeb, and Heroku all do this. We will use Koyeb, which has a free tier.\n\n\n\nCreate a free account at koyeb.com.\nIn the control panel, create an API access token. Koyeb shows it once, so copy it then.\nIn a terminal, add it to your .env file:\n\n\nprintf '\\nKOYEB_ACCESS_TOKEN=your_access_token\\n' &gt;&gt; $HOME/.env\n\n&gt;&gt; appends, and creates the file if you do not have one. Koyeb’s web UI will link a GitHub repo with no token at all — the token is what lets AI do the deploying for you, which is the path we are taking."
   },
   {
     "objectID": "slides/session07.html#deploy-the-app",
     "href": "slides/session07.html#deploy-the-app",
-    "title": "Build a Stock Recommender App",
+    "title": "Train, Test, and an App",
     "section": "Deploy the App",
     "text": "Deploy the App\n\n\nPrompt\n\nMy goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to that repo. Walk me through it one step at a time.\n\n\nOn day one you told git to ignore parquet files. The host builds only what is in the repo, so the model file and the data the app reads have to get there. And nothing from .env belongs in a public repo — secrets go in Koyeb’s environment settings."
   },
   {
     "objectID": "slides/session07.html#get-a-custom-domain",
     "href": "slides/session07.html#get-a-custom-domain",
-    "title": "Build a Stock Recommender App",
+    "title": "Train, Test, and an App",
     "section": "Get a Custom Domain",
     "text": "Get a Custom Domain\n\nOptional. The Koyeb URL works fine on its own.\n\n\n\nCreate an account at dnsimple.com and buy a domain name.\nIn your DNSimple account settings, create an API access token and add it to .env:\n\n\nprintf '\\nDNSIMPLE_ACCESS_TOKEN=your_access_token\\n' &gt;&gt; $HOME/.env\n\n\nPrompt\n\nI bought mydomain.com at DNSimple and my app is running on Koyeb. Use the DNSimple API v2 with DNSIMPLE_ACCESS_TOKEN to create the record Koyeb needs, and tell me what to configure on the Koyeb side."
-  },
-  {
-    "objectID": "slides/session07.html#refit-before-you-ship",
-    "href": "slides/session07.html#refit-before-you-ship",
-    "title": "Build a Stock Recommender App",
-    "section": "Refit Before You Ship",
-    "text": "Refit Before You Ship\n\n\nHow we chose it\nThe gradient boosting model was fit on 2001–2020 and scored on the years held out from it. That is what told us it was the model to use.\n\n\nWhat goes in the app\nThe same model, refit on 2001–2026. The split was there to pick a model, not to throw away the most recent years once the pick is made.\n\n\n\nSame features, same hyperparameters — only the training window changes. Save the refit model to its own file and have the app load that one."
-  },
-  {
-    "objectID": "slides/session07.html#what-the-model-gives-you",
-    "href": "slides/session07.html#what-the-model-gives-you",
-    "title": "Build a Stock Recommender App",
-    "section": "What the Model Gives You",
-    "text": "What the Model Gives You\n\nThe model predicts a return — what it expects the stock to earn over the coming month, given what is known about the company today. Every verdict the app reaches is a statement about that one number.\n\n\nThe predictions sit close together, and a single month’s realized return is far noisier than the spread across them. The ranking is worth more than the level."
-  },
-  {
-    "objectID": "slides/session07.html#the-features-are-ranks",
-    "href": "slides/session07.html#the-features-are-ranks",
-    "title": "Build a Stock Recommender App",
-    "section": "The Features Are Ranks",
-    "text": "The Features Are Ranks\n\nThe model was never shown a gross margin. It was shown where that company’s gross margin stood among all the companies in the same month — every feature replaced by its cross-sectional rank.\n\n\n\nWhy it was done\nA rank is immune to the outliers and to the drift in levels from one year to the next. The tenth percentile means the same thing in 2004 and in 2026.\n\n\nWhat it costs the app\nA rank is not a property of one company. To score a single ticker you need the whole cross-section of that month sitting beside it.\n\n\n\nRank first, then predict — and rank exactly the way the training code did: same features, same direction, same handling of missing values. An app that gets this wrong does not crash. It just answers with the wrong number."
   }
 ]

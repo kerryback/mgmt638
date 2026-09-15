@@ -15,6 +15,13 @@ __pycache__/
 # every non-ignored project file as a resource and mirrors it into docs/.
 # .gitkeep stays tracked so the empty folders survive a clone.
 *.zip
+# Session 7 is the exception, by decision: its zip is published from the repo
+# rather than Dropbox, so the Files link on the schedule is self-hosted. Both
+# copies have to be un-ignored -- the staged one and the one Quarto copies into
+# docs/ from the resources: list. It is 19.7MB and it is in history for good;
+# re-zipping later adds the whole size again rather than replacing it.
+!files/session07.zip
+!docs/files/session07.zip
 files/session*/*
 !files/session*/.gitkeep
 QuantEquity/

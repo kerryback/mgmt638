@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="Kerry Back">
-  <title>Build a Stock Recommender App</title>
+  <title>Train, Test, and an App</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -196,7 +196,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Build a Stock Recommender App</h1>
+  <h1 class="title">Train, Test, and an App</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -208,19 +208,155 @@ Kerry Back
 
   <p class="date">Tue Sep 15, 2026</p>
 </section>
-<section id="today" class="slide level2 plain-title">
-<h2>Today</h2>
-<div class="lead">
-<p>You have a fitted model sitting in a file. Today you wrap it in something a person who has never opened Python can use.</p>
-</div>
-<div class="steps">
-<ol type="1">
-<li>How software works.</li>
-<li>What we might want in a stock recommender app.</li>
-<li>Deploying an app.</li>
-</ol>
+<section>
+<section id="train-and-test" class="title-slide slide level1 center">
+<h1>Train and Test</h1>
+
+</section>
+<section id="fifteen-features-6-price-and-volume" class="slide level2 plain-title">
+<h2>Fifteen Features: 6 Price and Volume</h2>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td><code>momentum</code></td>
+<td>11-month return, skipping the most recent month</td>
+</tr>
+<tr class="even">
+<td><code>ret_1m</code></td>
+<td>last month’s return</td>
+</tr>
+<tr class="odd">
+<td><code>volatility</code></td>
+<td>volatility of daily returns within the month</td>
+</tr>
+<tr class="even">
+<td><code>volatility_12m</code></td>
+<td>volatility of the last 12 monthly returns</td>
+</tr>
+<tr class="odd">
+<td><code>illiquidity</code></td>
+<td>Amihud: average absolute return per dollar traded</td>
+</tr>
+<tr class="even">
+<td><code>dollarvol</code></td>
+<td>average daily dollar volume</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Momentum skips month <em>t</em>–1 because stocks tend to reverse at a one-month horizon. That month is carried separately as <code>ret_1m</code>.</p>
 </div>
 </section>
+<section id="fifteen-features-9-valuation-and-accounting" class="slide level2 plain-title">
+<h2>Fifteen Features: 9 Valuation and Accounting</h2>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td><code>marketcap</code></td>
+<td>market capitalization</td>
+</tr>
+<tr class="even">
+<td><code>pb</code></td>
+<td>price to book</td>
+</tr>
+<tr class="odd">
+<td><code>ps</code></td>
+<td>price to sales</td>
+</tr>
+<tr class="even">
+<td><code>roe</code></td>
+<td>return on equity</td>
+</tr>
+<tr class="odd">
+<td><code>grossprofitability</code></td>
+<td>gross profit over assets</td>
+</tr>
+<tr class="even">
+<td><code>accruals</code></td>
+<td>the part of earnings not backed by cash flow</td>
+</tr>
+<tr class="odd">
+<td><code>assetgrowth</code></td>
+<td>change in assets since the last annual filing</td>
+</tr>
+<tr class="even">
+<td><code>issuance</code></td>
+<td>log change in shares outstanding</td>
+</tr>
+<tr class="odd">
+<td><code>divyield</code></td>
+<td>dividend yield</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-the-model-was-fit" class="slide level2 band-bottom">
+<h2>How the Model Was Fit</h2>
+<div class="steps">
+<ol type="1">
+<li>Use 2001-01 through 2020-12 as the training period.</li>
+<li>Filter to approximate Russell 2000 universe - market cap between 1,001 and 3000, inclusive, at the beginning of each month.</li>
+<li>Replace every feature with its rank (0 to 1) inside that month’s Russell 2000 universe.</li>
+<li>Choose the hyperparameters on expanding-window folds: train on the earliest months, validate on the block that follows.</li>
+<li>Refit on the whole training period with the chosen settings and save the model to a file: <code>session7_model.joblib</code>.</li>
+</ol>
+</div>
+<div class="note">
+<p>Industry is not a feature: an earlier fit with sector dummies picked up the sector returns of the training years.</p>
+</div>
+</section>
+<section id="target-and-scoring" class="slide level2">
+<h2>Target and Scoring</h2>
+<ul>
+<li>Try to predict how each stock’s return will rank in the Russell 2000 universe, from 0 to 1.</li>
+<li>Not trying to predict whether stocks are up or down in aggregate — no market timing.</li>
+<li>Just trying to predict which stocks will beat others.</li>
+<li>For evaluating hyperparameters, rank predictions 0 to 1 and compute correlation with actual ranks. Higher ecorrelation is better.</li>
+</ul>
+</section>
+<section id="expanding-window-folds" class="slide level2 plain-title">
+<h2>Expanding-Window Folds</h2>
+<div class="lead">
+<p>The 240 training months are cut into six blocks of 40. Each fold trains on the blocks before it and is scored on the one that follows.</p>
+</div>
+<pre><code>block      1      2      3      4      5      6
+fold 1   train  valid
+fold 2   train  train  valid
+fold 3   train  train  train  valid
+fold 4   train  train  train  train  valid
+fold 5   train  train  train  train  train  valid</code></pre>
+<div class="note">
+<p>Six blocks give five folds. The folds are whole months and always run forward — shuffling the rows would train the model on 2018 to predict 2006.</p>
+</div>
+</section>
+<section id="test-procdure" class="slide level2 plain-title">
+<h2>Test Procdure</h2>
+<ul>
+<li><code>session7_test.parquet</code> contains the 15 features ranked within each cross section 2001-01 through 2026-09</li>
+<li>Applying <code>session7_model.joblib</code> to each cross-section gives predictions (of ranks)</li>
+<li>Assignment was to form portfolios based on the predictions and to evaluate the results</li>
+</ul>
+</section></section>
+<section>
+<section id="build-an-app" class="title-slide slide level1 center">
+<h1>Build an App</h1>
+
+</section>
+<section id="refit-on-all-past-data" class="slide level2 plain-title">
+<h2>Refit on All Past Data</h2>
+<ul>
+<li>The expanding-window cross-validation was repeated on the full dataset 2001-01 through 2026-09</li>
+<li>Using the best hyperparameters, the model was refit on the full dataset: <code>session7_model_full.joblib</code></li>
+</ul>
+</section>
+<section id="use-the-model-to-make-predictions" class="slide level2">
+<h2>Use the Model to Make Predictions</h2>
+<ul>
+<li>Our goal is to use it to make stock predictions for the upcoming month (21 trading days)</li>
+<li>We should update our features daily based on prices and volumes and any new 10-K’s</li>
+<li>Instead we are going to use data frozen last week: <code>session7_live.parquet</code></li>
+</ul>
+</section></section>
 <section>
 <section id="how-software-works" class="title-slide slide level1 center">
 <h1>How Software Works</h1>
@@ -270,101 +406,35 @@ Kerry Back
 </div>
 </div>
 <div class="note note-plum">
-<p>You write the app as a <code>.py</code> file. FastAPI is the dominant Python library for writing one; uvicorn runs it and starts it listening on a port: <code>python3 -m uvicorn app:app --reload</code>.</p>
-</div>
-</section></section>
-<section>
-<section id="stock-recommender-app" class="title-slide slide level1 center">
-<h1>Stock Recommender App</h1>
-
-</section>
-<section id="what-the-model-gives-you" class="slide level2 plain-title">
-<h2>What the Model Gives You</h2>
-<div class="lead">
-<p>The model predicts a return — what it expects the stock to earn over the coming month, given what is known about the company today. Every verdict the app reaches is a statement about that one number.</p>
-</div>
-<div class="note note-plum">
-<p>The predictions sit close together, and a single month’s realized return is far noisier than the spread across them. The ranking is worth more than the level.</p>
-</div>
-</section>
-<section id="the-features-are-ranks" class="slide level2 plain-title">
-<h2>The Features Are Ranks</h2>
-<div class="lead">
-<p>The model was never shown a gross margin. It was shown where that company’s gross margin stood among all the companies in the same month — every feature replaced by its cross-sectional rank.</p>
-</div>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">Why it was done</span></p>
-<p>A rank is immune to the outliers and to the drift in levels from one year to the next. The tenth percentile means the same thing in 2004 and in 2026.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">What it costs the app</span></p>
-<p>A rank is not a property of one company. To score a single ticker you need the whole cross-section of that month sitting beside it.</p>
-</div>
-</div>
-<div class="note note-plum">
-<p>Rank first, then predict — and rank exactly the way the training code did: same features, same direction, same handling of missing values. An app that gets this wrong does not crash. It just answers with the wrong number.</p>
-</div>
-</section>
-<section id="refit-before-you-ship" class="slide level2 plain-title">
-<h2>Refit Before You Ship</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">How we chose it</span></p>
-<p>The gradient boosting model was fit on 2001–2020 and scored on the years held out from it. That is what told us it was the model to use.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">What goes in the app</span></p>
-<p>The same model, refit on 2001–2026. The split was there to pick a model, not to throw away the most recent years once the pick is made.</p>
-</div>
-</div>
-<div class="note">
-<p>Same features, same hyperparameters — only the training window changes. Save the refit model to its own file and have the app load that one.</p>
+<p>You write the app as a <code>.py</code> file. FastAPI is the dominant Python library for writing one; <code>uvicorn</code> runs it and starts it listening on a port: <code>python3 -m uvicorn app:app --reload</code>.</p>
 </div>
 </section>
 <section id="basic-design" class="slide level2">
 <h2>Basic Design</h2>
 <div class="steps">
 <ol type="1">
-<li>The app loads the refit gradient boosting model at startup. It does not fit anything in real time.</li>
-<li>The user types a ticker.</li>
-<li>The app takes the most recent month’s cross-section, ranks the features within it, and hands the ranked row for that ticker to the model.</li>
-<li>It sets that prediction against the predictions for every other stock and answers: Strong Buy, Buy, Hold, Sell, or Strong Sell.</li>
+<li>The fitted gradient boosting model <code>session7_model_full.joblib</code> is baked into the app (rebuild the app when the model is refitted)</li>
+<li>Overnight, all new data should be pulled, ranks computed, the model run, and predictions made</li>
+<li>The predictions should be mapped into whatever output you want the app to have (Buy, Sell, etc.)</li>
+<li>User inputs a ticker and gets the output</li>
+<li>We’re going to skip the overnight pulling and bake <code>session7_live.parquet</code> into the app</li>
 </ol>
 </div>
 </section>
-<section id="demo-vs-production" class="slide level2 plain-title">
-<h2>Demo vs Production</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">The demo</span></p>
-<p>The model and <code>session4_monthly.parquet</code> ship inside the app — the whole cross-section, because the ranks need it. A snapshot: the same rows, and so the same predictions, every time anyone opens it.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Production</span></p>
-<p>The characteristics would be refreshed as new data arrives, and the model refit periodically on the longer history.</p>
-</div>
-</div>
+<section id="first-what-do-the-predictions-look-like" class="slide level2 plain-title">
+<h2>First, What do the Predictions Look Like?</h2>
+<p><img data-src="images/session07-predictions.svg" class="" style="width:100.0%"></p>
+<p>Every prediction sits between 0.448 and 0.518. Adjacent decile cutoffs in the middle are four thousandths apart.</p>
 </section>
-<section id="questions" class="slide level2 band-bottom">
-<h2>Questions</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">The verdict</span></p>
+<section id="what-the-app-should-produce" class="slide level2 band-bottom">
+<h2>What the App Should Produce</h2>
 <ul>
-<li>What cutoffs? Is a Strong Buy the top decile of predicted returns, or a predicted return above some number?</li>
-<li>The same cutoffs every month, or cutoffs that follow the spread of the predictions?</li>
+<li>First, where does a stock fit within the predictions? Top decile? Middle quintile? …</li>
+<li>Where does it fit within its sector or industry?</li>
+<li>Within a marketcap band? (But only small caps here).</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">The comparison</span></p>
-<ul>
-<li>The whole cross-section, and where the ticker falls in it?</li>
-<li>Against its own industry?</li>
-<li>Against companies of its size?</li>
-</ul>
-</div></div>
 <div class="note">
-<p>Argue these out with AI before you write code.</p>
+<p>Argue these out with AI before you ask it to write code.</p>
 </div>
 </section></section>
 <section>
@@ -384,7 +454,7 @@ Kerry Back
 <li>In a terminal, add it to your <code>.env</code> file:</li>
 </ol>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a></a><span class="bu">printf</span> <span class="st">'\nKOYEB_ACCESS_TOKEN=your_access_token\n'</span> <span class="op">&gt;&gt;</span> <span class="va">$HOME</span>/.env</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="bu">printf</span> <span class="st">'\nKOYEB_ACCESS_TOKEN=your_access_token\n'</span> <span class="op">&gt;&gt;</span> <span class="va">$HOME</span>/.env</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="note">
 <p><code>&gt;&gt;</code> appends, and creates the file if you do not have one. Koyeb’s web UI will link a GitHub repo with no token at all — the token is what lets AI do the deploying for you, which is the path we are taking.</p>
 </div>
@@ -412,7 +482,7 @@ Kerry Back
 <li>In your DNSimple account settings, create an API access token and add it to <code>.env</code>:</li>
 </ol>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="bu">printf</span> <span class="st">'\nDNSIMPLE_ACCESS_TOKEN=your_access_token\n'</span> <span class="op">&gt;&gt;</span> <span class="va">$HOME</span>/.env</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a></a><span class="bu">printf</span> <span class="st">'\nDNSIMPLE_ACCESS_TOKEN=your_access_token\n'</span> <span class="op">&gt;&gt;</span> <span class="va">$HOME</span>/.env</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="prompt-box">
 <div class="box-title">
 <p>Prompt</p>

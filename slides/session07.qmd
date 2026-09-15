@@ -1,5 +1,5 @@
 ---
-title: "Build a Stock Recommender App"
+title: "Train, Test, and an App"
 author: "Kerry Back"
 date: "2026-09-15"
 format:
@@ -10,18 +10,106 @@ format:
     max-scale: 5
 ---
 
-## Today {.plain-title}
+# Train and Test
 
-::: {.lead}
-You have a fitted model sitting in a file. Today you wrap it in something a
-person who has never opened Python can use.
+
+## Fifteen Features: 6 Price and Volume {.plain-title}
+
+| | |
+|---|---|
+| `momentum` | 11-month return, skipping the most recent month |
+| `ret_1m` | last month's return |
+| `volatility` | volatility of daily returns within the month |
+| `volatility_12m` | volatility of the last 12 monthly returns |
+| `illiquidity` | Amihud: average absolute return per dollar traded |
+| `dollarvol` | average daily dollar volume |
+
+::: {.note}
+Momentum skips month *t*--1 because stocks tend to reverse at a one-month
+horizon. That month is carried separately as `ret_1m`.
 :::
+
+## Fifteen Features: 9 Valuation and Accounting {.plain-title}
+
+| | |
+|---|---|
+| `marketcap` | market capitalization |
+| `pb` | price to book |
+| `ps` | price to sales |
+| `roe` | return on equity |
+| `grossprofitability` | gross profit over assets |
+| `accruals` | the part of earnings not backed by cash flow |
+| `assetgrowth` | change in assets since the last annual filing |
+| `issuance` | log change in shares outstanding |
+| `divyield` | dividend yield |
+
+
+
+## How the Model Was Fit {.band-bottom}
 
 ::: {.steps}
-1. How software works.
-2. What we might want in a stock recommender app.
-3. Deploying an app.
+1. Use 2001-01 through 2020-12 as the training period.
+2. Filter to approximate Russell 2000 universe - market cap between 1,001 and 3000, inclusive, at the beginning of each month.
+3. Replace every feature with its rank (0 to 1) inside that month's Russell 2000 universe.
+4. Choose the hyperparameters on expanding-window folds: train on the earliest
+   months, validate on the block that follows.
+5. Refit on the whole training period with the chosen settings and save the
+   model to a file: `session7_model.joblib`. 
 :::
+
+::: {.note}
+Industry is not a feature: an earlier fit with sector dummies picked up the
+sector returns of the training years.
+:::
+
+## Target and Scoring
+
+- Try to predict how each stock's return will rank in the Russell 2000 universe, from 0 to 1.
+- Not trying to predict whether stocks are up or down in aggregate --- no market timing.
+- Just trying to predict which stocks will beat others.
+- For evaluating hyperparameters, rank predictions 0 to 1 and compute correlation with actual ranks.  Higher ecorrelation is better.
+
+## Expanding-Window Folds {.plain-title}
+
+::: {.lead}
+The 240 training months are cut into six blocks of 40. Each fold trains on the
+blocks before it and is scored on the one that follows.
+:::
+
+```
+block      1      2      3      4      5      6
+fold 1   train  valid
+fold 2   train  train  valid
+fold 3   train  train  train  valid
+fold 4   train  train  train  train  valid
+fold 5   train  train  train  train  train  valid
+```
+
+::: {.note}
+Six blocks give five folds. The folds are whole months and always run forward
+--- shuffling the rows would train the model on 2018 to predict 2006.
+:::
+
+## Test Procdure {.plain-title}
+
+- `session7_test.parquet` contains the 15 features ranked within each cross section 2001-01 through 2026-09
+- Applying `session7_model.joblib` to each cross-section gives predictions (of ranks)
+- Assignment was to form portfolios based on the predictions and to evaluate the results
+
+
+# Build an App
+
+## Refit on All Past Data {.plain-title}
+
+- The expanding-window cross-validation was repeated on the full dataset 2001-01 through 2026-09
+- Using the best hyperparameters, the model was refit on the full dataset: `session7_model_full.joblib`
+
+## Use the Model to Make Predictions 
+
+- Our goal is to use it to make stock predictions for the upcoming month (21 trading days)
+- We should update our features daily based on prices and volumes and any new 10-K's
+- Instead we are going to use data frozen last week: `session7_live.parquet`
+
 
 # How Software Works
 
@@ -88,127 +176,36 @@ operating system which of them gets the request.
 
 ::: {.note .note-plum}
 You write the app as a `.py` file. FastAPI is the dominant Python library for
-writing one; uvicorn runs it and starts it listening on a port:
+writing one; `uvicorn` runs it and starts it listening on a port:
 `python3 -m uvicorn app:app --reload`.
 :::
 
-# Stock Recommender App
-
-## What the Model Gives You {.plain-title}
-
-::: {.lead}
-The model predicts a return --- what it expects the stock to earn over the
-coming month, given what is known about the company today. Every verdict the app
-reaches is a statement about that one number.
-:::
-
-::: {.note .note-plum}
-The predictions sit close together, and a single month's realized return is far
-noisier than the spread across them. The ranking is worth more than the level.
-:::
-
-## The Features Are Ranks {.plain-title}
-
-::: {.lead}
-The model was never shown a gross margin. It was shown where that company's
-gross margin stood among all the companies in the same month --- every feature
-replaced by its cross-sectional rank.
-:::
-
-::: {.cards .cards-2}
-::: {.card}
-[Why it was done]{.card-title}
-
-A rank is immune to the outliers and to the drift in levels from one year to the
-next. The tenth percentile means the same thing in 2004 and in 2026.
-:::
-
-::: {.card .card-blue}
-[What it costs the app]{.card-title}
-
-A rank is not a property of one company. To score a single ticker you need the
-whole cross-section of that month sitting beside it.
-:::
-:::
-
-::: {.note .note-plum}
-Rank first, then predict --- and rank exactly the way the training code did:
-same features, same direction, same handling of missing values. An app that gets
-this wrong does not crash. It just answers with the wrong number.
-:::
-
-## Refit Before You Ship {.plain-title}
-
-::: {.cards .cards-2}
-::: {.card}
-[How we chose it]{.card-title}
-
-The gradient boosting model was fit on 2001--2020 and scored on the years held
-out from it. That is what told us it was the model to use.
-:::
-
-::: {.card .card-blue}
-[What goes in the app]{.card-title}
-
-The same model, refit on 2001--2026. The split was there to pick a model, not to
-throw away the most recent years once the pick is made.
-:::
-:::
-
-::: {.note}
-Same features, same hyperparameters --- only the training window changes. Save
-the refit model to its own file and have the app load that one.
-:::
 
 ## Basic Design
 
 ::: {.steps}
-1. The app loads the refit gradient boosting model at startup. It does not fit anything in real time.
-2. The user types a ticker.
-3. The app takes the most recent month's cross-section, ranks the features within it, and hands the ranked row for that ticker to the model.
-4. It sets that prediction against the predictions for every other stock and answers: Strong Buy, Buy, Hold, Sell, or Strong Sell.
+1.  The fitted gradient boosting model `session7_model_full.joblib` is baked into the app (rebuild the app when the model is refitted)
+2.  Overnight, all new data should be pulled, ranks computed, the model run, and predictions made
+3.  The predictions should be mapped into whatever output you want the app to have (Buy, Sell, etc.)
+4.  User inputs a ticker and gets the output 
+5.  We're going to skip the overnight pulling and bake `session7_live.parquet` into the app 
 :::
 
-## Demo vs Production {.plain-title}
+## First, What do the Predictions Look Like? {.plain-title}
 
-::: {.cards .cards-2}
-::: {.card}
-[The demo]{.card-title}
+![](images/session07-predictions.svg){.nostretch width="100%"}
 
-The model and `session4_monthly.parquet` ship inside the app --- the whole
-cross-section, because the ranks need it. A snapshot: the same rows, and so the
-same predictions, every time anyone opens it.
-:::
+Every prediction sits between 0.448 and 0.518. Adjacent decile cutoffs in the
+middle are four thousandths apart.
 
-::: {.card .card-blue}
-[Production]{.card-title}
+## What the App Should Produce {.band-bottom}
 
-The characteristics would be refreshed as new data arrives, and the model refit
-periodically on the longer history.
-:::
-:::
-
-## Questions {.band-bottom}
-
-:::: {.columns}
-::: {.column width="50%"}
-[The verdict]{.eyebrow}
-
-- What cutoffs? Is a Strong Buy the top decile of predicted returns, or a predicted return above some number?
-- The same cutoffs every month, or cutoffs that follow the spread of the predictions?
-:::
-
-::: {.column width="50%"}
-[The comparison]{.eyebrow}
-
-- The whole cross-section, and where the ticker falls in it?
-- Against its own industry?
-- Against companies of its size?
-:::
-::::
+- First, where does a stock fit within the predictions?  Top decile?  Middle quintile? ...
+- Where does it fit within its sector or industry?
+- Within a marketcap band?  (But only small caps here).
 
 ::: {.note}
-Argue these out with AI before you write code.
+Argue these out with AI before you ask it to write code.
 :::
 
 # Deploying an App

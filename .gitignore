@@ -22,6 +22,11 @@ __pycache__/
 # re-zipping later adds the whole size again rather than replacing it.
 !files/session07.zip
 !docs/files/session07.zip
+# Session 8 follows the same exception: the reading and the lecture video for
+# Sep 17 ship as a repo-hosted zip rather than a Dropbox link. 21.9MB, also
+# permanent in history.
+!files/session08.zip
+!docs/files/session08.zip
 files/session*/*
 !files/session*/.gitkeep
 QuantEquity/

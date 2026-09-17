@@ -10,40 +10,6 @@
       "Read(//Users/kerryback/.cache/**)",
       "Bash(claude plugin *)"
     ],
-    "deny": [],
-    "ask": [
-      "Bash(python:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(git stash:*)",
-      "Bash(git config:*)",
-      "Bash(quarto render:*)",
-      "Bash(pdflatex:*)",
-      "Bash(xelatex:*)",
-      "Bash(pandoc:*)",
-      "Bash(pip install:*)",
-      "Bash(pip uninstall:*)",
-      "Bash(jupyter nbconvert:*)",
-      "Bash(claude mcp:*)",
-      "Bash(dir:*)",
-      "Bash(tree:*)",
-      "Bash(move:*)",
-      "Bash(copy:*)",
-      "Bash(xcopy:*)",
-      "Bash(robocopy:*)",
-      "Bash(del:*)",
-      "Bash(powershell:*)",
-      "Bash(cat:*)",
-      "Bash(where:*)",
-      "Bash(findstr:*)",
-      "Bash(test:*)",
-      "Bash(timeout:*)",
-      "Bash(taskkill:*)",
-      "Bash(netstat:*)",
-      "Bash(uvicorn:*)",
-      "Bash(for:*)",
-      "Bash(zip:*)"
-    ]
+    "deny": []
   }
 }

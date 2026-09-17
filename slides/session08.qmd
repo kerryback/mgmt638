@@ -56,18 +56,59 @@ cash flow statement.
 :::
 ::::
 
-## Creating a Skill {.plain-title}
+## Skills {.plain-title}
 
 ::: {.lead}
-Written instructions (SKILL.md) plus accompanying scripts and examples. The template lives here.
+A folder with a `SKILL.md` in it --- written instructions, plus any scripts and
+examples they refer to.
 :::
 
+```
+.claude/skills/dcf/
+├── SKILL.md       a description, then the instructions
+├── references/    the template, the issues
+└── scripts/       code the agent can run
+```
+
+::: {.note}
+At startup Claude reads each skill's description.
+When a task matches a skill, Claude reads that whole `SKILL.md` and follows it.
+:::
+
+## The Same File in Other Agents {.plain-title}
+
+::: {.lead}
+Anthropic wrote the format and released it as an open standard. The others
+adopted it rather than inventing their own.
+:::
+
+| Agent | Where it looks |
+|---|---|
+| Claude Code | `.claude/skills/` |
+| Codex and ChatGPT | `.agents/skills/` |
+| Gemini CLI | `.gemini/skills/`, or `.agents/skills/` |
+
+::: {.note}
+Same file, same description-first loading. Put the folder in `.agents/skills/`
+and both Codex and Gemini CLI find it.
+:::
+
+## Creating a Skill {.plain-title}
+
+- Work with AI until you get what you want
+- Tell AI to create a skill so you can get the same thing the next time 
+- Give the skill a meaningful name.
+- As you use it and find things to add or modify, tell AI to edit the skill.
+
+## What Goes in the DCF Skill {.plain-title}
+
+::: {.lead}
+The template lives here.
+:::
 
 - Instructions for getting data, possibly including MD&A, risks from 10-K, earnings calls, news
 - Instructions to use xlsx and pptx skills, any special formatting you want
 - Guidelines for walking through other issues
-
-
 
 ## Creating an Agent {.plain-title}
 

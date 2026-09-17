@@ -283,10 +283,63 @@ Kerry Back
 </ul>
 </div></div>
 </section>
+<section id="skills" class="slide level2 plain-title">
+<h2>Skills</h2>
+<div class="lead">
+<p>A folder with a <code>SKILL.md</code> in it — written instructions, plus any scripts and examples they refer to.</p>
+</div>
+<pre><code>.claude/skills/dcf/
+├── SKILL.md       a description, then the instructions
+├── references/    the template, the issues
+└── scripts/       code the agent can run</code></pre>
+<div class="note">
+<p>At startup Claude reads each skill’s description. When a task matches a skill, Claude reads that whole <code>SKILL.md</code> and follows it.</p>
+</div>
+</section>
+<section id="the-same-file-in-other-agents" class="slide level2 plain-title">
+<h2>The Same File in Other Agents</h2>
+<div class="lead">
+<p>Anthropic wrote the format and released it as an open standard. The others adopted it rather than inventing their own.</p>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Agent</th>
+<th>Where it looks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Claude Code</td>
+<td><code>.claude/skills/</code></td>
+</tr>
+<tr class="even">
+<td>Codex and ChatGPT</td>
+<td><code>.agents/skills/</code></td>
+</tr>
+<tr class="odd">
+<td>Gemini CLI</td>
+<td><code>.gemini/skills/</code>, or <code>.agents/skills/</code></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Same file, same description-first loading. Put the folder in <code>.agents/skills/</code> and both Codex and Gemini CLI find it.</p>
+</div>
+</section>
 <section id="creating-a-skill" class="slide level2 plain-title">
 <h2>Creating a Skill</h2>
+<ul>
+<li>Work with AI until you get what you want</li>
+<li>Tell AI to create a skill so you can get the same thing the next time</li>
+<li>Give the skill a meaningful name.</li>
+<li>As you use it and find things to add or modify, tell AI to edit the skill.</li>
+</ul>
+</section>
+<section id="what-goes-in-the-dcf-skill" class="slide level2 plain-title">
+<h2>What Goes in the DCF Skill</h2>
 <div class="lead">
-<p>Written instructions (SKILL.md) plus accompanying scripts and examples. The template lives here.</p>
+<p>The template lives here.</p>
 </div>
 <ul>
 <li>Instructions for getting data, possibly including MD&amp;A, risks from 10-K, earnings calls, news</li>
@@ -466,16 +519,16 @@ Kerry Back
 <section id="custom-tools" class="slide level2 plain-title">
 <h2>Custom Tools</h2>
 <p>A Python function with a decorator giving its name, description, and arguments.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="at">@tool</span>(</span>
-<span id="cb1-2"><a></a>    <span class="st">"get_financials"</span>,</span>
-<span id="cb1-3"><a></a>    <span class="st">"Fetch a company's income statement, balance sheet and cash flow."</span>,</span>
-<span id="cb1-4"><a></a>    {<span class="st">"ticker"</span>: Annotated[<span class="bu">str</span>, <span class="st">"The stock's ticker symbol"</span>]},</span>
-<span id="cb1-5"><a></a>)</span>
-<span id="cb1-6"><a></a><span class="cf">async</span> <span class="kw">def</span> get_financials(args):</span>
-<span id="cb1-7"><a></a>    t <span class="op">=</span> yf.Ticker(args[<span class="st">"ticker"</span>])</span>
-<span id="cb1-8"><a></a>    csv <span class="op">=</span> t.income_stmt.to_csv()</span>
-<span id="cb1-9"><a></a>    <span class="cf">return</span> {<span class="st">"content"</span>: [{<span class="st">"type"</span>: <span class="st">"text"</span>, <span class="st">"text"</span>: csv}]}</span>
-<span id="cb1-10"><a></a>local_server <span class="op">=</span> create_sdk_mcp_server(name<span class="op">=</span><span class="st">"local"</span>, tools<span class="op">=</span>[get_financials])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="at">@tool</span>(</span>
+<span id="cb2-2"><a></a>    <span class="st">"get_financials"</span>,</span>
+<span id="cb2-3"><a></a>    <span class="st">"Fetch a company's income statement, balance sheet and cash flow."</span>,</span>
+<span id="cb2-4"><a></a>    {<span class="st">"ticker"</span>: Annotated[<span class="bu">str</span>, <span class="st">"The stock's ticker symbol"</span>]},</span>
+<span id="cb2-5"><a></a>)</span>
+<span id="cb2-6"><a></a><span class="cf">async</span> <span class="kw">def</span> get_financials(args):</span>
+<span id="cb2-7"><a></a>    t <span class="op">=</span> yf.Ticker(args[<span class="st">"ticker"</span>])</span>
+<span id="cb2-8"><a></a>    csv <span class="op">=</span> t.income_stmt.to_csv()</span>
+<span id="cb2-9"><a></a>    <span class="cf">return</span> {<span class="st">"content"</span>: [{<span class="st">"type"</span>: <span class="st">"text"</span>, <span class="st">"text"</span>: csv}]}</span>
+<span id="cb2-10"><a></a>local_server <span class="op">=</span> create_sdk_mcp_server(name<span class="op">=</span><span class="st">"local"</span>, tools<span class="op">=</span>[get_financials])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="note note-plum">
 <p>Tools fetch. The skill specifies the workbook, and the workbook’s own formulas do the arithmetic — so the valuation is not a tool.</p>
 </div>

@@ -1033,7 +1033,7 @@
     "href": "slides/session08.html#template",
     "title": "DCF Valuation of Companies",
     "section": "Template",
-    "text": "Template\n\n\n\nInput\nBasis\n\n\n\n\nSales growth\n\n\n\nEBITDA margin\n\n\n\nDepreciation\n% of prior year net PP&E\n\n\nCash tax rate\ncash taxes / pretax income\n\n\nSales-to-NWC ratio\nprior or average NWC?\n\n\nSales-to-net PP&E ratio\nprior or average net PP&E?\n\n\nCap ex\na plug\n\n\n\n\nCash taxes: the provision less its deferred portion, or the taxes paid per the cash flow statement."
+    "text": "Template\n\n\n\nInput\nBasis\n\n\n\n\nSales growth\n\n\n\nEBITDA margin\n\n\n\nDepreciation\n% of prior year net PP&E\n\n\nCash tax rate\ncash taxes / pretax income\n\n\nSales-to-NWC ratio\nprior or average or ending NWC?\n\n\nSales-to-net PP&E ratio\nprior or average net PP&E?\n\n\nCap ex\na plug\n\n\n\n\nCash taxes: the provision less its deferred portion, or the taxes paid per the cash flow statement."
   },
   {
     "objectID": "slides/session08.html#issues-there-are-many",
@@ -1043,11 +1043,32 @@
     "text": "Issues (There Are Many)\n\n\n\nValue real estate, reserves, …\nLeases: financial or operating?\nMinority interests, investments in and income from affiliates\nGoodwill: constant or growing?\n\n\n\nLong-term deferred taxes: debt or equity?\nOther long-term assets and liabilities\nDerivative positions\nPreferred stock, convertible bonds, …"
   },
   {
+    "objectID": "slides/session08.html#skills",
+    "href": "slides/session08.html#skills",
+    "title": "DCF Valuation of Companies",
+    "section": "Skills",
+    "text": "Skills\n\nA folder with a SKILL.md in it — written instructions, plus any scripts and examples they refer to.\n\n.claude/skills/dcf/\n├── SKILL.md       a description, then the instructions\n├── references/    the template, the issues\n└── scripts/       code the agent can run\n\nAt startup Claude reads each skill’s description. When a task matches a skill, Claude reads that whole SKILL.md and follows it."
+  },
+  {
+    "objectID": "slides/session08.html#the-same-file-in-other-agents",
+    "href": "slides/session08.html#the-same-file-in-other-agents",
+    "title": "DCF Valuation of Companies",
+    "section": "The Same File in Other Agents",
+    "text": "The Same File in Other Agents\n\nAnthropic wrote the format and released it as an open standard. The others adopted it rather than inventing their own.\n\n\n\n\nAgent\nWhere it looks\n\n\n\n\nClaude Code\n.claude/skills/\n\n\nCodex and ChatGPT\n.agents/skills/\n\n\nGemini CLI\n.gemini/skills/, or .agents/skills/\n\n\n\n\nSame file, same description-first loading. Put the folder in .agents/skills/ and both Codex and Gemini CLI find it."
+  },
+  {
     "objectID": "slides/session08.html#creating-a-skill",
     "href": "slides/session08.html#creating-a-skill",
     "title": "DCF Valuation of Companies",
     "section": "Creating a Skill",
     "text": "Creating a Skill\n\nWork with AI until you get what you want\nTell AI to create a skill so you can get the same thing the next time\nGive the skill a meaningful name.\nAs you use it and find things to add or modify, tell AI to edit the skill."
+  },
+  {
+    "objectID": "slides/session08.html#what-goes-in-the-dcf-skill",
+    "href": "slides/session08.html#what-goes-in-the-dcf-skill",
+    "title": "DCF Valuation of Companies",
+    "section": "What Goes in the DCF Skill",
+    "text": "What Goes in the DCF Skill\n\nThe template lives here.\n\n\nInstructions for getting data, possibly including MD&A, risks from 10-K, earnings calls, news\nInstructions to use xlsx and pptx skills, any special formatting you want\nGuidelines for walking through other issues"
   },
   {
     "objectID": "slides/session08.html#creating-an-agent",
@@ -1111,26 +1132,5 @@
     "title": "DCF Valuation of Companies",
     "section": "Producing the Output",
     "text": "Producing the Output\n\n\nThe workbook\nThe xlsx skill — pandas and openpyxl, plus a financial-modeling standard for formatting and formula conventions.\n\n\nThe deck\nThe pptx skill — markitdown and the pack scripts to edit a template, pptxgenjs under Node to build one from scratch.\n\n\n\nThe xlsx skill’s rule: formulas in the cells, not values computed in Python. =SUM(B2:B9), never the number Python got — so changing an assumption recalculates the workbook.\n\n\nSkills are files in .claude/skills/, loaded when relevant. The container image has to carry what they import."
-  },
-  {
-    "objectID": "slides/session08.html#skills",
-    "href": "slides/session08.html#skills",
-    "title": "DCF Valuation of Companies",
-    "section": "Skills",
-    "text": "Skills\n\nA folder with a SKILL.md in it — written instructions, plus any scripts and examples they refer to.\n\n.claude/skills/dcf/\n├── SKILL.md       a description, then the instructions\n├── references/    the template, the issues\n└── scripts/       code the agent can run\n\nAt startup Claude reads each skill’s description. When a task matches a skill, Claude reads that whole SKILL.md and follows it."
-  },
-  {
-    "objectID": "slides/session08.html#the-same-file-in-other-agents",
-    "href": "slides/session08.html#the-same-file-in-other-agents",
-    "title": "DCF Valuation of Companies",
-    "section": "The Same File in Other Agents",
-    "text": "The Same File in Other Agents\n\nAnthropic wrote the format and released it as an open standard. The others adopted it rather than inventing their own.\n\n\n\n\nAgent\nWhere it looks\n\n\n\n\nClaude Code\n.claude/skills/\n\n\nCodex and ChatGPT\n.agents/skills/\n\n\nGemini CLI\n.gemini/skills/, or .agents/skills/\n\n\n\n\nSame file, same description-first loading. Put the folder in .agents/skills/ and both Codex and Gemini CLI find it."
-  },
-  {
-    "objectID": "slides/session08.html#what-goes-in-the-dcf-skill",
-    "href": "slides/session08.html#what-goes-in-the-dcf-skill",
-    "title": "DCF Valuation of Companies",
-    "section": "What Goes in the DCF Skill",
-    "text": "What Goes in the DCF Skill\n\nThe template lives here.\n\n\nInstructions for getting data, possibly including MD&A, risks from 10-K, earnings calls, news\nInstructions to use xlsx and pptx skills, any special formatting you want\nGuidelines for walking through other issues"
   }
 ]

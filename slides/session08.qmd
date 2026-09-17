@@ -29,7 +29,7 @@ format:
 | EBITDA margin | |
 | Depreciation | % of prior year net PP&E |
 | Cash tax rate | cash taxes / pretax income |
-| Sales-to-NWC ratio | prior or average NWC? |
+| Sales-to-NWC ratio | prior or average or ending NWC? |
 | Sales-to-net PP&E ratio | prior or average net PP&E? |
 | Cap ex | a plug |
 

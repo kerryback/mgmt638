@@ -105,347 +105,389 @@
     "text": "Your Turn\n\n\nPick a direction. Argue for it before you start building.\nDecide what your prediction would have to beat, and write that down first.\nBuild the smallest version that could produce a number.\nTuesday: what you tried, what it gave you, and whether you believe it.\n\n\n\nThe infrastructure is in the repo: transcripts, extraction, labels, scoring. Take what helps and ignore the rest."
   },
   {
-    "objectID": "slides/session05.html#empirical-asset-pricing-via-machine-learning",
-    "href": "slides/session05.html#empirical-asset-pricing-via-machine-learning",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Empirical Asset Pricing via Machine Learning",
-    "text": "Empirical Asset Pricing via Machine Learning\n\nThe Review of Financial Studies, February 2020.\n\n\n\nShihao Gu\nBooth School of Business, University of Chicago\n\n\nBryan Kelly\nYale University; Head of Machine Learning, AQR\n\n\nDacheng Xiu\nBooth School of Business, University of Chicago\n\n\n\nA horse race: one task, one dataset, a dozen methods scored side by side. Predict next month’s return for every U.S. stock from roughly 900 signals — 94 firm characteristics, their interactions with eight macro series, and industry dummies — and grade each method by out-of-sample \\(R^2\\). Trees and neural networks win, and the gains come from interactions a linear model cannot see. A value-weighted long-short decile spread on the neural network forecasts earns an out-of-sample Sharpe ratio of 1.35."
+    "objectID": "slides/session07.html#fifteen-features-6-price-and-volume",
+    "href": "slides/session07.html#fifteen-features-6-price-and-volume",
+    "title": "Train, Test, and an App",
+    "section": "Fifteen Features: 6 Price and Volume",
+    "text": "Fifteen Features: 6 Price and Volume\n\n\n\nmomentum\n11-month return, skipping the most recent month\n\n\nret_1m\nlast month’s return\n\n\nvolatility\nvolatility of daily returns within the month\n\n\nvolatility_12m\nvolatility of the last 12 monthly returns\n\n\nilliquidity\nAmihud: average absolute return per dollar traded\n\n\ndollarvol\naverage daily dollar volume\n\n\n\n\nMomentum skips month t–1 because stocks tend to reverse at a one-month horizon. That month is carried separately as ret_1m."
   },
   {
-    "objectID": "slides/session05.html#today",
-    "href": "slides/session05.html#today",
-    "title": "Ridge, Lasso, and Trees",
+    "objectID": "slides/session07.html#fifteen-features-9-valuation-and-accounting",
+    "href": "slides/session07.html#fifteen-features-9-valuation-and-accounting",
+    "title": "Train, Test, and an App",
+    "section": "Fifteen Features: 9 Valuation and Accounting",
+    "text": "Fifteen Features: 9 Valuation and Accounting\n\n\n\nmarketcap\nmarket capitalization\n\n\npb\nprice to book\n\n\nps\nprice to sales\n\n\nroe\nreturn on equity\n\n\ngrossprofitability\ngross profit over assets\n\n\naccruals\nthe part of earnings not backed by cash flow\n\n\nassetgrowth\nchange in assets since the last annual filing\n\n\nissuance\nlog change in shares outstanding\n\n\ndivyield\ndividend yield"
+  },
+  {
+    "objectID": "slides/session07.html#how-the-model-was-fit",
+    "href": "slides/session07.html#how-the-model-was-fit",
+    "title": "Train, Test, and an App",
+    "section": "How the Model Was Fit",
+    "text": "How the Model Was Fit\n\n\nUse 2001-01 through 2020-12 as the training period.\nFilter to approximate Russell 2000 universe - market cap between 1,001 and 3000, inclusive, at the beginning of each month.\nReplace every feature with its rank (0 to 1) inside that month’s Russell 2000 universe.\nChoose the hyperparameters on expanding-window folds: train on the earliest months, validate on the block that follows.\nRefit on the whole training period with the chosen settings and save the model to a file: session7_model.joblib.\n\n\n\nIndustry is not a feature: an earlier fit with sector dummies picked up the sector returns of the training years."
+  },
+  {
+    "objectID": "slides/session07.html#target-and-scoring",
+    "href": "slides/session07.html#target-and-scoring",
+    "title": "Train, Test, and an App",
+    "section": "Target and Scoring",
+    "text": "Target and Scoring\n\nTry to predict how each stock’s return will rank in the Russell 2000 universe, from 0 to 1.\nNot trying to predict whether stocks are up or down in aggregate — no market timing.\nJust trying to predict which stocks will beat others.\nFor evaluating hyperparameters, rank predictions 0 to 1 and compute correlation with actual ranks. Higher ecorrelation is better."
+  },
+  {
+    "objectID": "slides/session07.html#expanding-window-folds",
+    "href": "slides/session07.html#expanding-window-folds",
+    "title": "Train, Test, and an App",
+    "section": "Expanding-Window Folds",
+    "text": "Expanding-Window Folds\n\nThe 240 training months are cut into six blocks of 40. Each fold trains on the blocks before it and is scored on the one that follows.\n\nblock      1      2      3      4      5      6\nfold 1   train  valid\nfold 2   train  train  valid\nfold 3   train  train  train  valid\nfold 4   train  train  train  train  valid\nfold 5   train  train  train  train  train  valid\n\nSix blocks give five folds. The folds are whole months and always run forward — shuffling the rows would train the model on 2018 to predict 2006."
+  },
+  {
+    "objectID": "slides/session07.html#test-procdure",
+    "href": "slides/session07.html#test-procdure",
+    "title": "Train, Test, and an App",
+    "section": "Test Procdure",
+    "text": "Test Procdure\n\nsession7_test.parquet contains the 15 features ranked within each cross section 2001-01 through 2026-09\nApplying session7_model.joblib to each cross-section gives predictions (of ranks)\nAssignment was to form portfolios based on the predictions and to evaluate the results"
+  },
+  {
+    "objectID": "slides/session07.html#refit-on-all-past-data",
+    "href": "slides/session07.html#refit-on-all-past-data",
+    "title": "Train, Test, and an App",
+    "section": "Refit on All Past Data",
+    "text": "Refit on All Past Data\n\nThe expanding-window cross-validation was repeated on the full dataset 2001-01 through 2026-09\nUsing the best hyperparameters, the model was refit on the full dataset: session7_model_full.joblib"
+  },
+  {
+    "objectID": "slides/session07.html#use-the-model-to-make-predictions",
+    "href": "slides/session07.html#use-the-model-to-make-predictions",
+    "title": "Train, Test, and an App",
+    "section": "Use the Model to Make Predictions",
+    "text": "Use the Model to Make Predictions\n\nOur goal is to use it to make stock predictions for the upcoming month (21 trading days)\nWe should update our features daily based on prices and volumes and any new 10-K’s\nInstead we are going to use data frozen last week: session7_live.parquet"
+  },
+  {
+    "objectID": "slides/session07.html#frontend-and-backend",
+    "href": "slides/session07.html#frontend-and-backend",
+    "title": "Train, Test, and an App",
+    "section": "Frontend and Backend",
+    "text": "Frontend and Backend\n\n\nFrontend\nThe browser. HTML, CSS, and JavaScript — it draws the page and collects the clicks.\n\nBackend\nA program on a server that listens continuously for requests. Yours will be Python.\n\n\nYou open a URL. The browser sends a GET request. The server sends back the HTML, CSS, and JavaScript it was written to send. The browser interprets that and shows you a page.\n\n\nRight-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over."
+  },
+  {
+    "objectID": "slides/session07.html#then-you-click-something",
+    "href": "slides/session07.html#then-you-click-something",
+    "title": "Train, Test, and an App",
+    "section": "Then You Click Something",
+    "text": "Then You Click Something\n\nA POST request carries data the other way — a form, a ticker you typed. The server does what it was written to do and replies."
+  },
+  {
+    "objectID": "slides/session07.html#running-locally",
+    "href": "slides/session07.html#running-locally",
+    "title": "Train, Test, and an App",
+    "section": "Running Locally",
+    "text": "Running Locally\n\nThe backend and the frontend can be the same computer — lab638, or your own laptop if you have Python installed on it.\n\n\n\nlocalhost\n127.0.0.1 is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.\n\n\nPorts\nOne machine can run many programs listening at once. The port number tells the operating system which of them gets the request.\n\n\n\nYou write the app as a .py file. FastAPI is the dominant Python library for writing one; uvicorn runs it and starts it listening on a port: python3 -m uvicorn app:app --reload."
+  },
+  {
+    "objectID": "slides/session07.html#basic-design",
+    "href": "slides/session07.html#basic-design",
+    "title": "Train, Test, and an App",
+    "section": "Basic Design",
+    "text": "Basic Design\n\n\nThe fitted gradient boosting model session7_model_full.joblib is baked into the app (rebuild the app when the model is refitted)\nOvernight, all new data should be pulled, ranks computed, the model run, and predictions made\nThe predictions should be mapped into whatever output you want the app to have (Buy, Sell, etc.)\nUser inputs a ticker and gets the output\nWe’re going to skip the overnight pulling and bake session7_live.parquet into the app"
+  },
+  {
+    "objectID": "slides/session07.html#first-what-do-the-predictions-look-like",
+    "href": "slides/session07.html#first-what-do-the-predictions-look-like",
+    "title": "Train, Test, and an App",
+    "section": "First, What do the Predictions Look Like?",
+    "text": "First, What do the Predictions Look Like?\n\nEvery prediction sits between 0.448 and 0.518. Adjacent decile cutoffs in the middle are four thousandths apart."
+  },
+  {
+    "objectID": "slides/session07.html#what-the-app-should-produce",
+    "href": "slides/session07.html#what-the-app-should-produce",
+    "title": "Train, Test, and an App",
+    "section": "What the App Should Produce",
+    "text": "What the App Should Produce\n\nFirst, where does a stock fit within the predictions? Top decile? Middle quintile? …\nWhere does it fit within its sector or industry?\nWithin a marketcap band? (But only small caps here).\n\n\nArgue these out with AI before you ask it to write code."
+  },
+  {
+    "objectID": "slides/session07.html#platform-as-a-service",
+    "href": "slides/session07.html#platform-as-a-service",
+    "title": "Train, Test, and an App",
+    "section": "Platform as a Service",
+    "text": "Platform as a Service\n\nYou hand a host your repository. It builds the app, runs it, and puts it behind a public URL — there is no server for you to administer. Railway, Render, Koyeb, and Heroku all do this. We will use Koyeb, which has a free tier.\n\n\n\nCreate a free account at koyeb.com.\nIn the control panel, create an API access token. Koyeb shows it once, so copy it then.\nIn a terminal, add it to your .env file:\n\n\nprintf '\\nKOYEB_ACCESS_TOKEN=your_access_token\\n' &gt;&gt; $HOME/.env\n\n&gt;&gt; appends, and creates the file if you do not have one. Koyeb’s web UI will link a GitHub repo with no token at all — the token is what lets AI do the deploying for you, which is the path we are taking."
+  },
+  {
+    "objectID": "slides/session07.html#deploy-the-app",
+    "href": "slides/session07.html#deploy-the-app",
+    "title": "Train, Test, and an App",
+    "section": "Deploy the App",
+    "text": "Deploy the App\n\n\nPrompt\n\nMy goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to that repo. Walk me through it one step at a time.\n\n\nOn day one you told git to ignore parquet files. The host builds only what is in the repo, so the model file and the data the app reads have to get there. And nothing from .env belongs in a public repo — secrets go in Koyeb’s environment settings."
+  },
+  {
+    "objectID": "slides/session07.html#get-a-custom-domain",
+    "href": "slides/session07.html#get-a-custom-domain",
+    "title": "Train, Test, and an App",
+    "section": "Get a Custom Domain",
+    "text": "Get a Custom Domain\n\nOptional. The Koyeb URL works fine on its own.\n\n\n\nCreate an account at dnsimple.com and buy a domain name.\nIn your DNSimple account settings, create an API access token and add it to .env:\n\n\nprintf '\\nDNSIMPLE_ACCESS_TOKEN=your_access_token\\n' &gt;&gt; $HOME/.env\n\n\nPrompt\n\nI bought mydomain.com at DNSimple and my app is running on Koyeb. Use the DNSimple API v2 with DNSIMPLE_ACCESS_TOKEN to create the record Koyeb needs, and tell me what to configure on the Koyeb side."
+  },
+  {
+    "objectID": "slides/session04.html#today",
+    "href": "slides/session04.html#today",
+    "title": "Linear Regression for Multiples",
     "section": "Today",
-    "text": "Today\n\n\nRidge and lasso — linear regression with a penalty on the coefficients\nHyperparameters\nCross validation\nRegression trees and gradient boosting\nPredicting a multiple from characteristics"
+    "text": "Today\n\n\nFit a linear regression to predict multiples\nFiltering, transforming variables\nTrain/test split and out-of-sample goodness of fit"
   },
   {
-    "objectID": "slides/session05.html#todays-example",
-    "href": "slides/session05.html#todays-example",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Today’s Example",
-    "text": "Today’s Example\n\nWe will use session4.parquet to predict the log of the price-to-sales ratio.\n\n\n\n\ngrossmargin\ngross margin\n\n\nebitdamargin\nEBITDA margin\n\n\nnetmargin\nnet margin\n\n\nassetturnover\nasset turnover\n\n\nrndint\nR&D / sales\n\n\ncurrentratio\ncurrent ratio\n\n\ngrowth\nsales growth\n\n\nde\ndebt / equity"
+    "objectID": "slides/session04.html#data-session4.parquet",
+    "href": "slides/session04.html#data-session4.parquet",
+    "title": "Linear Regression for Multiples",
+    "section": "Data: session4.parquet",
+    "text": "Data: session4.parquet\n\nToday’s data, 4161 rows.\n\n\n\n\n\n\n\n\nMultiples\nps, pb, pe, evebitda\n\n\nDenominators\nrevenue, book value, net income, EBITDA\n\n\nIndustry variables\nSIC4, SIC3, SIC2, industry, famaindustry, sector\n\n\nRatios\nnet margin, gross margin, EBITDA margin, asset turnover, ROE, ROA, ROIC, debt-to-equity, current ratio, payout ratio, dividend yield\n\n\nGrowth\nyear-over-year sales growth\n\n\nSize\nmarketcap\n\n\n\n\nAsk AI to describe session4.parquet and confirm that it contains this data."
   },
   {
-    "objectID": "slides/session05.html#root-mean-squared-error",
-    "href": "slides/session05.html#root-mean-squared-error",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Root Mean Squared Error",
-    "text": "Root Mean Squared Error\n\nA standard deviation measures spread around a mean. RMSE measures spread around a prediction, and it is the same arithmetic.\n\n\n\nStandard deviation of a sample\n\\[s_x \\;=\\; \\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}\\left(x_i - \\bar{x}\\right)^{2}}\\]\n\nRoot mean squared error\n\\[\\text{RMSE} \\;=\\; \\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}\\left(y_i - \\hat{y}_i\\right)^{2}}\\]\n\n\nEach point’s own prediction \\(\\hat{y}_i\\) takes the place of the one number \\(\\bar{x}\\)."
+    "objectID": "slides/session04.html#linear-regression",
+    "href": "slides/session04.html#linear-regression",
+    "title": "Linear Regression for Multiples",
+    "section": "Linear Regression",
+    "text": "Linear Regression\n\n\nAsk AI to use the statsmodels library to regress ps on the ratios and sales growth.\nThink about what you want to do with negative ps firms and tell AI. Or discuss it with AI.\nAnalyze the regression output."
   },
   {
-    "objectID": "slides/session05.html#r-squared",
-    "href": "slides/session05.html#r-squared",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "R-Squared",
-    "text": "R-Squared\n\nThe squared error you removed, over the squared error you started with.\n\n\\[R^{2} \\;=\\; \\frac{\\dfrac{1}{n}\\sum_{i}\\left(y_i - \\bar{y}\\right)^{2} \\;-\\; \\dfrac{1}{n}\\sum_{i}\\left(y_i - \\hat{y}_i\\right)^{2}}{\\dfrac{1}{n}\\sum_{i}\\left(y_i - \\bar{y}\\right)^{2}}\\]\n\\[R^{2} \\;=\\; \\frac{\\text{variance} \\;-\\; \\text{mean squared error}}{\\text{variance}}\\]"
+    "objectID": "slides/session04.html#industry-membership",
+    "href": "slides/session04.html#industry-membership",
+    "title": "Linear Regression for Multiples",
+    "section": "Industry Membership",
+    "text": "Industry Membership\n\nIncluding industry dummy variables (1 if in industry, 0 if not, for each industry) allows the intercept of the regression to vary by industry.\n\n\nAsk AI what industry variable it recommends using. Then ask it to run the regression with statsmodels and to evaluate the goodness of fit."
   },
   {
-    "objectID": "slides/session05.html#one-small-example",
-    "href": "slides/session05.html#one-small-example",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "One Small Example",
-    "text": "One Small Example\n\nEvery app today is fitted to the same 40 firms and scored on the same 120, all with market cap above $2b.\n\n\nForty is small on purpose. Everything that goes wrong with a thousand features and ten thousand rows goes wrong here too, and here you can watch it happen."
+    "objectID": "slides/session04.html#both-directions",
+    "href": "slides/session04.html#both-directions",
+    "title": "Linear Regression for Multiples",
+    "section": "Both Directions",
+    "text": "Both Directions\n\n\nSix points either way, and least squares has no way of telling you which of these two pictures it is looking at. It reports the same kind of R-squared for both."
   },
   {
-    "objectID": "slides/session05.html#what-ols-is-doing",
-    "href": "slides/session05.html#what-ols-is-doing",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "What OLS Is Doing",
-    "text": "What OLS Is Doing\n\nPick the coefficients that make the sum of squared errors on the training data as small as possible. Nothing else is asked of them.\n\n\n\n0.68 train R-squared\n\n\n0.44 test R-squared\n\n\n8 features, 40 firms\n\n\n\nThe fit was chosen to make the first number large. The second is what it is worth on firms it has not seen."
+    "objectID": "slides/session04.html#it-destroys-a-real-relationship",
+    "href": "slides/session04.html#it-destroys-a-real-relationship",
+    "title": "Linear Regression for Multiples",
+    "section": "It Destroys a Real Relationship",
+    "text": "It Destroys a Real Relationship\n\n\n\nx\n1\n2\n3\n4\n5\n\n20\n\n\n\n\ny\n1\n2\n3\n4\n5\n\n0\n\n\n\n\n\nFive points\nSlope 1.00, R-squared 1.00. A perfect line.\n\nAdd the sixth\nSlope -0.13, R-squared 0.24. The sign is now wrong."
   },
   {
-    "objectID": "slides/session05.html#multi-collinearity",
-    "href": "slides/session05.html#multi-collinearity",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Multi-Collinearity",
-    "text": "Multi-Collinearity\n\nNet margin and EBITDA margin have a correlation of 0.82 across these firms. Least squares is asked which of them explains P/S, and the data cannot say.\n\n\n\n\n\nOLS coefficient\n\n\n\n\nnet margin\n+0.63\n\n\nEBITDA margin\n−0.27\n\n\n\n\nA large positive on one and a negative on its near-twin."
+    "objectID": "slides/session04.html#and-it-invents-one-that-is-not-there",
+    "href": "slides/session04.html#and-it-invents-one-that-is-not-there",
+    "title": "Linear Regression for Multiples",
+    "section": "And It Invents One That Is Not There",
+    "text": "And It Invents One That Is Not There\n\n\n\nx\n1\n2\n3\n4\n5\n\n100\n\n\n\n\ny\n3\n1\n4\n2\n3\n\n200\n\n\n\n\n\nFive points of noise\nR-squared 0.019, t = 0.24. Correctly, nothing.\n\n\nAdd the sixth\nR-squared 0.999, t = 55. A perfect fit through one observation.\n\n\n\nSix points here, and a few thousand in the file. It does not take many."
   },
   {
-    "objectID": "slides/session05.html#the-ridge-criterion",
-    "href": "slides/session05.html#the-ridge-criterion",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "The Ridge Criterion",
-    "text": "The Ridge Criterion\n\\[\\min_{\\beta} \\; \\sum_{i=1}^{n} \\left( y_i - \\beta_0 - \\sum_j \\beta_j x_{ij} \\right)^{2} \\;+\\; \\lambda \\sum_j \\beta_j^{2}\\]\n\n\nThe second term\nA price on size. Large coefficients now have to earn their keep.\n\n\nStandardize first\nOne penalty for all the coefficients only works if the features share a scale.\n\n\nNot the intercept\n\\(\\beta_0\\) is left out of the sum. Shrinking it would just move the whole fit.\n\n\n\n\\(\\lambda\\) is a hyperparameter — a number you set before fitting, rather than one the fitting picks for you. The \\(\\beta\\)’s are parameters and come out of the data; \\(\\lambda\\) decides how hard the data has to argue for them."
+    "objectID": "slides/session04.html#the-moves",
+    "href": "slides/session04.html#the-moves",
+    "title": "Linear Regression for Multiples",
+    "section": "The Moves",
+    "text": "The Moves\n\n\nWinsorize\nClip each variable at its 1st and 99th percentile. Keeps the company, discards the magnitude.\n\n\nStandardize\nSubtract the mean, divide by the standard deviation. Puts every variable on the same scale.\n\n\nLog\nTake logs. Converts right-skewed distributions (marketcap, household income, …) into more symmetric ones.\n\n\n\nThey are not interchangeable, and only two of the three will do anything to an OLS R-squared."
   },
   {
-    "objectID": "slides/session05.html#ridge-1",
-    "href": "slides/session05.html#ridge-1",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Ridge",
-    "text": "Ridge"
+    "objectID": "slides/session04.html#winsorizing",
+    "href": "slides/session04.html#winsorizing",
+    "title": "Linear Regression for Multiples",
+    "section": "Winsorizing",
+    "text": "Winsorizing\n\n\n\n\nvalues\nmean\nstd\n\n\n\n\nRaw\n1, 2, 3, 4, 1000\n202.0\n446.1\n\n\nClipped at 4\n1, 2, 3, 4, 4\n2.8\n1.3\n\n\n\n\nThe company stays in the sample and keeps its rank. What it loses is the ability to dominate a sum of squares. Winsorizing is a statement that you believe the ordering and not the size."
   },
   {
-    "objectID": "slides/session05.html#what-the-slider-showed",
-    "href": "slides/session05.html#what-the-slider-showed",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "What the Slider Showed",
-    "text": "What the Slider Showed\n\n\nEverything shrinks\nToward zero, together. At \\(\\lambda = 0\\) the fit is exactly OLS; the gold ticks are where it started.\n\n\nThe twins converge\n+0.63 and −0.27 become +0.15 and +0.13. Ridge splits the credit rather than picking a winner.\n\n\nNothing reaches zero\nRidge shrinks every coefficient and drops none. All eight features stay in the model.\n\n\n\nTest R-squared climbs from 0.44 to 0.66 and then falls away again. The training R-squared drops the whole way."
+    "objectID": "slides/session04.html#logs",
+    "href": "slides/session04.html#logs",
+    "title": "Linear Regression for Multiples",
+    "section": "Logs",
+    "text": "Logs\n\n\n\n\nvalues\n\n\n\n\nRaw\n1, 2, 3, 4, 1000\n\n\nLog\n0.00, 0.69, 1.10, 1.39, 6.91\n\n\n\n\nA thousand is a thousand times the smallest value and seven times its log. Taking logs is useful for right-skewed variables."
   },
   {
-    "objectID": "slides/session05.html#the-lasso-criterion",
-    "href": "slides/session05.html#the-lasso-criterion",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "The Lasso Criterion",
-    "text": "The Lasso Criterion\n\\[\\min_{\\beta} \\; \\sum_{i=1}^{n} \\left( y_i - \\beta_0 - \\sum_j \\beta_j x_{ij} \\right)^{2} \\;+\\; \\lambda \\sum_j \\left| \\beta_j \\right|\\]\n\nOne character different, and the behavior is not the same. Squaring makes the penalty on a small coefficient negligible; the absolute value does not.\n\n\nA coefficient that is not paying for itself is pushed all the way to zero and stays there."
+    "objectID": "slides/session04.html#standardizing",
+    "href": "slides/session04.html#standardizing",
+    "title": "Linear Regression for Multiples",
+    "section": "Standardizing",
+    "text": "Standardizing\n\n\n\n\nvalues\nmean\nstd\n\n\n\n\nRaw\nninety-nine 0.5s, and one 3374\n34.2\n335.7\n\n\nStandardized\nninety-nine -0.1005s, and one 9.95\n0.0\n1.0\n\n\n\n\nStandardizing is a linear change of variables, and OLS is invariant to it. The coefficients move and are easier to compare across variables, but the predictions of the dependent variable do not change."
   },
   {
-    "objectID": "slides/session05.html#the-shape-of-the-penalty",
-    "href": "slides/session05.html#the-shape-of-the-penalty",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "The Shape of the Penalty",
-    "text": "The Shape of the Penalty\n\n\nNear zero the square has nothing left to charge; the absolute value still charges full price."
+    "objectID": "slides/session04.html#re-run-the-regression",
+    "href": "slides/session04.html#re-run-the-regression",
+    "title": "Linear Regression for Multiples",
+    "section": "Re-run the regression",
+    "text": "Re-run the regression\n\nTalk with AI about which transformations might be useful for which variables. Then re-run the regression.\n\n\nHow do coefficients, t-stats, and the R-squared change?"
   },
   {
-    "objectID": "slides/session05.html#lasso-1",
-    "href": "slides/session05.html#lasso-1",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Lasso",
-    "text": "Lasso"
+    "objectID": "slides/session04.html#machine-learning",
+    "href": "slides/session04.html#machine-learning",
+    "title": "Linear Regression for Multiples",
+    "section": "Machine Learning",
+    "text": "Machine Learning\n\nMachine learning deals with the following type of situation.\n\n\nIn the future, I will have some data. I want to use it to make a prediction about another variable.\nI also have past data on the predictors (x variables) and the dependent variable (y).\nI want to build a model using the past data that predicts y from the x variables.\nIn the future, I will use the model to make predictions.\n\n\nWhat machine learning cares about is how well a model trained (fitted) on past data will perform on future data. This is out-of-sample performance, because the future x’s and y are not part of the sample used to build the model."
   },
   {
-    "objectID": "slides/session05.html#how-a-tree-fits",
-    "href": "slides/session05.html#how-a-tree-fits",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "How a Tree Fits",
-    "text": "How a Tree Fits\n\n\nSearch every feature and every cut point for the one split that reduces the sum of squared errors the most.\nCut the sample in two on that rule.\nRepeat inside each piece, and inside the pieces of those pieces.\nPredict the average of the training firms that land in each final piece.\n\n\n\nNo linear form is assumed, so a tree handles a kink or a threshold that a regression has to be told about. The next two slides use gross margin and net margin, because two is the most you can draw."
+    "objectID": "slides/session04.html#train-test-split",
+    "href": "slides/session04.html#train-test-split",
+    "title": "Linear Regression for Multiples",
+    "section": "Train-Test Split",
+    "text": "Train-Test Split\n\nTo assess expected out-of-sample performance, we withhold some of our current data when training. We use the held-out data to test the model.\n\n\n\nAsk AI to use scikit-learn to do a train-test split, to transform features (x variables) on the training data, apply the same transformations on the test data, and determine goodness of fit on the test data.\nAsk AI to create an html doc explaining what was done and explaining the performance on the test data."
   },
   {
-    "objectID": "slides/session05.html#splitting-on-two-features",
-    "href": "slides/session05.html#splitting-on-two-features",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Splitting on Two Features",
-    "text": "Splitting on Two Features\n\n\nEach cut is chosen over both variables at once. The winner is whichever single line, in whichever variable, increases the training \\(R^2\\) the most."
+    "objectID": "slides/session04.html#assignment-for-tuesday",
+    "href": "slides/session04.html#assignment-for-tuesday",
+    "title": "Linear Regression for Multiples",
+    "section": "Assignment for Tuesday",
+    "text": "Assignment for Tuesday\n\nCan we trade on this? Use session4_monthly.parquet. In each row, everything except the return is known at the beginning of the month.\n\n\n\nRun a linear regression each month, using some multiple on the left-hand side. Use scikit-learn, but do not use train-test splits. Our test will be whether we make money.\nSort stocks each month based on the regression error. If the left-hand side is ps, or log ps, then positive errors (ps &gt; predicted) are expensive firms. You would want to buy stocks with the “most negative” errors.\nForm a portfolio each month and compute its return. Evaluate the returns of the strategy — annualized mean, Sharpe ratio, CAPM alpha, …\n\n\n\nBe prepared to present on Tuesday — slides if you want them but be prepared to dig into the analysis."
   },
   {
-    "objectID": "slides/session05.html#one-tree",
-    "href": "slides/session05.html#one-tree",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "One Tree",
-    "text": "One Tree\n\n\nThe boxes and the tree are the same object. A path down the tree is a box; a leaf’s colour is the average of the firms that landed in it."
+    "objectID": "slides/session02.html#today",
+    "href": "slides/session02.html#today",
+    "title": "Median of Peer Multiples",
+    "section": "Today",
+    "text": "Today\n\n\nThe data\nDefining peers\nMultiples\nExercise"
   },
   {
-    "objectID": "slides/session05.html#hyperparameters-to-control-overfitting",
-    "href": "slides/session05.html#hyperparameters-to-control-overfitting",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Hyperparameters to Control Overfitting",
-    "text": "Hyperparameters to Control Overfitting\n\n\nMax depth\nHow many cuts deep the tree may go. Depth \\(d\\) allows up to \\(2^d\\) leaves; depth 8 here gives 28 boxes for 40 firms.\n\n\nMinimum per leaf\nThe smallest number of training points a leaf may hold. A leaf of one is a memorized observation.\n\n\n\nAt depth 2 the tree scores 0.57 on the training firms and 0.29 on the test firms. At depth 8 it scores 0.96 and \\(-0.14\\) — worse than a flat line at the average."
+    "objectID": "slides/session02.html#the-sharadar-core-us-equities-bundle",
+    "href": "slides/session02.html#the-sharadar-core-us-equities-bundle",
+    "title": "Median of Peer Multiples",
+    "section": "The Sharadar Core US Equities Bundle",
+    "text": "The Sharadar Core US Equities Bundle\n\n\nWhat is in it\nEvery NYSE, NASDAQ and NYSEMKT common stock, 2000 to today.\n\n\nWhere it comes from\nLicensed by Rice Business from Nasdaq Data Link.\n\n\nWhat it is\nNine tables online at motherduck.com\n\n\ndata.nasdaq.com/databases/SFA — the Sharadar Core U.S. Equity Bundle"
   },
   {
-    "objectID": "slides/session05.html#the-idea",
-    "href": "slides/session05.html#the-idea",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "The Idea",
-    "text": "The Idea\n\n\nStart by predicting the training mean for everyone.\nCompute the residuals — what the current prediction is missing.\nFit a small tree to the residuals.\nAdd a fraction of that tree, the learning rate, to the prediction.\nGo back to step 2.\n\n\n\nNo single tree is any good. The sum of a few hundred deliberately weak ones is the model that wins most tabular prediction contests. Back to one feature here, so the sum can be drawn as a curve."
+    "objectID": "slides/session02.html#how-you-reach-it",
+    "href": "slides/session02.html#how-you-reach-it",
+    "title": "Median of Peer Multiples",
+    "section": "How You Reach It",
+    "text": "How You Reach It\n\nAsk AI to do it. It will read ~/workspace/.claude/skills/finance-data/SKILL.md to see how to do it.\n\nThe SKILL.md explains where the database lives, which table answers which question, and the traps in each one.\n\nAsk for US stocks and it uses the bundle. Ask for something the bundle does not carry — short interest, bond yields, … — and it routes to a free public source instead."
   },
   {
-    "objectID": "slides/session05.html#fitting-the-residuals",
-    "href": "slides/session05.html#fitting-the-residuals",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Fitting the Residuals",
-    "text": "Fitting the Residuals\n\n\n\n\nWhat each tree is given\nEvery tree after the first is fitted to what the ones before it got wrong.\nWhat rises is the training \\(R^2\\): nothing before any tree, 0.66 after ten.\nNo one of these trees is a model. The sum of them is."
+    "objectID": "slides/session02.html#what-is-in-there",
+    "href": "slides/session02.html#what-is-in-there",
+    "title": "Median of Peer Multiples",
+    "section": "What Is in There",
+    "text": "What Is in There\n\n\n\nTable\nContents\n\n\n\n\nsep\nDaily prices — 33.4M rows, 2000 to today\n\n\ndaily\nDaily market cap and valuation ratios\n\n\nsf1\n10-K and 10-Q data, 112 fields, plus precomputed ratios\n\n\nsf2\nInsider trades, from Form 4\n\n\ntickers\nIdentity, classification, exchange, listing dates\n\n\nactions\nMergers, splits, dividends, ticker changes\n\n\nevents\n8-K event codes"
   },
   {
-    "objectID": "slides/session05.html#important-hyperparameters",
-    "href": "slides/session05.html#important-hyperparameters",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Important Hyperparameters",
-    "text": "Important Hyperparameters\n\n\nNumber of trees\nThe only knob that keeps improving the training fit forever. Test R-squared peaks early — here, after about five.\n\n\nLearning rate\nHow much of each tree is added. Small rates need more trees and usually end up better.\n\n\nDepth\nHow much each tree may do on its own. Two or three is standard; the boosting is supposed to do the work.\n\n\n\nHalve the learning rate and you roughly double the number of trees you need. Set the rate low, then stop adding trees when validation R-squared stops rising. Min observations per leaf is also important. We set it to 1 here for simplicity."
+    "objectID": "slides/session02.html#the-table-that-describes-the-tables",
+    "href": "slides/session02.html#the-table-that-describes-the-tables",
+    "title": "Median of Peer Multiples",
+    "section": "The Table That Describes the Tables",
+    "text": "The Table That Describes the Tables\n\nindicators is the data dictionary: one row for every column in the bundle, with a definition.\n\n\nIt also documents some Sharadar tables that are not in the MotherDuck database — 13F institutional holdings, ETF prices, S&P 500 index membership."
   },
   {
-    "objectID": "slides/session05.html#gradient-boosting-1",
-    "href": "slides/session05.html#gradient-boosting-1",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Gradient Boosting",
-    "text": "Gradient Boosting"
+    "objectID": "slides/session02.html#sf1-has-dimensions",
+    "href": "slides/session02.html#sf1-has-dimensions",
+    "title": "Median of Peer Multiples",
+    "section": "sf1 Has Dimensions",
+    "text": "sf1 Has Dimensions\n\n\n\n\nAnnual\nQuarterly\nTrailing four quarters\n\n\n\n\nAs most recently restated\nMRY\nMRQ\nMRT\n\n\nAs originally reported\nARY\nARQ\nART\n\n\n\n\nToday we use MRY — we are describing companies as they stand. But in every MR row datekey is the period-end date copied over, so MR does not know when the numbers became public. Backtests use ARY, keyed on datekey, which is the real SEC filing date."
   },
   {
-    "objectID": "slides/session05.html#every-boosting-hyperparameter",
-    "href": "slides/session05.html#every-boosting-hyperparameter",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Every Boosting Hyperparameter",
-    "text": "Every Boosting Hyperparameter\n\n\nHow much ensemble\n\nn_estimators — how many trees\nlearning_rate — shrinkage per tree\nsubsample — rows per tree\nloss — squared, absolute, huber\nn_iter_no_change — early stopping\n\n\nHow much tree\n\nmax_depth — how deep\nmax_leaf_nodes — or how many\nmin_samples_leaf — smallest box\nmin_samples_split — node minimum\nmax_features — features per split\n\n\n\nAll are set before fitting. Tune the first three and leave the rest alone."
+    "objectID": "slides/session02.html#which-stocks-are-you-even-looking-at",
+    "href": "slides/session02.html#which-stocks-are-you-even-looking-at",
+    "title": "Median of Peer Multiples",
+    "section": "Which Stocks Are You Even Looking At?",
+    "text": "Which Stocks Are You Even Looking At?\n\n\n\nFilter\nCompanies left\n\n\n\n\nEvery ticker in tickers\n15,607\n\n\nStill listed — isdelisted = 'N'\n4,355\n\n\nDrop shell companies — 315 SPACs with no operations\n4,039\n\n\n\n\nTwo filters, because the bundle has already done the rest. It holds only NYSE, NASDAQ and NYSEMKT common stock, and share classes are already collapsed — GOOG is not a row, it sits in GOOGL’s relatedtickers. Against raw Sharadar you would have to strip ADRs, Canadian listings, preferred and secondary classes yourself."
   },
   {
-    "objectID": "slides/session05.html#which-features-mattered",
-    "href": "slides/session05.html#which-features-mattered",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Which Features Mattered",
-    "text": "Which Features Mattered\n\nBoosting will tell you which features its trees actually used.\n\n\n\n\n\n\nnet margin\n0.25\n\n\nR&D / sales\n0.23\n\n\ngross margin\n0.15\n\n\nsales growth\n0.14\n\n\nEBITDA margin\n0.13\n\n\ndebt / equity\n0.04\n\n\ncurrent ratio\n0.03\n\n\nasset turnover\n0.02\n\n\n\n\nWhere the numbers come from\nThe fraction of the total training error removed that each feature is responsible for, based on error reduction at each split in each tree.\nWhat they do not say\nNot the sign of the effect — only that the feature got used. Two features that move together split the credit between them, so neither looks essential.\n\n\nmodel.feature_importances_, in the order of the feature columns. Here: 200 trees, rate 0.1, depth 2, test \\(R^2\\) of 0.60."
+    "objectID": "slides/session02.html#closeadj-and-periodic-returns",
+    "href": "slides/session02.html#closeadj-and-periodic-returns",
+    "title": "Median of Peer Multiples",
+    "section": "closeadj and Periodic Returns",
+    "text": "closeadj and Periodic Returns\n\nThe skill tells the AI how to compute periodic returns using the closeadj variable, which adjusts for dividends as well as splits (like Yahoo Finance adjusted closing price).\n\n\nSo, we can say, for example, “compute monthly returns for all stocks from date1 to date2.”"
   },
   {
-    "objectID": "slides/session05.html#cross-validation",
-    "href": "slides/session05.html#cross-validation",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Cross-Validation",
-    "text": "Cross-Validation\n\nSplit the training sample into 5 subsets. For each hyperparameter value, fit on 4, test (validate) on the 5th. Repeat across all 5 folds. Choose the hyperparameter with the best average performance on the 5 validation folds."
+    "objectID": "slides/session02.html#six-ways-to-say-industry",
+    "href": "slides/session02.html#six-ways-to-say-industry",
+    "title": "Median of Peer Multiples",
+    "section": "Six Ways to Say “Industry”",
+    "text": "Six Ways to Say “Industry”\n\n\n\nColumn\nGroups\nScheme\n\n\n\n\nsector\n11\nMorningstar-style sectors\n\n\nindustry\n151\nMorningstar-style industries\n\n\nsicsector\n10\nThe SEC’s SIC divisions\n\n\nsicindustry\n437\nSIC industry titles\n\n\nsiccode\n437\nThe four-digit code itself\n\n\nfamaindustry\n48\nFama and French’s 49 industries\n\n\n\n\nAll six sit in tickers."
   },
   {
-    "objectID": "slides/session05.html#hands-on",
-    "href": "slides/session05.html#hands-on",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Hands On",
-    "text": "Hands On\n\n\nUse session4.parquet and do a train/test split.\nTrain LinearRegression.\nUse GridSearchCV to find the optimal n_estimators, learning_rate and max_depth hyperparameters for GradientBoostingRegressor.\nReport the \\(R^2\\) on the test sample for both methods.\n\n\n\nTell AI to do it. You do not need to name LinearRegression, GridSearchCV, or GradientBoostingRegressor. You could just say your goal is to test linear regression and gradient boosting to predict ps from the ratios and sales growth."
+    "objectID": "slides/session02.html#how-large-are-peer-groups",
+    "href": "slides/session02.html#how-large-are-peer-groups",
+    "title": "Median of Peer Multiples",
+    "section": "How Large are Peer Groups",
+    "text": "How Large are Peer Groups\n\n\n\nGrouping\nGroups\nMedian group\nMedian cell\nCells under 10\n\n\n\n\nsector\n11\n229\n51\n2%\n\n\nfamaindustry\n49\n50\n10\n50%\n\n\nindustry\n143\n16\n4\n84%\n\n\nsicindustry\n379\n4\n2\n93%\n\n\n\n\nThe 4,039 live, non-shell companies, crossed with market-cap quintiles built from daily.marketcap. Note that nineteen companies have a blank famaindustry and will form a peer group of their own if not dropped."
   },
   {
-    "objectID": "slides/session05.html#refit-and-save-your-models",
-    "href": "slides/session05.html#refit-and-save-your-models",
-    "title": "Ridge, Lasso, and Trees",
-    "section": "Refit and Save Your Models",
-    "text": "Refit and Save Your Models\n\n\nRefit LinearRegression on the entire sample.\nRerun GridSearchCV for GradientBoostingRegressor on the entire sample.\nSave both refit models.\n\n\n\nWe will use the models to build Stock Recommender apps on Thursday. Ask AI to save them with joblib.dump and to check that they load back."
+    "objectID": "slides/session02.html#what-you-multiply-by-what",
+    "href": "slides/session02.html#what-you-multiply-by-what",
+    "title": "Median of Peer Multiples",
+    "section": "What You Multiply by What",
+    "text": "What You Multiply by What\n\n\n\n\n\n\n\n\n\nMultiple\nColumn in daily\nCompany’s own figure in sf1\nGives you\n\n\n\n\nPrice / earnings\npe\nnetinccmnusd\nEquity value\n\n\nPrice / book\npb\nequityusd\nEquity value\n\n\nPrice / sales\nps\nrevenueusd\nEquity value\n\n\nEV / EBITDA\nevebitda\nebitdausd\nEnterprise value"
   },
   {
-    "objectID": "slides/session03.html#starting-today",
-    "href": "slides/session03.html#starting-today",
-    "title": "Trading on Predictions",
-    "section": "Starting Today",
-    "text": "Starting Today\n\n\nThree groups, drawn at random, at the start of every class\nFive minutes each, on what you got done last session\nShow the repository — the skill, the code, the numbers\n\n\n\nWhat broke is more interesting than what worked, and it is what the rest of the room needs to hear. A presentation that reports only success is a presentation nobody learns from."
+    "objectID": "slides/session02.html#value-it-four-ways",
+    "href": "slides/session02.html#value-it-four-ways",
+    "title": "Median of Peer Multiples",
+    "section": "Value It Four Ways",
+    "text": "Value It Four Ways\n\n\nFix the peer set — same industry, same size bucket, same date — and count it\nTake the median of each of the four multiples across those peers\nMultiply each median by the company’s own denominator\nFor EV/EBITDA, cross back from enterprise value to equity\n\n\n\nFour implied equity values for one company. Compare each with the market cap it actually trades at."
   },
   {
-    "objectID": "slides/session03.html#what-to-cover",
-    "href": "slides/session03.html#what-to-cover",
-    "title": "Trading on Predictions",
-    "section": "What to Cover",
-    "text": "What to Cover\n\n\nWhat you decided\nWhich multiple, which peer group, what minimum size. And why.\n\n\nWhat surprised you\nThe company where the answer was obviously wrong, and what it turned out to be.\n\n\nWhat you would change\nYou have run it now. What is the first thing you would do differently?"
+    "objectID": "slides/session02.html#what-a-pe-of-12-means",
+    "href": "slides/session02.html#what-a-pe-of-12-means",
+    "title": "Median of Peer Multiples",
+    "section": "What a P/E of –12 Means",
+    "text": "What a P/E of –12 Means\n\nNothing. It means the company lost money.\n\n\nA negative P/E is not a cheap stock. It is a stock with no E. Left in the sample it drags the median in the wrong direction and makes the cheapest-looking companies the ones losing the most.\n\nEV/EBITDA fails the same way on negative EBITDA. P/B is close to meaningless where the assets walk out of the building at six o’clock — and it means something else again for a bank, where the balance sheet is the business. P/S always exists, which is not the same as always meaning something.\n\nFilter out the negative values. We won’t try to value them or to use them for valuing others."
   },
   {
-    "objectID": "slides/session03.html#you-have-a-number-for-every-stock",
-    "href": "slides/session03.html#you-have-a-number-for-every-stock",
-    "title": "Trading on Predictions",
-    "section": "You Have a Number for Every Stock",
-    "text": "You Have a Number for Every Stock\n\nOwn P/E divided by peer median P/E. Below one is cheap relative to its peers; above one is expensive.\n\n\nThat is a prediction, whether or not you meant it as one. It says: this company should trade closer to its peers than it does.\n\nThe question today is whether that prediction is worth anything."
+    "objectID": "slides/session02.html#why-the-median",
+    "href": "slides/session02.html#why-the-median",
+    "title": "Median of Peer Multiples",
+    "section": "Why the Median",
+    "text": "Why the Median\n\n\nThe mean\nOne company with a P/E of 900 — a real company that barely broke even — and the average for the industry is meaningless.\n\nThe median\nUnmoved by the tail. With ratios, where the numerator is bounded below and the denominator can approach zero, this is not a refinement. It is the difference between a number and noise.\n\n\nReport the count alongside every median. A median of four is a different object from a median of four hundred, and the table does not tell you which you have."
   },
   {
-    "objectID": "slides/session03.html#sort-do-not-threshold",
-    "href": "slides/session03.html#sort-do-not-threshold",
-    "title": "Trading on Predictions",
-    "section": "Sort, Do Not Threshold",
-    "text": "Sort, Do Not Threshold\n\n\nA threshold\n“Buy anything below 0.7.” How many stocks is that? Some years, none. Some years, four hundred.\n\n\nA sort\n“Buy the cheapest tenth.” Always the same number of positions, whatever the market is doing.\n\n\n\nRanking also throws away the scale of the signal, which is the part you trust least. You are betting on the order, not the magnitude."
+    "objectID": "slides/session02.html#deviations",
+    "href": "slides/session02.html#deviations",
+    "title": "Median of Peer Multiples",
+    "section": "Deviations",
+    "text": "Deviations\n\nDeviation = log( market cap / implied value ).\n\nPositive means the market pays more for this company than its peers say it is worth. Negative means the company is cheap compared to peers."
   },
   {
-    "objectID": "slides/session03.html#long-short-or-both",
-    "href": "slides/session03.html#long-short-or-both",
-    "title": "Trading on Predictions",
-    "section": "Long, Short, or Both",
-    "text": "Long, Short, or Both\n\n\nLong only\nBuy the cheapest decile. Most of what you earn is just the market.\n\n\nLong-short\nCheapest decile long, most expensive short. What is left is the signal.\n\n\nLong-short, dollar neutral\nEqual dollars each side. The version we will build.\n\n\n\nThe long-short version is a much harder test, and it is the one that tells you whether you found anything."
+    "objectID": "slides/session02.html#claude.md",
+    "href": "slides/session02.html#claude.md",
+    "title": "Median of Peer Multiples",
+    "section": "CLAUDE.md",
+    "text": "CLAUDE.md\n\nWhat is always true in this folder: what the project is, where things live, the conventions, and what never to do.\n\nIt is read at the start of every session in that folder, before you type anything.\n\nThree people, three containers, one repository. CLAUDE.md is how a decision one of you makes on Thursday is still in force when somebody else opens the folder on Sunday. Everything you type into a prompt window instead dies with that conversation."
   },
   {
-    "objectID": "slides/session03.html#the-loop",
-    "href": "slides/session03.html#the-loop",
-    "title": "Trading on Predictions",
-    "section": "The Loop",
-    "text": "The Loop\n\n\nPick a date — the last trading day of June, say\nCompute the signal for every stock, using only what was known that day\nSort, and form the portfolio\nHold it for one year. No trading, no rebalancing\nRecord the return\nMove forward a year and do it again\n\n\n\nTwenty-odd repetitions. That is your entire sample, and it is worth remembering how small a number that is."
+    "objectID": "slides/session02.html#tell-claude-to-edit-it",
+    "href": "slides/session02.html#tell-claude-to-edit-it",
+    "title": "Median of Peer Multiples",
+    "section": "Tell Claude to Edit It",
+    "text": "Tell Claude to Edit It\nWhen your group settles something:\n\nAdd to CLAUDE.md: peers are famaindustry crossed with market cap quintiles; minimum group size is eight.\n\n\nYou never open the file yourself. You say what you decided and the AI writes it down."
   },
   {
-    "objectID": "slides/session03.html#why-once-a-year",
-    "href": "slides/session03.html#why-once-a-year",
-    "title": "Trading on Predictions",
-    "section": "Why Once a Year",
-    "text": "Why Once a Year\n\n\nThe signal moves slowly\nIt is built from annual filings. Recomputing it monthly gives you eleven months of the same answer and eleven months of trading costs.\n\nAnd it keeps the test honest\nAnnual holding periods make the overlapping-returns problem go away. Monthly rebalancing with annual data does not give you twelve times the evidence."
+    "objectID": "slides/session02.html#keep-a-record-of-scripts-and-outputs",
+    "href": "slides/session02.html#keep-a-record-of-scripts-and-outputs",
+    "title": "Median of Peer Multiples",
+    "section": "Keep a Record of Scripts and Outputs",
+    "text": "Keep a Record of Scripts and Outputs\nPut this in CLAUDE.md\n\nAfter running any script, append a row to RUNS.md: who ran it, the date and time, the script, and where the output went.\n\n\nKeep the log in its own file. CLAUDE.md is read at the top of every session, so a hundred rows of history there is a hundred rows you would pay for on every prompt."
   },
   {
-    "objectID": "slides/session03.html#equal-or-value-weighted",
-    "href": "slides/session03.html#equal-or-value-weighted",
-    "title": "Trading on Predictions",
-    "section": "Equal or Value Weighted",
-    "text": "Equal or Value Weighted\n\n\nEqual weighted\nSame dollars in each name. Simple, and dominated by small companies — which is where most anomalies live, and where they are hardest to trade.\n\n\nValue weighted\nWeights by market cap. A much more honest test, and usually a much weaker result.\n\n\n\nReport both. A strategy that works equal-weighted and dies value-weighted has told you exactly what it is."
+    "objectID": "slides/session02.html#use-ai-to-pull-commit-and-push",
+    "href": "slides/session02.html#use-ai-to-pull-commit-and-push",
+    "title": "Median of Peer Multiples",
+    "section": "Use AI to Pull, Commit, and Push",
+    "text": "Use AI to Pull, Commit, and Push\n\nLet GLM run Git for you. It will write better commit messages and resolve merge conflicts."
   },
   {
-    "objectID": "slides/session03.html#build-it",
-    "href": "slides/session03.html#build-it",
-    "title": "Trading on Predictions",
-    "section": "Build It",
-    "text": "Build It\nTell GLM\n\nWrite a backtest. For each year from 2001 to 2025: on June 30, compute the peer-median signal for every stock using the valuation skill, sort into deciles, go long the cheapest decile and short the most expensive, equal weighted, hold twelve months, and record the return. Plan it before you start.\n\n\nThen read the plan before you let it write anything."
+    "objectID": "slides/session02.html#data-files",
+    "href": "slides/session02.html#data-files",
+    "title": "Median of Peer Multiples",
+    "section": "Data Files",
+    "text": "Data Files\n\nKeep your data files in your workspace so you don’t waste time getting the data each time\nParquet is the fastest file type for reading and writing and also the smallest\nTell GLM to gitignore them. This means they won’t be pushed to GitHub.\nPushing large files to GitHub is slow, and GitHuB rejects files &gt; 100MB."
   },
   {
-    "objectID": "slides/session03.html#the-restatement-problem",
-    "href": "slides/session03.html#the-restatement-problem",
-    "title": "Trading on Predictions",
-    "section": "The Restatement Problem",
-    "text": "The Restatement Problem\n\nMRY is the most recent restatement. It tells you today what nobody knew then.\n\n\nA company that restated its 2008 earnings in 2011 shows up in MRY with the restated number — so a backtest that forms a 2009 portfolio is using information from 2011. The strategy will look better than it was.\n\nUse the as-reported dimensions, ARY and ARQ, for anything historical."
+    "objectID": "slides/session02.html#todays-work",
+    "href": "slides/session02.html#todays-work",
+    "title": "Median of Peer Multiples",
+    "section": "Today’s Work",
+    "text": "Today’s Work\n\n\nBuild the peer table — universe, industry grouping, size buckets, and the count in every cell\nTake the four medians in each cell, and value every company four ways\nWhich median multiple matches the market the best?\nWhy do medians deviate from the market — is it asset turnover, margins, leverage, investment rate, … — using the most recent 10K (sf1 with dimension = MRY)?\n\n\n\nStep 1 is the one that takes the longest and the one everything else rests on. Do not let it be the step you rush."
   },
   {
-    "objectID": "slides/session03.html#filed-not-ended",
-    "href": "slides/session03.html#filed-not-ended",
-    "title": "Trading on Predictions",
-    "section": "Filed, Not Ended",
-    "text": "Filed, Not Ended\n\n\nreportperiod\nWhen the fiscal year ended. Nobody outside the company knew the numbers yet.\n\n\ndatekey\nWhen it was filed with the SEC. This is the first day you could have acted on it.\n\n\n\nSorting on reportperiod gives you a few weeks to a few months of free information, every year, in every name. It is the single most common way a backtest in this course goes wrong."
+    "objectID": "slides/session02.html#what-to-present-tuesday",
+    "href": "slides/session02.html#what-to-present-tuesday",
+    "title": "Median of Peer Multiples",
+    "section": "What to Present Tuesday",
+    "text": "What to Present Tuesday\n\n\nThe peer definition\nWhich grouping, which size buckets, what minimum count — and the cell counts that justify it.\n\n\nCoverage\nHow many of the companies got a value under each of the four multiples, and which multiple lost the most.\n\n\nWhat the deviations track\nProfitability, growth, leverage — or nothing.\n\n\nThe disagreement case\nThe company where the four methods were furthest apart, and your diagnosis.\n\n\n\nFive minutes, from the repository. Three groups drawn at random — so all of you are ready."
   },
   {
-    "objectID": "slides/session03.html#who-is-in-the-sample",
-    "href": "slides/session03.html#who-is-in-the-sample",
-    "title": "Trading on Predictions",
-    "section": "Who Is in the Sample",
-    "text": "Who Is in the Sample\n\nAsk a question you cannot answer from the schema: does the data still contain companies that stopped existing?\n\n\nIf it holds only companies listed today, then every 2005 portfolio you form is made of firms you already know survived to 2026. That is not a small bias. It is the difference between a strategy and an illusion.\n\nTell GLM\n\nCount distinct tickers with data in 2005. Then count how many of those still have data in the most recent year, and show me some that do not."
-  },
-  {
-    "objectID": "slides/session03.html#three-more",
-    "href": "slides/session03.html#three-more",
-    "title": "Trading on Predictions",
-    "section": "Three More",
-    "text": "Three More\n\n\n\n\n\n\n\nThe peer median\nComputed from the same date, or from data that arrived later?\n\n\nDelisting returns\nA company that goes to zero has to be recorded as going to zero\n\n\nCosts and borrow\nThe short side is not free, especially in the small names\n\n\n\n\nNone of these will throw an error. Each of them makes the answer better than the truth."
-  },
-  {
-    "objectID": "slides/session03.html#three-numbers",
-    "href": "slides/session03.html#three-numbers",
-    "title": "Trading on Predictions",
-    "section": "Three Numbers",
-    "text": "Three Numbers\n\n\nAverage return\nThe mean of your annual long-short returns.\n\n\nStandard deviation\nHow much those returns bounced around, year to year.\n\n\nThe ratio, and its t-stat\nWith twenty-five observations, the t-stat is doing a lot of work.\n\n\n\nTwenty-five annual returns is a small sample. A strategy earning four percent a year with fifteen percent volatility is not distinguishable from nothing."
-  },
-  {
-    "objectID": "slides/session03.html#compare-it-to-something",
-    "href": "slides/session03.html#compare-it-to-something",
-    "title": "Trading on Predictions",
-    "section": "Compare It to Something",
-    "text": "Compare It to Something\n\nFour percent a year is a fact about your strategy. It is not yet a finding.\n\n\n\nThe market\nDid the long side simply do what stocks did?\n\n\nA random sort\nRun it with the signal shuffled. What does noise earn in your backtest?\n\n\nValue itself\nPlain P/E, no peer group. Did the peer adjustment add anything?\n\n\n\nThe third comparison is the real test of last session’s work."
-  },
-  {
-    "objectID": "slides/session03.html#look-at-the-years",
-    "href": "slides/session03.html#look-at-the-years",
-    "title": "Trading on Predictions",
-    "section": "Look at the Years",
-    "text": "Look at the Years\nTell GLM\n\nPlot the annual return of the long-short portfolio, year by year. Mark the best and worst years and tell me what the portfolio held in each.\n\n\nAn average built out of one enormous year and twenty-four small negative ones is a different animal from a steady four percent, and the summary statistics will not tell you which you have."
-  },
-  {
-    "objectID": "slides/session03.html#three-people-no-shared-memory",
-    "href": "slides/session03.html#three-people-no-shared-memory",
-    "title": "Trading on Predictions",
-    "section": "Three People, No Shared Memory",
-    "text": "Three People, No Shared Memory\n\nThe conversation you had with GLM on Tuesday is invisible to your groupmates, and gone to you.\n\n\nThe code survives. The reasoning does not — why you used ARY, which peer definition you rejected, what you tried on the short side that did not work. That is exactly what the next person needs, and exactly what nobody writes down."
-  },
-  {
-    "objectID": "slides/session03.html#what-a-memory-file-is",
-    "href": "slides/session03.html#what-a-memory-file-is",
-    "title": "Trading on Predictions",
-    "section": "What a Memory File Is",
-    "text": "What a Memory File Is\n\n\nOne file per session\nDated, in the repository, next to the code it describes.\n\n\nWritten by GLM\nAt the end of the session, from the conversation it just had. You correct it.\n\n\nRead by GLM\nAt the start of the next session, before it touches anything.\n\n\n\nIt serves your groupmates and it serves the model. Both start every session knowing nothing."
-  },
-  {
-    "objectID": "slides/session03.html#what-goes-in-it",
-    "href": "slides/session03.html#what-goes-in-it",
-    "title": "Trading on Predictions",
-    "section": "What Goes in It",
-    "text": "What Goes in It\n\n\nDate, and who was working\nWhat we set out to do\nWhat we decided, and what we rejected — with the reason\nWhat broke, and whether it is fixed\nWhat is unfinished, and where to pick it up\n\n\n\nPoint 3 is the one that matters and the one that gets dropped. A decision without its reason gets re-litigated in two weeks."
-  },
-  {
-    "objectID": "slides/session03.html#build-the-skill",
-    "href": "slides/session03.html#build-the-skill",
-    "title": "Trading on Predictions",
-    "section": "Build the Skill",
-    "text": "Build the Skill\nTell GLM\n\nMake a skill that writes a session memory file. It should trigger when I say we are wrapping up. Write to memory/YYYY-MM-DD.md with those five headings, drawn from this conversation. Keep it under a page.\n\nThen a second one, or a line in CLAUDE.md:\n\nAt the start of every session, read the three most recent files in memory/."
-  },
-  {
-    "objectID": "slides/session03.html#try-it-now",
-    "href": "slides/session03.html#try-it-now",
-    "title": "Trading on Predictions",
-    "section": "Try It Now",
-    "text": "Try It Now\n\n\nBuild the skill\nSay: we are wrapping up\nRead what it wrote — and fix what it got wrong about your own afternoon\nCommit and push, so the other two can read it before Thursday\n\n\n\nStep 3 is not optional. A memory file nobody checked is a confident record of a session that did not happen."
-  },
-  {
-    "objectID": "slides/session03.html#three-things",
-    "href": "slides/session03.html#three-things",
-    "title": "Trading on Predictions",
-    "section": "Three Things",
-    "text": "Three Things\n\n\nGet the backtest running end to end, however crude\nRe-run it with ARY and datekey, and record what changed\nWrite the memory file, and push it\n\n\n\nThursday we stop borrowing the peer median and start predicting the multiple — which turns valuation into a regression, and gives you something to compare today’s result against."
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "",
+    "section": "",
+    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course mechanics.  Intro to quant investing.  Intro to gen AI.  Our AI Lab (Claude Code/GLM 4.7 + Python in a container).\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Introduction to the Nasdaq Data Link data.  Finding industry/size peers and valuing by multiples.  Analyzing model/market differences.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      Slides·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's fundamentals. Reading the regression output, holding out a test sample, and the transformations that decide the answer.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Ridge, Lasso, and Trees\n        Penalized regression, regression trees, and gradient boosting, each with a slider on the slide. Overfitting, and choosing a tuning parameter by cross-validation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Build a Stock Recommender App\n        Wrapping the fitted models in a web app.  The models predict returns, and the app turns those return predictions into buy and sell recommendations.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Build a DCF App\n        Build a web app that retrieves historical financials and generates a two-stage DCF enterprise valuation, allowing the user to input key values or to extrapolate historical trends.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Factor ETFs\n        Explore the construction and performance of the iShares/MSCI factor ETFs.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        News and LLM Sector Picks\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Analyzing Earnings Calls\n        Where transcripts come from and what they cost.  Can a model read a call and tell you to buy, and how fast would you have to act?  Four architectures, and what we already know.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        Analyzing News Headlines\n        A corpus of 1.3 million headlines, and what is left of it once you check the coverage. Scoring a headline blind to the price, then asking whether the score knew anything.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
   },
   {
     "objectID": "slides/session01.html#course-overview",
@@ -637,388 +679,437 @@
     "text": "When Git Pushes Back\n\n\n\n\n\n\n\nWhat you see\nWhat to say\n\n\n\n\nrejected --- non-fast-forward\nSomeone pushed while you were working. “Pull their work, merge it, then push.”\n\n\nCONFLICT: automatic merge failed\nYou both edited the same lines. “Show me both versions and wait for me to choose.”\n\n\n\n\nRefuse these if asked: git push --force and git reset --hard"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "",
-    "section": "",
-    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course mechanics.  Intro to quant investing.  Intro to gen AI.  Our AI Lab (Claude Code/GLM 4.7 + Python in a container).\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Introduction to the Nasdaq Data Link data.  Finding industry/size peers and valuing by multiples.  Analyzing model/market differences.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      Slides·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's fundamentals. Reading the regression output, holding out a test sample, and the transformations that decide the answer.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Ridge, Lasso, and Trees\n        Penalized regression, regression trees, and gradient boosting, each with a slider on the slide. Overfitting, and choosing a tuning parameter by cross-validation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Build a Stock Recommender App\n        Wrapping the fitted models in a web app.  The models predict returns, and the app turns those return predictions into buy and sell recommendations.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Build a DCF App\n        Build a web app that retrieves historical financials and generates a two-stage DCF enterprise valuation, allowing the user to input key values or to extrapolate historical trends.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Factor ETFs\n        Explore the construction and performance of the iShares/MSCI factor ETFs.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        News and LLM Sector Picks\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Analyzing Earnings Calls\n        Where transcripts come from and what they cost.  Can a model read a call and tell you to buy, and how fast would you have to act?  Four architectures, and what we already know.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        Analyzing News Headlines\n        A corpus of 1.3 million headlines, and what is left of it once you check the coverage. Scoring a headline blind to the price, then asking whether the score knew anything.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
+    "objectID": "slides/session03.html#starting-today",
+    "href": "slides/session03.html#starting-today",
+    "title": "Trading on Predictions",
+    "section": "Starting Today",
+    "text": "Starting Today\n\n\nThree groups, drawn at random, at the start of every class\nFive minutes each, on what you got done last session\nShow the repository — the skill, the code, the numbers\n\n\n\nWhat broke is more interesting than what worked, and it is what the rest of the room needs to hear. A presentation that reports only success is a presentation nobody learns from."
   },
   {
-    "objectID": "slides/session02.html#today",
-    "href": "slides/session02.html#today",
-    "title": "Median of Peer Multiples",
+    "objectID": "slides/session03.html#what-to-cover",
+    "href": "slides/session03.html#what-to-cover",
+    "title": "Trading on Predictions",
+    "section": "What to Cover",
+    "text": "What to Cover\n\n\nWhat you decided\nWhich multiple, which peer group, what minimum size. And why.\n\n\nWhat surprised you\nThe company where the answer was obviously wrong, and what it turned out to be.\n\n\nWhat you would change\nYou have run it now. What is the first thing you would do differently?"
+  },
+  {
+    "objectID": "slides/session03.html#you-have-a-number-for-every-stock",
+    "href": "slides/session03.html#you-have-a-number-for-every-stock",
+    "title": "Trading on Predictions",
+    "section": "You Have a Number for Every Stock",
+    "text": "You Have a Number for Every Stock\n\nOwn P/E divided by peer median P/E. Below one is cheap relative to its peers; above one is expensive.\n\n\nThat is a prediction, whether or not you meant it as one. It says: this company should trade closer to its peers than it does.\n\nThe question today is whether that prediction is worth anything."
+  },
+  {
+    "objectID": "slides/session03.html#sort-do-not-threshold",
+    "href": "slides/session03.html#sort-do-not-threshold",
+    "title": "Trading on Predictions",
+    "section": "Sort, Do Not Threshold",
+    "text": "Sort, Do Not Threshold\n\n\nA threshold\n“Buy anything below 0.7.” How many stocks is that? Some years, none. Some years, four hundred.\n\n\nA sort\n“Buy the cheapest tenth.” Always the same number of positions, whatever the market is doing.\n\n\n\nRanking also throws away the scale of the signal, which is the part you trust least. You are betting on the order, not the magnitude."
+  },
+  {
+    "objectID": "slides/session03.html#long-short-or-both",
+    "href": "slides/session03.html#long-short-or-both",
+    "title": "Trading on Predictions",
+    "section": "Long, Short, or Both",
+    "text": "Long, Short, or Both\n\n\nLong only\nBuy the cheapest decile. Most of what you earn is just the market.\n\n\nLong-short\nCheapest decile long, most expensive short. What is left is the signal.\n\n\nLong-short, dollar neutral\nEqual dollars each side. The version we will build.\n\n\n\nThe long-short version is a much harder test, and it is the one that tells you whether you found anything."
+  },
+  {
+    "objectID": "slides/session03.html#the-loop",
+    "href": "slides/session03.html#the-loop",
+    "title": "Trading on Predictions",
+    "section": "The Loop",
+    "text": "The Loop\n\n\nPick a date — the last trading day of June, say\nCompute the signal for every stock, using only what was known that day\nSort, and form the portfolio\nHold it for one year. No trading, no rebalancing\nRecord the return\nMove forward a year and do it again\n\n\n\nTwenty-odd repetitions. That is your entire sample, and it is worth remembering how small a number that is."
+  },
+  {
+    "objectID": "slides/session03.html#why-once-a-year",
+    "href": "slides/session03.html#why-once-a-year",
+    "title": "Trading on Predictions",
+    "section": "Why Once a Year",
+    "text": "Why Once a Year\n\n\nThe signal moves slowly\nIt is built from annual filings. Recomputing it monthly gives you eleven months of the same answer and eleven months of trading costs.\n\nAnd it keeps the test honest\nAnnual holding periods make the overlapping-returns problem go away. Monthly rebalancing with annual data does not give you twelve times the evidence."
+  },
+  {
+    "objectID": "slides/session03.html#equal-or-value-weighted",
+    "href": "slides/session03.html#equal-or-value-weighted",
+    "title": "Trading on Predictions",
+    "section": "Equal or Value Weighted",
+    "text": "Equal or Value Weighted\n\n\nEqual weighted\nSame dollars in each name. Simple, and dominated by small companies — which is where most anomalies live, and where they are hardest to trade.\n\n\nValue weighted\nWeights by market cap. A much more honest test, and usually a much weaker result.\n\n\n\nReport both. A strategy that works equal-weighted and dies value-weighted has told you exactly what it is."
+  },
+  {
+    "objectID": "slides/session03.html#build-it",
+    "href": "slides/session03.html#build-it",
+    "title": "Trading on Predictions",
+    "section": "Build It",
+    "text": "Build It\nTell GLM\n\nWrite a backtest. For each year from 2001 to 2025: on June 30, compute the peer-median signal for every stock using the valuation skill, sort into deciles, go long the cheapest decile and short the most expensive, equal weighted, hold twelve months, and record the return. Plan it before you start.\n\n\nThen read the plan before you let it write anything."
+  },
+  {
+    "objectID": "slides/session03.html#the-restatement-problem",
+    "href": "slides/session03.html#the-restatement-problem",
+    "title": "Trading on Predictions",
+    "section": "The Restatement Problem",
+    "text": "The Restatement Problem\n\nMRY is the most recent restatement. It tells you today what nobody knew then.\n\n\nA company that restated its 2008 earnings in 2011 shows up in MRY with the restated number — so a backtest that forms a 2009 portfolio is using information from 2011. The strategy will look better than it was.\n\nUse the as-reported dimensions, ARY and ARQ, for anything historical."
+  },
+  {
+    "objectID": "slides/session03.html#filed-not-ended",
+    "href": "slides/session03.html#filed-not-ended",
+    "title": "Trading on Predictions",
+    "section": "Filed, Not Ended",
+    "text": "Filed, Not Ended\n\n\nreportperiod\nWhen the fiscal year ended. Nobody outside the company knew the numbers yet.\n\n\ndatekey\nWhen it was filed with the SEC. This is the first day you could have acted on it.\n\n\n\nSorting on reportperiod gives you a few weeks to a few months of free information, every year, in every name. It is the single most common way a backtest in this course goes wrong."
+  },
+  {
+    "objectID": "slides/session03.html#who-is-in-the-sample",
+    "href": "slides/session03.html#who-is-in-the-sample",
+    "title": "Trading on Predictions",
+    "section": "Who Is in the Sample",
+    "text": "Who Is in the Sample\n\nAsk a question you cannot answer from the schema: does the data still contain companies that stopped existing?\n\n\nIf it holds only companies listed today, then every 2005 portfolio you form is made of firms you already know survived to 2026. That is not a small bias. It is the difference between a strategy and an illusion.\n\nTell GLM\n\nCount distinct tickers with data in 2005. Then count how many of those still have data in the most recent year, and show me some that do not."
+  },
+  {
+    "objectID": "slides/session03.html#three-more",
+    "href": "slides/session03.html#three-more",
+    "title": "Trading on Predictions",
+    "section": "Three More",
+    "text": "Three More\n\n\n\n\n\n\n\nThe peer median\nComputed from the same date, or from data that arrived later?\n\n\nDelisting returns\nA company that goes to zero has to be recorded as going to zero\n\n\nCosts and borrow\nThe short side is not free, especially in the small names\n\n\n\n\nNone of these will throw an error. Each of them makes the answer better than the truth."
+  },
+  {
+    "objectID": "slides/session03.html#three-numbers",
+    "href": "slides/session03.html#three-numbers",
+    "title": "Trading on Predictions",
+    "section": "Three Numbers",
+    "text": "Three Numbers\n\n\nAverage return\nThe mean of your annual long-short returns.\n\n\nStandard deviation\nHow much those returns bounced around, year to year.\n\n\nThe ratio, and its t-stat\nWith twenty-five observations, the t-stat is doing a lot of work.\n\n\n\nTwenty-five annual returns is a small sample. A strategy earning four percent a year with fifteen percent volatility is not distinguishable from nothing."
+  },
+  {
+    "objectID": "slides/session03.html#compare-it-to-something",
+    "href": "slides/session03.html#compare-it-to-something",
+    "title": "Trading on Predictions",
+    "section": "Compare It to Something",
+    "text": "Compare It to Something\n\nFour percent a year is a fact about your strategy. It is not yet a finding.\n\n\n\nThe market\nDid the long side simply do what stocks did?\n\n\nA random sort\nRun it with the signal shuffled. What does noise earn in your backtest?\n\n\nValue itself\nPlain P/E, no peer group. Did the peer adjustment add anything?\n\n\n\nThe third comparison is the real test of last session’s work."
+  },
+  {
+    "objectID": "slides/session03.html#look-at-the-years",
+    "href": "slides/session03.html#look-at-the-years",
+    "title": "Trading on Predictions",
+    "section": "Look at the Years",
+    "text": "Look at the Years\nTell GLM\n\nPlot the annual return of the long-short portfolio, year by year. Mark the best and worst years and tell me what the portfolio held in each.\n\n\nAn average built out of one enormous year and twenty-four small negative ones is a different animal from a steady four percent, and the summary statistics will not tell you which you have."
+  },
+  {
+    "objectID": "slides/session03.html#three-people-no-shared-memory",
+    "href": "slides/session03.html#three-people-no-shared-memory",
+    "title": "Trading on Predictions",
+    "section": "Three People, No Shared Memory",
+    "text": "Three People, No Shared Memory\n\nThe conversation you had with GLM on Tuesday is invisible to your groupmates, and gone to you.\n\n\nThe code survives. The reasoning does not — why you used ARY, which peer definition you rejected, what you tried on the short side that did not work. That is exactly what the next person needs, and exactly what nobody writes down."
+  },
+  {
+    "objectID": "slides/session03.html#what-a-memory-file-is",
+    "href": "slides/session03.html#what-a-memory-file-is",
+    "title": "Trading on Predictions",
+    "section": "What a Memory File Is",
+    "text": "What a Memory File Is\n\n\nOne file per session\nDated, in the repository, next to the code it describes.\n\n\nWritten by GLM\nAt the end of the session, from the conversation it just had. You correct it.\n\n\nRead by GLM\nAt the start of the next session, before it touches anything.\n\n\n\nIt serves your groupmates and it serves the model. Both start every session knowing nothing."
+  },
+  {
+    "objectID": "slides/session03.html#what-goes-in-it",
+    "href": "slides/session03.html#what-goes-in-it",
+    "title": "Trading on Predictions",
+    "section": "What Goes in It",
+    "text": "What Goes in It\n\n\nDate, and who was working\nWhat we set out to do\nWhat we decided, and what we rejected — with the reason\nWhat broke, and whether it is fixed\nWhat is unfinished, and where to pick it up\n\n\n\nPoint 3 is the one that matters and the one that gets dropped. A decision without its reason gets re-litigated in two weeks."
+  },
+  {
+    "objectID": "slides/session03.html#build-the-skill",
+    "href": "slides/session03.html#build-the-skill",
+    "title": "Trading on Predictions",
+    "section": "Build the Skill",
+    "text": "Build the Skill\nTell GLM\n\nMake a skill that writes a session memory file. It should trigger when I say we are wrapping up. Write to memory/YYYY-MM-DD.md with those five headings, drawn from this conversation. Keep it under a page.\n\nThen a second one, or a line in CLAUDE.md:\n\nAt the start of every session, read the three most recent files in memory/."
+  },
+  {
+    "objectID": "slides/session03.html#try-it-now",
+    "href": "slides/session03.html#try-it-now",
+    "title": "Trading on Predictions",
+    "section": "Try It Now",
+    "text": "Try It Now\n\n\nBuild the skill\nSay: we are wrapping up\nRead what it wrote — and fix what it got wrong about your own afternoon\nCommit and push, so the other two can read it before Thursday\n\n\n\nStep 3 is not optional. A memory file nobody checked is a confident record of a session that did not happen."
+  },
+  {
+    "objectID": "slides/session03.html#three-things",
+    "href": "slides/session03.html#three-things",
+    "title": "Trading on Predictions",
+    "section": "Three Things",
+    "text": "Three Things\n\n\nGet the backtest running end to end, however crude\nRe-run it with ARY and datekey, and record what changed\nWrite the memory file, and push it\n\n\n\nThursday we stop borrowing the peer median and start predicting the multiple — which turns valuation into a regression, and gives you something to compare today’s result against."
+  },
+  {
+    "objectID": "slides/session05.html#empirical-asset-pricing-via-machine-learning",
+    "href": "slides/session05.html#empirical-asset-pricing-via-machine-learning",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Empirical Asset Pricing via Machine Learning",
+    "text": "Empirical Asset Pricing via Machine Learning\n\nThe Review of Financial Studies, February 2020.\n\n\n\nShihao Gu\nBooth School of Business, University of Chicago\n\n\nBryan Kelly\nYale University; Head of Machine Learning, AQR\n\n\nDacheng Xiu\nBooth School of Business, University of Chicago\n\n\n\nA horse race: one task, one dataset, a dozen methods scored side by side. Predict next month’s return for every U.S. stock from roughly 900 signals — 94 firm characteristics, their interactions with eight macro series, and industry dummies — and grade each method by out-of-sample \\(R^2\\). Trees and neural networks win, and the gains come from interactions a linear model cannot see. A value-weighted long-short decile spread on the neural network forecasts earns an out-of-sample Sharpe ratio of 1.35."
+  },
+  {
+    "objectID": "slides/session05.html#today",
+    "href": "slides/session05.html#today",
+    "title": "Ridge, Lasso, and Trees",
     "section": "Today",
-    "text": "Today\n\n\nThe data\nDefining peers\nMultiples\nExercise"
+    "text": "Today\n\n\nRidge and lasso — linear regression with a penalty on the coefficients\nHyperparameters\nCross validation\nRegression trees and gradient boosting\nPredicting a multiple from characteristics"
   },
   {
-    "objectID": "slides/session02.html#the-sharadar-core-us-equities-bundle",
-    "href": "slides/session02.html#the-sharadar-core-us-equities-bundle",
-    "title": "Median of Peer Multiples",
-    "section": "The Sharadar Core US Equities Bundle",
-    "text": "The Sharadar Core US Equities Bundle\n\n\nWhat is in it\nEvery NYSE, NASDAQ and NYSEMKT common stock, 2000 to today.\n\n\nWhere it comes from\nLicensed by Rice Business from Nasdaq Data Link.\n\n\nWhat it is\nNine tables online at motherduck.com\n\n\ndata.nasdaq.com/databases/SFA — the Sharadar Core U.S. Equity Bundle"
+    "objectID": "slides/session05.html#todays-example",
+    "href": "slides/session05.html#todays-example",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Today’s Example",
+    "text": "Today’s Example\n\nWe will use session4.parquet to predict the log of the price-to-sales ratio.\n\n\n\n\ngrossmargin\ngross margin\n\n\nebitdamargin\nEBITDA margin\n\n\nnetmargin\nnet margin\n\n\nassetturnover\nasset turnover\n\n\nrndint\nR&D / sales\n\n\ncurrentratio\ncurrent ratio\n\n\ngrowth\nsales growth\n\n\nde\ndebt / equity"
   },
   {
-    "objectID": "slides/session02.html#how-you-reach-it",
-    "href": "slides/session02.html#how-you-reach-it",
-    "title": "Median of Peer Multiples",
-    "section": "How You Reach It",
-    "text": "How You Reach It\n\nAsk AI to do it. It will read ~/workspace/.claude/skills/finance-data/SKILL.md to see how to do it.\n\nThe SKILL.md explains where the database lives, which table answers which question, and the traps in each one.\n\nAsk for US stocks and it uses the bundle. Ask for something the bundle does not carry — short interest, bond yields, … — and it routes to a free public source instead."
+    "objectID": "slides/session05.html#root-mean-squared-error",
+    "href": "slides/session05.html#root-mean-squared-error",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Root Mean Squared Error",
+    "text": "Root Mean Squared Error\n\nA standard deviation measures spread around a mean. RMSE measures spread around a prediction, and it is the same arithmetic.\n\n\n\nStandard deviation of a sample\n\\[s_x \\;=\\; \\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}\\left(x_i - \\bar{x}\\right)^{2}}\\]\n\nRoot mean squared error\n\\[\\text{RMSE} \\;=\\; \\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}\\left(y_i - \\hat{y}_i\\right)^{2}}\\]\n\n\nEach point’s own prediction \\(\\hat{y}_i\\) takes the place of the one number \\(\\bar{x}\\)."
   },
   {
-    "objectID": "slides/session02.html#what-is-in-there",
-    "href": "slides/session02.html#what-is-in-there",
-    "title": "Median of Peer Multiples",
-    "section": "What Is in There",
-    "text": "What Is in There\n\n\n\nTable\nContents\n\n\n\n\nsep\nDaily prices — 33.4M rows, 2000 to today\n\n\ndaily\nDaily market cap and valuation ratios\n\n\nsf1\n10-K and 10-Q data, 112 fields, plus precomputed ratios\n\n\nsf2\nInsider trades, from Form 4\n\n\ntickers\nIdentity, classification, exchange, listing dates\n\n\nactions\nMergers, splits, dividends, ticker changes\n\n\nevents\n8-K event codes"
+    "objectID": "slides/session05.html#r-squared",
+    "href": "slides/session05.html#r-squared",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "R-Squared",
+    "text": "R-Squared\n\nThe squared error you removed, over the squared error you started with.\n\n\\[R^{2} \\;=\\; \\frac{\\dfrac{1}{n}\\sum_{i}\\left(y_i - \\bar{y}\\right)^{2} \\;-\\; \\dfrac{1}{n}\\sum_{i}\\left(y_i - \\hat{y}_i\\right)^{2}}{\\dfrac{1}{n}\\sum_{i}\\left(y_i - \\bar{y}\\right)^{2}}\\]\n\\[R^{2} \\;=\\; \\frac{\\text{variance} \\;-\\; \\text{mean squared error}}{\\text{variance}}\\]"
   },
   {
-    "objectID": "slides/session02.html#the-table-that-describes-the-tables",
-    "href": "slides/session02.html#the-table-that-describes-the-tables",
-    "title": "Median of Peer Multiples",
-    "section": "The Table That Describes the Tables",
-    "text": "The Table That Describes the Tables\n\nindicators is the data dictionary: one row for every column in the bundle, with a definition.\n\n\nIt also documents some Sharadar tables that are not in the MotherDuck database — 13F institutional holdings, ETF prices, S&P 500 index membership."
+    "objectID": "slides/session05.html#one-small-example",
+    "href": "slides/session05.html#one-small-example",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "One Small Example",
+    "text": "One Small Example\n\nEvery app today is fitted to the same 40 firms and scored on the same 120, all with market cap above $2b.\n\n\nForty is small on purpose. Everything that goes wrong with a thousand features and ten thousand rows goes wrong here too, and here you can watch it happen."
   },
   {
-    "objectID": "slides/session02.html#sf1-has-dimensions",
-    "href": "slides/session02.html#sf1-has-dimensions",
-    "title": "Median of Peer Multiples",
-    "section": "sf1 Has Dimensions",
-    "text": "sf1 Has Dimensions\n\n\n\n\nAnnual\nQuarterly\nTrailing four quarters\n\n\n\n\nAs most recently restated\nMRY\nMRQ\nMRT\n\n\nAs originally reported\nARY\nARQ\nART\n\n\n\n\nToday we use MRY — we are describing companies as they stand. But in every MR row datekey is the period-end date copied over, so MR does not know when the numbers became public. Backtests use ARY, keyed on datekey, which is the real SEC filing date."
+    "objectID": "slides/session05.html#what-ols-is-doing",
+    "href": "slides/session05.html#what-ols-is-doing",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "What OLS Is Doing",
+    "text": "What OLS Is Doing\n\nPick the coefficients that make the sum of squared errors on the training data as small as possible. Nothing else is asked of them.\n\n\n\n0.68 train R-squared\n\n\n0.44 test R-squared\n\n\n8 features, 40 firms\n\n\n\nThe fit was chosen to make the first number large. The second is what it is worth on firms it has not seen."
   },
   {
-    "objectID": "slides/session02.html#which-stocks-are-you-even-looking-at",
-    "href": "slides/session02.html#which-stocks-are-you-even-looking-at",
-    "title": "Median of Peer Multiples",
-    "section": "Which Stocks Are You Even Looking At?",
-    "text": "Which Stocks Are You Even Looking At?\n\n\n\nFilter\nCompanies left\n\n\n\n\nEvery ticker in tickers\n15,607\n\n\nStill listed — isdelisted = 'N'\n4,355\n\n\nDrop shell companies — 315 SPACs with no operations\n4,039\n\n\n\n\nTwo filters, because the bundle has already done the rest. It holds only NYSE, NASDAQ and NYSEMKT common stock, and share classes are already collapsed — GOOG is not a row, it sits in GOOGL’s relatedtickers. Against raw Sharadar you would have to strip ADRs, Canadian listings, preferred and secondary classes yourself."
+    "objectID": "slides/session05.html#multi-collinearity",
+    "href": "slides/session05.html#multi-collinearity",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Multi-Collinearity",
+    "text": "Multi-Collinearity\n\nNet margin and EBITDA margin have a correlation of 0.82 across these firms. Least squares is asked which of them explains P/S, and the data cannot say.\n\n\n\n\n\nOLS coefficient\n\n\n\n\nnet margin\n+0.63\n\n\nEBITDA margin\n−0.27\n\n\n\n\nA large positive on one and a negative on its near-twin."
   },
   {
-    "objectID": "slides/session02.html#closeadj-and-periodic-returns",
-    "href": "slides/session02.html#closeadj-and-periodic-returns",
-    "title": "Median of Peer Multiples",
-    "section": "closeadj and Periodic Returns",
-    "text": "closeadj and Periodic Returns\n\nThe skill tells the AI how to compute periodic returns using the closeadj variable, which adjusts for dividends as well as splits (like Yahoo Finance adjusted closing price).\n\n\nSo, we can say, for example, “compute monthly returns for all stocks from date1 to date2.”"
+    "objectID": "slides/session05.html#the-ridge-criterion",
+    "href": "slides/session05.html#the-ridge-criterion",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Ridge Criterion",
+    "text": "The Ridge Criterion\n\\[\\min_{\\beta} \\; \\sum_{i=1}^{n} \\left( y_i - \\beta_0 - \\sum_j \\beta_j x_{ij} \\right)^{2} \\;+\\; \\lambda \\sum_j \\beta_j^{2}\\]\n\n\nThe second term\nA price on size. Large coefficients now have to earn their keep.\n\n\nStandardize first\nOne penalty for all the coefficients only works if the features share a scale.\n\n\nNot the intercept\n\\(\\beta_0\\) is left out of the sum. Shrinking it would just move the whole fit.\n\n\n\n\\(\\lambda\\) is a hyperparameter — a number you set before fitting, rather than one the fitting picks for you. The \\(\\beta\\)’s are parameters and come out of the data; \\(\\lambda\\) decides how hard the data has to argue for them."
   },
   {
-    "objectID": "slides/session02.html#six-ways-to-say-industry",
-    "href": "slides/session02.html#six-ways-to-say-industry",
-    "title": "Median of Peer Multiples",
-    "section": "Six Ways to Say “Industry”",
-    "text": "Six Ways to Say “Industry”\n\n\n\nColumn\nGroups\nScheme\n\n\n\n\nsector\n11\nMorningstar-style sectors\n\n\nindustry\n151\nMorningstar-style industries\n\n\nsicsector\n10\nThe SEC’s SIC divisions\n\n\nsicindustry\n437\nSIC industry titles\n\n\nsiccode\n437\nThe four-digit code itself\n\n\nfamaindustry\n48\nFama and French’s 49 industries\n\n\n\n\nAll six sit in tickers."
+    "objectID": "slides/session05.html#ridge-1",
+    "href": "slides/session05.html#ridge-1",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Ridge",
+    "text": "Ridge"
   },
   {
-    "objectID": "slides/session02.html#how-large-are-peer-groups",
-    "href": "slides/session02.html#how-large-are-peer-groups",
-    "title": "Median of Peer Multiples",
-    "section": "How Large are Peer Groups",
-    "text": "How Large are Peer Groups\n\n\n\nGrouping\nGroups\nMedian group\nMedian cell\nCells under 10\n\n\n\n\nsector\n11\n229\n51\n2%\n\n\nfamaindustry\n49\n50\n10\n50%\n\n\nindustry\n143\n16\n4\n84%\n\n\nsicindustry\n379\n4\n2\n93%\n\n\n\n\nThe 4,039 live, non-shell companies, crossed with market-cap quintiles built from daily.marketcap. Note that nineteen companies have a blank famaindustry and will form a peer group of their own if not dropped."
+    "objectID": "slides/session05.html#what-the-slider-showed",
+    "href": "slides/session05.html#what-the-slider-showed",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "What the Slider Showed",
+    "text": "What the Slider Showed\n\n\nEverything shrinks\nToward zero, together. At \\(\\lambda = 0\\) the fit is exactly OLS; the gold ticks are where it started.\n\n\nThe twins converge\n+0.63 and −0.27 become +0.15 and +0.13. Ridge splits the credit rather than picking a winner.\n\n\nNothing reaches zero\nRidge shrinks every coefficient and drops none. All eight features stay in the model.\n\n\n\nTest R-squared climbs from 0.44 to 0.66 and then falls away again. The training R-squared drops the whole way."
   },
   {
-    "objectID": "slides/session02.html#what-you-multiply-by-what",
-    "href": "slides/session02.html#what-you-multiply-by-what",
-    "title": "Median of Peer Multiples",
-    "section": "What You Multiply by What",
-    "text": "What You Multiply by What\n\n\n\n\n\n\n\n\n\nMultiple\nColumn in daily\nCompany’s own figure in sf1\nGives you\n\n\n\n\nPrice / earnings\npe\nnetinccmnusd\nEquity value\n\n\nPrice / book\npb\nequityusd\nEquity value\n\n\nPrice / sales\nps\nrevenueusd\nEquity value\n\n\nEV / EBITDA\nevebitda\nebitdausd\nEnterprise value"
+    "objectID": "slides/session05.html#the-lasso-criterion",
+    "href": "slides/session05.html#the-lasso-criterion",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Lasso Criterion",
+    "text": "The Lasso Criterion\n\\[\\min_{\\beta} \\; \\sum_{i=1}^{n} \\left( y_i - \\beta_0 - \\sum_j \\beta_j x_{ij} \\right)^{2} \\;+\\; \\lambda \\sum_j \\left| \\beta_j \\right|\\]\n\nOne character different, and the behavior is not the same. Squaring makes the penalty on a small coefficient negligible; the absolute value does not.\n\n\nA coefficient that is not paying for itself is pushed all the way to zero and stays there."
   },
   {
-    "objectID": "slides/session02.html#value-it-four-ways",
-    "href": "slides/session02.html#value-it-four-ways",
-    "title": "Median of Peer Multiples",
-    "section": "Value It Four Ways",
-    "text": "Value It Four Ways\n\n\nFix the peer set — same industry, same size bucket, same date — and count it\nTake the median of each of the four multiples across those peers\nMultiply each median by the company’s own denominator\nFor EV/EBITDA, cross back from enterprise value to equity\n\n\n\nFour implied equity values for one company. Compare each with the market cap it actually trades at."
+    "objectID": "slides/session05.html#the-shape-of-the-penalty",
+    "href": "slides/session05.html#the-shape-of-the-penalty",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Shape of the Penalty",
+    "text": "The Shape of the Penalty\n\n\nNear zero the square has nothing left to charge; the absolute value still charges full price."
   },
   {
-    "objectID": "slides/session02.html#what-a-pe-of-12-means",
-    "href": "slides/session02.html#what-a-pe-of-12-means",
-    "title": "Median of Peer Multiples",
-    "section": "What a P/E of –12 Means",
-    "text": "What a P/E of –12 Means\n\nNothing. It means the company lost money.\n\n\nA negative P/E is not a cheap stock. It is a stock with no E. Left in the sample it drags the median in the wrong direction and makes the cheapest-looking companies the ones losing the most.\n\nEV/EBITDA fails the same way on negative EBITDA. P/B is close to meaningless where the assets walk out of the building at six o’clock — and it means something else again for a bank, where the balance sheet is the business. P/S always exists, which is not the same as always meaning something.\n\nFilter out the negative values. We won’t try to value them or to use them for valuing others."
+    "objectID": "slides/session05.html#lasso-1",
+    "href": "slides/session05.html#lasso-1",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Lasso",
+    "text": "Lasso"
   },
   {
-    "objectID": "slides/session02.html#why-the-median",
-    "href": "slides/session02.html#why-the-median",
-    "title": "Median of Peer Multiples",
-    "section": "Why the Median",
-    "text": "Why the Median\n\n\nThe mean\nOne company with a P/E of 900 — a real company that barely broke even — and the average for the industry is meaningless.\n\nThe median\nUnmoved by the tail. With ratios, where the numerator is bounded below and the denominator can approach zero, this is not a refinement. It is the difference between a number and noise.\n\n\nReport the count alongside every median. A median of four is a different object from a median of four hundred, and the table does not tell you which you have."
+    "objectID": "slides/session05.html#how-a-tree-fits",
+    "href": "slides/session05.html#how-a-tree-fits",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "How a Tree Fits",
+    "text": "How a Tree Fits\n\n\nSearch every feature and every cut point for the one split that reduces the sum of squared errors the most.\nCut the sample in two on that rule.\nRepeat inside each piece, and inside the pieces of those pieces.\nPredict the average of the training firms that land in each final piece.\n\n\n\nNo linear form is assumed, so a tree handles a kink or a threshold that a regression has to be told about. The next two slides use gross margin and net margin, because two is the most you can draw."
   },
   {
-    "objectID": "slides/session02.html#deviations",
-    "href": "slides/session02.html#deviations",
-    "title": "Median of Peer Multiples",
-    "section": "Deviations",
-    "text": "Deviations\n\nDeviation = log( market cap / implied value ).\n\nPositive means the market pays more for this company than its peers say it is worth. Negative means the company is cheap compared to peers."
+    "objectID": "slides/session05.html#splitting-on-two-features",
+    "href": "slides/session05.html#splitting-on-two-features",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Splitting on Two Features",
+    "text": "Splitting on Two Features\n\n\nEach cut is chosen over both variables at once. The winner is whichever single line, in whichever variable, increases the training \\(R^2\\) the most."
   },
   {
-    "objectID": "slides/session02.html#claude.md",
-    "href": "slides/session02.html#claude.md",
-    "title": "Median of Peer Multiples",
-    "section": "CLAUDE.md",
-    "text": "CLAUDE.md\n\nWhat is always true in this folder: what the project is, where things live, the conventions, and what never to do.\n\nIt is read at the start of every session in that folder, before you type anything.\n\nThree people, three containers, one repository. CLAUDE.md is how a decision one of you makes on Thursday is still in force when somebody else opens the folder on Sunday. Everything you type into a prompt window instead dies with that conversation."
+    "objectID": "slides/session05.html#one-tree",
+    "href": "slides/session05.html#one-tree",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "One Tree",
+    "text": "One Tree\n\n\nThe boxes and the tree are the same object. A path down the tree is a box; a leaf’s colour is the average of the firms that landed in it."
   },
   {
-    "objectID": "slides/session02.html#tell-claude-to-edit-it",
-    "href": "slides/session02.html#tell-claude-to-edit-it",
-    "title": "Median of Peer Multiples",
-    "section": "Tell Claude to Edit It",
-    "text": "Tell Claude to Edit It\nWhen your group settles something:\n\nAdd to CLAUDE.md: peers are famaindustry crossed with market cap quintiles; minimum group size is eight.\n\n\nYou never open the file yourself. You say what you decided and the AI writes it down."
+    "objectID": "slides/session05.html#hyperparameters-to-control-overfitting",
+    "href": "slides/session05.html#hyperparameters-to-control-overfitting",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Hyperparameters to Control Overfitting",
+    "text": "Hyperparameters to Control Overfitting\n\n\nMax depth\nHow many cuts deep the tree may go. Depth \\(d\\) allows up to \\(2^d\\) leaves; depth 8 here gives 28 boxes for 40 firms.\n\n\nMinimum per leaf\nThe smallest number of training points a leaf may hold. A leaf of one is a memorized observation.\n\n\n\nAt depth 2 the tree scores 0.57 on the training firms and 0.29 on the test firms. At depth 8 it scores 0.96 and \\(-0.14\\) — worse than a flat line at the average."
   },
   {
-    "objectID": "slides/session02.html#keep-a-record-of-scripts-and-outputs",
-    "href": "slides/session02.html#keep-a-record-of-scripts-and-outputs",
-    "title": "Median of Peer Multiples",
-    "section": "Keep a Record of Scripts and Outputs",
-    "text": "Keep a Record of Scripts and Outputs\nPut this in CLAUDE.md\n\nAfter running any script, append a row to RUNS.md: who ran it, the date and time, the script, and where the output went.\n\n\nKeep the log in its own file. CLAUDE.md is read at the top of every session, so a hundred rows of history there is a hundred rows you would pay for on every prompt."
+    "objectID": "slides/session05.html#the-idea",
+    "href": "slides/session05.html#the-idea",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "The Idea",
+    "text": "The Idea\n\n\nStart by predicting the training mean for everyone.\nCompute the residuals — what the current prediction is missing.\nFit a small tree to the residuals.\nAdd a fraction of that tree, the learning rate, to the prediction.\nGo back to step 2.\n\n\n\nNo single tree is any good. The sum of a few hundred deliberately weak ones is the model that wins most tabular prediction contests. Back to one feature here, so the sum can be drawn as a curve."
   },
   {
-    "objectID": "slides/session02.html#use-ai-to-pull-commit-and-push",
-    "href": "slides/session02.html#use-ai-to-pull-commit-and-push",
-    "title": "Median of Peer Multiples",
-    "section": "Use AI to Pull, Commit, and Push",
-    "text": "Use AI to Pull, Commit, and Push\n\nLet GLM run Git for you. It will write better commit messages and resolve merge conflicts."
+    "objectID": "slides/session05.html#fitting-the-residuals",
+    "href": "slides/session05.html#fitting-the-residuals",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Fitting the Residuals",
+    "text": "Fitting the Residuals\n\n\n\n\nWhat each tree is given\nEvery tree after the first is fitted to what the ones before it got wrong.\nWhat rises is the training \\(R^2\\): nothing before any tree, 0.66 after ten.\nNo one of these trees is a model. The sum of them is."
   },
   {
-    "objectID": "slides/session02.html#data-files",
-    "href": "slides/session02.html#data-files",
-    "title": "Median of Peer Multiples",
-    "section": "Data Files",
-    "text": "Data Files\n\nKeep your data files in your workspace so you don’t waste time getting the data each time\nParquet is the fastest file type for reading and writing and also the smallest\nTell GLM to gitignore them. This means they won’t be pushed to GitHub.\nPushing large files to GitHub is slow, and GitHuB rejects files &gt; 100MB."
+    "objectID": "slides/session05.html#important-hyperparameters",
+    "href": "slides/session05.html#important-hyperparameters",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Important Hyperparameters",
+    "text": "Important Hyperparameters\n\n\nNumber of trees\nThe only knob that keeps improving the training fit forever. Test R-squared peaks early — here, after about five.\n\n\nLearning rate\nHow much of each tree is added. Small rates need more trees and usually end up better.\n\n\nDepth\nHow much each tree may do on its own. Two or three is standard; the boosting is supposed to do the work.\n\n\n\nHalve the learning rate and you roughly double the number of trees you need. Set the rate low, then stop adding trees when validation R-squared stops rising. Min observations per leaf is also important. We set it to 1 here for simplicity."
   },
   {
-    "objectID": "slides/session02.html#todays-work",
-    "href": "slides/session02.html#todays-work",
-    "title": "Median of Peer Multiples",
-    "section": "Today’s Work",
-    "text": "Today’s Work\n\n\nBuild the peer table — universe, industry grouping, size buckets, and the count in every cell\nTake the four medians in each cell, and value every company four ways\nWhich median multiple matches the market the best?\nWhy do medians deviate from the market — is it asset turnover, margins, leverage, investment rate, … — using the most recent 10K (sf1 with dimension = MRY)?\n\n\n\nStep 1 is the one that takes the longest and the one everything else rests on. Do not let it be the step you rush."
+    "objectID": "slides/session05.html#gradient-boosting-1",
+    "href": "slides/session05.html#gradient-boosting-1",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Gradient Boosting",
+    "text": "Gradient Boosting"
   },
   {
-    "objectID": "slides/session02.html#what-to-present-tuesday",
-    "href": "slides/session02.html#what-to-present-tuesday",
-    "title": "Median of Peer Multiples",
-    "section": "What to Present Tuesday",
-    "text": "What to Present Tuesday\n\n\nThe peer definition\nWhich grouping, which size buckets, what minimum count — and the cell counts that justify it.\n\n\nCoverage\nHow many of the companies got a value under each of the four multiples, and which multiple lost the most.\n\n\nWhat the deviations track\nProfitability, growth, leverage — or nothing.\n\n\nThe disagreement case\nThe company where the four methods were furthest apart, and your diagnosis.\n\n\n\nFive minutes, from the repository. Three groups drawn at random — so all of you are ready."
+    "objectID": "slides/session05.html#every-boosting-hyperparameter",
+    "href": "slides/session05.html#every-boosting-hyperparameter",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Every Boosting Hyperparameter",
+    "text": "Every Boosting Hyperparameter\n\n\nHow much ensemble\n\nn_estimators — how many trees\nlearning_rate — shrinkage per tree\nsubsample — rows per tree\nloss — squared, absolute, huber\nn_iter_no_change — early stopping\n\n\nHow much tree\n\nmax_depth — how deep\nmax_leaf_nodes — or how many\nmin_samples_leaf — smallest box\nmin_samples_split — node minimum\nmax_features — features per split\n\n\n\nAll are set before fitting. Tune the first three and leave the rest alone."
   },
   {
-    "objectID": "slides/session04.html#today",
-    "href": "slides/session04.html#today",
-    "title": "Linear Regression for Multiples",
-    "section": "Today",
-    "text": "Today\n\n\nFit a linear regression to predict multiples\nFiltering, transforming variables\nTrain/test split and out-of-sample goodness of fit"
+    "objectID": "slides/session05.html#which-features-mattered",
+    "href": "slides/session05.html#which-features-mattered",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Which Features Mattered",
+    "text": "Which Features Mattered\n\nBoosting will tell you which features its trees actually used.\n\n\n\n\n\n\nnet margin\n0.25\n\n\nR&D / sales\n0.23\n\n\ngross margin\n0.15\n\n\nsales growth\n0.14\n\n\nEBITDA margin\n0.13\n\n\ndebt / equity\n0.04\n\n\ncurrent ratio\n0.03\n\n\nasset turnover\n0.02\n\n\n\n\nWhere the numbers come from\nThe fraction of the total training error removed that each feature is responsible for, based on error reduction at each split in each tree.\nWhat they do not say\nNot the sign of the effect — only that the feature got used. Two features that move together split the credit between them, so neither looks essential.\n\n\nmodel.feature_importances_, in the order of the feature columns. Here: 200 trees, rate 0.1, depth 2, test \\(R^2\\) of 0.60."
   },
   {
-    "objectID": "slides/session04.html#data-session4.parquet",
-    "href": "slides/session04.html#data-session4.parquet",
-    "title": "Linear Regression for Multiples",
-    "section": "Data: session4.parquet",
-    "text": "Data: session4.parquet\n\nToday’s data, 4161 rows.\n\n\n\n\n\n\n\n\nMultiples\nps, pb, pe, evebitda\n\n\nDenominators\nrevenue, book value, net income, EBITDA\n\n\nIndustry variables\nSIC4, SIC3, SIC2, industry, famaindustry, sector\n\n\nRatios\nnet margin, gross margin, EBITDA margin, asset turnover, ROE, ROA, ROIC, debt-to-equity, current ratio, payout ratio, dividend yield\n\n\nGrowth\nyear-over-year sales growth\n\n\nSize\nmarketcap\n\n\n\n\nAsk AI to describe session4.parquet and confirm that it contains this data."
+    "objectID": "slides/session05.html#cross-validation",
+    "href": "slides/session05.html#cross-validation",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Cross-Validation",
+    "text": "Cross-Validation\n\nSplit the training sample into 5 subsets. For each hyperparameter value, fit on 4, test (validate) on the 5th. Repeat across all 5 folds. Choose the hyperparameter with the best average performance on the 5 validation folds."
   },
   {
-    "objectID": "slides/session04.html#linear-regression",
-    "href": "slides/session04.html#linear-regression",
-    "title": "Linear Regression for Multiples",
-    "section": "Linear Regression",
-    "text": "Linear Regression\n\n\nAsk AI to use the statsmodels library to regress ps on the ratios and sales growth.\nThink about what you want to do with negative ps firms and tell AI. Or discuss it with AI.\nAnalyze the regression output."
+    "objectID": "slides/session05.html#hands-on",
+    "href": "slides/session05.html#hands-on",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Hands On",
+    "text": "Hands On\n\n\nUse session4.parquet and do a train/test split.\nTrain LinearRegression.\nUse GridSearchCV to find the optimal n_estimators, learning_rate and max_depth hyperparameters for GradientBoostingRegressor.\nReport the \\(R^2\\) on the test sample for both methods.\n\n\n\nTell AI to do it. You do not need to name LinearRegression, GridSearchCV, or GradientBoostingRegressor. You could just say your goal is to test linear regression and gradient boosting to predict ps from the ratios and sales growth."
   },
   {
-    "objectID": "slides/session04.html#industry-membership",
-    "href": "slides/session04.html#industry-membership",
-    "title": "Linear Regression for Multiples",
-    "section": "Industry Membership",
-    "text": "Industry Membership\n\nIncluding industry dummy variables (1 if in industry, 0 if not, for each industry) allows the intercept of the regression to vary by industry.\n\n\nAsk AI what industry variable it recommends using. Then ask it to run the regression with statsmodels and to evaluate the goodness of fit."
+    "objectID": "slides/session05.html#refit-and-save-your-models",
+    "href": "slides/session05.html#refit-and-save-your-models",
+    "title": "Ridge, Lasso, and Trees",
+    "section": "Refit and Save Your Models",
+    "text": "Refit and Save Your Models\n\n\nRefit LinearRegression on the entire sample.\nRerun GridSearchCV for GradientBoostingRegressor on the entire sample.\nSave both refit models.\n\n\n\nWe will use the models to build Stock Recommender apps on Thursday. Ask AI to save them with joblib.dump and to check that they load back."
   },
   {
-    "objectID": "slides/session04.html#both-directions",
-    "href": "slides/session04.html#both-directions",
-    "title": "Linear Regression for Multiples",
-    "section": "Both Directions",
-    "text": "Both Directions\n\n\nSix points either way, and least squares has no way of telling you which of these two pictures it is looking at. It reports the same kind of R-squared for both."
+    "objectID": "slides/session08.html#overview",
+    "href": "slides/session08.html#overview",
+    "title": "DCF Valuation of Companies",
+    "section": "Overview",
+    "text": "Overview\n\n\nBuild a template for two-stage DCF\nBut firm valuation is not “one size fits all,” so a spreadsheet template or a classical app is limited\nCreate an agent skill\nCreate a stand-alone agent"
   },
   {
-    "objectID": "slides/session04.html#it-destroys-a-real-relationship",
-    "href": "slides/session04.html#it-destroys-a-real-relationship",
-    "title": "Linear Regression for Multiples",
-    "section": "It Destroys a Real Relationship",
-    "text": "It Destroys a Real Relationship\n\n\n\nx\n1\n2\n3\n4\n5\n\n20\n\n\n\n\ny\n1\n2\n3\n4\n5\n\n0\n\n\n\n\n\nFive points\nSlope 1.00, R-squared 1.00. A perfect line.\n\nAdd the sixth\nSlope -0.13, R-squared 0.24. The sign is now wrong."
+    "objectID": "slides/session08.html#template",
+    "href": "slides/session08.html#template",
+    "title": "DCF Valuation of Companies",
+    "section": "Template",
+    "text": "Template\n\n\n\nInput\nBasis\n\n\n\n\nSales growth\n\n\n\nEBITDA margin\n\n\n\nDepreciation\n% of prior year net PP&E\n\n\nCash tax rate\ncash taxes / pretax income\n\n\nSales-to-NWC ratio\nprior or average NWC?\n\n\nSales-to-net PP&E ratio\nprior or average net PP&E?\n\n\nCap ex\na plug\n\n\n\n\nCash taxes: the provision less its deferred portion, or the taxes paid per the cash flow statement."
   },
   {
-    "objectID": "slides/session04.html#and-it-invents-one-that-is-not-there",
-    "href": "slides/session04.html#and-it-invents-one-that-is-not-there",
-    "title": "Linear Regression for Multiples",
-    "section": "And It Invents One That Is Not There",
-    "text": "And It Invents One That Is Not There\n\n\n\nx\n1\n2\n3\n4\n5\n\n100\n\n\n\n\ny\n3\n1\n4\n2\n3\n\n200\n\n\n\n\n\nFive points of noise\nR-squared 0.019, t = 0.24. Correctly, nothing.\n\n\nAdd the sixth\nR-squared 0.999, t = 55. A perfect fit through one observation.\n\n\n\nSix points here, and a few thousand in the file. It does not take many."
+    "objectID": "slides/session08.html#issues-there-are-many",
+    "href": "slides/session08.html#issues-there-are-many",
+    "title": "DCF Valuation of Companies",
+    "section": "Issues (There Are Many)",
+    "text": "Issues (There Are Many)\n\n\n\nValue real estate, reserves, …\nLeases: financial or operating?\nMinority interests, investments in and income from affiliates\nGoodwill: constant or growing?\n\n\n\nLong-term deferred taxes: debt or equity?\nOther long-term assets and liabilities\nDerivative positions\nPreferred stock, convertible bonds, …"
   },
   {
-    "objectID": "slides/session04.html#the-moves",
-    "href": "slides/session04.html#the-moves",
-    "title": "Linear Regression for Multiples",
-    "section": "The Moves",
-    "text": "The Moves\n\n\nWinsorize\nClip each variable at its 1st and 99th percentile. Keeps the company, discards the magnitude.\n\n\nStandardize\nSubtract the mean, divide by the standard deviation. Puts every variable on the same scale.\n\n\nLog\nTake logs. Converts right-skewed distributions (marketcap, household income, …) into more symmetric ones.\n\n\n\nThey are not interchangeable, and only two of the three will do anything to an OLS R-squared."
+    "objectID": "slides/session08.html#creating-a-skill",
+    "href": "slides/session08.html#creating-a-skill",
+    "title": "DCF Valuation of Companies",
+    "section": "Creating a Skill",
+    "text": "Creating a Skill\n\nWritten instructions (SKILL.md) plus accompanying scripts and examples. The template lives here.\n\n\nInstructions for getting data, possibly including MD&A, risks from 10-K, earnings calls, news\nInstructions to use xlsx and pptx skills, any special formatting you want\nGuidelines for walking through other issues"
   },
   {
-    "objectID": "slides/session04.html#winsorizing",
-    "href": "slides/session04.html#winsorizing",
-    "title": "Linear Regression for Multiples",
-    "section": "Winsorizing",
-    "text": "Winsorizing\n\n\n\n\nvalues\nmean\nstd\n\n\n\n\nRaw\n1, 2, 3, 4, 1000\n202.0\n446.1\n\n\nClipped at 4\n1, 2, 3, 4, 4\n2.8\n1.3\n\n\n\n\nThe company stays in the sample and keeps its rank. What it loses is the ability to dominate a sum of squares. Winsorizing is a statement that you believe the ordering and not the size."
+    "objectID": "slides/session08.html#creating-an-agent",
+    "href": "slides/session08.html#creating-an-agent",
+    "title": "DCF Valuation of Companies",
+    "section": "Creating an Agent",
+    "text": "Creating an Agent\n\n\nStand-alone app\nAPI calls to large language model\nCould use Claude Agent SDK, though Claude can also write everything from scratch\n\n\n\nThe same SKILL.md works in Claude Code and inside the agent app."
   },
   {
-    "objectID": "slides/session04.html#logs",
-    "href": "slides/session04.html#logs",
-    "title": "Linear Regression for Multiples",
-    "section": "Logs",
-    "text": "Logs\n\n\n\n\nvalues\n\n\n\n\nRaw\n1, 2, 3, 4, 1000\n\n\nLog\n0.00, 0.69, 1.10, 1.39, 6.91\n\n\n\n\nA thousand is a thousand times the smallest value and seven times its log. Taking logs is useful for right-skewed variables."
+    "objectID": "slides/session08.html#inside-an-agent",
+    "href": "slides/session08.html#inside-an-agent",
+    "title": "DCF Valuation of Companies",
+    "section": "Inside an Agent",
+    "text": "Inside an Agent"
   },
   {
-    "objectID": "slides/session04.html#standardizing",
-    "href": "slides/session04.html#standardizing",
-    "title": "Linear Regression for Multiples",
-    "section": "Standardizing",
-    "text": "Standardizing\n\n\n\n\nvalues\nmean\nstd\n\n\n\n\nRaw\nninety-nine 0.5s, and one 3374\n34.2\n335.7\n\n\nStandardized\nninety-nine -0.1005s, and one 9.95\n0.0\n1.0\n\n\n\n\nStandardizing is a linear change of variables, and OLS is invariant to it. The coefficients move and are easier to compare across variables, but the predictions of the dependent variable do not change."
+    "objectID": "slides/session08.html#three-varieties-of-tools",
+    "href": "slides/session08.html#three-varieties-of-tools",
+    "title": "DCF Valuation of Companies",
+    "section": "Three Varieties of Tools",
+    "text": "Three Varieties of Tools\n\n\nClaude Code tools\nThe inherited built-ins — Read, Write, Edit, Bash, Grep, Glob, WebSearch, WebFetch, …\n\n\nInternal MCP tools\nYour own Python functions — run_python, or the valuation itself.\n\n\nExternal MCP tools\nConnectors — databases, the web, your inbox.\n\n\n\nThe LLM never runs anything. The harness — everything in an agent that is not the model — executes the tool the model asks for, or refuses."
   },
   {
-    "objectID": "slides/session04.html#re-run-the-regression",
-    "href": "slides/session04.html#re-run-the-regression",
-    "title": "Linear Regression for Multiples",
-    "section": "Re-run the regression",
-    "text": "Re-run the regression\n\nTalk with AI about which transformations might be useful for which variables. Then re-run the regression.\n\n\nHow do coefficients, t-stats, and the R-squared change?"
+    "objectID": "slides/session08.html#where-they-run",
+    "href": "slides/session08.html#where-they-run",
+    "title": "DCF Valuation of Companies",
+    "section": "Where They Run",
+    "text": "Where They Run\n\n\n\n\n\n\n\nRead, Write, Edit, Bash, Grep\nthe agent’s own process — its filesystem, its shell, its network\n\n\nInternal MCP tools\nthe same process — whatever it can import, it can run\n\n\nExternal MCP tools\nsomeone else’s server — arguments out over HTTP, only the result back\n\n\nWebSearch\nAnthropic’s search backend — titles and URLs, not pages\n\n\nWebFetch\ndownloads from your machine, then a small model extracts what was asked\n\n\n\n\nSo “on your machine” holds for the filesystem and shell tools. The two web tools are not local: the search runs at Anthropic, and the fetched page is sent there to be read."
   },
   {
-    "objectID": "slides/session04.html#machine-learning",
-    "href": "slides/session04.html#machine-learning",
-    "title": "Linear Regression for Multiples",
-    "section": "Machine Learning",
-    "text": "Machine Learning\n\nMachine learning deals with the following type of situation.\n\n\nIn the future, I will have some data. I want to use it to make a prediction about another variable.\nI also have past data on the predictors (x variables) and the dependent variable (y).\nI want to build a model using the past data that predicts y from the x variables.\nIn the future, I will use the model to make predictions.\n\n\nWhat machine learning cares about is how well a model trained (fitted) on past data will perform on future data. This is out-of-sample performance, because the future x’s and y are not part of the sample used to build the model."
+    "objectID": "slides/session08.html#the-deployed-agent",
+    "href": "slides/session08.html#the-deployed-agent",
+    "title": "DCF Valuation of Companies",
+    "section": "The Deployed Agent",
+    "text": "The Deployed Agent"
   },
   {
-    "objectID": "slides/session04.html#train-test-split",
-    "href": "slides/session04.html#train-test-split",
-    "title": "Linear Regression for Multiples",
-    "section": "Train-Test Split",
-    "text": "Train-Test Split\n\nTo assess expected out-of-sample performance, we withhold some of our current data when training. We use the held-out data to test the model.\n\n\n\nAsk AI to use scikit-learn to do a train-test split, to transform features (x variables) on the training data, apply the same transformations on the test data, and determine goodness of fit on the test data.\nAsk AI to create an html doc explaining what was done and explaining the performance on the test data."
+    "objectID": "slides/session08.html#agent-options",
+    "href": "slides/session08.html#agent-options",
+    "title": "DCF Valuation of Companies",
+    "section": "Agent Options",
+    "text": "Agent Options\n\n\n\n\n\n\n\nClaudeAgentOptions\n\n\n\n\n\nsystem_prompt\na string, or a file on disk when it is long\n\n\ntools\nwhich built-ins to include — tools=[] for none\n\n\ndisallowed_tools\ntakes a tool out of the model’s context entirely\n\n\nallowed_tools\nthe tools that run without prompting\n\n\nmcp_servers\nthe servers to connect, plus the one holding your tools\n\n\nmax_turns\nhow many tool-use round trips before the app stops it\n\n\n\n\nallowed_tools is not a whitelist. A tool left off it still runs — it falls through to permission_mode."
   },
   {
-    "objectID": "slides/session04.html#assignment-for-tuesday",
-    "href": "slides/session04.html#assignment-for-tuesday",
-    "title": "Linear Regression for Multiples",
-    "section": "Assignment for Tuesday",
-    "text": "Assignment for Tuesday\n\nCan we trade on this? Use session4_monthly.parquet. In each row, everything except the return is known at the beginning of the month.\n\n\n\nRun a linear regression each month, using some multiple on the left-hand side. Use scikit-learn, but do not use train-test splits. Our test will be whether we make money.\nSort stocks each month based on the regression error. If the left-hand side is ps, or log ps, then positive errors (ps &gt; predicted) are expensive firms. You would want to buy stocks with the “most negative” errors.\nForm a portfolio each month and compute its return. Evaluate the returns of the strategy — annualized mean, Sharpe ratio, CAPM alpha, …\n\n\n\nBe prepared to present on Tuesday — slides if you want them but be prepared to dig into the analysis."
+    "objectID": "slides/session08.html#permission-modes",
+    "href": "slides/session08.html#permission-modes",
+    "title": "DCF Valuation of Companies",
+    "section": "Permission Modes",
+    "text": "Permission Modes\n\n\n\n\n\n\n\npermission_mode\n\n\n\n\n\ndefault\nprompts before file edits, shell commands, and network requests\n\n\nacceptEdits\nauto-approves edits and common filesystem commands\n\n\nplan\nread-only — proposes changes but makes none\n\n\ndontAsk\nonly allowed_tools run; anything else is denied, not prompted\n\n\nbypassPermissions\neverything runs, no checks — sandboxed containers only"
   },
   {
-    "objectID": "slides/session07.html#fifteen-features-6-price-and-volume",
-    "href": "slides/session07.html#fifteen-features-6-price-and-volume",
-    "title": "Train, Test, and an App",
-    "section": "Fifteen Features: 6 Price and Volume",
-    "text": "Fifteen Features: 6 Price and Volume\n\n\n\nmomentum\n11-month return, skipping the most recent month\n\n\nret_1m\nlast month’s return\n\n\nvolatility\nvolatility of daily returns within the month\n\n\nvolatility_12m\nvolatility of the last 12 monthly returns\n\n\nilliquidity\nAmihud: average absolute return per dollar traded\n\n\ndollarvol\naverage daily dollar volume\n\n\n\n\nMomentum skips month t–1 because stocks tend to reverse at a one-month horizon. That month is carried separately as ret_1m."
+    "objectID": "slides/session08.html#custom-tools",
+    "href": "slides/session08.html#custom-tools",
+    "title": "DCF Valuation of Companies",
+    "section": "Custom Tools",
+    "text": "Custom Tools\nA Python function with a decorator giving its name, description, and arguments.\n@tool(\n    \"get_financials\",\n    \"Fetch a company's income statement, balance sheet and cash flow.\",\n    {\"ticker\": Annotated[str, \"The stock's ticker symbol\"]},\n)\nasync def get_financials(args):\n    t = yf.Ticker(args[\"ticker\"])\n    csv = t.income_stmt.to_csv()\n    return {\"content\": [{\"type\": \"text\", \"text\": csv}]}\nlocal_server = create_sdk_mcp_server(name=\"local\", tools=[get_financials])\n\nTools fetch. The skill specifies the workbook, and the workbook’s own formulas do the arithmetic — so the valuation is not a tool."
   },
   {
-    "objectID": "slides/session07.html#fifteen-features-9-valuation-and-accounting",
-    "href": "slides/session07.html#fifteen-features-9-valuation-and-accounting",
-    "title": "Train, Test, and an App",
-    "section": "Fifteen Features: 9 Valuation and Accounting",
-    "text": "Fifteen Features: 9 Valuation and Accounting\n\n\n\nmarketcap\nmarket capitalization\n\n\npb\nprice to book\n\n\nps\nprice to sales\n\n\nroe\nreturn on equity\n\n\ngrossprofitability\ngross profit over assets\n\n\naccruals\nthe part of earnings not backed by cash flow\n\n\nassetgrowth\nchange in assets since the last annual filing\n\n\nissuance\nlog change in shares outstanding\n\n\ndivyield\ndividend yield"
-  },
-  {
-    "objectID": "slides/session07.html#how-the-model-was-fit",
-    "href": "slides/session07.html#how-the-model-was-fit",
-    "title": "Train, Test, and an App",
-    "section": "How the Model Was Fit",
-    "text": "How the Model Was Fit\n\n\nUse 2001-01 through 2020-12 as the training period.\nFilter to approximate Russell 2000 universe - market cap between 1,001 and 3000, inclusive, at the beginning of each month.\nReplace every feature with its rank (0 to 1) inside that month’s Russell 2000 universe.\nChoose the hyperparameters on expanding-window folds: train on the earliest months, validate on the block that follows.\nRefit on the whole training period with the chosen settings and save the model to a file: session7_model.joblib.\n\n\n\nIndustry is not a feature: an earlier fit with sector dummies picked up the sector returns of the training years."
-  },
-  {
-    "objectID": "slides/session07.html#target-and-scoring",
-    "href": "slides/session07.html#target-and-scoring",
-    "title": "Train, Test, and an App",
-    "section": "Target and Scoring",
-    "text": "Target and Scoring\n\nTry to predict how each stock’s return will rank in the Russell 2000 universe, from 0 to 1.\nNot trying to predict whether stocks are up or down in aggregate — no market timing.\nJust trying to predict which stocks will beat others.\nFor evaluating hyperparameters, rank predictions 0 to 1 and compute correlation with actual ranks. Higher ecorrelation is better."
-  },
-  {
-    "objectID": "slides/session07.html#expanding-window-folds",
-    "href": "slides/session07.html#expanding-window-folds",
-    "title": "Train, Test, and an App",
-    "section": "Expanding-Window Folds",
-    "text": "Expanding-Window Folds\n\nThe 240 training months are cut into six blocks of 40. Each fold trains on the blocks before it and is scored on the one that follows.\n\nblock      1      2      3      4      5      6\nfold 1   train  valid\nfold 2   train  train  valid\nfold 3   train  train  train  valid\nfold 4   train  train  train  train  valid\nfold 5   train  train  train  train  train  valid\n\nSix blocks give five folds. The folds are whole months and always run forward — shuffling the rows would train the model on 2018 to predict 2006."
-  },
-  {
-    "objectID": "slides/session07.html#test-procdure",
-    "href": "slides/session07.html#test-procdure",
-    "title": "Train, Test, and an App",
-    "section": "Test Procdure",
-    "text": "Test Procdure\n\nsession7_test.parquet contains the 15 features ranked within each cross section 2001-01 through 2026-09\nApplying session7_model.joblib to each cross-section gives predictions (of ranks)\nAssignment was to form portfolios based on the predictions and to evaluate the results"
-  },
-  {
-    "objectID": "slides/session07.html#refit-on-all-past-data",
-    "href": "slides/session07.html#refit-on-all-past-data",
-    "title": "Train, Test, and an App",
-    "section": "Refit on All Past Data",
-    "text": "Refit on All Past Data\n\nThe expanding-window cross-validation was repeated on the full dataset 2001-01 through 2026-09\nUsing the best hyperparameters, the model was refit on the full dataset: session7_model_full.joblib"
-  },
-  {
-    "objectID": "slides/session07.html#use-the-model-to-make-predictions",
-    "href": "slides/session07.html#use-the-model-to-make-predictions",
-    "title": "Train, Test, and an App",
-    "section": "Use the Model to Make Predictions",
-    "text": "Use the Model to Make Predictions\n\nOur goal is to use it to make stock predictions for the upcoming month (21 trading days)\nWe should update our features daily based on prices and volumes and any new 10-K’s\nInstead we are going to use data frozen last week: session7_live.parquet"
-  },
-  {
-    "objectID": "slides/session07.html#frontend-and-backend",
-    "href": "slides/session07.html#frontend-and-backend",
-    "title": "Train, Test, and an App",
-    "section": "Frontend and Backend",
-    "text": "Frontend and Backend\n\n\nFrontend\nThe browser. HTML, CSS, and JavaScript — it draws the page and collects the clicks.\n\nBackend\nA program on a server that listens continuously for requests. Yours will be Python.\n\n\nYou open a URL. The browser sends a GET request. The server sends back the HTML, CSS, and JavaScript it was written to send. The browser interprets that and shows you a page.\n\n\nRight-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over."
-  },
-  {
-    "objectID": "slides/session07.html#then-you-click-something",
-    "href": "slides/session07.html#then-you-click-something",
-    "title": "Train, Test, and an App",
-    "section": "Then You Click Something",
-    "text": "Then You Click Something\n\nA POST request carries data the other way — a form, a ticker you typed. The server does what it was written to do and replies."
-  },
-  {
-    "objectID": "slides/session07.html#running-locally",
-    "href": "slides/session07.html#running-locally",
-    "title": "Train, Test, and an App",
-    "section": "Running Locally",
-    "text": "Running Locally\n\nThe backend and the frontend can be the same computer — lab638, or your own laptop if you have Python installed on it.\n\n\n\nlocalhost\n127.0.0.1 is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.\n\n\nPorts\nOne machine can run many programs listening at once. The port number tells the operating system which of them gets the request.\n\n\n\nYou write the app as a .py file. FastAPI is the dominant Python library for writing one; uvicorn runs it and starts it listening on a port: python3 -m uvicorn app:app --reload."
-  },
-  {
-    "objectID": "slides/session07.html#basic-design",
-    "href": "slides/session07.html#basic-design",
-    "title": "Train, Test, and an App",
-    "section": "Basic Design",
-    "text": "Basic Design\n\n\nThe fitted gradient boosting model session7_model_full.joblib is baked into the app (rebuild the app when the model is refitted)\nOvernight, all new data should be pulled, ranks computed, the model run, and predictions made\nThe predictions should be mapped into whatever output you want the app to have (Buy, Sell, etc.)\nUser inputs a ticker and gets the output\nWe’re going to skip the overnight pulling and bake session7_live.parquet into the app"
-  },
-  {
-    "objectID": "slides/session07.html#first-what-do-the-predictions-look-like",
-    "href": "slides/session07.html#first-what-do-the-predictions-look-like",
-    "title": "Train, Test, and an App",
-    "section": "First, What do the Predictions Look Like?",
-    "text": "First, What do the Predictions Look Like?\n\nEvery prediction sits between 0.448 and 0.518. Adjacent decile cutoffs in the middle are four thousandths apart."
-  },
-  {
-    "objectID": "slides/session07.html#what-the-app-should-produce",
-    "href": "slides/session07.html#what-the-app-should-produce",
-    "title": "Train, Test, and an App",
-    "section": "What the App Should Produce",
-    "text": "What the App Should Produce\n\nFirst, where does a stock fit within the predictions? Top decile? Middle quintile? …\nWhere does it fit within its sector or industry?\nWithin a marketcap band? (But only small caps here).\n\n\nArgue these out with AI before you ask it to write code."
-  },
-  {
-    "objectID": "slides/session07.html#platform-as-a-service",
-    "href": "slides/session07.html#platform-as-a-service",
-    "title": "Train, Test, and an App",
-    "section": "Platform as a Service",
-    "text": "Platform as a Service\n\nYou hand a host your repository. It builds the app, runs it, and puts it behind a public URL — there is no server for you to administer. Railway, Render, Koyeb, and Heroku all do this. We will use Koyeb, which has a free tier.\n\n\n\nCreate a free account at koyeb.com.\nIn the control panel, create an API access token. Koyeb shows it once, so copy it then.\nIn a terminal, add it to your .env file:\n\n\nprintf '\\nKOYEB_ACCESS_TOKEN=your_access_token\\n' &gt;&gt; $HOME/.env\n\n&gt;&gt; appends, and creates the file if you do not have one. Koyeb’s web UI will link a GitHub repo with no token at all — the token is what lets AI do the deploying for you, which is the path we are taking."
-  },
-  {
-    "objectID": "slides/session07.html#deploy-the-app",
-    "href": "slides/session07.html#deploy-the-app",
-    "title": "Train, Test, and an App",
-    "section": "Deploy the App",
-    "text": "Deploy the App\n\n\nPrompt\n\nMy goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to that repo. Walk me through it one step at a time.\n\n\nOn day one you told git to ignore parquet files. The host builds only what is in the repo, so the model file and the data the app reads have to get there. And nothing from .env belongs in a public repo — secrets go in Koyeb’s environment settings."
-  },
-  {
-    "objectID": "slides/session07.html#get-a-custom-domain",
-    "href": "slides/session07.html#get-a-custom-domain",
-    "title": "Train, Test, and an App",
-    "section": "Get a Custom Domain",
-    "text": "Get a Custom Domain\n\nOptional. The Koyeb URL works fine on its own.\n\n\n\nCreate an account at dnsimple.com and buy a domain name.\nIn your DNSimple account settings, create an API access token and add it to .env:\n\n\nprintf '\\nDNSIMPLE_ACCESS_TOKEN=your_access_token\\n' &gt;&gt; $HOME/.env\n\n\nPrompt\n\nI bought mydomain.com at DNSimple and my app is running on Koyeb. Use the DNSimple API v2 with DNSIMPLE_ACCESS_TOKEN to create the record Koyeb needs, and tell me what to configure on the Koyeb side."
+    "objectID": "slides/session08.html#producing-the-output",
+    "href": "slides/session08.html#producing-the-output",
+    "title": "DCF Valuation of Companies",
+    "section": "Producing the Output",
+    "text": "Producing the Output\n\n\nThe workbook\nThe xlsx skill — pandas and openpyxl, plus a financial-modeling standard for formatting and formula conventions.\n\n\nThe deck\nThe pptx skill — markitdown and the pack scripts to edit a template, pptxgenjs under Node to build one from scratch.\n\n\n\nThe xlsx skill’s rule: formulas in the cells, not values computed in Python. =SUM(B2:B9), never the number Python got — so changing an assumption recalculates the workbook.\n\n\nSkills are files in .claude/skills/, loaded when relevant. The container image has to carry what they import."
   }
 ]

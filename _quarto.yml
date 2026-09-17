@@ -15,7 +15,7 @@ project:
     - slides/session05.qmd
     # - slides/session06.qmd
     - slides/session07.qmd
-    # - slides/session08.qmd
+    - slides/session08.qmd
     # - slides/session09.qmd
     - slides/session10.qmd
     # - slides/session11.qmd

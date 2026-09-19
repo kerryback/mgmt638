@@ -43,7 +43,7 @@ project:
     # Session 9's group exercise (hand-written HTML, copied through verbatim)
     # and its data bundle (JBSS, FLXS, SMID folders), which the exercise links
     # as files/session09.zip.
-    - /Sept22.html
+    - /sept22.html
     - files/session09.zip
     - images/RiceBusiness-transparent-logo-sm.png
     - images/headshot-keeper-cropped2.png

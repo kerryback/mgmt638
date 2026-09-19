@@ -40,6 +40,11 @@ project:
     # Session 8's file bundle (reading + video), likewise published from the
     # repo. Quarto copies it to docs/files/session08.zip, which index.qmd links.
     - files/session08.zip
+    # Session 9's group exercise (hand-written HTML, copied through verbatim)
+    # and its data bundle (JBSS, FLXS, SMID folders), which the exercise links
+    # as files/session09.zip.
+    - /Sept22.html
+    - files/session09.zip
     - images/RiceBusiness-transparent-logo-sm.png
     - images/headshot-keeper-cropped2.png
     # Session material, linked from the schedule rows in index.qmd.

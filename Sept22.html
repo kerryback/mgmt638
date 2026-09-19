@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five Years of JBSS</title>
+<style>
+  :root {
+    --ground: #ffffff;
+    --ink: #1b1f24;
+    --muted: #58657a;
+    --rule: #dde2ea;
+    --accent: #00205b;
+    --accent-soft: #eef2f9;
+    --flag: #8a5a00;
+    --flag-soft: #fbf3e2;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #13171d;
+      --ink: #e6eaf0;
+      --muted: #a2adbd;
+      --rule: #2b323c;
+      --accent: #9db8ef;
+      --accent-soft: #1b2332;
+      --flag: #e3b766;
+      --flag-soft: #2a2416;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #13171d;
+    --ink: #e6eaf0;
+    --muted: #a2adbd;
+    --rule: #2b323c;
+    --accent: #9db8ef;
+    --accent-soft: #1b2332;
+    --flag: #e3b766;
+    --flag-soft: #2a2416;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 17px/1.65 var(--serif);
+    padding-inline: 18px;
+  }
+  main { max-width: 46rem; margin: 0 auto; padding-block: 3rem 4rem; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code, .path { font-family: var(--mono); font-size: .86em; }
+
+  header { border-bottom: 3px solid var(--accent); padding-bottom: 1.2rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font-family: var(--sans); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 .6rem;
+  }
+  h1 { font-size: 2.3rem; line-height: 1.12; margin: 0 0 .5rem; text-wrap: balance; }
+  .dek { color: var(--muted); font-size: 1.08rem; margin: 0; max-width: 40rem; }
+  .due {
+    font-family: var(--sans); font-size: .85rem; margin: 1rem 0 0; color: var(--ink);
+  }
+  .due span { color: var(--muted); }
+
+  h2 {
+    font-family: var(--sans); font-size: 1.05rem; letter-spacing: .01em; font-weight: 600;
+    margin: 2.8rem 0 .8rem; padding-bottom: .35rem; border-bottom: 1px solid var(--rule);
+    text-wrap: balance;
+  }
+  h2 .tag {
+    font-weight: 500; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); margin-left: .6rem;
+  }
+  h3 { font-family: var(--sans); font-size: .95rem; font-weight: 600; margin: 1.8rem 0 .5rem; }
+  p { margin: 0 0 1rem; }
+  ul, ol { margin: 0 0 1rem; padding-left: 1.25rem; }
+  li { margin-bottom: .45rem; }
+
+  .rule {
+    background: var(--accent-soft); border-radius: 6px; padding: 1.1rem 1.3rem 1rem; margin: 0 0 1rem;
+  }
+  .rule .eyebrow { color: var(--accent); margin-bottom: .4rem; }
+  .rule p:last-child { margin-bottom: 0; }
+
+  .track {
+    list-style: none; padding: 0; margin: 1.2rem 0 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem;
+  }
+  .track li {
+    margin: 0; border-top: 3px solid var(--accent); padding: .6rem .1rem 0;
+    font-family: var(--sans); font-size: .86rem; line-height: 1.4;
+  }
+  .track li.class { border-top-style: dashed; }
+  .track .n { display: block; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .2rem; }
+  .track .who { display: block; color: var(--muted); font-size: .78rem; margin-top: .25rem; }
+  @media (max-width: 560px) { .track { grid-template-columns: 1fr; } }
+
+  .tree {
+    font-family: var(--mono); font-size: .82rem; line-height: 1.7;
+    border: 1px solid var(--rule); border-radius: 6px; padding: .9rem 1.1rem; margin: 0 0 1rem;
+    overflow-x: auto;
+  }
+  .tree dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; column-gap: 1.2rem; row-gap: .15rem; }
+  .tree dt { white-space: nowrap; }
+  .tree dd { margin: 0; font-family: var(--sans); font-size: .84rem; color: var(--muted); }
+
+  .tablewrap { overflow-x: auto; margin: 0 0 .6rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th, td { text-align: left; padding: .42rem .5rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  thead th {
+    font-family: var(--sans); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600;
+  }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.num { font-family: var(--sans); }
+  td.hot { background: var(--flag-soft); color: var(--flag); }
+  .caption { font-family: var(--sans); font-size: .8rem; color: var(--muted); margin: 0 0 1.2rem; }
+  table.methods td:first-child { width: 34%; font-family: var(--sans); font-size: .88rem; }
+  table.split { min-width: 36rem; }
+  table.split td { font-size: .9rem; }
+  table.split td:first-child { width: 20%; font-family: var(--sans); font-size: .86rem; }
+  table.split td:nth-child(2) { width: 50%; }
+  table.split td:nth-child(3) { background: var(--accent-soft); }
+  table.split thead th:nth-child(3) { color: var(--accent); }
+
+  .note {
+    font-size: .92rem; color: var(--muted); border-left: 3px solid var(--rule);
+    padding-left: .9rem; margin: 1.2rem 0;
+  }
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { padding-left: 1.6rem; position: relative; }
+  .checklist li::before {
+    content: ""; position: absolute; left: 0; top: .45em; width: .8rem; height: .8rem;
+    border: 1.5px solid var(--accent); border-radius: 2px;
+  }
+  footer {
+    margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule);
+    font-family: var(--sans); font-size: .8rem; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="eyebrow">MGMT 638 &middot; Group exercise</p>
+  <h1>Five Years of JBSS</h1>
+  <p class="dek">Project the operating side of John B. Sanfilippo &amp; Son&rsquo;s income statement and balance sheet through fiscal 2031, the inputs to an enterprise valuation. Then teach Claude to do the same for any company, with your group making every call.</p>
+  <p class="due">Due before class, Tuesday, September 22 <span>&middot; Data: <a href="files/session09.zip">session09.zip</a></span></p>
+</header>
+
+<div class="rule">
+  <p class="eyebrow">The one rule</p>
+  <p>Claude advises. Your group decides.</p>
+  <p>Claude does the reading and the arithmetic. It computes the history, reads the earnings call transcripts and press releases, lays out the reasonable ways to project each line, and recommends one, citing the passage in the transcript or release that supports its advice. Then it waits. The choice belongs to your group, and so does the reason, which goes in a decision log. A projection Claude filled in on its own is not an acceptable submission, and a skill that decides without asking fails Part 2.</p>
+</div>
+
+<ol class="track" aria-label="Sequence of the exercise">
+  <li><span class="n">Part 1</span>Project JBSS<span class="who">Your group, before class</span></li>
+  <li><span class="n">Part 2</span>Build the skill<span class="who">Your group, before class</span></li>
+  <li class="class"><span class="n">Sept 22</span>Test on FLXS, revise, test on SMID<span class="who">Together, in class</span></li>
+</ol>
+
+<h2>The data</h2>
+<p>Unzip <a href="files/session09.zip">session09.zip</a>. It has one folder per company&nbsp;&mdash; <code>jbss/</code>, <code>flxs/</code>, and <code>smid/</code>&nbsp;&mdash; each laid out the same way. You work with <code>jbss/</code> before class; <code>flxs/</code> and <code>smid/</code> are for testing the skills in class.</p>
+<div class="tree">
+  <dl>
+    <dt>jbss_financials_10k.xlsx</dt>
+    <dd>Income statement, balance sheet, and cash flow statement from the 10-K filings, in the company&rsquo;s own line items, $ thousands. Each year comes from the most recent 10-K that reports it. Start here.</dd>
+    <dt>jbss_financials_yahoo.xlsx</dt>
+    <dd>Yahoo Finance&rsquo;s standardized version, four years. Useful as a cross-check, but not as reported.</dd>
+    <dt>yahoo_csv/</dt>
+    <dd>The same Yahoo data as CSV files, annual and quarterly.</dd>
+    <dt>10k/</dt>
+    <dd>The 10-K filings themselves, for the notes and management&rsquo;s discussion.</dd>
+    <dt>press_releases/</dt>
+    <dd>Every quarterly earnings release since fiscal 2020, as .htm and .txt.</dd>
+    <dt>transcripts/</dt>
+    <dd>Earnings call transcripts: nine each for JBSS and FLXS. None exist for SMID.</dd>
+  </dl>
+</div>
+<p class="note">Fiscal years differ. JBSS&rsquo;s year ends on the last Thursday of June (FY2026 ended June 25, 2026), Flexsteel&rsquo;s on June 30, and Smith-Midland&rsquo;s on December 31.</p>
+
+<h2>Part 1: Project JBSS <span class="tag">FY2027&ndash;FY2031</span></h2>
+<p>This is an enterprise valuation, so project only the operating items. That means sales, operating costs, operating income, taxes on operating income, and the operating assets and liabilities: receivables, inventories, payables, accruals, PP&amp;E and the like. Leave out cash, debt, and interest, and the equity accounts that would only be needed to make the balance sheet balance.</p>
+<p>Work in Claude Code with the <code>jbss/</code> folder open, going line by line in the order below. At each step, the work is split this way:</p>
+<div class="tablewrap">
+<table class="split">
+  <thead><tr><th>Step</th><th>Claude</th><th>Your group</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Sales</td>
+      <td>Computes growth by year: &minus;2.5%, 11.3%, 4.6%, 6.7%, 3.8%, and 6.2% from FY2021 through FY2026. Reads the transcripts and releases for what management says about volume, pricing, and nut costs. Proposes growth paths for FY2027&ndash;FY2031, recommends one, and quotes its support.</td>
+      <td>Chooses the growth path for each of the five years and writes down why.</td>
+    </tr>
+    <tr>
+      <td>Operating lines on the income statement</td>
+      <td>For cost of sales, selling and administrative expenses, depreciation, and other operating items: shows each line&rsquo;s history against sales, proposes methods from the table below, recommends one, and cites what management said about that line.</td>
+      <td>Chooses a method and its numbers for each line, and sets the tax rate on operating income.</td>
+    </tr>
+    <tr>
+      <td>Operating assets and liabilities</td>
+      <td>Does the same for receivables, inventories, prepaid expenses, payables, accruals, PP&amp;E, and other operating balances. For PP&amp;E, proposes a ratio to the next year&rsquo;s sales, guided by what management has said about capital spending and new capacity.</td>
+      <td>Chooses a method and its numbers for each line.</td>
+    </tr>
+    <tr>
+      <td>Every step</td>
+      <td>Records its recommendation and the citation in the Decisions sheet: the transcript or release file, who said it, and the quoted passage.</td>
+      <td>Records your group&rsquo;s choice and reason next to Claude&rsquo;s recommendation, including when you overrule it.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p class="note">A citation is a quoted passage and its file, such as <span class="path">transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</span> with the speaker&rsquo;s name. Check the ones that matter by opening the file. Advice with no support in the documents should say so.</p>
+
+<h3>Ways to project a line</h3>
+<div class="tablewrap">
+<table class="methods">
+  <thead><tr><th>Method</th><th>When it fits</th></tr></thead>
+  <tbody>
+    <tr><td>Constant % of sales</td><td>Items that scale with volume and have been stable. Choose the historical average, a recent year, or a number you can defend.</td></tr>
+    <tr><td>% of sales, varying by year</td><td>Ratios in transition, such as a margin moving from where it is now toward a long-run level over several years.</td></tr>
+    <tr><td>A driver other than sales</td><td>Inventory and payables as days of cost of sales; depreciation as a rate on prior-year PP&amp;E; taxes as a rate on operating income.</td></tr>
+    <tr><td>% of next year&rsquo;s sales</td><td>PP&amp;E, because capacity is built ahead of the sales it supports. Set the ratio by what management says about capital spending and new capacity, which rarely covers all five years.</td></tr>
+    <tr><td>Flat, or zero</td><td>One-time items such as the FY2024 bargain purchase gain, and balances with no reason to move.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Where the judgment is</h3>
+<div class="tablewrap">
+<table>
+  <thead>
+    <tr><th>% of net sales</th><th class="num">FY2021</th><th class="num">FY2022</th><th class="num">FY2023</th><th class="num">FY2024</th><th class="num">FY2025</th><th class="num">FY2026</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Gross profit</td><td class="num">21.5</td><td class="num">20.9</td><td class="num">21.2</td><td class="num">20.1</td><td class="num hot">18.4</td><td class="num hot">18.0</td></tr>
+    <tr><td>Selling expenses</td><td class="num">7.3</td><td class="num">8.0</td><td class="num">7.7</td><td class="num">7.8</td><td class="num">7.1</td><td class="num">6.7</td></tr>
+    <tr><td>Administrative expenses</td><td class="num">4.3</td><td class="num">3.9</td><td class="num">4.5</td><td class="num">4.5</td><td class="num">3.6</td><td class="num">3.7</td></tr>
+    <tr><td>Accounts receivable</td><td class="num">7.7</td><td class="num">7.3</td><td class="num">7.3</td><td class="num">8.0</td><td class="num">6.9</td><td class="num">7.2</td></tr>
+    <tr><td>Inventories</td><td class="num hot">17.2</td><td class="num hot">21.4</td><td class="num hot">17.3</td><td class="num hot">18.4</td><td class="num hot">23.0</td><td class="num hot">20.9</td></tr>
+    <tr><td>Accounts payable</td><td class="num">5.7</td><td class="num">5.0</td><td class="num">4.3</td><td class="num">5.0</td><td class="num">5.5</td><td class="num">6.2</td></tr>
+    <tr><td>PP&amp;E, net, to next year&rsquo;s sales</td><td class="num">12.2</td><td class="num">11.7</td><td class="num">11.3</td><td class="num">13.7</td><td class="num">14.0</td><td class="num hot">?</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="caption">From jbss_financials_10k.xlsx. Balance sheet items are year-end balances divided by that year&rsquo;s sales, except PP&amp;E, which is divided by the next year&rsquo;s sales.</p>
+<p>Receivables barely move, so a constant percentage is an easy call. The shaded cells are harder. Gross margin fell from 21.2% in FY2023 to 18.0% in FY2026: does it recover, hold, or keep sliding? Inventory swings between 17% and 23% of sales with the cost of the nut crop, so should you use the average, the latest year, or days of cost of sales? PP&amp;E ran between 11% and 14% of the next year&rsquo;s sales through FY2025. At the end of FY2026 it stood at $243.7 million, up from $165.1 million, with $86.9 million of construction in progress. How quickly will sales grow into that new capacity, and what ratio should hold after that? These are the lines where Claude&rsquo;s reading of the transcripts should matter most, and where you should check its citations.</p>
+
+<h3>Deliverable</h3>
+<p><code>jbss_projection.xlsx</code>, with four sheets:</p>
+<ul>
+  <li>Historical: the 10-K statements you worked from.</li>
+  <li>Assumptions: one row per line item, giving the method and its parameter for each projected year.</li>
+  <li>Projections: the operating lines of the income statement and balance sheet for FY2027&ndash;FY2031, built with formulas that read from Assumptions, so changing an assumption updates the projection.</li>
+  <li>Decisions: for each line item, what the history shows, what Claude recommended, its citation, what your group chose, and why.</li>
+</ul>
+
+<h2>Part 2: Build the skill</h2>
+<p>Turn what you did into a Claude skill: a folder with a <code>SKILL.md</code> and any scripts it needs, which does Part 1 for any company folder laid out like <code>jbss/</code>. Build on the pattern from the September 17 DCF skill. The skill must:</p>
+<ul>
+  <li>Read the 10-K workbook, pick out the operating lines, and compute each line&rsquo;s history as a percentage of sales or of its natural driver.</li>
+  <li>Read the earnings call transcripts and press releases, and base its advice on them. Every recommendation cites its support: the file, the speaker, and the quoted passage.</li>
+  <li>For each line, show the history, the options, and the cited recommendation, then ask the user and wait for the answer. Record every answer in the Decisions sheet, and never fill in an assumption on its own.</li>
+  <li>Build the projection workbook with live formulas, covering operating items only.</li>
+  <li>Cope with what differs between companies: line-item names, fiscal year ends, how many years of history there are, and one-time items.</li>
+</ul>
+<p>Keep JBSS out of the skill. Your choices for JBSS belong in its Decisions sheet. <code>SKILL.md</code> should hold the general approach: what evidence to look for in the transcripts, how to weigh history against what management says, and when to suggest a ratio that changes over time rather than a constant one. That way the skill gives sensible advice for a company it has never seen.</p>
+
+<h2>In class <span class="tag">September 22</span></h2>
+<p>We test the skills in class. Each group runs its skill on Flexsteel (FLXS), making the decisions as it goes. Flexsteel is a different business with different statements, so expect some things to break. We compare what happened across groups: where a skill failed, where it asked a question badly, where its advice was weak, and whether its citations supported what it said. Then we revise the skills and test them again on Smith-Midland (SMID), a precast concrete maker with a December fiscal year and line items that changed from filing to filing. SMID has no call transcripts, so a skill will have to draw its support from the press releases and the 10-Ks.</p>
+
+<h2>Submit</h2>
+<p>One zip file per group, containing:</p>
+<ul class="checklist">
+  <li><code>jbss_projection.xlsx</code></li>
+  <li>The skill folder</li>
+</ul>
+
+<footer>
+  Sources: SEC EDGAR 10-K and 8-K filings; Yahoo Finance via yfinance; earnings call transcripts from The Motley Fool. Retrieved September 2026.
+</footer>
+
+</main>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 Ported from ~/repos/engi610/where_it_runs_diagram.py. Same three-zone layout --
 the browser, the one container holding the app and the harness, and the services
-the container reaches over HTTPS -- with shoji2's palette and this deck's parts:
+the container reaches over HTTPS -- with shoji's palette and this deck's parts:
 the DCF agent's own tools call Yahoo Finance, and the third hop is whatever MCP
 server the agent is connected to.
 
@@ -14,7 +14,7 @@ produce the file, so both boxes run.
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 
-# shoji2 palette -- see slides/shoji2.scss
+# shoji palette -- see slides/shoji.scss
 DARK = "#443f4c"          # plum-dark
 BLUE = "#6f8497"          # blue-deep
 SAGE = "#7d9163"          # darkened sage
@@ -30,7 +30,7 @@ SAND_FILL = "#efe9d6"
 plt.rcParams["font.family"] = "sans-serif"
 plt.rcParams["font.sans-serif"] = ["Arial", "Helvetica", "DejaVu Sans"]
 
-# The canvas is cropped to the drawing rather than padded around it: shoji2 caps
+# The canvas is cropped to the drawing rather than padded around it: shoji caps
 # figures at max-height 470px, so every empty unit here is content the slide
 # cannot show. 1 unit = 1 inch, so figsize must track the ylim span.
 fig, ax = plt.subplots(figsize=(12, 5.6), dpi=200)

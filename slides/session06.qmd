@@ -5,9 +5,10 @@ author: "Kerry Back"
 date: "2026-09-10"
 format:
   revealjs:
-    theme: shoji2.scss
-    width: 1050
-    height: 700
+    theme: shoji.scss
+    width: 1280
+    height: 720
+    max-scale: 5
 ---
 
 ## Agenda

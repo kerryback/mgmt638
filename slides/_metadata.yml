@@ -3,17 +3,14 @@
 # index.qmd and syllabus.qmd stay at the project root: a file in this folder
 # cannot opt out of the revealjs format below.
 #
-# theme, width and height are deliberately NOT set here, even though most decks
-# want the same values. Quarto appends a document's theme list to the one in
-# _metadata.yml rather than replacing it, so a deck that wants a different theme
-# would silently get both. Session 2 uses shoji2.scss -- the same design with a
-# slimmer frame and smaller type, on a 1280x720 canvas -- and the rest use
-# shoji.scss on 1050x700, so each deck declares its own.
+# theme, width and height are deliberately NOT set here. Quarto appends a
+# document's theme list to the one in _metadata.yml rather than replacing it, so
+# a deck that wants a different theme would silently get both. Every deck here
+# declares shoji.scss on a 1280x720 canvas in its own front matter.
 #
-# Whichever it declares, the canvas size is load bearing: both themes specify
-# their grid in px against their own canvas, and a mismatch puts every rectangle
-# in the wrong place. Copy the format block from a neighbouring deck rather than
-# inventing one.
+# The canvas size is load bearing: the theme specifies its grid in px against
+# 1280x720, and a mismatch puts every rectangle in the wrong place. Copy the
+# format block from a neighbouring deck rather than inventing one.
 #
 # margin: 0 is shared. Reveal's default 10% margin scales the canvas by 0.9,
 # landing every edge on a fractional device pixel and leaving 1px slivers of the

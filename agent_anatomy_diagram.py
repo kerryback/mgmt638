@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Circle
 
-# shoji2 palette -- see slides/shoji2.scss
+# shoji palette -- see slides/shoji.scss
 DARK = "#443f4c"          # plum-dark, for the User / LLM / Tools blocks
 BLUE = "#6f8497"          # blue-deep, the outbound arc
 CIRCLE_BLUE = "#6f8497"

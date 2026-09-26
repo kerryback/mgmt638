@@ -7,8 +7,9 @@ date: "2026-08-25"
 format:
   revealjs:
     theme: shoji.scss
-    width: 1050
-    height: 700
+    width: 1280
+    height: 720
+    max-scale: 5
 ---
 
 

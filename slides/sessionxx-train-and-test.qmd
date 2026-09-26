@@ -4,7 +4,7 @@ author: "Kerry Back"
 date: "2026-09-29"
 format:
   revealjs:
-    theme: shoji2.scss
+    theme: shoji.scss
     width: 1280
     height: 720
     max-scale: 5

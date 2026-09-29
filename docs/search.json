@@ -1,108 +1,171 @@
 [
   {
-    "objectID": "slides/session10.html#today",
-    "href": "slides/session10.html#today",
-    "title": "Analyzing Earnings Calls",
+    "objectID": "slides/session11.html#install-two-plugins",
+    "href": "slides/session11.html#install-two-plugins",
+    "title": "Portfolio Rules",
+    "section": "Install two plugins",
+    "text": "Install two plugins\n/plugin marketplace add kerryback/skills\n/plugin install risk-parity@kerryback\n/plugin install two-stage-dcf@kerryback\n\nNow ask Claude what it installed."
+  },
+  {
+    "objectID": "slides/session11.html#today",
+    "href": "slides/session11.html#today",
+    "title": "Portfolio Rules",
     "section": "Today",
-    "text": "Today\n\n\nWhere earnings call transcripts come from, and what they cost\nA question: can a model read a call and tell you to buy?\nHow fast you would have to act on the answer\nDirections we could take it"
+    "text": "Today\n\n\nThree rules for choosing portfolio weights, and what each one needs\nTangency and minimum variance\nRisk parity: each asset’s share of portfolio variance\nAll three on ten industry portfolios, weekly returns, the past ten years\nSolving for the risk parity weights, and turning that into a skill\nA ninety-year backtest: rolling ten-year windows, rebalanced monthly"
   },
   {
-    "objectID": "slides/session10.html#transcripts-free",
-    "href": "slides/session10.html#transcripts-free",
-    "title": "Analyzing Earnings Calls",
-    "section": "Transcripts, Free",
-    "text": "Transcripts, Free\n\n\nMotley Fool\nThe archive, scraped. 2021 to now, roughly 45,000 calls. Prepared remarks and Q&A in full.\n\n\nEarningsCall\nClean API, good SDK. The free tier is two companies: Apple and Microsoft.\n\n\nSEC EDGAR\n8-K Item 2.02 is the press release, not the call. Public domain, timestamped to the second.\n\n\n\nThe Fool archive paginates at 50 pages, about three weeks. The monthly sitemap has no cap and is how you reach 2021."
+    "objectID": "slides/session11.html#the-three-rules",
+    "href": "slides/session11.html#the-three-rules",
+    "title": "Portfolio Rules",
+    "section": "The three rules",
+    "text": "The three rules\n\n\nTangency\nMaximizes the Sharpe ratio.\nInputs: expected returns, the covariance matrix, and the risk-free rate.\n\n\nMinimum variance\nMinimizes portfolio variance.\nInputs: the covariance matrix.\n\n\nRisk parity\nEqualizes each asset’s share of portfolio variance.\nInputs: the covariance matrix.\n\n\nAll three are long only here: no short sales, and the weights sum to one."
   },
   {
-    "objectID": "slides/session10.html#transcripts-paid",
-    "href": "slides/session10.html#transcripts-paid",
-    "title": "Analyzing Earnings Calls",
-    "section": "Transcripts, Paid",
-    "text": "Transcripts, Paid\n\n\n\n\n\n\n\nEarningsCall\n9,000+ companies, speaker-segmented, MIT-licensed SDK\n\n\nFinancial Modeling Prep\ntranscripts on a paid tier; you may already hold a key\n\n\nAPI Ninjas\none endpoint, history to 2000, premium below 2026\n\n\nCapital IQ via WRDS\nthe research standard, 2004 on, ~5,000 US firms\n\n\n\n\nRice does not subscribe to Capital IQ Transcripts. ciq_transcripts returns permission denied; the sample is 20 calls from 2005."
+    "objectID": "slides/session11.html#tangency-and-minimum-variance",
+    "href": "slides/session11.html#tangency-and-minimum-variance",
+    "title": "Portfolio Rules",
+    "section": "Tangency and minimum variance",
+    "text": "Tangency and minimum variance\n\n\nTangency\nThe highest Sharpe ratio available from the ten industries.\nNeeds an expected return for every industry.\n\nMinimum variance\nThe smallest variance available from the ten industries.\nNeeds only the covariance matrix.\n\n\nTangency is the only one of the three rules that uses expected returns. Long only, none of the three has a closed-form solution, so all three are solved numerically."
   },
   {
-    "objectID": "slides/session10.html#the-other-half-labels",
-    "href": "slides/session10.html#the-other-half-labels",
-    "title": "Analyzing Earnings Calls",
-    "section": "The Other Half: Labels",
-    "text": "The Other Half: Labels\n\n\nFree and current\nYahoo for returns, Finnhub for consensus. Current to yesterday. Runs in your container.\n\nResearch grade, but stale\nCRSP daily ends 2025-12-31. The market index file ends 2024-12-31. IBES ends 2026-05-14.\n\n\nWRDS cannot label a call from last month. That is not a small detail; it decides which sample you can study."
+    "objectID": "slides/session11.html#what-minimum-variance-leaves-out",
+    "href": "slides/session11.html#what-minimum-variance-leaves-out",
+    "title": "Portfolio Rules",
+    "section": "What minimum variance leaves out",
+    "text": "What minimum variance leaves out\nMinimum variance uses no expected returns at all. It is the portfolio you would hold if you believed every industry had the same expected return.\nIt puts the most weight wherever the sample says risk is lowest, so an industry whose risk the sample underestimates is rewarded with a large weight for that reason.\n\nLong only on these ten industries, it holds five of them, with 46% in consumer nondurables."
   },
   {
-    "objectID": "slides/session10.html#can-a-model-read-a-call-and-tell-you-to-buy",
-    "href": "slides/session10.html#can-a-model-read-a-call-and-tell-you-to-buy",
-    "title": "Analyzing Earnings Calls",
-    "section": "Can a Model Read a Call and Tell You to Buy?",
-    "text": "Can a Model Read a Call and Tell You to Buy?\n\nA transcript is 43,000 characters of management telling you how the quarter went. Somewhere in there is information about what the stock is worth.\n\n\nThe question is not whether a model can summarize it. It obviously can. The question is whether anything it produces survives contact with a price."
+    "objectID": "slides/session11.html#two-rules-from-the-covariance-matrix",
+    "href": "slides/session11.html#two-rules-from-the-covariance-matrix",
+    "title": "Portfolio Rules",
+    "section": "Two rules from the covariance matrix",
+    "text": "Two rules from the covariance matrix\n\n\nMinimum variance\nMakes the portfolio’s variance as small as it can be.\nConcentrates on the quietest assets.\n\nRisk parity\nMakes every asset’s contribution to that variance the same.\nHolds everything on the menu.\n\nNeither uses expected returns. With two assets, equal contributions mean weights proportional to one over volatility, whatever the correlation."
   },
   {
-    "objectID": "slides/session10.html#how-fast-would-we-have-to-act",
-    "href": "slides/session10.html#how-fast-would-we-have-to-act",
-    "title": "Analyzing Earnings Calls",
-    "section": "How Fast Would We Have to Act?",
-    "text": "How Fast Would We Have to Act?\n\nThe call is public the moment it ends. Our transcripts are not.\n\n\n\n4 days median lag, call to Fool transcript\n\n\n53% posted 3+ days after the call\n\n\n5 min what the professionals allow themselves\n\n\n\nMeasured on 449 of our own transcripts. Anything that trades on the announcement itself is gone before we can read it."
+    "objectID": "slides/session11.html#nondurables-energy-technology",
+    "href": "slides/session11.html#nondurables-energy-technology",
+    "title": "Portfolio Rules",
+    "section": "Nondurables, energy, technology",
+    "text": "Nondurables, energy, technology\n\n  \n    NoDur\n      \n      6.8%\n    Enrgy\n      \n      14.7%\n    HiTec\n      \n      23.0%\n  \n  \n    standard deviation\n    NoDur 15.2%Enrgy 30.0%HiTec 21.8%\n  \n  \n    correlation\n    NoDur–Enrgy 0.45NoDur–HiTec 0.51Enrgy–HiTec 0.29\n  \n  \n\n\n\n\n\n\nTen years of weekly returns. Both portfolios keep their weights whatever you choose; risk parity sits inside the frontier."
   },
   {
-    "objectID": "slides/session10.html#where-the-move-actually-is",
-    "href": "slides/session10.html#where-the-move-actually-is",
-    "title": "Analyzing Earnings Calls",
-    "section": "Where the Move Actually Is",
-    "text": "Where the Move Actually Is\n\nSo the announcement day is out of reach. Is that where the money was?\n\n\n\n\n\n\n\n\n\n\nmean absolute move\nis it predictable?\n\n\n\n\nAnnouncement day\n8.1%\nyes, partly. R-squared 0.05 on the surprise alone\n\n\nNext 60 days\n17.3%\nnot from the surprise. R-squared 0.001\n\n\n\n\nTwo thirds of the movement happens after the day we cannot trade. None of it that we know how to forecast. Size and predictability are different things."
+    "objectID": "slides/session11.html#risk-shares-under-equal-weights",
+    "href": "slides/session11.html#risk-shares-under-equal-weights",
+    "title": "Portfolio Rules",
+    "section": "Risk shares under equal weights",
+    "text": "Risk shares under equal weights\n\nTen industries, equally weighted. Consumer durables have an annualized volatility of 39%, consumer nondurables 15%."
   },
   {
-    "objectID": "slides/session10.html#four-architectures",
-    "href": "slides/session10.html#four-architectures",
-    "title": "Analyzing Earnings Calls",
-    "section": "Four Architectures",
-    "text": "Four Architectures\n\n\nFine-tune\nTrain a model on transcripts paired with the subsequent price move. End to end, no features.\n\n\nExtract, then model\nThe LLM reads the call and emits numbers. A separate ML model turns those into a recommendation.\n\n\nEmbed\nTurn the transcript into a vector. Use the vector as a feature list.\n\n\nJust ask\nOne prompt, one answer. The thing all three of the above have to beat."
+    "objectID": "slides/session11.html#share-of-portfolio-variance",
+    "href": "slides/session11.html#share-of-portfolio-variance",
+    "title": "Portfolio Rules",
+    "section": "Share of portfolio variance",
+    "text": "Share of portfolio variance\nTake an asset’s weight in the portfolio, multiply by the covariance of that asset with the return of the portfolio, and divide by the variance of the portfolio. That is the asset’s share of portfolio variance.\nThose weighted covariances add up to the portfolio variance, so the shares sum to one.\n\nRisk parity sets every share equal: one tenth each, across ten industries."
   },
   {
-    "objectID": "slides/session10.html#fine-tuning",
-    "href": "slides/session10.html#fine-tuning",
-    "title": "Analyzing Earnings Calls",
-    "section": "Fine-Tuning",
-    "text": "Fine-Tuning\n\nShow a model thousands of transcripts and what the stock did next, and let it find its own features.\n\n\n\nFor\nNobody has to guess which features matter. The model is optimized for the actual target.\n\nAgainst\nExpensive, hard to interpret, and easy to overfit. What did it learn? You cannot read it off."
+    "objectID": "slides/session11.html#the-data",
+    "href": "slides/session11.html#the-data",
+    "title": "Portfolio Rules",
+    "section": "The data",
+    "text": "The data\n\n\nKen French’s 10 Industry Portfolios, value weighted, daily\nCompounded to weeks ending Friday: 522 weeks, 9 September 2016 to 4 September 2026\nExpected returns and the covariance matrix are the sample mean and covariance over those weeks, annualized by 52\nThe risk-free rate is French’s daily rate compounded the same way, 2.4% a year\n\n\nNoDur, Durbl, Manuf, Enrgy, HiTec, Telcm, Shops, Hlth, Utils, Other."
   },
   {
-    "objectID": "slides/session10.html#extract-then-model",
-    "href": "slides/session10.html#extract-then-model",
-    "title": "Analyzing Earnings Calls",
-    "section": "Extract, Then Model",
-    "text": "Extract, Then Model\n\nThe model scores the call on dimensions you define. A regression turns those scores into a position.\n\n\nGuidance revision, margin durability, how much management hedges, whether the quarter leans on one-off items.\n\n\nThe appeal is that the middle layer is inspectable. When it works you can say which dimension carried it; when it fails you can see where."
+    "objectID": "slides/session11.html#the-three-portfolios",
+    "href": "slides/session11.html#the-three-portfolios",
+    "title": "Portfolio Rules",
+    "section": "The three portfolios",
+    "text": "The three portfolios\n\nWeights from the full 522 weeks, long only."
   },
   {
-    "objectID": "slides/session10.html#embeddings",
-    "href": "slides/session10.html#embeddings",
-    "title": "Analyzing Earnings Calls",
-    "section": "Embeddings",
-    "text": "Embeddings\n\nSkip the judgment. Turn the whole transcript into a few hundred numbers and regress on those.\n\n\n\nCheap\nOrders of magnitude less than generation. You can embed the whole corpus.\n\n\nOpaque\nDimension 137 is not “margin pressure.” There is nothing to put on a slide."
+    "objectID": "slides/session11.html#what-each-rule-holds",
+    "href": "slides/session11.html#what-each-rule-holds",
+    "title": "Portfolio Rules",
+    "section": "What each rule holds",
+    "text": "What each rule holds\n\n\n\n\n\n\n\n\n\nRule\nIndustries held\nLargest position\nLargest share of variance\n\n\n\n\nTangency\n3\nHiTec, 88%\nHiTec, 93%\n\n\nMinimum variance\n5\nNoDur, 46%\nNoDur, 46%\n\n\nRisk parity\n10\nNoDur, 13%\n10% each\n\n\nEqual weight\n10\n10% each\nDurbl, 17%\n\n\n\nTangency holds energy and utilities alongside HiTec, at 10% and 1%. Risk parity’s smallest position is 5.9%, in consumer durables."
   },
   {
-    "objectID": "slides/session10.html#just-ask-it",
-    "href": "slides/session10.html#just-ask-it",
-    "title": "Analyzing Earnings Calls",
-    "section": "Just Ask It",
-    "text": "Just Ask It\n\nGive the model the transcript and ask for a number. No features, no fitting, no training.\n\n\nThis is the control, and it is the one experiment nobody wants to run. If a one-line prompt does as well as a fine-tuned model, that is the result, and it is worth knowing before you spend a week on the alternative."
+    "objectID": "slides/session11.html#in-sample",
+    "href": "slides/session11.html#in-sample",
+    "title": "Portfolio Rules",
+    "section": "In sample",
+    "text": "In sample\n\n\n\nRule\nReturn\nVolatility\nSharpe\n\n\n\n\nTangency\n22.0%\n20.5%\n0.96\n\n\nMinimum variance\n9.2%\n14.3%\n0.47\n\n\nRisk parity\n13.1%\n16.2%\n0.66\n\n\nEqual weight\n14.0%\n17.0%\n0.68\n\n\n\nEvery figure is computed on the same 522 weeks that produced the expected returns and the covariance matrix. Tangency’s 0.96 is the largest Sharpe ratio any long-only portfolio could have had over those weeks, by construction."
   },
   {
-    "objectID": "slides/session10.html#three-more-angles",
-    "href": "slides/session10.html#three-more-angles",
-    "title": "Analyzing Earnings Calls",
-    "section": "Three More Angles",
-    "text": "Three More Angles\n\n\nRemarks vs Q&A\nThe prepared remarks are scripted. The Q&A is not. Split the document and see which half carries the signal.\n\n\nChange, not level\nSome CEOs always sound confident. Compare a call to the same firm’s last call and score what moved.\n\n\nModel as analyst\nAsk it what to look for rather than what to conclude. Then test its hypotheses yourself."
+    "objectID": "slides/session11.html#splitting-the-decade",
+    "href": "slides/session11.html#splitting-the-decade",
+    "title": "Portfolio Rules",
+    "section": "Splitting the decade",
+    "text": "Splitting the decade\nRe-estimate each rule on the first five years and on the second five.\n\n\n\n\n\n\n\n\n\nRule\nLargest position, 2016–21\nLargest position, 2021–26\nWeight change\n\n\n\n\nTangency\nHiTec, 100%\nEnrgy, 54%\n54.5%\n\n\nMinimum variance\nNoDur, 35%\nNoDur, 53%\n43.8%\n\n\nRisk parity\nNoDur, 12%\nNoDur, 15%\n7.1%\n\n\n\nWeight change is half the sum of the absolute differences between the two sets of weights."
   },
   {
-    "objectID": "slides/session10.html#what-i-already-know",
-    "href": "slides/session10.html#what-i-already-know",
-    "title": "Analyzing Earnings Calls",
-    "section": "What I Already Know",
-    "text": "What I Already Know\n\nPreliminary, one month, 181 to 198 events. Enough to steer you, not enough to believe.\n\n\n\n\n\n\n\n\nAnnouncement-day reaction\nten extracted features added R-squared 0.096 over the surprise, p = 0.007\n\n\n60-day drift\nnothing. Would need roughly 80x the sample to see a 2% effect\n\n\nVolatility, level\n64% explained by its own past. No room\n\n\nVolatility, change\nbenchmark only 0.058, and the obvious predictors are exhausted"
+    "objectID": "slides/session11.html#the-convex-form",
+    "href": "slides/session11.html#the-convex-form",
+    "title": "Portfolio Rules",
+    "section": "The convex form",
+    "text": "The convex form\nMinimize this over positive weights, then rescale the answer to sum to one:\n\\[\\tfrac{1}{2}\\,(\\text{portfolio variance}) \\;-\\; \\tfrac{1}{n}\\sum_i \\log w_i\\]\nThe log term forces every weight strictly positive, the objective is strictly convex, and its solution has equal risk contributions."
   },
   {
-    "objectID": "slides/session10.html#your-turn",
-    "href": "slides/session10.html#your-turn",
-    "title": "Analyzing Earnings Calls",
-    "section": "Your Turn",
-    "text": "Your Turn\n\n\nPick a direction. Argue for it before you start building.\nDecide what your prediction would have to beat, and write that down first.\nBuild the smallest version that could produce a number.\nTuesday: what you tried, what it gave you, and whether you believe it.\n\n\n\nThe infrastructure is in the repo: transcripts, extraction, labels, scoring. Take what helps and ignore the rest."
+    "objectID": "slides/session11.html#solving-for-the-weights",
+    "href": "slides/session11.html#solving-for-the-weights",
+    "title": "Portfolio Rules",
+    "section": "Solving for the weights",
+    "text": "Solving for the weights\ndef risk_parity(Sigma):\n    n = Sigma.shape[0]\n    x0 = 1 / np.sqrt(np.diag(Sigma))\n    f = lambda x: 0.5 * x @ Sigma @ x - np.mean(np.log(x))\n    g = lambda x: Sigma @ x - 1 / (n * x)\n    x = minimize(f, x0 / x0.sum(), jac=g, method=\"L-BFGS-B\",\n                 bounds=[(1e-10, None)] * n).x\n    return x / x.sum()\nThe starting point weights each asset by one over its volatility, and g is the analytic gradient. On ten industries it converges in 10 iterations."
+  },
+  {
+    "objectID": "slides/session11.html#ask-claude",
+    "href": "slides/session11.html#ask-claude",
+    "title": "Portfolio Rules",
+    "section": "Ask Claude",
+    "text": "Ask Claude\n\n\nPrompt\n\nThe file session11-covariance.csv holds the annualized covariance matrix of ten industry portfolios. Find the long-only risk parity portfolio, meaning the weights for which every industry contributes the same share of portfolio variance. Explain the method you chose and why.\n\nDownload it: session11-covariance.csv. More than one method finds these weights."
+  },
+  {
+    "objectID": "slides/session11.html#what-you-should-get",
+    "href": "slides/session11.html#what-you-should-get",
+    "title": "Portfolio Rules",
+    "section": "What you should get",
+    "text": "What you should get\n\n\n\n\n\n\n\n\n\n\n\n\nIndustry\nWeight\nShare of variance\n\nIndustry\nWeight\nShare of variance\n\n\n\n\nNoDur\n12.9%\n10%\n\nTelcm\n11.2%\n10%\n\n\nDurbl\n5.9%\n10%\n\nShops\n10.6%\n10%\n\n\nManuf\n8.9%\n10%\n\nHlth\n12.0%\n10%\n\n\nEnrgy\n8.5%\n10%\n\nUtils\n11.8%\n10%\n\n\nHiTec\n9.5%\n10%\n\nOther\n8.7%\n10%\n\n\n\n\nIf you got this, tell Claude to create a risk parity skill and to save its code as a script that the skill uses."
+  },
+  {
+    "objectID": "slides/session11.html#what-the-backtest-asks",
+    "href": "slides/session11.html#what-the-backtest-asks",
+    "title": "Portfolio Rules",
+    "section": "What the backtest asks",
+    "text": "What the backtest asks\nIn the ten-year sample each rule was estimated on the same weeks it was judged on, which is why tangency’s Sharpe ratio was the largest available. The backtest takes that away: at every date the weights come from past returns only.\n\n\nThe same ten industry portfolios, French’s daily history from July 1926\nCompounded to weeks ending Friday\nRisk-free rate: French’s daily series, which is the one-month Treasury bill rate spread over each month’s trading days, compounded to the same weeks\nIt averaged 3.3% a year over the backtest"
+  },
+  {
+    "objectID": "slides/session11.html#the-rolling-backtest",
+    "href": "slides/session11.html#the-rolling-backtest",
+    "title": "Portfolio Rules",
+    "section": "The rolling backtest",
+    "text": "The rolling backtest\n\n\nEstimate expected returns and the covariance matrix on the trailing 522 weeks\nSolve each rule and hold its weights to the next month end\nRepeat at every month end from June 1936 to September 2026\n\n\n1,084 rebalances over 90 years. Equal weighting, reset to one tenth each on the same schedule, is the benchmark."
+  },
+  {
+    "objectID": "slides/session11.html#ninety-years",
+    "href": "slides/session11.html#ninety-years",
+    "title": "Portfolio Rules",
+    "section": "Ninety years",
+    "text": "Ninety years"
+  },
+  {
+    "objectID": "slides/session11.html#the-record",
+    "href": "slides/session11.html#the-record",
+    "title": "Portfolio Rules",
+    "section": "The record",
+    "text": "The record\n\n\n\nRule\nReturn\nVol\nSharpe\nWorst drawdown\nTurnover\n\n\n\n\nTangency\n11.1%\n16.2%\n0.53\n−50.9%\n99%\n\n\nMinimum variance\n10.1%\n12.0%\n0.59\n−43.1%\n17%\n\n\nRisk parity\n11.4%\n14.2%\n0.60\n−49.8%\n2%\n\n\nEqual weight\n11.5%\n14.8%\n0.58\n−52.0%\n0%\n\n\n\nTurnover is the annualized one-way change in target weights, so it leaves out the trading every rule does to offset drift. At 10 basis points a trade, costs take 0.11 points a year off tangency and 0.02 off minimum variance."
+  },
+  {
+    "objectID": "slides/session11.html#choose-the-window",
+    "href": "slides/session11.html#choose-the-window",
+    "title": "Portfolio Rules",
+    "section": "Choose the window",
+    "text": "Choose the window\n\n  \n    From \n    to \n    \n  \n  \n    \n    Sharpe ratio\n    Turnover a year\n    \n  \n\n\n\n\n\nSharpe ratios are against the bill rate; turnover is the one-way change in target weights."
+  },
+  {
+    "objectID": "slides/session11.html#sharpe-against-equal-weight",
+    "href": "slides/session11.html#sharpe-against-equal-weight",
+    "title": "Portfolio Rules",
+    "section": "Sharpe against equal weight",
+    "text": "Sharpe against equal weight\n\n\n\nRule\nDifference\nt\n\n\n\n\nTangency\n−0.056\n−0.99\n\n\nMinimum variance\n+0.002\n+0.04\n\n\nRisk parity\n+0.017\n+2.32\n\n\n\nJobson–Korkie differences with Memmel’s correction, on 4,706 weekly excess returns. Risk parity and equal weight have a weekly return correlation of 0.997."
   },
   {
     "objectID": "slides/session07.html#fifteen-features-6-price-and-volume",
@@ -487,7 +550,7 @@
     "href": "index.html",
     "title": "",
     "section": "",
-    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course mechanics.  Intro to quant investing.  Intro to gen AI.  Our AI Lab (Claude Code/GLM 4.7 + Python in a container).\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Introduction to the Nasdaq Data Link data.  Finding industry/size peers and valuing by multiples.  Analyzing model/market differences.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      Slides·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's fundamentals. Reading the regression output, holding out a test sample, and the transformations that decide the answer.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Ridge, Lasso, and Trees\n        Penalized regression, regression trees, and gradient boosting, each with a slider on the slide. Overfitting, and choosing a tuning parameter by cross-validation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Build a Stock Recommender App\n        Wrapping the fitted models in a web app.  The models predict returns, and the app turns those return predictions into buy and sell recommendations.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Build a DCF Skill\n        Build an agent skill to retrieve historical financials and generate a two-stage DCF enterprise valuation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Build a DCF Agent\n        Turn the Sept. 17 skill into a stand-alone AI agent.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 24\n      \n        Build a Robo-Advisor Skill\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Build a Robo-Advisor Agent\n        \n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        TBD\n        \n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
+    "text": "Gen AI and Quantitative Investments\n    \n    \n      MGMT 638•\n      Fall 2026, Term 1\n    \n    led by Kerry Back\n\n    Syllabus →\n\n    \n\n    \n      \n      \n        Kerry Back\n        J. Howard Creekmore Professor of Financeand Professor of Economics\n        kerry.e.back@rice.edu\n      \n    \n\n    \n\n    \n      Week 1\n      August 25–27\n    \n\n    \n      TUE AUG 25\n      \n        Getting Started\n        Course mechanics.  Intro to quant investing.  Intro to gen AI.  Our AI Lab (Claude Code/GLM 4.7 + Python in a container).\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU AUG 27\n      \n        Median of Peer Multiples\n        Introduction to the Nasdaq Data Link data.  Finding industry/size peers and valuing by multiples.  Analyzing model/market differences.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 2\n      September 1–3\n    \n\n    \n      TUE SEP 1\n      \n        Trading on Predictions\n        Turning a valuation signal into a portfolio. Ranking stocks, going long and short, and backtesting what the strategy would have earned.\n      \n      Slides·Files\n    \n\n    \n      THU SEP 3\n      \n        Linear Regression for Multiples\n        Predicting a multiple from a company's fundamentals. Reading the regression output, holding out a test sample, and the transformations that decide the answer.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 3\n      September 8–10\n    \n\n    \n      TUE SEP 8\n      \n        Ridge, Lasso, and Trees\n        Penalized regression, regression trees, and gradient boosting, each with a slider on the slide. Overfitting, and choosing a tuning parameter by cross-validation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 10\n      \n      Slides·Files\n    \n\n    \n      Week 4\n      September 15–17\n    \n\n    \n      TUE SEP 15\n      \n        Build a Stock Recommender App\n        Wrapping the fitted models in a web app.  The models predict returns, and the app turns those return predictions into buy and sell recommendations.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU SEP 17\n      \n        Build a DCF Skill\n        Build an agent skill to retrieve historical financials and generate a two-stage DCF enterprise valuation.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      Week 5\n      September 22–24\n    \n\n    \n      TUE SEP 22\n      \n        Build a DCF Agent\n        Turn the Sept. 17 skill into a stand-alone AI agent.\n      \n      Slides·Files\n    \n\n    \n      THU SEP 24\n      \n        Build a Robo-Advisor Skill\n      \n      Slides·Files\n    \n\n    \n      Week 6\n      September 29 – October 1\n    \n\n    \n      TUE SEP 29\n      \n        Build a Robo-Advisor Agent\n        Tangency, minimum variance, and risk parity on ten industry portfolios, and a ninety-year backtest on rolling ten-year windows of weekly returns.\n      \n      SlidesHTMLPDF·Files\n    \n\n    \n      THU OCT 1\n      \n        TBD\n        \n      \n      Slides·Files\n    \n\n    \n      mgmt638.kerryback.com\n      kerry.e.back@rice.edu"
   },
   {
     "objectID": "slides/session01.html#course-overview",

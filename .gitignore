@@ -230,6 +230,12 @@ cython_debug/
 # Data files
 *.parquet
 *.csv
+# The ten-industry covariance matrix is the exception: it is 1.2KB of course
+# material, not a data extract, and the Sept 29 deck links it for download.
+# Both copies have to be un-ignored -- the source and the one Quarto copies
+# into docs/ from the resources: list -- or the link 404s on the live site.
+!files/session11-covariance.csv
+!docs/files/session11-covariance.csv
 # Fitted models are build artifacts too -- regenerable from the scripts in
 # data/, and binary, so a re-fit adds the whole file to history again.
 *.joblib

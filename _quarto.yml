@@ -50,6 +50,13 @@ project:
     # published from the repo. Quarto copies it to docs/files/session12.zip,
     # which index.qmd links.
     - files/session12.zip
+    # The Jev playground -- a FastAPI app, so it is distributed as source rather
+    # than served from the site. Zipped for the same reason session12 is: the
+    # bundle's page.html is a template full of __PLACEHOLDER__ tokens that the
+    # app substitutes at request time, so a loose copy published beside it would
+    # render broken for anyone who opened it directly. Rebuild after editing:
+    #   zip -r files/jevdemo.zip jevdemo -x "jevdemo/.venv/*" "jevdemo/__pycache__/*"
+    - files/jevdemo.zip
     - images/RiceBusiness-transparent-logo-sm.png
     - images/headshot-keeper-cropped2.png
     # Session material, linked from the schedule rows in index.qmd.

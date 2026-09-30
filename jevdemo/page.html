@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jev playground</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+         margin: 0; padding: 24px; color: #1a1a1a; background: #fafafa; }
+  header { max-width: 1400px; margin: 0 auto 18px; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .lede { color: #555; margin: 0; }
+  .lede code { background: #eceef1; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+          max-width: 1400px; margin: 0 auto; align-items: start; }
+  @media (max-width: 1000px) { .cols { grid-template-columns: 1fr; } }
+
+  .panel { background: #fff; border: 1px solid #e3e5e8; border-radius: 10px; padding: 18px; }
+  /* A long answer list must not scroll the request out of view -- in class the
+     question being asked and the answer need to be on screen together. */
+  @media (min-width: 1001px) { .panel.request { position: sticky; top: 24px; } }
+  .panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em;
+              color: #666; margin: 0 0 10px; font-weight: 600; }
+  .panel h2 .hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: #999; }
+
+  label { display: block; font-size: 13px; font-weight: 600; color: #444; margin: 16px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+  .qhead { margin: 16px 0 6px; }
+  .qhead label { margin: 0; }
+  textarea { width: 100%; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+             border: 1px solid #d5d8dc; border-radius: 7px; padding: 11px; resize: vertical;
+             background: #fcfcfd; tab-size: 2; }
+  textarea:focus { outline: 2px solid #3a5f9f; outline-offset: -1px; background: #fff; }
+  textarea.bad { border-color: #b3261e; background: #fff6f5; }
+  textarea::placeholder { color: #a9aeb6; }
+
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+  .spacer { flex: 1; }
+  button, select { font: inherit; border-radius: 7px; border: 1px solid #d5d8dc;
+                   background: #fff; padding: 7px 12px; cursor: pointer; color: #1a1a1a; }
+  button:hover, select:hover { border-color: #aab0b8; }
+
+  /* The demo picker reads as a plain label unless it is given an obvious
+     affordance, so: tinted, accented, and carrying its own caret. */
+  .picker { display: flex; align-items: center; gap: 8px; }
+  .picker > span { font-size: 13px; font-weight: 600; color: #444; }
+  #preset { appearance: none; -webkit-appearance: none;
+            border: 1.5px solid #9db4dc; background-color: #eef3fc; color: #1f4fa3;
+            font-weight: 600; padding: 8px 34px 8px 13px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%231f4fa3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+            background-repeat: no-repeat; background-position: right 11px center; }
+  #preset:hover { background-color: #e2ebfa; border-color: #1f4fa3; }
+  #preset:focus { outline: 2px solid #1f4fa3; outline-offset: 1px; }
+  button.primary { background: #1f4fa3; border-color: #1f4fa3; color: #fff; font-weight: 600;
+                   padding: 9px 20px; }
+  button.primary:hover { background: #17407f; }
+  button.primary:disabled { background: #97a6bd; border-color: #97a6bd; cursor: default; }
+  button.small { font-size: 13px; padding: 5px 10px; }
+  kbd { font: 11px ui-monospace, monospace; background: #eceef1; border: 1px solid #d5d8dc;
+        border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; color: #555; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 22px; padding: 12px 14px; background: #f5f6f8;
+           border-radius: 8px; margin-bottom: 16px; }
+  .stat b { display: block; font-size: 18px; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 12px; color: #666; }
+
+  .answer { border: 1px solid #e3e5e8; border-radius: 9px; padding: 14px; margin-bottom: 12px; }
+  .answer .top { display: flex; align-items: baseline; gap: 9px; margin-bottom: 10px; }
+  .answer .name { font-weight: 700; font-size: 16px; }
+  .badge { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 700;
+           padding: 2px 7px; border-radius: 20px; }
+  .badge.noul { background: #e4ecfa; color: #1f4fa3; }
+  .badge.choice { background: #e3f3e9; color: #1a7f4b; }
+  .badge.score { background: #f1e7f6; color: #7a4a92; }
+  .headline-val { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums;
+                  line-height: 1.1; }
+  .headline-val .unit { font-size: 14px; font-weight: 400; color: #777; }
+  .conf { font-size: 12px; color: #777; margin-top: 2px; }
+
+  .dist { margin-top: 12px; }
+  .dline { display: grid; grid-template-columns: 120px 42px 1fr; align-items: center;
+           gap: 9px; margin-bottom: 5px; }
+  .dline .k { font-size: 13px; color: #444; overflow: hidden; text-overflow: ellipsis;
+              white-space: nowrap; }
+  .dline .v { font-size: 12px; color: #444; font-variant-numeric: tabular-nums; text-align: right; }
+  .track { display: block; background: #eceef1; border-radius: 3px; height: 15px; }
+  .fill { display: block; height: 100%; border-radius: 3px; min-width: 2px; }
+  .dline.win .k { font-weight: 700; color: #111; }
+
+  .err { background: #fff6f5; border: 1px solid #f0c4c0; color: #8c1d18; padding: 12px 14px;
+         border-radius: 8px; white-space: pre-wrap; font-size: 14px; }
+  .muted { color: #888; }
+  details { margin-top: 14px; }
+  summary { cursor: pointer; font-size: 13px; color: #555; }
+  pre { background: #1e2128; color: #e6e6e6; padding: 14px; border-radius: 8px;
+        overflow-x: auto; font-size: 12.5px; line-height: 1.5; margin: 9px 0 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Jev playground</h1>
+  <p class="lede">Type a <b>state</b> and a set of <b>questions</b>, get typed answers back from one
+    <code>system_one</code> call. Nothing here parses text — Jev returns numbers, labels and
+    distributions as fields.</p>
+</header>
+
+<div class="cols">
+
+  <div class="panel request">
+    <h2>Request</h2>
+
+    <div class="row" style="margin-top:0">
+      <span class="picker"><span>Demo:</span><select id="preset" title="Load a demo"></select></span>
+    </div>
+
+    <label for="state">state <span class="muted">— the thing being judged. Any JSON.</span></label>
+    <textarea id="state" rows="7" spellcheck="false"></textarea>
+
+    <!-- The add buttons edit the questions box, so they belong on it. -->
+    <div class="row qhead">
+      <label for="questions">questions <span class="muted">— one per name</span></label>
+      <span class="spacer"></span>
+      <button class="small" data-add="noul">+ Noul</button>
+      <button class="small" data-add="choice">+ Choice</button>
+      <button class="small" data-add="score">+ Score</button>
+    </div>
+    <textarea id="questions" rows="20" spellcheck="false"></textarea>
+
+    <div class="row">
+      <button class="primary" id="run">Run</button>
+      <span class="muted" style="font-size:13px"><kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+      <span class="spacer"></span>
+      <button class="small" id="format">Tidy JSON</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Response <span class="hint" id="rhint"></span></h2>
+    <div id="out"><p class="muted">Press Run.</p></div>
+  </div>
+
+</div>
+
+<script>
+const PRESETS = __PRESETS__;
+const TEMPLATES = __TEMPLATES__;
+const NEW_PRESET = __NEW__;
+
+const $ = (id) => document.getElementById(id);
+const stateBox = $("state"), qBox = $("questions"), out = $("out"), rhint = $("rhint");
+
+// --- presets ---------------------------------------------------------------
+// Demos in one group, the blank slate in its own, so "New" does not read as a
+// fourth demo.
+const demoGroup = document.createElement("optgroup");
+demoGroup.label = "Demos";
+const newGroup = document.createElement("optgroup");
+newGroup.label = "Start from scratch";
+for (const name of Object.keys(PRESETS)) {
+  const o = document.createElement("option");
+  o.value = o.textContent = name;
+  (name === NEW_PRESET ? newGroup : demoGroup).appendChild(o);
+}
+$("preset").append(demoGroup, newGroup);
+const EMPTY_MSG = '<p class="muted">Press Run.</p>';
+
+function loadPreset(name) {
+  const p = PRESETS[name];
+  const state = JSON.stringify(p.state, null, 2);
+  const questions = JSON.stringify(p.questions, null, 2);
+  if (p.blank) {
+    // Greyed-out placeholder: the shape to type, not content that gets sent.
+    stateBox.value = qBox.value = "";
+    stateBox.placeholder = state;
+    qBox.placeholder = questions;
+  } else {
+    stateBox.value = state;
+    qBox.value = questions;
+    stateBox.placeholder = qBox.placeholder = "";
+  }
+  clearBad();
+  // Nothing has been asked yet, so the previous demo's answers must go -- leaving
+  // them up reads as though selecting a demo ran it.
+  out.innerHTML = EMPTY_MSG;
+  rhint.textContent = "";
+}
+$("preset").addEventListener("change", (e) => loadPreset(e.target.value));
+
+// --- editing helpers -------------------------------------------------------
+function clearBad() { stateBox.classList.remove("bad"); qBox.classList.remove("bad"); }
+
+function parseBox(box, label) {
+  try {
+    const v = JSON.parse(box.value);
+    box.classList.remove("bad");
+    return v;
+  } catch (e) {
+    box.classList.add("bad");
+    throw new Error(label + " is not valid JSON — " + e.message);
+  }
+}
+
+document.querySelectorAll("[data-add]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    let qs;
+    // On the blank slate the box is empty, and "+ Noul" should start it off.
+    if (!qBox.value.trim()) qs = {};
+    else {
+      try { qs = parseBox(qBox, "questions"); }
+      catch (e) { return showError(e.message); }
+    }
+    const kind = btn.dataset.add;
+    let name = kind, n = 2;
+    while (name in qs) name = kind + "_" + n++;
+    qs[name] = TEMPLATES[kind];
+    qBox.value = JSON.stringify(qs, null, 2);
+  });
+});
+
+$("format").addEventListener("click", () => {
+  try {
+    if (stateBox.value.trim())
+      stateBox.value = JSON.stringify(parseBox(stateBox, "state"), null, 2);
+    if (qBox.value.trim())
+      qBox.value = JSON.stringify(parseBox(qBox, "questions"), null, 2);
+  } catch (e) { showError(e.message); }
+});
+
+// --- running ---------------------------------------------------------------
+function showError(msg) { out.innerHTML = ""; rhint.textContent = "";
+  const d = document.createElement("div"); d.className = "err"; d.textContent = msg;
+  out.appendChild(d); }
+
+async function run() {
+  let state, questions;
+  if (!stateBox.value.trim() || !qBox.value.trim()) {
+    return showError("Fill in both boxes — the greyed-out text shows the shape. "
+                     + "Or pick a demo from the menu to start from a working example.");
+  }
+  try {
+    state = parseBox(stateBox, "state");
+    questions = parseBox(qBox, "questions");
+  } catch (e) { return showError(e.message); }
+
+  $("run").disabled = true;
+  rhint.textContent = "running…";
+  try {
+    const res = await fetch("/api/run", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ state, questions }),
+    });
+    const body = await res.json();
+    if (!res.ok) return showError(body.detail || ("HTTP " + res.status));
+    render(body);
+  } catch (e) {
+    showError("Request failed — " + e.message);
+  } finally {
+    $("run").disabled = false;
+  }
+}
+$("run").addEventListener("click", run);
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); run(); }
+});
+
+// --- rendering -------------------------------------------------------------
+const COLOR = { noul: "#3a5f9f", choice: "#1a7f4b", score: "#8a5a9f" };
+const WHAT = {
+  noul: "Short for Bernoulli: p = the probability the answer is yes. "
+      + "A probability, not a magnitude — and p alone specifies the whole "
+      + "distribution, which is why a Noul carries no confidence.",
+  choice: "One option out of a defined set, with a probability for each and a "
+        + "confidence summarizing the spread.",
+  score: "A continuous position on ranked levels, so an answer can land between "
+       + "two rungs.",
+};
+
+function bars(entries, color, winner) {
+  const rows = entries.map(([k, v]) => `
+    <div class="dline ${k === winner ? "win" : ""}">
+      <span class="k" title="${esc(k)}">${esc(k)}</span>
+      <span class="v">${v.toFixed(2)}</span>
+      <span class="track"><span class="fill" style="width:${(v * 100).toFixed(1)}%;background:${color}"></span></span>
+    </div>`).join("");
+  return `<div class="dist">${rows}</div>`;
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+function answerCard(name, a) {
+  const color = COLOR[a.type];
+  let head = "", dist = "";
+
+  if (a.type === "noul") {
+    head = `<div class="headline-val">${a.noul.toFixed(2)} <span class="unit">/ 1.00</span></div>`;
+    dist = bars([["true", a.noul], ["false", 1 - a.noul]], color, a.noul >= 0.5 ? "true" : "false");
+  } else if (a.type === "choice") {
+    head = `<div class="headline-val">${esc(a.choice)}</div>
+            <div class="conf">confidence ${a.confidence.toFixed(2)}</div>`;
+    const ent = Object.entries(a.probabilities).sort((x, y) => y[1] - x[1]);
+    dist = bars(ent, color, a.choice);
+  } else if (a.type === "score") {
+    const legend = a.legend || {};
+    const top = Math.max(...Object.keys(legend).map(Number), 0);
+    const rung = legend[String(Math.round(a.score))] ?? "";
+    head = `<div class="headline-val">${a.score.toFixed(2)} <span class="unit">/ ${top.toFixed(2)} · ${esc(rung)}</span></div>
+            <div class="conf">confidence ${a.confidence.toFixed(2)}</div>`;
+    const ent = Object.entries(a.probabilities)
+      .sort((x, y) => Number(x[0]) - Number(y[0]))
+      .map(([i, p]) => [legend[i] ?? i, p]);
+    dist = bars(ent, color, rung);
+  }
+
+  return `<div class="answer">
+    <div class="top"><span class="name">${esc(name)}</span><span class="badge ${a.type}" title="${esc(WHAT[a.type])}">${a.type}</span></div>
+    ${head}${dist}
+  </div>`;
+}
+
+function render(body) {
+  rhint.textContent = body.model;
+  const cards = Object.entries(body.answers).map(([n, a]) => answerCard(n, a)).join("");
+  out.innerHTML = `
+    <div class="stats">
+      <div class="stat"><b>${body.elapsed_ms} ms</b><span>round trip</span></div>
+      <div class="stat"><b>${Object.keys(body.answers).length}</b><span>answers, one call</span></div>
+      <div class="stat"><b>${body.usage.input_tokens} / ${body.usage.output_tokens}</b><span>tokens in / out</span></div>
+    </div>
+    ${cards}
+    <details><summary>Raw response</summary><pre>${esc(JSON.stringify(body, null, 2))}</pre></details>`;
+}
+
+loadPreset(__DEFAULT__);
+</script>
+</body>
+</html>

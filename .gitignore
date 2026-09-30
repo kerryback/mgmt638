@@ -35,6 +35,11 @@ __pycache__/
 # for Oct 1 (index.qmd links files/session12.zip). 3.3KB.
 !files/session12.zip
 !docs/files/session12.zip
+# The Jev playground bundle, zipped from jevdemo/ and published from the repo.
+# 20KB. Both copies have to be un-ignored -- the source and the one under docs/
+# -- or the download link 404s on the live site.
+!files/jevdemo.zip
+!docs/files/jevdemo.zip
 files/session*/*
 !files/session*/.gitkeep
 QuantEquity/

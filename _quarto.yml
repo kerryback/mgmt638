@@ -17,6 +17,7 @@ project:
     - slides/session07.qmd
     - slides/session08.qmd
     - slides/session11.qmd
+    - slides/session12.qmd
 
   resources:
     - CNAME
@@ -45,6 +46,10 @@ project:
     # The ten-industry covariance matrix the Sept 29 deck hands students to
     # solve for risk parity. Linked from slides/session11.qmd.
     - files/session11-covariance.csv
+    # Session 12's prompt-injection demo bundle (page.html, agent.py, README),
+    # published from the repo. Quarto copies it to docs/files/session12.zip,
+    # which index.qmd links.
+    - files/session12.zip
     - images/RiceBusiness-transparent-logo-sm.png
     - images/headshot-keeper-cropped2.png
     # Session material, linked from the schedule rows in index.qmd.

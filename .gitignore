@@ -31,6 +31,10 @@ __pycache__/
 # group exercise (sept22.html links files/session09.zip). 3.9MB.
 !files/session09.zip
 !docs/files/session09.zip
+# Session 12 likewise: the prompt-injection demo (page.html, agent.py, README)
+# for Oct 1 (index.qmd links files/session12.zip). 3.3KB.
+!files/session12.zip
+!docs/files/session12.zip
 files/session*/*
 !files/session*/.gitkeep
 QuantEquity/

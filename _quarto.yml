@@ -32,6 +32,9 @@ project:
     # Wheel-of-fortune spinner that draws the next team to present. Hand-written
     # HTML with no dependencies, so it is copied through verbatim to docs/.
     - /wheel.html
+    # JBSS two-stage DCF: tabbed forecasts with an editable baseline that
+    # revalues the DCF in the browser. Hand-written HTML, copied verbatim.
+    - /jbss.html
     # Session 7's file bundle, published from the repo rather than Dropbox.
     # Quarto copies it to docs/files/session07.zip, which index.qmd links.
     - files/session07.zip

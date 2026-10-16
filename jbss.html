@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JBSS Valuation</title>
+<style>
+  :root {
+    --ground: #ffffff;
+    --panel: #f7f8fa;
+    --ink: #1b1f24;
+    --muted: #58657a;
+    --rule: #dde2ea;
+    --accent: #00205b;
+    --accent-soft: #eef2f9;
+    --flag: #8a5a00;
+    --flag-soft: #fbf3e2;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  /* Follow whatever the reader's machine is set to. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #13171d; --panel: #1a1f27; --ink: #e6eaf0; --muted: #a2adbd;
+      --rule: #2b323c; --accent: #9db8ef; --accent-soft: #1b2332;
+      --flag: #e3b766; --flag-soft: #2a2416;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #13171d; --panel: #1a1f27; --ink: #e6eaf0; --muted: #a2adbd;
+    --rule: #2b323c; --accent: #9db8ef; --accent-soft: #1b2332;
+    --flag: #e3b766; --flag-soft: #2a2416;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font: 16px/1.55 var(--serif); padding-inline: 16px;
+  }
+  main { max-width: 74rem; margin: 0 auto; padding-block: 2.2rem 4rem; }
+
+  header { border-bottom: 3px solid var(--accent); padding-bottom: 1rem; margin-bottom: 1.6rem; }
+  .eyebrow {
+    font-family: var(--sans); font-size: .70rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--muted); margin: 0 0 .5rem;
+  }
+  h1 { font-size: 1.9rem; margin: 0 0 .3rem; line-height: 1.15; }
+  .sub { color: var(--muted); font-size: .95rem; margin: 0; }
+
+  h2 {
+    font-family: var(--sans); font-size: .78rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted); font-weight: 600;
+    margin: 2.4rem 0 .7rem; padding-bottom: .35rem; border-bottom: 1px solid var(--rule);
+  }
+
+  .warnings { list-style: none; padding: 0; margin: 0 0 1.2rem; }
+  .warnings li {
+    background: var(--flag-soft); border-left: 3px solid var(--flag);
+    padding: .55rem .8rem; margin-bottom: .4rem; font-size: .9rem;
+    font-family: var(--sans);
+  }
+
+  .headline { display: flex; flex-wrap: wrap; gap: 1px; background: var(--rule);
+              border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+  .headline div { background: var(--panel); padding: .9rem 1.1rem; flex: 1 1 11rem; }
+  .headline .lab {
+    font-family: var(--sans); font-size: .68rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .25rem;
+  }
+  .headline .val { font-size: 1.5rem; font-family: var(--mono); }
+  .headline .val.big { color: var(--accent); }
+
+  .scroller { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: .82rem; }
+  th, td { padding: .3rem .5rem; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--rule); }
+  th:first-child, td:first-child {
+    text-align: left; font-family: var(--sans); font-size: .82rem;
+    white-space: normal; min-width: 15rem;
+    position: sticky; left: 0; background: var(--ground); z-index: 1;
+  }
+  thead th {
+    font-family: var(--sans); font-size: .72rem; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--rule);
+  }
+  thead th.fc { color: var(--accent); }
+  tr.group td {
+    font-family: var(--sans); font-size: .72rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); padding-top: .9rem;
+  }
+  td.hist { color: var(--muted); background: var(--panel); }
+  td.fc { color: var(--ink); }
+  tr.total td { border-top: 2px solid var(--rule); border-bottom: none; font-weight: 700; }
+  td.sens { background: var(--panel); }
+  td.sens.here { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+  td.wrap { white-space: normal; text-align: left; font-family: var(--sans); font-size: .8rem; }
+
+  details { margin-top: .6rem; }
+  summary {
+    font-family: var(--sans); font-size: .82rem; color: var(--accent);
+    cursor: pointer; padding: .3rem 0;
+  }
+  .note { font-family: var(--sans); font-size: .87rem; color: var(--muted); margin: .5rem 0 0; }
+  .note.body { color: var(--ink); }
+  .rationale { font-family: var(--sans); font-size: .85rem; margin: .6rem 0 0; }
+  .rationale b { font-weight: 600; }
+
+  .lead {
+    font-size: 1.02rem; margin: .2rem 0 1.4rem; color: var(--ink);
+    border-left: 3px solid var(--accent); padding-left: .9rem;
+  }
+  .guide { margin: 0 0 2rem; }
+  .guide h3 {
+    font-family: var(--sans); font-size: 1rem; margin: 1.6rem 0 .1rem;
+    color: var(--accent); font-weight: 600;
+  }
+  .guide .strip {
+    font-family: var(--mono); font-size: .78rem; color: var(--muted);
+    margin: .25rem 0 .6rem; white-space: normal;
+  }
+  .guide .strip b { color: var(--ink); font-weight: 400; }
+  .guide p.how { margin: .5rem 0 0; font-size: .95rem; }
+  .guide blockquote {
+    margin: .7rem 0 0; padding: .5rem .9rem; background: var(--panel);
+    border-left: 3px solid var(--rule); font-size: .9rem;
+  }
+  .guide blockquote cite {
+    display: block; margin-top: .35rem; font-family: var(--sans);
+    font-size: .78rem; color: var(--muted); font-style: normal;
+  }
+  .rates { font-family: var(--sans); font-size: .87rem; margin: .9rem 0 0; color: var(--muted); }
+  .rates b { color: var(--ink); font-family: var(--mono); font-weight: 400; }
+  .drive {
+    background: var(--accent-soft); border-left: 3px solid var(--accent);
+    padding: .7rem .9rem; font-family: var(--sans); font-size: .88rem;
+    margin: 1.1rem 0 0; color: var(--ink);
+  }
+  .drive code { font-family: var(--mono); font-size: .92em; }
+
+/* The driver ranking: a bar you can read across at a glance. */
+td.bar { width: 40%; min-width: 8rem; }
+td.bar span {
+  display: block; height: .55rem; border-radius: 2px;
+  background: var(--accent); opacity: .75;
+}
+
+
+  nav.tabs { display: flex; gap: .25rem; border-bottom: 1px solid var(--rule); margin: 0 0 1.4rem; flex-wrap: wrap; }
+  nav.tabs.sub { margin-top: -.6rem; }
+  nav.tabs button {
+    font-family: var(--sans); font-size: .9rem; background: none; border: 0;
+    border-bottom: 3px solid transparent; color: var(--muted); padding: .55rem .9rem;
+    cursor: pointer; margin-bottom: -1px;
+  }
+  nav.tabs.sub button { font-size: .82rem; padding: .4rem .75rem; }
+  nav.tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+  nav.tabs button:hover { color: var(--ink); }
+  [role="tabpanel"][hidden] { display: none; }
+  [role="tabpanel"] > h2:first-child { margin-top: .4rem; }
+
+  td.fc input, .rates input {
+    width: 4.4rem; font: inherit; font-family: var(--mono); text-align: right;
+    color: var(--ink); background: var(--ground); border: 1px solid var(--rule);
+    border-radius: 3px; padding: .12rem .3rem;
+  }
+  .rates input { width: 5.2rem; }
+  td.fc input:focus, .rates input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  input.edited { background: var(--accent-soft); border-color: var(--accent); }
+  input.bad { background: var(--flag-soft); border-color: var(--flag); }
+  .u { color: var(--muted); font-size: .75rem; margin-left: .15rem; }
+  .readout {
+    display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; justify-content: space-between;
+    background: var(--accent-soft); border-left: 3px solid var(--accent);
+    padding: .7rem .9rem; font-family: var(--sans); font-size: .9rem; margin: 1.1rem 0 0;
+  }
+  .readout b { font-family: var(--mono); color: var(--accent); }
+  .readout button {
+    font-family: var(--sans); font-size: .82rem; color: var(--accent); background: var(--ground);
+    border: 1px solid var(--accent); border-radius: 4px; padding: .3rem .7rem; cursor: pointer;
+  }
+  .warnings:empty { display: none; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="eyebrow">Two-stage enterprise valuation</p>
+  <h1>John B. Sanfilippo &amp; Son, Inc. (JBSS)</h1>
+  <p class="sub">Fiscal 2026 ended 2026-06-25 is year 0. All figures in USD thousands.</p>
+</header>
+
+<nav class="tabs" role="tablist" data-level="top">
+  <button role="tab" id="t-forecasts" aria-controls="p-forecasts" aria-selected="true">Forecasts</button>
+  <button role="tab" id="t-dcf" aria-controls="p-dcf" aria-selected="false">DCF</button>
+</nav>
+
+<section role="tabpanel" id="p-forecasts" aria-labelledby="t-forecasts">
+
+<nav class="tabs sub" role="tablist" data-level="sub">
+  <button role="tab" id="t-lines" aria-controls="p-lines" aria-selected="true">Line items</button>
+  <button role="tab" id="t-evidence" aria-controls="p-evidence" aria-selected="false">Forecasts</button>
+  <button role="tab" id="t-baseline" aria-controls="p-baseline" aria-selected="false">Baseline</button>
+</nav>
+
+<section role="tabpanel" id="p-lines" aria-labelledby="t-lines">
+<h2>Classification of every reported balance-sheet line</h2>
+<p class="note">Which lines consume cash as the business grows (operating assets,
+operating liabilities, net PP&amp;E), which are claims on what it produces or are
+added in the bridge (debt claims, nonoperating assets), and which do neither
+(excluded). Everything downstream inherits this, so it is worth disagreeing with
+here rather than later.</p>
+<div class="scroller"><table><thead><tr><th>Reported line</th><th>Bucket</th><th>Why</th></tr></thead><tbody><tr><td>Cash</td><td class='wrap'>nonoperating_asset</td><td class='wrap'>Added at book in the bridge.</td></tr><tr><td>Accounts receivable</td><td class='wrap'>operating_asset</td><td class='wrap'>Trade receivables.</td></tr><tr><td>Inventories</td><td class='wrap'>operating_asset</td><td class='wrap'>Nuts, in process and finished goods.</td></tr><tr><td>Prepaid expenses and other current assets</td><td class='wrap'>operating_asset</td><td class='wrap'>Scale with activity.</td></tr><tr><td>Assets held for sale</td><td class='wrap'>nonoperating_asset</td><td class='wrap'>Nil at FY2026.</td></tr><tr><td>TOTAL CURRENT ASSETS</td><td class='wrap'>excluded</td><td class='wrap'>A subtotal.</td></tr><tr><td>Land</td><td class='wrap'>excluded</td><td class='wrap'>A gross PP&amp;E component.</td></tr><tr><td>Buildings</td><td class='wrap'>excluded</td><td class='wrap'>A gross PP&amp;E component.</td></tr><tr><td>Machinery and equipment</td><td class='wrap'>excluded</td><td class='wrap'>A gross PP&amp;E component.</td></tr><tr><td>Furniture and leasehold improvements</td><td class='wrap'>excluded</td><td class='wrap'>A gross PP&amp;E component.</td></tr><tr><td>Vehicles</td><td class='wrap'>excluded</td><td class='wrap'>A gross PP&amp;E component.</td></tr><tr><td>Construction in progress</td><td class='wrap'>excluded</td><td class='wrap'>A gross PP&amp;E component.</td></tr><tr><td>Property, plant and equipment gross</td><td class='wrap'>excluded</td><td class='wrap'>Gross, before accumulated depreciation.</td></tr><tr><td>Less: Accumulated depreciation</td><td class='wrap'>excluded</td><td class='wrap'>Contra to gross PP&amp;E.</td></tr><tr><td>Property, plant and equipment net</td><td class='wrap'>net_ppe</td><td class='wrap'>The plants. Driven by the sales-to-PP&amp;E turnover.</td></tr><tr><td>Rental investment property, less accumulated depreciation</td><td class='wrap'>nonoperating_asset</td><td class='wrap'>The leased-out portion of the Elgin site; its rent is in other income, not EBITDA.</td></tr><tr><td>TOTAL PROPERTY, PLANT AND EQUIPMENT</td><td class='wrap'>excluded</td><td class='wrap'>A subtotal.</td></tr><tr><td>Intangible assets, net</td><td class='wrap'>excluded</td><td class='wrap'>Acquired; the cash flows are already in EBITDA.</td></tr><tr><td>Life insurance and other assets</td><td class='wrap'>nonoperating_asset</td><td class='wrap'>Nil at FY2026.</td></tr><tr><td>Deferred income taxes</td><td class='wrap'>excluded</td><td class='wrap'>Cash taxes are computed directly from EBIT.</td></tr><tr><td>Goodwill</td><td class='wrap'>excluded</td><td class='wrap'>As the intangibles.</td></tr><tr><td>Operating lease right-of-use assets</td><td class='wrap'>excluded</td><td class='wrap'>Its growth tracks the lease liability, not sales.</td></tr><tr><td>Other assets</td><td class='wrap'>excluded</td><td class='wrap'>Not sales-driven.</td></tr><tr><td>TOTAL ASSETS</td><td class='wrap'>excluded</td><td class='wrap'>A subtotal.</td></tr><tr><td>Revolving credit facility borrowings</td><td class='wrap'>debt_claim</td><td class='wrap'>Debt.</td></tr><tr><td>Current maturities of long-term debt, net</td><td class='wrap'>debt_claim</td><td class='wrap'>Debt.</td></tr><tr><td>Accounts payable</td><td class='wrap'>operating_liability</td><td class='wrap'>Trade payables.</td></tr><tr><td>Bank overdraft</td><td class='wrap'>debt_claim</td><td class='wrap'>A borrowing, not a payable.</td></tr><tr><td>Accrued payroll and related benefits</td><td class='wrap'>operating_liability</td><td class='wrap'>Scales with the workforce and so with volume.</td></tr><tr><td>Other accrued expenses</td><td class='wrap'>operating_liability</td><td class='wrap'>Scales with activity.</td></tr><tr><td>TOTAL CURRENT LIABILITIES</td><td class='wrap'>excluded</td><td class='wrap'>A subtotal.</td></tr><tr><td>Long-term debt, less current maturities, net</td><td class='wrap'>debt_claim</td><td class='wrap'>Debt.</td></tr><tr><td>Retirement plan</td><td class='wrap'>debt_claim</td><td class='wrap'>The unfunded pension obligation is a claim that ranks ahead of common.</td></tr><tr><td>Long-term operating lease liabilities, net of current portion</td><td class='wrap'>excluded</td><td class='wrap'>EBITDA here is struck AFTER rent expense, so the leases are already paid for in the cash flows; putting the liability in the bridge as well would count them twice.</td></tr><tr><td>Long-term workers' compensation liabilities</td><td class='wrap'>operating_liability</td><td class='wrap'>Self-insurance accrued on hours worked, so it scales with volume.</td></tr><tr><td>Other</td><td class='wrap'>excluded</td><td class='wrap'>Not sales-driven.</td></tr><tr><td>TOTAL LONG-TERM LIABILITIES</td><td class='wrap'>excluded</td><td class='wrap'>A subtotal.</td></tr><tr><td>TOTAL LIABILITIES</td><td class='wrap'>excluded</td><td class='wrap'>A subtotal.</td></tr><tr><td>Common Stock — Class A Common Stock</td><td class='wrap'>excluded</td><td class='wrap'>Common equity.</td></tr><tr><td>Common Stock — Common Stock, Non-Cumulative Voting Rights of One Vote Per Share</td><td class='wrap'>excluded</td><td class='wrap'>Common equity.</td></tr><tr><td>Capital in excess of par value</td><td class='wrap'>excluded</td><td class='wrap'>Common equity.</td></tr><tr><td>Retained earnings</td><td class='wrap'>excluded</td><td class='wrap'>Common equity.</td></tr><tr><td>Accumulated other comprehensive income</td><td class='wrap'>excluded</td><td class='wrap'>Common equity.</td></tr><tr><td>Treasury stock, at cost</td><td class='wrap'>excluded</td><td class='wrap'>Common equity.</td></tr><tr><td>TOTAL STOCKHOLDERS' EQUITY</td><td class='wrap'>excluded</td><td class='wrap'>A subtotal.</td></tr><tr><td>TOTAL LIABILITIES &amp; STOCKHOLDERS' EQUITY</td><td class='wrap'>excluded</td><td class='wrap'>A subtotal.</td></tr><tr><td>Total assets − total liabilities and equity</td><td class='wrap'>excluded</td><td class='wrap'>The workbook's own footing check, not a reported line.</td></tr></tbody></table></div>
+</section>
+
+<section role="tabpanel" id="p-evidence" aria-labelledby="t-evidence" hidden>
+<p class="lead"><p class="lead">Every number below is a suggestion, not a conclusion. They are a
+defensible starting point drawn from the history and from what management has
+said, and they are where the argument begins rather than where it ends. Each
+driver then gets a section of its own: what its history shows, what actually
+makes it move, what would make you choose differently, and the quoted evidence.
+The decision is yours.</p>
+<h2>Driver by driver</h2>
+<section class='guide'><h3>Sales growth</h3><p class='strip'>History 2022 <b>11.3%</b>, 2023 <b>4.6%</b>, 2024 <b>6.7%</b>, 2025 <b>3.8%</b>, 2026 <b>6.2%</b> &nbsp;·&nbsp; Suggested <b>4.5%</b>, <b>6.5%</b>, <b>6.0%</b>, <b>4.5%</b>, <b>3.5%</b>, then <b>3.5%</b> forever &nbsp;·&nbsp; Moving it 1pp each way moves the value <b>38.2%</b></p><p class='how'>Two things drive this line and they move independently: pounds and price per pound. FY2026 is the case in point -- sales rose 6.2 percent while volume fell 2.5 percent, so the growth was price recovering nut costs, not more product out the door. Decide what you believe about each. For volume, the question is how fast the new high-speed bar lines fill; management sized the prize at over $300 million and, pressed on timing, guessed three to five years, which is a guess and was offered as one. Five years of that on a $1.18 billion base is roughly 5 percent a year of incremental growth; three years is far more front-loaded. For price, ask whether nut cost inflation keeps passing through -- it has been, but it cuts both ways when costs fall. The terminal rate is a different question entirely: it is a nominal perpetual rate for a mature packaged-food business, so anything much above nominal GDP has JBSS eventually becoming the economy.</p><blockquote>&ldquo;We are very optimistic about securing new distribution in the near future. And we estimate over $300 million in potential new growth for JBSS as we sell the capacity on these lines.&rdquo;<cite>Jeffrey T. Sanfilippo, CEO, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><blockquote>&ldquo;I thought I had to guess somewhere between 3 to 5 years.&rdquo;<cite>Jeffrey T. Sanfilippo, CEO, asked how long the $300 million would take, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><blockquote>&ldquo;significant external uncertainties remain including tariffs, inflation, unpredictable commodity costs, and broader macroeconomic challenges&rdquo;<cite>Jeffrey T. Sanfilippo, CEO, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><p class='how'><i>Why the suggestion sits where it does.</i> Takes the $300 million at the slow end of the three-to-five-year range, on top of low base growth: FY2027 near trend because the lines only reach full operation in the second quarter, the ramp in FY2028 and FY2029, then a fade. Adds about $324 million of sales over the five years.</p></section><section class='guide'><h3>EBITDA margin</h3><p class='strip'>History 2021 <b>12.1%</b>, 2022 <b>11.1%</b>, 2023 <b>11.1%</b>, 2024 <b>10.3%</b>, 2025 <b>10.1%</b>, 2026 <b>10.0%</b> &nbsp;·&nbsp; Suggested <b>10.2%</b>, <b>10.6%</b>, <b>10.8%</b>, <b>10.8%</b>, <b>10.8%</b>, then <b>10.8%</b> forever &nbsp;·&nbsp; Moving it 1pp each way moves the value <b>29.8%</b></p><p class='how'>The margin has fallen every year since FY2021, 12.1 to 10.0 percent, so the first decision is whether that is a trend or a run of bad years. Separate the drags that should not repeat from the ones that should. FY2026 carried $2.7 million of costs from a third-party dry milk powder recall and manufacturing inefficiencies from onboarding a large contract manufacturing customer; both are transitory on their face. Against that, raw input cost per pound rose 12.1 percent, and mix is moving toward contract manufacturing and commercial ingredients, which carry lower margins than branded consumer -- that is structural, not a bad year. A margin that recovers all the way to 12 percent is implicitly a bet that mix reverses. One that stays at 10 percent is a bet that the new lines add no operating leverage at all, having just been built for it.</p><blockquote>&ldquo;Gross profit was also adversely affected by higher customer claims, higher snack bar ingredient costs, manufacturing inefficiencies, higher freight expense&rdquo;<cite>Frank S. Pellegrino, CFO, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><blockquote>&ldquo;The weighted average cost per pound of raw nut and dried fruit input stock on hand increased 12.1% due to higher pecan and almond acquisition cost partially offset by lower walnut acquisition costs.&rdquo;<cite>Frank S. Pellegrino, CFO, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><blockquote>&ldquo;Key areas of focus include AI enabled process enhancements, plant efficiency, SKU rationalization, trade spend effectiveness, procurement savings, and supply chain optimization.&rdquo;<cite>Jeffrey T. Sanfilippo, CEO, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><p class='how'><i>Why the suggestion sits where it does.</i> A partial recovery to 10.8 percent -- the recall and the onboarding inefficiencies lapse, the new lines add some leverage, but the mix shift and nut costs stop it short of the FY2021 level.</p></section><section class='guide'><h3>Next-year sales / net PP&amp;E</h3><p class='strip'>History 2021 <b>8.16×</b>, 2022 <b>8.54×</b>, 2023 <b>8.83×</b>, 2024 <b>7.32×</b>, 2025 <b>7.12×</b> &nbsp;·&nbsp; Suggested <b>5.25×</b>, <b>5.60×</b>, <b>5.90×</b>, <b>6.15×</b>, <b>6.30×</b>, then <b>6.30×</b> forever &nbsp;·&nbsp; Moving it 5% of itself each way moves the value <b>5.5%</b></p><p class='how'>The assumption where the balance sheet is shouting -- though not, it turns out, the one the answer is most exposed to: the Drivers sheet puts a five percent move here at about a tenth of what a percentage point on sales growth or EBITDA margin does. What it governs is the shape of capital spending, which is worth getting right for its own sake. Net PP&amp;E is stated as a turnover on NEXT year's sales, because a plant comes on line before the volume does. The turnover ran 8.2 to 8.8 through FY2023 and then fell to 7.1 -- and at FY2026 the balance sheet carries $86.9 million of construction in progress, 15.1 percent of gross PP&amp;E against under 2 percent in every prior year. That is capacity in the ground producing nothing yet. So the honest starting point for year 1 is a turnover well below the historical range, and the real question is how far it recovers and how fast. If you believe the $300 million sells through, the turnover climbs back toward 7 or 8 as the same assets carry far more sales. If you believe the capacity was overbuilt, it stays near 5 and the valuation falls a long way. Note the mechanical consequence: capex is the plug here, so a rising turnover means net PP&amp;E grows slower than sales and capex stays near depreciation. Check the implied capex line in the forecast against the $20 to $50 million the company spent before this build, and against the $88 million it spent in FY2026.</p><blockquote>&ldquo;Our second priority is to expand our bar portfolio and sell through the significant new manufacturing capacity we have added at our Elgin facility. Our engineering team has done an outstanding job bringing the new high speed bar lines we purchased online and we expect them to be fully operational by the second quarter of fiscal 2027.&rdquo;<cite>Jeffrey T. Sanfilippo, CEO, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><blockquote>&ldquo;The 2 high speed lines are really balancing out our manufacturing capability... much like we did for snack nut and trail, we developed our manufacturing capabilities to run low volumes as well as high volumes very efficiently, and that is really what this investment represents.&rdquo;<cite>Jasper Sanfilippo, COO, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><p class='how'><i>Why the suggestion sits where it does.</i> Starts at 5.25, near where FY2026 sales-to-PP&amp;E actually lands once the construction in progress is counted, and recovers to 6.30 rather than back to the old 8-plus, on the view that the capacity sells through but the asset base is permanently larger.</p></section><section class='guide'><h3>Depreciation / prior net PP&amp;E</h3><p class='strip'>History 2022 <b>15.6%</b>, 2023 <b>17.5%</b>, 2024 <b>20.3%</b>, 2025 <b>17.8%</b>, 2026 <b>17.1%</b> &nbsp;·&nbsp; Suggested <b>14.0%</b>, <b>13.5%</b>, <b>13.0%</b>, <b>13.0%</b>, <b>13.0%</b>, then <b>13.0%</b> forever &nbsp;·&nbsp; Moving it 1pp each way moves the value <b>4.8%</b></p><p class='how'>Depreciation is a rate on PRIOR-year net PP&amp;E, so the rate and the asset base move together and you should not read the history literally. It ran 15.6 to 20.3 percent, but on a base roughly half today's: accumulated depreciation is 58 percent of gross PP&amp;E at FY2026, an old base being depreciated fast. The new high-speed lines are long-lived, so the blended rate should fall as they come in. A useful cross-check is the realised-capex line in the history, which backs capex out of the PP&amp;E roll-forward: where it diverges from reported capex, acquired assets are usually the reason -- FY2024's gap is the $59 million Lakeville acquisition. Remember the rate only reaches the valuation through the tax shield and through capex, since capex is the plug; it is not worth agonising over to the decimal.</p><p class='how'><i>Why the suggestion sits where it does.</i> Fades from 14 to 13 percent, below the 16-to-20 percent history, because the new long-lived lines dilute an old and heavily depreciated base. Implies roughly a seven-to-eight-year average life.</p></section><section class='guide'><h3>Accounts receivable</h3><p class='strip'>History 2021 <b>7.7%</b>, 2022 <b>7.3%</b>, 2023 <b>7.3%</b>, 2024 <b>8.0%</b>, 2025 <b>6.9%</b>, 2026 <b>7.2%</b> &nbsp;·&nbsp; Suggested <b>7.2%</b>, <b>7.1%</b>, <b>7.1%</b>, <b>7.0%</b>, <b>7.0%</b>, then <b>7.0%</b> forever</p><p class='how'>Receivables have sat in a narrow 6.9 to 8.0 percent of sales band for six years, which is what you would expect from a business selling to large grocery, club and mass customers on standard terms. Absent a change in customer mix or terms there is little to argue about. The thing that would move it is the contract manufacturing growth, if those customers pay on different terms than the consumer channel.</p><p class='how'><i>Why the suggestion sits where it does.</i> 6.9 to 8.0 percent of sales across FY2021 to FY2026, at 7.2 percent in FY2026. Held near there, easing toward the middle of the range.</p></section><section class='guide'><h3>Inventories</h3><p class='strip'>History 2021 <b>17.2%</b>, 2022 <b>21.4%</b>, 2023 <b>17.3%</b>, 2024 <b>18.4%</b>, 2025 <b>23.0%</b>, 2026 <b>20.9%</b> &nbsp;·&nbsp; Suggested <b>20.9%</b>, <b>20.5%</b>, <b>20.0%</b>, <b>19.7%</b>, <b>19.5%</b>, then <b>19.5%</b> forever</p><p class='how'>The largest working-capital item and the most volatile, 17.2 to 23.0 percent of sales, because it holds nuts bought at harvest and carried through the year. Two forces to separate: pounds on hand, which follows volume, and cost per pound, which follows the crop. FY2026 sits near the top of the range at 20.9 percent with raw input cost per pound up 12.1 percent, so part of that is price and would unwind if nut costs fell. Consider forecasting this as days of cost of sales instead, which separates the two more cleanly than a percent of sales does.</p><blockquote>&ldquo;The decrease was driven by lower finished goods inventories for bars, lower walnut acquisition costs, and lower on hand quantities of pecans and walnuts.&rdquo;<cite>Frank S. Pellegrino, CFO, transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt</cite></blockquote><p class='how'><i>Why the suggestion sits where it does.</i> 17.2 to 23.0 percent of sales historically, at 20.9 percent in FY2026 -- the high end, because nut costs are high. Management reported the weighted average cost per pound of raw input stock up 12.1 percent (transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt). A slow drift down as bar finished goods normalise, not a return to the FY2021 level.</p></section><section class='guide'><h3>Prepaid expenses and other current assets</h3><p class='strip'>History 2021 <b>1.0%</b>, 2022 <b>0.9%</b>, 2023 <b>0.7%</b>, 2024 <b>1.1%</b>, 2025 <b>1.3%</b>, 2026 <b>1.5%</b> &nbsp;·&nbsp; Suggested <b>1.5%</b>, <b>1.4%</b>, <b>1.3%</b>, <b>1.2%</b>, <b>1.2%</b>, then <b>1.2%</b> forever</p><p class='how'>Small and stable at 0.7 to 1.5 percent of sales. Hold it flat near the recent level unless something in the notes says otherwise; it is not worth a forecast of its own.</p><p class='how'><i>Why the suggestion sits where it does.</i> 0.7 to 1.5 percent of sales historically, at the top of that range in FY2026; reverts toward the middle.</p></section><section class='guide'><h3>Accounts payable</h3><p class='strip'>History 2021 <b>5.7%</b>, 2022 <b>5.0%</b>, 2023 <b>4.3%</b>, 2024 <b>5.0%</b>, 2025 <b>5.5%</b>, 2026 <b>6.2%</b> &nbsp;·&nbsp; Suggested <b>6.2%</b>, <b>6.0%</b>, <b>5.8%</b>, <b>5.6%</b>, <b>5.5%</b>, then <b>5.5%</b> forever</p><p class='how'>Payables are a source of cash, so a higher ratio raises the valuation -- which is a reason to be careful rather than generous. The range is 4.3 to 6.2 percent of sales and FY2026 is at the top of it. Ask whether that reflects genuinely longer terms or just the timing of nut purchases at year end; a June fiscal year end sits in an awkward place relative to the harvest. Check the notes for any supply-chain finance programme, which flatters payables in a way that reverses.</p><p class='how'><i>Why the suggestion sits where it does.</i> 4.3 to 6.2 percent of sales historically, at 6.2 percent in FY2026. Reverts toward the mean.</p></section><section class='guide'><h3>Accrued payroll and related benefits</h3><p class='strip'>History 2021 <b>2.8%</b>, 2022 <b>2.0%</b>, 2023 <b>2.8%</b>, 2024 <b>3.3%</b>, 2025 <b>1.7%</b>, 2026 <b>2.9%</b> &nbsp;·&nbsp; Suggested <b>2.9%</b>, <b>2.8%</b>, <b>2.7%</b>, <b>2.6%</b>, <b>2.6%</b>, then <b>2.6%</b> forever</p><p class='how'>The most volatile liability on the sheet, 1.7 to 3.3 percent of sales, because it carries incentive compensation that swings with the year's results. FY2025's 1.7 percent was a weak year and FY2026's 2.9 percent a better one. Forecast it toward the middle of the range rather than off either endpoint.</p><p class='how'><i>Why the suggestion sits where it does.</i> 1.7 to 3.3 percent of sales and volatile with incentive accruals; reverts toward the mean.</p></section><section class='guide'><h3>Other accrued expenses</h3><p class='strip'>History 2021 <b>1.6%</b>, 2022 <b>1.3%</b>, 2023 <b>1.4%</b>, 2024 <b>1.4%</b>, 2025 <b>1.7%</b>, 2026 <b>1.8%</b> &nbsp;·&nbsp; Suggested <b>1.8%</b>, <b>1.7%</b>, <b>1.6%</b>, <b>1.6%</b>, <b>1.6%</b>, then <b>1.6%</b> forever</p><p class='how'>Stable at 1.3 to 1.8 percent of sales. Hold it near the recent level.</p><p class='how'><i>Why the suggestion sits where it does.</i> 1.3 to 1.8 percent of sales historically.</p></section><section class='guide'><h3>Long-term workers' compensation liabilities</h3><p class='strip'>History 2022 <b>0.8%</b>, 2023 <b>0.7%</b>, 2024 <b>0.7%</b>, 2025 <b>1.0%</b>, 2026 <b>0.9%</b> &nbsp;·&nbsp; Suggested <b>0.9%</b>, <b>0.9%</b>, <b>0.9%</b>, <b>0.9%</b>, <b>0.9%</b>, then <b>0.9%</b> forever</p><p class='how'>Self-insurance accrued on hours worked, so it scales with the workforce and therefore with volume rather than with price -- a reason to expect it to lag if growth comes from price. It has sat at 0.7 to 1.0 percent of sales throughout. The alternative classification is to call it a debt-like claim and put it in the bridge; that is defensible, and it would lower the equity value by roughly its book amount.</p><p class='how'><i>Why the suggestion sits where it does.</i> 0.7 to 1.0 percent of sales, accrued on hours worked, so it scales with volume.</p></section><section class='guide'><h3>Cash tax rate on taxable income</h3><p class='strip'>History 2021 <b>27.5%</b>, 2022 <b>26.0%</b>, 2023 <b>27.4%</b>, 2024 <b>27.8%</b>, 2025 <b>27.1%</b> &nbsp;·&nbsp; Suggested <b>27.0%</b>, <b>27.0%</b>, <b>27.0%</b>, <b>27.0%</b>, <b>27.0%</b>, then <b>27.0%</b> forever &nbsp;·&nbsp; Moving it 1pp each way moves the value <b>3.5%</b></p><p class='how'>Cash taxes paid over pretax income ran 26.0 to 27.8 percent across FY2021 to FY2025, a tight band, and JBSS is an ordinary full taxpayer with no carryforward to model -- so this is the least contentious driver on the page. Use the marginal cash rate on taxable income, not an effective rate; the model derives the effective rate itself. The rate applies to EBIT, not to pretax income, because this is an unlevered valuation and the interest shield belongs in the discount rate. Changing it moves the answer roughly one for one with after-tax operating profit, so it is worth getting to the nearest point and not worth more than that.</p><p class='how'><i>Why the suggestion sits where it does.</i> The middle of the 26-to-28 percent band the company has actually paid.</p></section>
+</section>
+
+<section role="tabpanel" id="p-baseline" aria-labelledby="t-baseline" hidden>
+<h2>Recommended forecasts with historicals</h2>
+<p class="note">Shaded columns are history. The rest are the recommended forecasts
+and every one is editable; the DCF tab revalues as you type. Edited cells are
+highlighted. The reasoning behind each recommendation is on the Forecasts tab.</p>
+<div class="scroller" style="margin-top:.8rem"><table id="baseline-table"></table></div>
+<p class="rates" id="rates-line"></p>
+<div class="readout">
+  <span id="readout-text"></span>
+  <button type="button" id="reset">Reset to recommended</button>
+</div>
+</section>
+
+</section>
+
+<section role="tabpanel" id="p-dcf" aria-labelledby="t-dcf" hidden>
+<ul class="warnings" id="warnings"></ul>
+<div class="headline">
+  <div><span class="lab">Enterprise value</span><span class="val" id="h-ev"></span></div>
+  <div><span class="lab">Equity value</span><span class="val" id="h-eq"></span></div>
+  <div><span class="lab">Value per share</span><span class="val big" id="h-vps"></span></div>
+</div>
+<p class="drive" id="dcf-status"></p>
+
+<h2>Forecast</h2>
+<div class="scroller"><table id="forecast-table"></table></div>
+<p class="note">Year 6 runs on the terminal assumptions and absorbs the
+balance-sheet transition. The perpetuity sits on year 7, which is why year 7 is
+shown but not discounted into the explicit sum.</p>
+
+<h2>From enterprise value to the shareholders</h2>
+<div class="scroller"><table id="bridge-table"></table></div>
+
+<h2>Sensitivity — value per share</h2>
+<div class="scroller"><table id="sens-table"></table></div>
+
+<h2>Which arguments are worth having</h2>
+<p class="note">How much a change in each driver moves the equity value, given
+the current assumptions. Each driver is moved one notch each way in every
+forecast year at once — the five explicit years and the perpetuity together, not
+the perpetuity alone — and the model re-run. These are a local measure around the
+current assumptions and shift as you edit them. The span is shown as a share of
+value; a driver near the bottom is one you can settle quickly.</p>
+<div class="scroller"><table id="rank-table"></table></div>
+
+<h2>Cost of capital</h2>
+<p class="note body">Cost of equity on CAPM: a 4.2 percent risk-free rate, a 5.5 percent equity risk premium and a levered beta of 0.8 for a defensive packaged-food business gives 8.6 percent. Pretax cost of debt 5.5 percent, after tax at 27 percent gives 4.0 percent. Debt claims of $112.7 million against a materially larger equity value put the debt weight near 12 percent, for a WACC of about 8.0 percent. The beta and the debt weight are assumptions, not observations -- no market data was used, and this is the single number most worth arguing about.</p>
+
+<h2>The model</h2>
+<p class="note body">
+  Sales grow at <i>g</i>. EBITDA is a margin on sales. Net PP&amp;E at the end of
+  year <i>t</i> is next year's sales divided by the sales-to-PP&amp;E turnover —
+  the one line that leads sales by a year, because capacity is built ahead of the
+  volume it serves. Depreciation is a rate on prior-year net PP&amp;E, and capex is
+  the plug that reconciles the two; in steady state it lands at (<i>g</i> +
+  <i>d</i>) times prior net PP&amp;E. Every other operating asset and liability is
+  a ratio to the same year's sales. Free cash flow is EBITDA less cash taxes on
+  EBIT, less capex, less the change in working capital. Taxes are unlevered; the
+  interest shield lives in the discount rate. A running NOL carryforward shelters
+  the explicit years; anything still alive after year 6 is valued separately and
+  appears in the bridge, so the perpetuity is taxed at the full rate and stays a
+  genuine steady state.
+</p>
+</section>
+
+</main>
+<script>
+(function () {
+  // A port of dcf_engine.py (two-stage-dcf skill). Year 0 is FY2026.
+  var DATA = {"base": {"sales": 1175673.0, "net_ppe": 243702.0, "operating_assets": {"receivables": 84310.0, "inventories": 245826.0, "prepaid": 18028.0}, "operating_liabilities": {"payables": 72438.0, "accrued_payroll": 34650.0, "other_accrued": 20941.0, "workers_comp": 10656.0}, "nonoperating_assets": {"cash": 1147.0, "rental_investment_property": 12263.0}, "debt_claims": {"revolving_credit_facility": 33615.0, "long_term_debt": 49619.0, "bank_overdraft": 237.0, "unfunded_pension": 29193.0}, "equity_claims": {}, "nol": 0.0}, "rec": {"sales_growth": {"explicit": [0.045, 0.065, 0.06, 0.045, 0.035], "terminal": 0.035, "rationale": "Takes the $300 million at the slow end of the three-to-five-year range, on top of low base growth: FY2027 near trend because the lines only reach full operation in the second quarter, the ramp in FY2028 and FY2029, then a fade. Adds about $324 million of sales over the five years.", "guidance": "Two things drive this line and they move independently: pounds and price per pound. FY2026 is the case in point -- sales rose 6.2 percent while volume fell 2.5 percent, so the growth was price recovering nut costs, not more product out the door. Decide what you believe about each. For volume, the question is how fast the new high-speed bar lines fill; management sized the prize at over $300 million and, pressed on timing, guessed three to five years, which is a guess and was offered as one. Five years of that on a $1.18 billion base is roughly 5 percent a year of incremental growth; three years is far more front-loaded. For price, ask whether nut cost inflation keeps passing through -- it has been, but it cuts both ways when costs fall. The terminal rate is a different question entirely: it is a nominal perpetual rate for a mature packaged-food business, so anything much above nominal GDP has JBSS eventually becoming the economy.", "citations": [{"quote": "We are very optimistic about securing new distribution in the near future. And we estimate over $300 million in potential new growth for JBSS as we sell the capacity on these lines.", "speaker": "Jeffrey T. Sanfilippo, CEO", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}, {"quote": "I thought I had to guess somewhere between 3 to 5 years.", "speaker": "Jeffrey T. Sanfilippo, CEO, asked how long the $300 million would take", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}, {"quote": "significant external uncertainties remain including tariffs, inflation, unpredictable commodity costs, and broader macroeconomic challenges", "speaker": "Jeffrey T. Sanfilippo, CEO", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}]}, "ebitda_margin": {"explicit": [0.102, 0.106, 0.108, 0.108, 0.108], "terminal": 0.108, "rationale": "A partial recovery to 10.8 percent -- the recall and the onboarding inefficiencies lapse, the new lines add some leverage, but the mix shift and nut costs stop it short of the FY2021 level.", "guidance": "The margin has fallen every year since FY2021, 12.1 to 10.0 percent, so the first decision is whether that is a trend or a run of bad years. Separate the drags that should not repeat from the ones that should. FY2026 carried $2.7 million of costs from a third-party dry milk powder recall and manufacturing inefficiencies from onboarding a large contract manufacturing customer; both are transitory on their face. Against that, raw input cost per pound rose 12.1 percent, and mix is moving toward contract manufacturing and commercial ingredients, which carry lower margins than branded consumer -- that is structural, not a bad year. A margin that recovers all the way to 12 percent is implicitly a bet that mix reverses. One that stays at 10 percent is a bet that the new lines add no operating leverage at all, having just been built for it.", "citations": [{"quote": "Gross profit was also adversely affected by higher customer claims, higher snack bar ingredient costs, manufacturing inefficiencies, higher freight expense", "speaker": "Frank S. Pellegrino, CFO", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}, {"quote": "The weighted average cost per pound of raw nut and dried fruit input stock on hand increased 12.1% due to higher pecan and almond acquisition cost partially offset by lower walnut acquisition costs.", "speaker": "Frank S. Pellegrino, CFO", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}, {"quote": "Key areas of focus include AI enabled process enhancements, plant efficiency, SKU rationalization, trade spend effectiveness, procurement savings, and supply chain optimization.", "speaker": "Jeffrey T. Sanfilippo, CEO", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}]}, "sales_to_net_ppe": {"explicit": [5.25, 5.6, 5.9, 6.15, 6.3], "terminal": 6.3, "rationale": "Starts at 5.25, near where FY2026 sales-to-PP&E actually lands once the construction in progress is counted, and recovers to 6.30 rather than back to the old 8-plus, on the view that the capacity sells through but the asset base is permanently larger.", "guidance": "The assumption where the balance sheet is shouting -- though not, it turns out, the one the answer is most exposed to: the Drivers sheet puts a five percent move here at about a tenth of what a percentage point on sales growth or EBITDA margin does. What it governs is the shape of capital spending, which is worth getting right for its own sake. Net PP&E is stated as a turnover on NEXT year's sales, because a plant comes on line before the volume does. The turnover ran 8.2 to 8.8 through FY2023 and then fell to 7.1 -- and at FY2026 the balance sheet carries $86.9 million of construction in progress, 15.1 percent of gross PP&E against under 2 percent in every prior year. That is capacity in the ground producing nothing yet. So the honest starting point for year 1 is a turnover well below the historical range, and the real question is how far it recovers and how fast. If you believe the $300 million sells through, the turnover climbs back toward 7 or 8 as the same assets carry far more sales. If you believe the capacity was overbuilt, it stays near 5 and the valuation falls a long way. Note the mechanical consequence: capex is the plug here, so a rising turnover means net PP&E grows slower than sales and capex stays near depreciation. Check the implied capex line in the forecast against the $20 to $50 million the company spent before this build, and against the $88 million it spent in FY2026.", "citations": [{"quote": "Our second priority is to expand our bar portfolio and sell through the significant new manufacturing capacity we have added at our Elgin facility. Our engineering team has done an outstanding job bringing the new high speed bar lines we purchased online and we expect them to be fully operational by the second quarter of fiscal 2027.", "speaker": "Jeffrey T. Sanfilippo, CEO", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}, {"quote": "The 2 high speed lines are really balancing out our manufacturing capability... much like we did for snack nut and trail, we developed our manufacturing capabilities to run low volumes as well as high volumes very efficiently, and that is really what this investment represents.", "speaker": "Jasper Sanfilippo, COO", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}]}, "depreciation_rate": {"explicit": [0.14, 0.135, 0.13, 0.13, 0.13], "terminal": 0.13, "rationale": "Fades from 14 to 13 percent, below the 16-to-20 percent history, because the new long-lived lines dilute an old and heavily depreciated base. Implies roughly a seven-to-eight-year average life.", "guidance": "Depreciation is a rate on PRIOR-year net PP&E, so the rate and the asset base move together and you should not read the history literally. It ran 15.6 to 20.3 percent, but on a base roughly half today's: accumulated depreciation is 58 percent of gross PP&E at FY2026, an old base being depreciated fast. The new high-speed lines are long-lived, so the blended rate should fall as they come in. A useful cross-check is the realised-capex line in the history, which backs capex out of the PP&E roll-forward: where it diverges from reported capex, acquired assets are usually the reason -- FY2024's gap is the $59 million Lakeville acquisition. Remember the rate only reaches the valuation through the tax shield and through capex, since capex is the plug; it is not worth agonising over to the decimal.", "citations": []}, "cash_tax_rate": {"explicit": [0.27, 0.27, 0.27, 0.27, 0.27], "terminal": 0.27, "rationale": "The middle of the 26-to-28 percent band the company has actually paid.", "guidance": "Cash taxes paid over pretax income ran 26.0 to 27.8 percent across FY2021 to FY2025, a tight band, and JBSS is an ordinary full taxpayer with no carryforward to model -- so this is the least contentious driver on the page. Use the marginal cash rate on taxable income, not an effective rate; the model derives the effective rate itself. The rate applies to EBIT, not to pretax income, because this is an unlevered valuation and the interest shield belongs in the discount rate. Changing it moves the answer roughly one for one with after-tax operating profit, so it is worth getting to the nearest point and not worth more than that.", "citations": []}, "operating_assets": {"receivables": {"explicit": [0.072, 0.071, 0.071, 0.07, 0.07], "terminal": 0.07, "rationale": "6.9 to 8.0 percent of sales across FY2021 to FY2026, at 7.2 percent in FY2026. Held near there, easing toward the middle of the range.", "guidance": "Receivables have sat in a narrow 6.9 to 8.0 percent of sales band for six years, which is what you would expect from a business selling to large grocery, club and mass customers on standard terms. Absent a change in customer mix or terms there is little to argue about. The thing that would move it is the contract manufacturing growth, if those customers pay on different terms than the consumer channel.", "citations": []}, "inventories": {"explicit": [0.209, 0.205, 0.2, 0.197, 0.195], "terminal": 0.195, "rationale": "17.2 to 23.0 percent of sales historically, at 20.9 percent in FY2026 -- the high end, because nut costs are high. Management reported the weighted average cost per pound of raw input stock up 12.1 percent (transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt). A slow drift down as bar finished goods normalise, not a return to the FY2021 level.", "guidance": "The largest working-capital item and the most volatile, 17.2 to 23.0 percent of sales, because it holds nuts bought at harvest and carried through the year. Two forces to separate: pounds on hand, which follows volume, and cost per pound, which follows the crop. FY2026 sits near the top of the range at 20.9 percent with raw input cost per pound up 12.1 percent, so part of that is price and would unwind if nut costs fell. Consider forecasting this as days of cost of sales instead, which separates the two more cleanly than a percent of sales does.", "citations": [{"quote": "The decrease was driven by lower finished goods inventories for bars, lower walnut acquisition costs, and lower on hand quantities of pecans and walnuts.", "speaker": "Frank S. Pellegrino, CFO", "source": "transcripts/JBSS_FY2026Q4_earnings_call_2026-08-20.txt"}]}, "prepaid": {"explicit": [0.015, 0.014, 0.013, 0.012, 0.012], "terminal": 0.012, "rationale": "0.7 to 1.5 percent of sales historically, at the top of that range in FY2026; reverts toward the middle.", "guidance": "Small and stable at 0.7 to 1.5 percent of sales. Hold it flat near the recent level unless something in the notes says otherwise; it is not worth a forecast of its own.", "citations": []}}, "operating_liabilities": {"payables": {"explicit": [0.062, 0.06, 0.058, 0.056, 0.055], "terminal": 0.055, "rationale": "4.3 to 6.2 percent of sales historically, at 6.2 percent in FY2026. Reverts toward the mean.", "guidance": "Payables are a source of cash, so a higher ratio raises the valuation -- which is a reason to be careful rather than generous. The range is 4.3 to 6.2 percent of sales and FY2026 is at the top of it. Ask whether that reflects genuinely longer terms or just the timing of nut purchases at year end; a June fiscal year end sits in an awkward place relative to the harvest. Check the notes for any supply-chain finance programme, which flatters payables in a way that reverses.", "citations": []}, "accrued_payroll": {"explicit": [0.029, 0.028, 0.027, 0.026, 0.026], "terminal": 0.026, "rationale": "1.7 to 3.3 percent of sales and volatile with incentive accruals; reverts toward the mean.", "guidance": "The most volatile liability on the sheet, 1.7 to 3.3 percent of sales, because it carries incentive compensation that swings with the year's results. FY2025's 1.7 percent was a weak year and FY2026's 2.9 percent a better one. Forecast it toward the middle of the range rather than off either endpoint.", "citations": []}, "other_accrued": {"explicit": [0.018, 0.017, 0.016, 0.016, 0.016], "terminal": 0.016, "rationale": "1.3 to 1.8 percent of sales historically.", "guidance": "Stable at 1.3 to 1.8 percent of sales. Hold it near the recent level.", "citations": []}, "workers_comp": {"explicit": [0.009, 0.009, 0.009, 0.009, 0.009], "terminal": 0.009, "rationale": "0.7 to 1.0 percent of sales, accrued on hours worked, so it scales with volume.", "guidance": "Self-insurance accrued on hours worked, so it scales with the workforce and therefore with volume rather than with price -- a reason to expect it to lag if growth comes from price. It has sat at 0.7 to 1.0 percent of sales throughout. The alternative classification is to call it a debt-like claim and put it in the bridge; that is defensible, and it would lower the equity value by roughly its book amount.", "citations": []}}}, "rates": {"wacc": 0.08, "nol_limitation": 0.8, "nol": 0.0, "shares": 11777.4}, "rows": [{"group": "Growth and margin"}, {"label": "Sales growth", "path": ["sales_growth"], "unit": "%", "hist": ["11.3%", "4.6%", "6.7%", "3.8%", "6.2%"]}, {"label": "EBITDA margin", "path": ["ebitda_margin"], "unit": "%", "hist": ["11.1%", "11.1%", "10.3%", "10.1%", "10.0%"]}, {"group": "Property, plant and equipment"}, {"label": "Next-year sales / net PP&amp;E", "path": ["sales_to_net_ppe"], "unit": "x", "hist": ["8.54\u00d7", "8.83\u00d7", "7.32\u00d7", "7.12\u00d7", "\u2014"]}, {"label": "Depreciation / prior net PP&amp;E", "path": ["depreciation_rate"], "unit": "%", "hist": ["15.6%", "17.5%", "20.3%", "17.8%", "17.1%"]}, {"group": "Operating assets, as a share of sales"}, {"label": "Accounts receivable", "path": ["operating_assets", "receivables"], "unit": "%", "hist": ["7.3%", "7.3%", "8.0%", "6.9%", "7.2%"]}, {"label": "Inventories", "path": ["operating_assets", "inventories"], "unit": "%", "hist": ["21.4%", "17.3%", "18.4%", "23.0%", "20.9%"]}, {"label": "Prepaid expenses and other current assets", "path": ["operating_assets", "prepaid"], "unit": "%", "hist": ["0.9%", "0.7%", "1.1%", "1.3%", "1.5%"]}, {"group": "Operating liabilities, as a share of sales"}, {"label": "Accounts payable", "path": ["operating_liabilities", "payables"], "unit": "%", "hist": ["5.0%", "4.3%", "5.0%", "5.5%", "6.2%"]}, {"label": "Accrued payroll and related benefits", "path": ["operating_liabilities", "accrued_payroll"], "unit": "%", "hist": ["2.0%", "2.8%", "3.3%", "1.7%", "2.9%"]}, {"label": "Other accrued expenses", "path": ["operating_liabilities", "other_accrued"], "unit": "%", "hist": ["1.3%", "1.4%", "1.4%", "1.7%", "1.8%"]}, {"label": "Long-term workers' compensation liabilities", "path": ["operating_liabilities", "workers_comp"], "unit": "%", "hist": ["0.8%", "0.7%", "0.7%", "1.0%", "0.9%"]}, {"group": "Taxes"}, {"label": "Cash tax rate on taxable income", "path": ["cash_tax_rate"], "unit": "%", "hist": ["26.0%", "27.4%", "27.8%", "27.1%", "\u2014"]}], "years": ["2022", "2023", "2024", "2025", "2026"]};
+  var BASE = DATA.base;
+  var N_EXPLICIT = 5, TRANSITION = 6, PERPETUITY = 7;
+  var SCALARS = ["sales_growth", "ebitda_margin", "sales_to_net_ppe",
+                 "depreciation_rate", "cash_tax_rate"];
+  var STORE = "jbss-baseline-v1";
+
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function sum(o) { var s = 0; for (var k in o) s += o[k]; return s; }
+  function drv(spec, t) { return t <= N_EXPLICIT ? spec.explicit[t - 1] : spec.terminal; }
+  function getSpec(a, path) { return path.length === 1 ? a[path[0]] : a[path[0]][path[1]]; }
+  function label(k) { return k.replace(/_/g, " "); }
+
+  // ---------------------------------------------------------------- engine
+  function runModel(a, r) {
+    var g = a.sales_growth.terminal, wacc = r.wacc;
+    if (!(wacc > g)) throw new Error("WACC must exceed terminal growth; the perpetuity does not exist.");
+
+    var s = [BASE.sales];
+    for (var t = 1; t <= PERPETUITY + 1; t++) s.push(s[t - 1] * (1 + drv(a.sales_growth, t)));
+
+    var nppePrev = BASE.net_ppe;
+    var nwcPrev = sum(BASE.operating_assets) - sum(BASE.operating_liabilities);
+    var nol = r.nol, rows = [];
+    for (t = 1; t <= PERPETUITY; t++) {
+      var sales = s[t];
+      var nppe = s[t + 1] / drv(a.sales_to_net_ppe, t);
+      var dep = drv(a.depreciation_rate, t) * nppePrev;
+      var capex = nppe - nppePrev + dep;
+      var ratio = 0, k;
+      for (k in a.operating_assets) ratio += drv(a.operating_assets[k], t);
+      for (k in a.operating_liabilities) ratio -= drv(a.operating_liabilities[k], t);
+      var nwc = ratio * sales;
+      var ebitda = drv(a.ebitda_margin, t) * sales;
+      var ebit = ebitda - dep;
+
+      var rate = drv(a.cash_tax_rate, t), used, taxable, tax, nolOpen = nol;
+      if (t >= PERPETUITY) { used = 0; taxable = ebit; tax = rate * ebit; }
+      else if (ebit <= 0) { used = 0; taxable = 0; tax = 0; nol -= ebit; }
+      else { used = Math.min(r.nol_limitation * ebit, nol); taxable = ebit - used; tax = rate * taxable; nol -= used; }
+
+      var fcf = ebitda - tax - capex - (nwc - nwcPrev);
+      var df = 1 / Math.pow(1 + wacc, t);
+      rows.push({ year: t, sales: sales, ebitda: ebitda, depreciation: dep, ebit: ebit,
+                  nol_open: nolOpen, nol_used: used, nol_close: nol, taxable_income: taxable,
+                  tax: tax, effective_tax_rate: ebit ? tax / ebit : 0, net_ppe: nppe,
+                  capex: capex, nwc: nwc, delta_nwc: nwc - nwcPrev, fcf: fcf,
+                  discount_factor: df, pv_fcf: fcf * df });
+      nppePrev = nppe; nwcPrev = nwc;
+    }
+
+    var perp = rows[PERPETUITY - 1];
+    var pvExplicit = 0;
+    for (t = 0; t < TRANSITION; t++) pvExplicit += rows[t].pv_fcf;
+    var tv = perp.fcf / (wacc - g);
+    var pvTerminal = tv / Math.pow(1 + wacc, TRANSITION);
+    var evOps = pvExplicit + pvTerminal;
+
+    // Shield on any carryforward still alive after year 6.
+    var nolSix = rows[TRANSITION - 1].nol_close, pvNol = 0, unexhausted = false;
+    if (nolSix > 0) {
+      if (perp.ebit <= 0) unexhausted = true;
+      else {
+        var left = nolSix, e = perp.ebit, yr = PERPETUITY, tr = drv(a.cash_tax_rate, PERPETUITY);
+        while (left > 0 && yr < PERPETUITY + 200) {
+          var u = Math.min(r.nol_limitation * e, left);
+          pvNol += tr * u / Math.pow(1 + wacc, yr);
+          left -= u; e *= 1 + g; yr++;
+        }
+        unexhausted = left > 0;
+      }
+    }
+
+    var bridge = [];
+    if (pvNol) bridge.push({ label: "PV of remaining NOL carryforward", amount: pvNol });
+    for (k in BASE.nonoperating_assets) bridge.push({ label: "Plus " + label(k), amount: BASE.nonoperating_assets[k] });
+    for (k in BASE.debt_claims) bridge.push({ label: "Less " + label(k), amount: -BASE.debt_claims[k] });
+    for (k in BASE.equity_claims) bridge.push({ label: "Less " + label(k), amount: -BASE.equity_claims[k] });
+    var equity = evOps;
+    bridge.forEach(function (b) { equity += b.amount; });
+
+    var warnings = [];
+    if (nolSix > 0) warnings.push("A carryforward of " + f1(nolSix) + " survives year 6. Its shield is valued separately at " + f1(pvNol) + " and shown in the bridge, so the perpetuity is taxed at the full rate.");
+    if (unexhausted) warnings.push("The carryforward is not exhausted within 200 years of steady state; the shield above is a lower bound.");
+    if (perp.ebit <= 0) warnings.push("Terminal EBIT is not positive, so the perpetuity is negative. The model cannot value this company as a going concern on these assumptions.");
+    var neg = rows.filter(function (x) { return x.capex < 0; }).map(function (x) { return x.year; });
+    if (neg.length) warnings.push("Implied capex is negative in year(s) " + neg.join(", ") + ": the sales-to-PP&E turnover is shrinking the asset base faster than it depreciates.");
+    if (rows.some(function (x) { return x.sales <= 0; })) warnings.push("Sales reach zero or below inside the forecast.");
+    var k5 = drv(a.sales_to_net_ppe, N_EXPLICIT), kt = a.sales_to_net_ppe.terminal;
+    if (kt && Math.abs(k5 - kt) / Math.abs(kt) > 0.10) warnings.push("Year 5's sales-to-PP&E turnover (" + k5.toFixed(2) + ") is more than 10 percent from terminal (" + kt.toFixed(2) + "), so year 6 absorbs the whole adjustment.");
+
+    return { rows: rows, evOps: evOps, pvExplicit: pvExplicit, tv: tv, pvTerminal: pvTerminal,
+             bridge: bridge, equity: equity, vps: r.shares ? equity / r.shares : null, warnings: warnings };
+  }
+
+  function tryVps(a, r) { try { return runModel(a, r).vps; } catch (e) { return null; } }
+
+  function driverRanking(a, r) {
+    var entries = SCALARS.map(function (n) { return [[n], label(n)]; });
+    ["operating_assets", "operating_liabilities"].forEach(function (side) {
+      for (var k in a[side]) entries.push([[side, k], label(k)]);
+    });
+    var base = tryVps(a, r), out = [];
+    entries.forEach(function (en) {
+      var rel = en[0][0] === "sales_to_net_ppe", size = rel ? 0.05 : 0.01, vals = [];
+      [-size, size].forEach(function (sh) {
+        var trial = clone(a), sp = getSpec(trial, en[0]);
+        sp.explicit = sp.explicit.map(function (v) { return rel ? v * (1 + sh) : v + sh; });
+        sp.terminal = rel ? sp.terminal * (1 + sh) : sp.terminal + sh;
+        vals.push(tryVps(trial, r));
+      });
+      if (vals[0] === null || vals[1] === null || !base) return;
+      var span = Math.abs(vals[1] - vals[0]);
+      out.push({ driver: en[1], shift: rel ? "5% of itself" : "1pp", span: span, share: span / Math.abs(base) });
+    });
+    out.sort(function (x, y) { return y.span - x.span; });
+    return out;
+  }
+
+  // ---------------------------------------------------------------- formatting
+  function f0(v) { return v.toLocaleString("en-US", { maximumFractionDigits: 0 }); }
+  function f1(v) { return v.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+  function f2(v) { return v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function pct(v, d) { return (v * 100).toFixed(d === undefined ? 1 : d) + "%"; }
+  function esc(s) { return String(s).replace(/&(?!amp;)/g, "&amp;").replace(/</g, "&lt;"); }
+  // Inputs show percent drivers in percent and turnovers as multiples.
+  function toShown(v, unit) {
+    var x = unit === "%" ? v * 100 : v, d = unit === "x" ? 2 : 1, s = x.toFixed(d);
+    if (unit === "n") s = String(+x.toFixed(4));
+    return +s === +x.toFixed(4) ? s : String(+x.toFixed(4));
+  }
+  function fromShown(v, unit) { return unit === "%" ? v / 100 : v; }
+
+  // ---------------------------------------------------------------- state
+  var state = { a: clone(DATA.rec), r: clone(DATA.rates) };
+  try {
+    var saved = JSON.parse(localStorage.getItem(STORE) || "null");
+    if (saved && saved.a && saved.r) state = saved;
+  } catch (e) {}
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+
+  var RATES = [
+    { key: "wacc", label: "WACC", unit: "%" },
+    { key: "nol_limitation", label: "NOL limitation", unit: "%" },
+    { key: "nol", label: "opening NOL", unit: "n" },
+    { key: "shares", label: "diluted shares", unit: "n" },
+  ];
+
+  // ---------------------------------------------------------------- baseline table
+  function buildBaseline() {
+    var cols = ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Terminal"];
+    var h = "<thead><tr><th>Assumption</th>" + DATA.years.map(function (y) { return "<th>" + y + "</th>"; }).join("") +
+            cols.map(function (c) { return "<th class='fc'>" + c + "</th>"; }).join("") + "</tr></thead><tbody>";
+    DATA.rows.forEach(function (row, i) {
+      if (row.group) { h += "<tr class='group'><td colspan='12'>" + row.group + "</td></tr>"; return; }
+      h += "<tr><td>" + row.label + "</td>" + row.hist.map(function (v) { return "<td class='hist'>" + v + "</td>"; }).join("");
+      for (var c = 0; c < 6; c++) {
+        h += "<td class='fc'><input inputmode='decimal' aria-label='" + esc(row.label.replace(/&amp;/g, "&")) + ", " + cols[c] +
+             "' data-row='" + i + "' data-col='" + c + "'><span class='u'>" + (row.unit === "%" ? "%" : "×") + "</span></td>";
+      }
+      h += "</tr>";
+    });
+    document.getElementById("baseline-table").innerHTML = h + "</tbody>";
+
+    document.getElementById("rates-line").innerHTML = RATES.map(function (q) {
+      return q.label + " <input inputmode='decimal' aria-label='" + q.label + "' data-rate='" + q.key + "'>" +
+             (q.unit === "%" ? "<span class='u'>%</span>" : "");
+    }).join(" &nbsp;·&nbsp; ") + " &nbsp;·&nbsp; terminal growth <b id='tg'></b> (the terminal sales growth)";
+  }
+
+  function cellRef(input) {
+    if (input.dataset.rate) {
+      var q = RATES.filter(function (x) { return x.key === input.dataset.rate; })[0];
+      return { unit: q.unit, get: function (s) { return s.r[q.key]; }, set: function (v) { state.r[q.key] = v; } };
+    }
+    var row = DATA.rows[+input.dataset.row], c = +input.dataset.col;
+    return { unit: row.unit,
+      get: function (s) { var sp = getSpec(s.a, row.path); return c < 5 ? sp.explicit[c] : sp.terminal; },
+      set: function (v) { var sp = getSpec(state.a, row.path); if (c < 5) sp.explicit[c] = v; else sp.terminal = v; } };
+  }
+  var REC = { a: DATA.rec, r: DATA.rates };
+
+  function fillInputs() {
+    document.querySelectorAll("#p-baseline input").forEach(function (inp) {
+      var ref = cellRef(inp);
+      inp.value = toShown(ref.get(state), ref.unit);
+      inp.classList.remove("bad");
+      markEdited(inp, ref);
+    });
+  }
+  function markEdited(inp, ref) {
+    inp.classList.toggle("edited", Math.abs(ref.get(state) - ref.get(REC)) > 1e-12);
+  }
+
+  document.addEventListener("input", function (ev) {
+    var inp = ev.target;
+    if (!inp.closest || !inp.closest("#p-baseline") || inp.tagName !== "INPUT") return;
+    var v = parseFloat(inp.value.replace(/,/g, ""));
+    var ref = cellRef(inp);
+    if (!isFinite(v) || inp.value.trim() === "") { inp.classList.add("bad"); return; }
+    inp.classList.remove("bad");
+    ref.set(fromShown(v, ref.unit));
+    markEdited(inp, ref);
+    save();
+    render();
+  });
+  document.addEventListener("change", function (ev) {
+    // Leaving a bad cell restores the last good value.
+    var inp = ev.target;
+    if (inp.classList && inp.classList.contains("bad")) {
+      var ref = cellRef(inp);
+      inp.value = toShown(ref.get(state), ref.unit);
+      inp.classList.remove("bad");
+    }
+  });
+
+  // ---------------------------------------------------------------- DCF render
+  function render() {
+    var a = state.a, r = state.r, edited = document.querySelectorAll("#p-baseline input.edited").length;
+    document.getElementById("tg").textContent = pct(a.sales_growth.terminal);
+    var status = edited ? "Valued on the Baseline tab with " + edited + " edited cell" + (edited > 1 ? "s" : "") + "." :
+                          "Valued on the recommended forecasts in the Baseline tab. Edit them there and this page revalues.";
+    document.getElementById("dcf-status").textContent = status;
+
+    var m;
+    try { m = runModel(a, r); }
+    catch (e) {
+      document.getElementById("warnings").innerHTML = "<li>" + esc(e.message) + "</li>";
+      ["h-ev", "h-eq", "h-vps"].forEach(function (id) { document.getElementById(id).textContent = "—"; });
+      ["forecast-table", "bridge-table", "sens-table", "rank-table"].forEach(function (id) { document.getElementById(id).innerHTML = ""; });
+      document.getElementById("readout-text").textContent = e.message;
+      return;
+    }
+    document.getElementById("warnings").innerHTML = m.warnings.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("");
+    document.getElementById("h-ev").textContent = f0(m.evOps);
+    document.getElementById("h-eq").textContent = f0(m.equity);
+    document.getElementById("h-vps").textContent = m.vps === null ? "—" : f2(m.vps);
+    document.getElementById("readout-text").innerHTML = "Value per share at these forecasts: <b>" +
+      (m.vps === null ? "—" : f2(m.vps)) + "</b>" + (edited ? " (recommended: " + f2(runModel(DATA.rec, DATA.rates).vps) + ")" : "") +
+      " — details on the DCF tab.";
+
+    var lines = [
+      ["Sales", "sales", f0], ["EBITDA", "ebitda", f0], ["Depreciation", "depreciation", f0], ["EBIT", "ebit", f0],
+      ["NOL carryforward, opening", "nol_open", f1], ["NOL used", "nol_used", f1], ["Taxable income", "taxable_income", f0],
+      ["Cash taxes", "tax", f0], ["Effective tax rate", "effective_tax_rate", pct], ["Net PP&amp;E, closing", "net_ppe", f0],
+      ["Capital expenditure", "capex", f0], ["Net working capital, closing", "nwc", f0],
+      ["Investment in working capital", "delta_nwc", f0], ["Free cash flow", "fcf", f0, "total"],
+      ["Discount factor", "discount_factor", function (v) { return v.toFixed(4); }], ["PV of free cash flow", "pv_fcf", f0],
+    ];
+    var heads = ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6 · transition", "Year 7 · perpetuity"];
+    var h = "<thead><tr><th>Forecast</th>" + heads.map(function (x) { return "<th class='fc'>" + x + "</th>"; }).join("") + "</tr></thead><tbody>";
+    lines.forEach(function (L) {
+      h += "<tr" + (L[3] ? " class='total'" : "") + "><td>" + L[0] + "</td>" +
+           m.rows.map(function (row) { return "<td>" + L[2](row[L[1]]) + "</td>"; }).join("") + "</tr>";
+    });
+    document.getElementById("forecast-table").innerHTML = h + "</tbody>";
+
+    var b = "<tbody><tr><td>PV of free cash flow, years 1 to 6</td><td>" + f0(m.pvExplicit) + "</td></tr>" +
+            "<tr><td>Terminal value at the end of year 6</td><td>" + f0(m.tv) + "</td></tr>" +
+            "<tr><td>PV of the terminal value</td><td>" + f0(m.pvTerminal) + "</td></tr>" +
+            "<tr class='total'><td>Enterprise value of operations</td><td>" + f0(m.evOps) + "</td></tr>";
+    m.bridge.forEach(function (x) { b += "<tr><td>" + esc(x.label) + "</td><td>" + f0(x.amount) + "</td></tr>"; });
+    b += "<tr class='total'><td>Equity value</td><td>" + f0(m.equity) + "</td></tr>" +
+         "<tr><td>Diluted shares</td><td>" + f0(r.shares) + "</td></tr>" +
+         "<tr class='total'><td>Value per share</td><td>" + (m.vps === null ? "—" : f2(m.vps)) + "</td></tr></tbody>";
+    document.getElementById("bridge-table").innerHTML = b;
+
+    var g = a.sales_growth.terminal;
+    var ws = [-0.02, -0.01, 0, 0.01, 0.02].map(function (d) { return r.wacc + d; });
+    var gs = [-0.01, -0.005, 0, 0.005, 0.01].map(function (d) { return g + d; });
+    var s = "<thead><tr><th>WACC \\ terminal growth</th>" + gs.map(function (x) { return "<th>" + pct(x) + "</th>"; }).join("") + "</tr></thead><tbody>";
+    ws.forEach(function (w, i) {
+      s += "<tr><td>" + pct(w) + "</td>";
+      gs.forEach(function (gg, j) {
+        var trial = clone(a); trial.sales_growth.terminal = gg;
+        var rr = clone(r); rr.wacc = w;
+        var v = tryVps(trial, rr);
+        s += "<td class='sens" + (i === 2 && j === 2 ? " here" : "") + "'>" + (v === null ? "—" : f2(v)) + "</td>";
+      });
+      s += "</tr>";
+    });
+    document.getElementById("sens-table").innerHTML = s + "</tbody>";
+
+    var rk = driverRanking(a, r), top = rk.length ? rk[0].span : 1;
+    var t = "<thead><tr><th>Driver</th><th>Moved</th><th>Moves the value by</th><th></th></tr></thead><tbody>";
+    rk.forEach(function (x) {
+      t += "<tr><td>" + x.driver + "</td><td>" + x.shift + "</td><td>" + pct(x.share) + "</td><td class='bar'><span style='width:" +
+           Math.round(100 * x.span / top) + "%'></span></td></tr>";
+    });
+    document.getElementById("rank-table").innerHTML = t + "</tbody>";
+  }
+
+  document.addEventListener("click", function (ev) {
+    if (ev.target.id !== "reset") return;
+    state = { a: clone(DATA.rec), r: clone(DATA.rates) };
+    try { localStorage.removeItem(STORE); } catch (e) {}
+    fillInputs();
+    render();
+  });
+
+  buildBaseline();
+  fillInputs();
+  render();
+})();
+
+</script>
+<script>
+(function () {
+  function select(btn) {
+    var list = btn.parentElement;
+    list.querySelectorAll('[role="tab"]').forEach(function (b) {
+      var on = b === btn;
+      b.setAttribute('aria-selected', on);
+      document.getElementById(b.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  document.querySelectorAll('[role="tab"]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      select(b);
+      try { history.replaceState(null, '', '#' + b.id.slice(2)); } catch (e) {}
+    });
+  });
+  var h = location.hash.slice(1);
+  var t = h && document.getElementById('t-' + h);
+  if (t) {
+    if (t.closest('#p-forecasts')) select(document.getElementById('t-forecasts'));
+    select(t);
+  }
+})();
+</script>
+</body>
+</html>

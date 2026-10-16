@@ -144,15 +144,13 @@ td.bar span {
   background: var(--accent); opacity: .75;
 }
 
-/* Tabs: Forecasts (Line items, Forecasts, Baseline) and DCF. */
+/* Tabs: Line items, Forecasts, Baseline, DCF. */
 nav.tabs { display: flex; flex-wrap: wrap; gap: .25rem; border-bottom: 1px solid var(--rule); margin: 0 0 1.4rem; }
-nav.tabs.sub { margin-top: -.6rem; }
 nav.tabs button {
   font-family: var(--sans); font-size: .9rem; background: none; border: 0;
   border-bottom: 3px solid transparent; color: var(--muted); padding: .55rem .9rem;
   cursor: pointer; margin-bottom: -1px;
 }
-nav.tabs.sub button { font-size: .82rem; padding: .4rem .75rem; }
 nav.tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
 nav.tabs button:hover { color: var(--ink); }
 [role="tabpanel"][hidden] { display: none; }
@@ -198,16 +196,10 @@ details.csv textarea {
 </header>
 
 <nav class="tabs" role="tablist">
-  <button role="tab" id="t-forecasts" aria-controls="p-forecasts" aria-selected="true">Forecasts</button>
-  <button role="tab" id="t-dcf" aria-controls="p-dcf" aria-selected="false">DCF</button>
-</nav>
-
-<section role="tabpanel" id="p-forecasts" aria-labelledby="t-forecasts">
-
-<nav class="tabs sub" role="tablist">
   <button role="tab" id="t-lines" aria-controls="p-lines" aria-selected="true">Line items</button>
   <button role="tab" id="t-evidence" aria-controls="p-evidence" aria-selected="false">Forecasts</button>
   <button role="tab" id="t-baseline" aria-controls="p-baseline" aria-selected="false">Baseline</button>
+  <button role="tab" id="t-dcf" aria-controls="p-dcf" aria-selected="false">DCF</button>
 </nav>
 
 <section role="tabpanel" id="p-lines" aria-labelledby="t-lines">
@@ -250,8 +242,6 @@ highlighted. The reasoning behind each suggestion is on the Forecasts tab.</p>
   <textarea id="csv-text" readonly rows="10" aria-label="assumptions.csv"></textarea>
   <button type="button" id="copy-csv">Copy</button>
 </details>
-</section>
-
 </section>
 
 <section role="tabpanel" id="p-dcf" aria-labelledby="t-dcf" hidden>
@@ -509,11 +499,7 @@ if (typeof document !== "undefined") (function () {
     });
   });
   var want = location.hash.slice(1), tab = want && byId("t-" + want);
-  if (tab) {
-    var outer = tab.closest('[role="tabpanel"]');
-    if (outer) select(byId(outer.getAttribute("aria-labelledby")));
-    select(tab);
-  }
+  if (tab) select(tab);
 
   // ------------------------------------------------------------ cells
   // Each input names where its number lives in the bundle.
